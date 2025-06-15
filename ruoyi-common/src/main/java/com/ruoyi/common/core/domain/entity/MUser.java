@@ -22,9 +22,9 @@ public class MUser
     private Long uid;
 
 
-    /** 等级id */
-    @Excel(name = "等级id")
-    private Integer levelId;
+    /** 等级 */
+    @Excel(name = "等级")
+    private Integer level;
 
     /** 账号 */
     @Excel(name = "账号")

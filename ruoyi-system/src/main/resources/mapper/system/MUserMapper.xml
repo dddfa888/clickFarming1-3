@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="MUser" id="MUserResult">
         <result property="uid"    column="uid"    />
-        <result property="levelId"    column="level_id"    />
+        <result property="level"    column="level"    />
         <result property="loginAccount"    column="login_account"    />
         <result property="loginPassword"    column="login_password"    />
         <result property="fundPassword"    column="fund_password"    />
@@ -32,13 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectMUserVo">
-        select uid, level_id, login_account, login_password, fund_password, withdrawal_address, register_type, phone_number, phone_number_type, account_balance, invitation_code, inviter, inviter_code, inviter_name, status, bank_name, bank_account_name, bank_account_number, higher_uid, last_login_ip, last_login_ip_address, create_time, update_time, brush_number from m_user
+        select uid, level, login_account, login_password, fund_password, withdrawal_address, register_type, phone_number, phone_number_type, account_balance, invitation_code, inviter, inviter_code, inviter_name, status, bank_name, bank_account_name, bank_account_number, higher_uid, last_login_ip, last_login_ip_address, create_time, update_time, brush_number from m_user
     </sql>
 
     <select id="selectMUserList" parameterType="MUser" resultMap="MUserResult">
         <include refid="selectMUserVo"/>
         <where>
-            <if test="levelId != null "> and level_id = #{levelId}</if>
+            <if test="level != null "> and level = #{level}</if>
             <if test="loginAccount != null  and loginAccount != ''"> and login_account = #{loginAccount}</if>
             <if test="loginPassword != null  and loginPassword != ''"> and login_password = #{loginPassword}</if>
             <if test="fundPassword != null  and fundPassword != ''"> and fund_password = #{fundPassword}</if>
@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into m_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="uid != null">uid,</if>
-            <if test="levelId != null">level_id,</if>
+            <if test="level != null">level,</if>
             <if test="loginAccount != null and loginAccount != ''">login_account,</if>
             <if test="loginPassword != null and loginPassword != ''">login_password,</if>
             <if test="fundPassword != null and fundPassword != ''">fund_password,</if>
@@ -97,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="uid != null">#{uid},</if>
-            <if test="levelId != null">#{levelId},</if>
+            <if test="level != null">#{level},</if>
             <if test="loginAccount != null and loginAccount != ''">#{loginAccount},</if>
             <if test="loginPassword != null and loginPassword != ''">#{loginPassword},</if>
             <if test="fundPassword != null and fundPassword != ''">#{fundPassword},</if>
@@ -126,7 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateMUser" parameterType="MUser">
         update m_user
         <trim prefix="SET" suffixOverrides=",">
-            <if test="levelId != null">level_id = #{levelId},</if>
+            <if test="level != null">level = #{level},</if>
             <if test="loginAccount != null and loginAccount != ''">login_account = #{loginAccount},</if>
             <if test="loginPassword != null and loginPassword != ''">login_password = #{loginPassword},</if>
             <if test="fundPassword != null and fundPassword != ''">fund_password = #{fundPassword},</if>

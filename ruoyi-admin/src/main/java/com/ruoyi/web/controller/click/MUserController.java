@@ -51,7 +51,7 @@ public class MUserController extends BaseController
         TableDataInfo dataTable = getDataTable(list);
         List<MUser> rows = (List<MUser>) dataTable.getRows();
         rows.forEach(item -> {
-            UserGrade userGrade = userGradeService.selectUserGradeById(Long.valueOf(item.getLevelId()));
+            UserGrade userGrade = userGradeService.selectUserGradeById(Long.valueOf(item.getLevel()));
             if (userGrade != null) {
                 item.setLevelName(userGrade.getGradeName());
             } else {

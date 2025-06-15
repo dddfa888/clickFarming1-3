@@ -142,10 +142,10 @@
         <el-form-item label="账号" prop="loginAccount">
           <el-input v-model="form.loginAccount" placeholder="请输入账号" />
         </el-form-item>
-        <el-form-item label="等级id" prop="levelId">
-<!--          <el-input v-model="form.levelId" placeholder="请输入等级id" />-->
+        <el-form-item label="等级" prop="level">
+<!--          <el-input v-model="form.level" placeholder="请输入等级" />-->
 
-          <el-select v-model="form.levelId" placeholder="请选择">
+          <el-select v-model="form.level" placeholder="请选择">
             <el-option
                 v-for="item in gradeList"
                 :key="item.id"
@@ -255,7 +255,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        levelId: null,
+        level: null,
         loginAccount: null,
         loginPassword: null,
         fundPassword: null,
@@ -289,8 +289,8 @@ export default {
           { required: true, message: "用户类型不能为空", trigger: "blur" }
         ],
 
-        levelId: [
-          { required: true, message: "等级id不能为空", trigger: "blur" }
+        level: [
+          { required: true, message: "等级不能为空", trigger: "blur" }
         ],
         loginAccount: [
           { required: true, message: "账号不能为空", trigger: "blur" }
@@ -380,7 +380,7 @@ export default {
       this.JudgingStatus = true
       this.form = {
         uid: null,
-        levelId: null,
+        level: null,
         loginAccount: null,
         loginPassword: null,
         fundPassword: null,

@@ -196,7 +196,12 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         mUser.setPhoneNumber(model.getPhone());
         mUser.setStatus(1);
         // TODO 此处需要思考
-        mUser.setLevelId(1);
+        mUser.setLevel(1);
+//        UserGrade minGrade = userGradeService.getOne(
+//                new LambdaQueryWrapper<UserGrade>()
+//                        .orderByAsc(UserGrade::getSortNum)
+//                        .last("LIMIT 1")
+//        );
         mUserMapper.insertMUser(mUser);
     }
 
