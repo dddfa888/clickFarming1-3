@@ -29,7 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2025-06-15
  */
 @RestController
-@RequestMapping("/system/grade")
+@RequestMapping("/api/grade")
 public class UserGradeController extends BaseController
 {
     @Autowired

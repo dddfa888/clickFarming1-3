@@ -1,6 +1,7 @@
 package com.ruoyi.common.core.domain.model;
 
 import com.alibaba.fastjson2.annotation.JSONField;
+import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 /**
  * 登录用户身份权限
- * 
+ *
  * @author ruoyi
  */
 public class LoginUser implements UserDetails
@@ -71,6 +72,16 @@ public class LoginUser implements UserDetails
      */
     private SysUser user;
 
+    private MUser mUser;
+
+    public MUser getmUser() {
+        return mUser;
+    }
+
+    public void setmUser(MUser mUser) {
+        this.mUser = mUser;
+    }
+
     public LoginUser()
     {
     }
@@ -123,13 +134,13 @@ public class LoginUser implements UserDetails
     @Override
     public String getPassword()
     {
-        return user.getPassword();
+        return user != null ? user.getPassword() : mUser.getLoginPassword();
     }
 
     @Override
     public String getUsername()
     {
-        return user.getUserName();
+        return user != null ? user.getUserName() : mUser.getLoginAccount();
     }
 
     /**
@@ -144,7 +155,7 @@ public class LoginUser implements UserDetails
 
     /**
      * 指定用户是否解锁,锁定的用户无法进行身份验证
-     * 
+     *
      * @return
      */
     @JSONField(serialize = false)
@@ -156,7 +167,7 @@ public class LoginUser implements UserDetails
 
     /**
      * 指示是否已过期的用户的凭据(密码),过期的凭据防止认证
-     * 
+     *
      * @return
      */
     @JSONField(serialize = false)
@@ -168,7 +179,7 @@ public class LoginUser implements UserDetails
 
     /**
      * 是否可用 ,禁用的用户不能身份验证
-     * 
+     *
      * @return
      */
     @JSONField(serialize = false)

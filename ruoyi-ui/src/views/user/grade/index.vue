@@ -1,58 +1,11 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="序号" prop="sortNum">
-        <el-input
-          v-model="queryParams.sortNum"
-          placeholder="请输入序号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item label="等级名称" prop="gradeName">
         <el-input
           v-model="queryParams.gradeName"
           placeholder="请输入等级名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="参加费" prop="joinCost">
-        <el-input
-          v-model="queryParams.joinCost"
-          placeholder="请输入参加费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最低余额" prop="minBalance">
-        <el-input
-          v-model="queryParams.minBalance"
-          placeholder="请输入最低余额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每天购买的产品数量" prop="buyProdNum">
-        <el-input
-          v-model="queryParams.buyProdNum"
-          placeholder="请输入每天购买的产品数量"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最小奖金" prop="minBonus">
-        <el-input
-          v-model="queryParams.minBonus"
-          placeholder="请输入最小奖金"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="最大奖金" prop="maxBonus">
-        <el-input
-          v-model="queryParams.maxBonus"
-          placeholder="请输入最大奖金"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -96,16 +49,7 @@
           v-hasPermi="['system:grade:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:grade:export']"
-        >导出</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 

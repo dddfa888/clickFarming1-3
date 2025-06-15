@@ -13,14 +13,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="buyProdNum"    column="buy_prod_num"    />
         <result property="minBonus"    column="min_bonus"    />
         <result property="maxBonus"    column="max_bonus"    />
-        <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectUserGradeVo">
-        select id, sort_num, grade_name, join_cost, min_balance, buy_prod_num, min_bonus, max_bonus, create_by, create_time, update_by, update_time from m_user_grade
+        select id, sort_num, grade_name, join_cost, min_balance, buy_prod_num, min_bonus, max_bonus, create_time, update_time from m_user_grade
     </sql>
 
     <select id="selectUserGradeList" parameterType="UserGrade" resultMap="UserGradeResult">
@@ -52,9 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="buyProdNum != null">buy_prod_num,</if>
             <if test="minBonus != null">min_bonus,</if>
             <if test="maxBonus != null">max_bonus,</if>
-            <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -66,9 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="buyProdNum != null">#{buyProdNum},</if>
             <if test="minBonus != null">#{minBonus},</if>
             <if test="maxBonus != null">#{maxBonus},</if>
-            <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
@@ -83,9 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="buyProdNum != null">buy_prod_num = #{buyProdNum},</if>
             <if test="minBonus != null">min_bonus = #{minBonus},</if>
             <if test="maxBonus != null">max_bonus = #{maxBonus},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
-            <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
