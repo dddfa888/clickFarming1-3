@@ -32,6 +32,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="minBonus != null "> and min_bonus = #{minBonus}</if>
             <if test="maxBonus != null  and maxBonus != ''"> and max_bonus = #{maxBonus}</if>
         </where>
+        ORDER BY sort_num ASC
+
     </select>
 
     <select id="selectUserGradeById" parameterType="Long" resultMap="UserGradeResult">
