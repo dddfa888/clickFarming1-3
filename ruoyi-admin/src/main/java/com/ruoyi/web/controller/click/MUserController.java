@@ -1,9 +1,13 @@
 package com.ruoyi.web.controller.click;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.domain.click.UserGrade;
 import com.ruoyi.system.service.click.IMUserService;
 import com.ruoyi.system.service.click.IUserGradeService;
@@ -39,6 +43,9 @@ public class MUserController extends BaseController
 
     @Autowired
     private IUserGradeService userGradeService;
+
+    @Autowired
+    private TokenService tokenService;
     /**
      * 查询用户列表
      */
@@ -84,6 +91,66 @@ public class MUserController extends BaseController
     {
         return success(mUserService.selectMUserByUid(uid));
     }
+
+    /**
+     * 获取前4级用户上级
+     */
+    @GetMapping(value = "getUpToFourLevelInviters")
+    public AjaxResult getUpToFourLevelInviters(HttpServletRequest request) {
+        Long uid = tokenService.getLoginUser(request).getmUser().getUid();
+        MUser mUser = mUserService.selectMUserByUid(uid);
+        String inviterCode = mUser.getInviterCode();
+        List<MUser> inviterList = new ArrayList<>();
+
+        String currentCode = inviterCode;
+        int level = 0;
+
+        while (currentCode != null && level < 4) {
+            MUser inviter = mUserService.getOne(
+                    new LambdaQueryWrapper<MUser>()
+                            .eq(MUser::getInvitationCode, currentCode)
+            );
+
+            if (inviter == null) {
+                break; // 上级不存在，退出循环
+            }
+
+            inviterList.add(inviter);
+
+            // 准备下一轮：用当前上级的 inviter_code 再查上一层
+            currentCode = inviter.getInviterCode();
+            level++;
+        }
+        return success(inviterList);
+    }
+
+    /**
+     * 获取所有上级
+     * @param inviterCode
+     * @return
+     */
+    @GetMapping(value = "getAllSuperiorUids")
+    public AjaxResult getAllSuperiorUids(String inviterCode) {
+        List<Long> uidList = new ArrayList<>();
+        String currentInviterCode = inviterCode;
+        while (currentInviterCode != null) {
+            MUser inviter = mUserService.getOne(
+                    new LambdaQueryWrapper<MUser>()
+                            .eq(MUser::getInvitationCode, currentInviterCode)
+            );
+            if (inviter == null) {
+                break;
+            }
+            uidList.add(inviter.getUid());
+
+            // 向上查找下一个上级
+            currentInviterCode = inviter.getInviterCode();
+        }
+
+        return success(uidList);
+    }
+
+
 
 
     @GetMapping(value = "editStatus/{uid}")

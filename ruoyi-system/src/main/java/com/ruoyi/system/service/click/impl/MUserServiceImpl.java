@@ -73,13 +73,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
             mUser.setInviterName(inviterUser.getLoginAccount());
             mUser.setInviterCode(inviterUser.getInvitationCode());
 
-            StringBuilder builder = new StringBuilder();
-            String higherUid = inviterUser.getHigherUid();
-            if (higherUid != null) {
-                builder.append(higherUid).append(",");
-            }
-            builder.append(inviterUser.getUid());
-            mUser.setHigherUid(builder.toString());
+
         }
 
         // 校验账号是否重复
@@ -170,14 +164,6 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         mUser.setInviter(String.valueOf(inviterUser.getUid()));
         mUser.setInviterName(inviterUser.getLoginAccount());
         mUser.setInviterCode(inviterUser.getInvitationCode());
-
-        StringBuilder builder = new StringBuilder();
-        String higherUid = inviterUser.getHigherUid();
-        if (higherUid != null) {
-            builder.append(higherUid).append(",");
-        }
-        builder.append(inviterUser.getUid());
-        mUser.setHigherUid(builder.toString());
 
         // 校验账号是否重复
         String loginAccount = model.getLoginAccount();
