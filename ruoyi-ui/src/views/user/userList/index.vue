@@ -102,28 +102,50 @@
       <el-table-column label="银行账号" align="center" prop="bankAccountNumber" />
       <el-table-column label="当天刷单数量" align="center" prop="brushNumber" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:user:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:user:remove']"
-          >删除</el-button>
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['system:user:edit']"-->
+<!--          >修改</el-button>-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-delete"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['system:user:remove']"-->
+<!--          >删除</el-button>-->
 
-          <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-refresh"
-              @click="handleRegisterType(scope.row)"
-          >转为{{ scope.row.registerType === "0" ? '客人' : '员工' }}</el-button>
+<!--          <el-button-->
+<!--              size="mini"-->
+<!--              type="text"-->
+<!--              icon="el-icon-refresh"-->
+<!--              @click="handleRegisterType(scope.row)"-->
+<!--          >转为{{ scope.row.registerType === "0" ? '客人' : '员工' }}</el-button>-->
+<!--        </template>-->
+        <template slot-scope="scope">
+          <el-dropdown trigger="click" @command="handleCommand">
+            <el-button type="primary">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                  v-for="item in operateOptions"
+                  :key="item.value"
+                  :command="{ item: item, row: scope.row }"
+              >
+                {{ item.label }}
+              </el-dropdown-item>
+              <!-- 动态设置贷款等级按钮 -->
+              <el-dropdown-item
+                  :command="{ item: { value: 'handleRegisterType' }, row: scope.row }"
+              >
+                {{ scope.row.registerType === "0" ? '转为客人' : '转为员工' }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -224,6 +246,21 @@ export default {
   name: "User",
   data() {
     return {
+      //操作
+      operate: "",
+      operateTitle: "",
+      operateOpen: false,
+      operateForm: "",
+      operateOptions: [
+        {
+          label: "修改",
+          value: "handleUpdate",
+        },
+        {
+          label: "删除",
+          value: "handleDelete",
+        }
+      ],
       options: [{
         value: '1',
         label: '客人'
@@ -249,6 +286,7 @@ export default {
       gradeList: [],
       // 弹出层标题
       title: "",
+
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -315,6 +353,18 @@ export default {
     this.getGradeList()
   },
   methods: {
+    /** 下拉列表操作 */
+    handleCommand(command) {
+      const { item, row } = command;
+      this.operate = item.value;
+      this.operateTitle = item.label;
+      this.operateForm = row;
+
+      // 如果方法存在，则执行
+      if (typeof this[item.value] === 'function') {
+        this[item.value](row);
+      }
+    },
     handleRegisterType(row) {
       const currentType = row.registerType === "0" ? "员工" : "客人";
       const targetType = row.registerType === "0" ? "客人" : "员工";
