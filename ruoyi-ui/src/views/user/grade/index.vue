@@ -55,8 +55,12 @@
 
     <el-table v-loading="loading" :data="gradeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="序号" align="center" prop="sortNum" />
+<!--      <el-table-column label="ID" align="center" prop="id" />-->
+      <el-table-column label="等级编号" align="center" prop="sortNum">
+        <template slot-scope="scope">
+          {{ scope.row.sortNum  }}级
+        </template>
+      </el-table-column>
       <el-table-column label="等级名称" align="center" prop="gradeName" />
       <el-table-column label="参加费" align="center" prop="joinCost" />
       <el-table-column label="最低余额" align="center" prop="minBalance" />
@@ -94,8 +98,8 @@
     <!-- 添加或修改用户等级对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="序号" prop="sortNum">
-          <el-input v-model="form.sortNum" placeholder="请输入序号" />
+        <el-form-item label="等级编号" prop="sortNum">
+          <el-input v-model="form.sortNum" placeholder="请输入等级编号" />
         </el-form-item>
         <el-form-item label="等级名称" prop="gradeName">
           <el-input v-model="form.gradeName" placeholder="请输入等级名称" />

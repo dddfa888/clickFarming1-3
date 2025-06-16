@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain.click;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,6 +18,7 @@ import java.util.Date;
  * @date 2025-06-15
  */
 @Data
+@TableName("m_user_grade")
 public class UserGrade
 {
     private static final long serialVersionUID = 1L;
@@ -51,6 +54,9 @@ public class UserGrade
     @Excel(name = "最大奖金", readConverterExp = "%=")
     private BigDecimal maxBonus;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 }

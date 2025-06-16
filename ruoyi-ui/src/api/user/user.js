@@ -41,6 +41,14 @@ export function addUser(data) {
   })
 }
 
+export function updateBalance(data) {
+  return request({
+    url: '/api/user/setBalance',
+    method: 'post',
+    data: data
+  })
+}
+
 // 修改用户
 export function updateUser(data) {
   return request({
