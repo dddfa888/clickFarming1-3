@@ -58,7 +58,11 @@ public class MAccountChangeRecordsController extends BaseController
         List<MAccountChangeRecords> rows = (List<MAccountChangeRecords>) dataTable.getRows();
         for (MAccountChangeRecords mAccountChangeRecord : rows) {
             MUser one = mUserService.selectMUserByUid(Long.valueOf(mAccountChangeRecord.getUid()));
-            mAccountChangeRecord.setLoginAccount(one.getLoginAccount());
+            if (one != null){
+                mAccountChangeRecord.setUserName(one.getLoginAccount());
+            }else {
+                mAccountChangeRecord.setUserName("该用户已删除");
+            }
         }
         dataTable.setRows(rows);
         return dataTable;
