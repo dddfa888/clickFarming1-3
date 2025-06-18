@@ -1,4 +1,4 @@
-package com.ruoyi.system.service.click.impl;
+package com.ruoyi.click.service.impl;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -7,19 +7,17 @@ import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.*;
 import com.ruoyi.common.core.domain.entity.MUser;
-import com.ruoyi.system.domain.click.MAccountChangeRecords;
-import com.ruoyi.system.domain.click.UserGrade;
-import com.ruoyi.system.domain.click.vo.UserRegisterModel;
-import com.ruoyi.system.domain.click.vo.balanceModel;
-import com.ruoyi.system.mapper.click.MUserMapper;
-import com.ruoyi.system.mapper.click.UserGradeMapper;
-import com.ruoyi.system.service.click.IMAccountChangeRecordsService;
-import com.ruoyi.system.service.click.IMUserService;
-import com.ruoyi.system.service.click.IUserGradeService;
+import com.ruoyi.click.domain.MAccountChangeRecords;
+import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.domain.vo.UserRegisterModel;
+import com.ruoyi.click.domain.vo.balanceModel;
+import com.ruoyi.click.mapper.MUserMapper;
+import com.ruoyi.click.service.IMAccountChangeRecordsService;
+import com.ruoyi.click.service.IMUserService;
+import com.ruoyi.click.service.IUserGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -9,6 +9,15 @@ export function listUser(query) {
   })
 }
 
+
+export function getAllSuperiorUids(query) {
+  return request({
+    url: '/api/user/getAllSuperiorUids',
+    method: 'get',
+    params: query
+  });
+}
+
 // 查询用户详细
 export function getUser(uid) {
   return request({
@@ -31,6 +40,8 @@ export function setRegisterType(uid) {
     method: 'get'
   })
 }
+
+
 
 // 新增用户
 export function addUser(data) {

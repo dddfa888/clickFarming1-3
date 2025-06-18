@@ -1,16 +1,18 @@
-package com.ruoyi.system.service.click;
+package com.ruoyi.click.mapper;
 
-import com.ruoyi.system.domain.click.MAccountChangeRecords;
+import com.ruoyi.click.domain.MAccountChangeRecords;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
- * 账变记录Service接口
+ * 账变记录Mapper接口
  *
  * @author ruoyi
  * @date 2025-06-16
  */
-public interface IMAccountChangeRecordsService
+@Mapper
+public interface MAccountChangeRecordsMapper
 {
     /**
      * 查询账变记录
@@ -45,18 +47,18 @@ public interface IMAccountChangeRecordsService
     public int updateMAccountChangeRecords(MAccountChangeRecords mAccountChangeRecords);
 
     /**
-     * 批量删除账变记录
-     *
-     * @param uuids 需要删除的账变记录主键集合
-     * @return 结果
-     */
-    public int deleteMAccountChangeRecordsByUuids(String[] uuids);
-
-    /**
-     * 删除账变记录信息
+     * 删除账变记录
      *
      * @param uuid 账变记录主键
      * @return 结果
      */
     public int deleteMAccountChangeRecordsByUuid(String uuid);
+
+    /**
+     * 批量删除账变记录
+     *
+     * @param uuids 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteMAccountChangeRecordsByUuids(String[] uuids);
 }

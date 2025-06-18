@@ -1,9 +1,9 @@
-package com.ruoyi.system.service.click;
+package com.ruoyi.click.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.common.core.domain.entity.MUser;
-import com.ruoyi.system.domain.click.vo.UserRegisterModel;
-import com.ruoyi.system.domain.click.vo.balanceModel;
+import com.ruoyi.click.domain.vo.UserRegisterModel;
+import com.ruoyi.click.domain.vo.balanceModel;
 
 import java.util.HashMap;
 import java.util.List;

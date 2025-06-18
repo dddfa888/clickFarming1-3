@@ -1,12 +1,12 @@
-package com.ruoyi.system.service.click.impl;
+package com.ruoyi.click.service.impl;
 
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.system.domain.click.UserGrade;
-import com.ruoyi.system.mapper.click.UserGradeMapper;
-import com.ruoyi.system.service.click.IUserGradeService;
+import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.mapper.UserGradeMapper;
+import com.ruoyi.click.service.IUserGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

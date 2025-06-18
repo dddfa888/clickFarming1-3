@@ -1,9 +1,8 @@
-package com.ruoyi.system.domain.click.vo;
+package com.ruoyi.click.domain.vo;
 
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 

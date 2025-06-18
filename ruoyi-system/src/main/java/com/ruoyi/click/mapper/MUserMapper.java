@@ -1,4 +1,4 @@
-package com.ruoyi.system.mapper.click;
+package com.ruoyi.click.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.common.core.domain.entity.MUser;

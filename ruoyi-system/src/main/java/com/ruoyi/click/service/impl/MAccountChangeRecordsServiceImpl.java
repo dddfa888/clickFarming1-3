@@ -1,10 +1,10 @@
-package com.ruoyi.system.service.click.impl;
+package com.ruoyi.click.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.system.domain.click.MAccountChangeRecords;
-import com.ruoyi.system.mapper.click.MAccountChangeRecordsMapper;
-import com.ruoyi.system.service.click.IMAccountChangeRecordsService;
+import com.ruoyi.click.domain.MAccountChangeRecords;
+import com.ruoyi.click.mapper.MAccountChangeRecordsMapper;
+import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

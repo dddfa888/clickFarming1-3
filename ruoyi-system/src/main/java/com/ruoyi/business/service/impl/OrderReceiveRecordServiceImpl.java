@@ -12,11 +12,11 @@ import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.DecimalUtil;
-import com.ruoyi.system.domain.click.MAccountChangeRecords;
-import com.ruoyi.system.domain.click.UserGrade;
-import com.ruoyi.system.mapper.click.MAccountChangeRecordsMapper;
-import com.ruoyi.system.mapper.click.MUserMapper;
-import com.ruoyi.system.mapper.click.UserGradeMapper;
+import com.ruoyi.click.domain.MAccountChangeRecords;
+import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.mapper.MAccountChangeRecordsMapper;
+import com.ruoyi.click.mapper.MUserMapper;
+import com.ruoyi.click.mapper.UserGradeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.business.mapper.OrderReceiveRecordMapper;
@@ -27,12 +27,12 @@ import static com.ruoyi.common.utils.SecurityUtils.getUserId;
 
 /**
  * 订单接收记录Service业务层处理
- * 
+ *
  * @author ruoyi
  * @date 2025-06-17
  */
 @Service
-public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService 
+public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 {
     @Autowired
     private OrderReceiveRecordMapper orderReceiveRecordMapper;
@@ -47,7 +47,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
     /**
      * 查询订单接收记录
-     * 
+     *
      * @param id 订单接收记录主键
      * @return 订单接收记录
      */
@@ -59,7 +59,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
     /**
      * 查询订单接收记录列表
-     * 
+     *
      * @param orderReceiveRecord 订单接收记录
      * @return 订单接收记录
      */
@@ -71,7 +71,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
     /**
      * 新增订单接收记录
-     * 
+     *
      * @param orderReceiveRecord 订单接收记录
      * @return 结果
      */
@@ -84,7 +84,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
     /**
      * 修改订单接收记录
-     * 
+     *
      * @param orderReceiveRecord 订单接收记录
      * @return 结果
      */
@@ -97,7 +97,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
     /**
      * 批量删除订单接收记录
-     * 
+     *
      * @param ids 需要删除的订单接收记录主键
      * @return 结果
      */
@@ -109,7 +109,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
     /**
      * 删除订单接收记录信息
-     * 
+     *
      * @param id 订单接收记录主键
      * @return 结果
      */

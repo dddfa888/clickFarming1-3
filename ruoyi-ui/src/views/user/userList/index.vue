@@ -65,7 +65,11 @@
       <el-table-column label="等级" align="center" prop="levelName" />
       <el-table-column label="电话号码" align="center" prop="phoneNumber" />
       <el-table-column label="账户余额" align="center" prop="accountBalance" />
-      <el-table-column label="邀请人姓名" align="center" prop="inviterName" />
+      <el-table-column label="邀请人姓名" align="center" prop="inviterName">
+        <template slot-scope="scope">
+          {{ scope.row.inviterName || '/' }}
+        </template>
+      </el-table-column>
 <!--      <el-table-column label="状态 1:启用 0:禁用" align="center" prop="status" />-->
       <el-table-column label="是否禁用" align="center" prop="status">
         <template slot-scope="scope">
@@ -137,7 +141,7 @@
     />
 
     <el-dialog
-        title="提示"
+        title="修改账户余额"
         :visible.sync="dialogBalance"
         width="30%"
         :before-close="handleCloseBalance"
@@ -168,11 +172,57 @@
     </el-dialog>
 
 
+    <el-dialog
+        title="查看集团信息"
+        :visible.sync="dialogGroupInformation"
+        width="30%"
+        :before-close="handleCloseGroupInformation"
+    >
+      <el-table
+          :data="tableData"
+          style="width: 100%">
+        <el-table-column
+            prop="loginAccount"
+            label="账号"
+            width="180">
+        </el-table-column>
+        <el-table-column
+            prop="levelName"
+            label="等级"
+            width="180">
+        </el-table-column>
+        <el-table-column
+            prop="accountBalance"
+            label="余额">
+        </el-table-column>
+        <el-table-column
+            prop="status"
+            label="状态">
+          <template slot-scope="scope">
+            <el-tag
+                :type="scope.row.status === 1 ? 'success' : 'info'"
+                disable-transitions>
+              {{ scope.row.status === 1 ? '启用' : '禁用' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+<!--        <el-button @click="handleCloseGroupInformation">取 消</el-button>-->
+<!--        <el-button type="primary" @click="submitBalanceForm">确 定</el-button>-->
+      </span>
+    </el-dialog>
+
+
     <!-- 添加或修改用户对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="账号" prop="loginAccount">
-          <el-input v-model="form.loginAccount" placeholder="请输入账号" />
+          <el-input
+              v-model="form.loginAccount"
+              placeholder="请输入账号"
+              :disabled="!JudgingStatus"
+          />
         </el-form-item>
         <el-form-item label="等级" prop="level">
 <!--          <el-input v-model="form.level" placeholder="请输入等级" />-->
@@ -249,13 +299,15 @@
 </template>
 
 <script>
-import {updateBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType} from "@/api/user/user"
+import {getAllSuperiorUids,updateBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType} from "@/api/user/user"
 import { listGrade } from "@/api/user/grade"
 
 export default {
   name: "User",
   data() {
     return {
+      tableData: [],
+      dialogGroupInformation: false,
       balanceForm:{
         uid:  "",
         increaseDecrease: true,
@@ -279,6 +331,10 @@ export default {
         {
           label: "修改账户余额",
           value: "handleUpdateBalance",
+        },
+        {
+          label: "查看集团信息",
+          value: "handleListGroupInformation",
         }
       ],
       options: [{
@@ -373,6 +429,20 @@ export default {
     this.getGradeList()
   },
   methods: {
+    handleCloseGroupInformation(){
+      this.dialogGroupInformation = false
+
+    },
+    handleListGroupInformation(row) {
+      this.dialogGroupInformation = true;
+
+      // 调用封装好的 API，传入参数对象
+      getAllSuperiorUids({ inviterCode: row.inviterCode }).then(res => {
+        console.log('上级 UID 列表:', res.data);
+        this.tableData = res.data
+        // 如果你需要将数据赋值到页面上显示，例如：
+      })
+    },
     submitBalanceForm(){
       console.log(this.balanceForm)
       updateBalance(this.balanceForm).then(res => {
@@ -393,7 +463,6 @@ export default {
 
     },
     handleUpdateBalance(row){
-      console.log(row)
       this.balanceForm.uid = row.uid
       this.dialogBalance = true
     },

@@ -1,4 +1,4 @@
-package com.ruoyi.system.domain.click.vo;
+package com.ruoyi.click.domain.vo;
 
 import lombok.Data;
 

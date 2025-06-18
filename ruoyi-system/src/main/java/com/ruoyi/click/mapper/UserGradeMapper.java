@@ -1,17 +1,20 @@
-package com.ruoyi.system.service.click;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.ruoyi.system.domain.click.UserGrade;
+package com.ruoyi.click.mapper;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ruoyi.click.domain.UserGrade;
+import org.apache.ibatis.annotations.Mapper;;
+
 /**
- * 用户等级Service接口
+ * 用户等级Mapper接口
  *
  * @author ruoyi
  * @date 2025-06-15
  */
-public interface IUserGradeService extends IService<UserGrade> {
+@Mapper
+public interface UserGradeMapper extends BaseMapper<UserGrade>
+{
     /**
      * 查询用户等级
      *
@@ -19,6 +22,14 @@ public interface IUserGradeService extends IService<UserGrade> {
      * @return 用户等级
      */
     public UserGrade selectUserGradeById(Long id);
+
+    /**
+     * 查询用户等级
+     *
+     * @param sortNum 用户等级序号
+     * @return 用户等级
+     */
+    UserGrade selectUserGradeBySortNum(Integer sortNum);
 
     /**
      * 查询用户等级列表
@@ -45,18 +56,18 @@ public interface IUserGradeService extends IService<UserGrade> {
     public int updateUserGrade(UserGrade userGrade);
 
     /**
-     * 批量删除用户等级
-     *
-     * @param ids 需要删除的用户等级主键集合
-     * @return 结果
-     */
-    public int deleteUserGradeByIds(Long[] ids);
-
-    /**
-     * 删除用户等级信息
+     * 删除用户等级
      *
      * @param id 用户等级主键
      * @return 结果
      */
     public int deleteUserGradeById(Long id);
+
+    /**
+     * 批量删除用户等级
+     *
+     * @param ids 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteUserGradeByIds(Long[] ids);
 }
