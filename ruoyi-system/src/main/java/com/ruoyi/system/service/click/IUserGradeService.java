@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.click;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.click.UserGrade;
 
 import java.util.List;
@@ -10,8 +11,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2025-06-15
  */
-public interface IUserGradeService
-{
+public interface IUserGradeService extends IService<UserGrade> {
     /**
      * 查询用户等级
      *

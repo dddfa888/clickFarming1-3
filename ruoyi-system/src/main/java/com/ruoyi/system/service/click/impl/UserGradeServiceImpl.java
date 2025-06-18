@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.click.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.system.domain.click.UserGrade;
 import com.ruoyi.system.mapper.click.UserGradeMapper;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @date 2025-06-15
  */
 @Service
-public class UserGradeServiceImpl implements IUserGradeService
+public class UserGradeServiceImpl extends ServiceImpl<UserGradeMapper, UserGrade> implements IUserGradeService
 {
     @Autowired
     private UserGradeMapper userGradeMapper;

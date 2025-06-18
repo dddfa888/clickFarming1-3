@@ -1,14 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-<!--      <el-form-item label="用户名" prop="userName">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.userName"-->
-<!--          placeholder="请输入用户名"-->
-<!--          clearable-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
       <el-form-item label="账号" prop="loginAccount">
         <el-input
           v-model="queryParams.loginAccount"
@@ -56,16 +48,6 @@
           v-hasPermi="['system:user:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:user:export']"
-        >导出</el-button>
-      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -82,7 +64,6 @@
       </el-table-column>
       <el-table-column label="等级" align="center" prop="levelName" />
       <el-table-column label="电话号码" align="center" prop="phoneNumber" />
-      <el-table-column label="提现地址" align="center" prop="withdrawalAddress" />
       <el-table-column label="账户余额" align="center" prop="accountBalance" />
       <el-table-column label="邀请人姓名" align="center" prop="inviterName" />
 <!--      <el-table-column label="状态 1:启用 0:禁用" align="center" prop="status" />-->
@@ -96,35 +77,32 @@
           />
         </template>
       </el-table-column>
+      <el-table-column label="提现地址" align="center" prop="withdrawalAddress">
+        <template slot-scope="scope">
+          {{ scope.row.withdrawalAddress || '/' }}
+        </template>
+      </el-table-column>
 
-      <el-table-column label="银行名称" align="center" prop="bankName" />
-      <el-table-column label="银行账户名称" align="center" prop="bankAccountName" />
-      <el-table-column label="银行账号" align="center" prop="bankAccountNumber" />
+      <el-table-column label="银行名称" align="center" prop="bankName">
+        <template slot-scope="scope">
+          {{ scope.row.bankName || '/' }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="银行账户名称" align="center" prop="bankAccountName">
+        <template slot-scope="scope">
+          {{ scope.row.bankAccountName || '/' }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="银行账号" align="center" prop="bankAccountNumber">
+        <template slot-scope="scope">
+          {{ scope.row.bankAccountNumber || '/' }}
+        </template>
+      </el-table-column>
+
       <el-table-column label="当天刷单数量" align="center" prop="brushNumber" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-<!--        <template slot-scope="scope">-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-edit"-->
-<!--            @click="handleUpdate(scope.row)"-->
-<!--            v-hasPermi="['system:user:edit']"-->
-<!--          >修改</el-button>-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-delete"-->
-<!--            @click="handleDelete(scope.row)"-->
-<!--            v-hasPermi="['system:user:remove']"-->
-<!--          >删除</el-button>-->
-
-<!--          <el-button-->
-<!--              size="mini"-->
-<!--              type="text"-->
-<!--              icon="el-icon-refresh"-->
-<!--              @click="handleRegisterType(scope.row)"-->
-<!--          >转为{{ scope.row.registerType === "0" ? '客人' : '员工' }}</el-button>-->
-<!--        </template>-->
         <template slot-scope="scope">
           <el-dropdown trigger="click" @command="handleCommand">
             <el-button type="primary">
@@ -157,6 +135,38 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogBalance"
+        width="30%"
+        :before-close="handleCloseBalance"
+    >
+      <el-form ref="form" :model="balanceForm" label-width="80px">
+        <el-form-item label="">
+          <el-switch
+              style="display: block"
+              v-model="balanceForm.increaseDecrease"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="增加"
+              inactive-text="减少">
+          </el-switch>
+        </el-form-item>
+        <el-form-item label="金额">
+          <el-input v-model="balanceForm.balance"></el-input>
+        </el-form-item>
+
+
+
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseBalance">取 消</el-button>
+        <el-button type="primary" @click="submitBalanceForm">确 定</el-button>
+      </span>
+    </el-dialog>
+
 
     <!-- 添加或修改用户对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -239,13 +249,19 @@
 </template>
 
 <script>
-import {setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType} from "@/api/user/user"
+import {updateBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType} from "@/api/user/user"
 import { listGrade } from "@/api/user/grade"
 
 export default {
   name: "User",
   data() {
     return {
+      balanceForm:{
+        uid:  "",
+        increaseDecrease: true,
+        balance: 0
+      },
+      dialogBalance: false,
       //操作
       operate: "",
       operateTitle: "",
@@ -259,6 +275,10 @@ export default {
         {
           label: "删除",
           value: "handleDelete",
+        },
+        {
+          label: "修改账户余额",
+          value: "handleUpdateBalance",
         }
       ],
       options: [{
@@ -353,6 +373,30 @@ export default {
     this.getGradeList()
   },
   methods: {
+    submitBalanceForm(){
+      console.log(this.balanceForm)
+      updateBalance(this.balanceForm).then(res => {
+        if(res.code != 200){
+          this.$message.error("修改失败")
+          return
+        }
+        this.handleCloseBalance()
+        this.getList()
+        this.$message.success("修改成功")
+      })
+    },
+    handleCloseBalance(){
+      this.dialogBalance = false
+      this.balanceForm.uid = 0
+      this.balanceForm.increaseDecrease = true
+      this.balanceForm.balance = 0
+
+    },
+    handleUpdateBalance(row){
+      console.log(row)
+      this.balanceForm.uid = row.uid
+      this.dialogBalance = true
+    },
     /** 下拉列表操作 */
     handleCommand(command) {
       const { item, row } = command;

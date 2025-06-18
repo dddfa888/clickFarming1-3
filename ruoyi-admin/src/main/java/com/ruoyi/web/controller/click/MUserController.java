@@ -1,18 +1,25 @@
 package com.ruoyi.web.controller.click;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.common.utils.DecimalUtil;
 import com.ruoyi.framework.web.service.TokenService;
+import com.ruoyi.system.domain.click.MAccountChangeRecords;
 import com.ruoyi.system.domain.click.UserGrade;
+import com.ruoyi.system.domain.click.vo.balanceModel;
+import com.ruoyi.system.service.click.IMAccountChangeRecordsService;
 import com.ruoyi.system.service.click.IMUserService;
 import com.ruoyi.system.service.click.IUserGradeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -46,6 +53,39 @@ public class MUserController extends BaseController
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private IMAccountChangeRecordsService accountChangeRecordsService;
+
+    /**
+     * 修改用户余额
+     * @param balanceModel
+     * @return
+     */
+    @PostMapping("setBalance")
+    public AjaxResult setBalance(HttpServletRequest request,@Validated @RequestBody balanceModel balanceModel) {
+        MUser mUser = mUserService.selectMUserByUid(balanceModel.getUid());
+        BigDecimal userAccountBalance = mUser.getAccountBalance();
+        String userName = tokenService.getLoginUser(request).getUser().getUserName();
+        // 修改余额
+        HashMap<String, Object> map = mUserService.updateBalance(mUser, balanceModel);
+
+        // 日志记录
+        BigDecimal accountBalance = (BigDecimal) map.get("accountBalance");
+        Integer type = (Integer) map.get("type");
+        MAccountChangeRecords changeRecords = new MAccountChangeRecords();
+        changeRecords.setAmount(balanceModel.getBalance());
+        changeRecords.setType(type);
+        changeRecords.setAccountForward(userAccountBalance);
+        changeRecords.setAccountBack(accountBalance);
+        changeRecords.setUid(String.valueOf(balanceModel.getUid()));
+        changeRecords.setDescription(userName+"后台修改");
+        changeRecords.setTransactionType(1);
+        accountChangeRecordsService.insertMAccountChangeRecords(changeRecords);
+        // 升级等级
+        mUserService.upgrade(mUser.getUid());
+        return success();
+    }
     /**
      * 查询用户列表
      */
@@ -58,7 +98,8 @@ public class MUserController extends BaseController
         TableDataInfo dataTable = getDataTable(list);
         List<MUser> rows = (List<MUser>) dataTable.getRows();
         rows.forEach(item -> {
-            UserGrade userGrade = userGradeService.selectUserGradeById(Long.valueOf(item.getLevel()));
+            UserGrade userGrade = userGradeService.getOne(new LambdaQueryWrapper<UserGrade>()
+                    .eq(UserGrade::getSortNum,item.getLevel()));
             if (userGrade != null) {
                 item.setLevelName(userGrade.getGradeName());
             } else {
@@ -181,6 +222,8 @@ public class MUserController extends BaseController
 
         return toAjax(mUserService.insertMUser(mUser));
     }
+
+
 
     /**
      * 修改用户

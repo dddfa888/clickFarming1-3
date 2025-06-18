@@ -1,16 +1,25 @@
 package com.ruoyi.system.service.click.impl;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.*;
 import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.system.domain.click.MAccountChangeRecords;
+import com.ruoyi.system.domain.click.UserGrade;
 import com.ruoyi.system.domain.click.vo.UserRegisterModel;
+import com.ruoyi.system.domain.click.vo.balanceModel;
 import com.ruoyi.system.mapper.click.MUserMapper;
 import com.ruoyi.system.mapper.click.UserGradeMapper;
+import com.ruoyi.system.service.click.IMAccountChangeRecordsService;
 import com.ruoyi.system.service.click.IMUserService;
+import com.ruoyi.system.service.click.IUserGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +35,10 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     private MUserMapper mUserMapper;
 
     @Autowired
-    private UserGradeMapper userGradeMapper;
+    private IUserGradeService userGradeService;
+
+    @Autowired
+    private IMAccountChangeRecordsService  accountChangeRecordsService;
 
     /**
      * 查询用户
@@ -122,6 +134,16 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
             mUser.setFundPassword(EncoderUtil.encoder(mUser.getFundPassword()));
 
         }
+        if(mUser.getInviterCode()!=null){
+            if(!user.getInviterCode().equals(mUser.getInviterCode())){
+                MUser one = this.getOne(new LambdaQueryWrapper<MUser>()
+                        .eq(MUser::getInvitationCode, mUser.getInviterCode()));
+                mUser.setInviter(String.valueOf(one.getUid()));
+                mUser.setInviterName(one.getLoginAccount());
+                mUser.setInviterCode(one.getInvitationCode());
+            }
+        }
+
         return mUserMapper.updateMUser(mUser);
     }
 
@@ -206,4 +228,70 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         }
         return user;
     }
+
+    @Override
+    public HashMap<String, Object> updateBalance(MUser mUser, balanceModel balanceModel) {
+        if(mUser==null){
+            throw new ServiceException("用户已删除");
+        }
+        BigDecimal accountBalance = mUser.getAccountBalance();
+        Integer type = 0;
+        if(balanceModel.isIncreaseDecrease()){
+            type = 0;
+            accountBalance = DecimalUtil.add(accountBalance, balanceModel.getBalance());
+        }else {
+            if (accountBalance.compareTo(balanceModel.getBalance()) < 0) {
+                throw new ServiceException("当前账户金额小于减少金额");
+            }
+            type = 1;
+            accountBalance = DecimalUtil.subtract(accountBalance, balanceModel.getBalance());
+
+        }
+        mUser.setAccountBalance(accountBalance);
+        this.updateMUser(mUser);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("accountBalance",accountBalance);
+        map.put("type",type);
+        return map;
+    }
+
+
+    @Override
+    public void upgrade(Long uid) {
+        MUser mUser = this.selectMUserByUid(uid);
+        if (mUser == null) return;
+
+        // 获取用户充值总额
+        MAccountChangeRecords changeRecords = new MAccountChangeRecords();
+        changeRecords.setUid(String.valueOf(uid));
+        changeRecords.setType(0); // 增加
+        changeRecords.setTransactionType(1); // 充值
+
+        List<MAccountChangeRecords> selected = accountChangeRecordsService.selectMAccountChangeRecordsList(changeRecords);
+        BigDecimal totalAmount = selected.stream()
+                .map(MAccountChangeRecords::getAmount)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        // 查询所有等级中 join_cost <= totalAmount 的，按 sort_num 降序取第一个
+        List<UserGrade> matchedGrades = userGradeService.list(
+                new LambdaQueryWrapper<UserGrade>()
+                        .apply("CAST(join_cost AS DECIMAL(20,6)) <= {0}", totalAmount)
+                        .orderByDesc(UserGrade::getSortNum)
+        );
+
+        if (!matchedGrades.isEmpty()) {
+            UserGrade targetGrade = matchedGrades.get(0);
+            int currentLevel = mUser.getLevel();
+            if (targetGrade.getSortNum() > currentLevel) {
+                // 升级
+                mUser.setLevel(targetGrade.getSortNum().intValue());
+                this.updateMUser(mUser);
+            }
+        }
+    }
+
+
+
 }

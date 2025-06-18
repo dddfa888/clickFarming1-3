@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper.click;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.system.domain.click.UserGrade;;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.system.domain.click.UserGrade;;
  * @author ruoyi
  * @date 2025-06-15
  */
-public interface UserGradeMapper
+public interface UserGradeMapper extends BaseMapper<UserGrade>
 {
     /**
      * 查询用户等级
