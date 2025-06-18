@@ -41,6 +41,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectUserGradeBySortNum" parameterType="Integer" resultMap="UserGradeResult">
+        <include refid="selectUserGradeVo"/>
+        where sort_num = #{sortNum}
+    </select>
+
     <insert id="insertUserGrade" parameterType="UserGrade">
         insert into m_user_grade
         <trim prefix="(" suffix=")" suffixOverrides=",">

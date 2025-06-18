@@ -3,7 +3,8 @@ package com.ruoyi.system.mapper.click;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ruoyi.system.domain.click.UserGrade;;
+import com.ruoyi.system.domain.click.UserGrade;
+import org.apache.ibatis.annotations.Mapper;;
 
 /**
  * 用户等级Mapper接口
@@ -11,6 +12,7 @@ import com.ruoyi.system.domain.click.UserGrade;;
  * @author ruoyi
  * @date 2025-06-15
  */
+@Mapper
 public interface UserGradeMapper extends BaseMapper<UserGrade>
 {
     /**
@@ -20,6 +22,14 @@ public interface UserGradeMapper extends BaseMapper<UserGrade>
      * @return 用户等级
      */
     public UserGrade selectUserGradeById(Long id);
+
+    /**
+     * 查询用户等级
+     *
+     * @param sortNum 用户等级序号
+     * @return 用户等级
+     */
+    UserGrade selectUserGradeBySortNum(Integer sortNum);
 
     /**
      * 查询用户等级列表

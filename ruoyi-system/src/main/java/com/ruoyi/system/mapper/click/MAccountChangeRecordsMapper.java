@@ -1,6 +1,7 @@
 package com.ruoyi.system.mapper.click;
 
 import com.ruoyi.system.domain.click.MAccountChangeRecords;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2025-06-16
  */
+@Mapper
 public interface MAccountChangeRecordsMapper
 {
     /**
