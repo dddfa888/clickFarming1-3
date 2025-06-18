@@ -1,10 +1,13 @@
 import { createWebHashHistory, createRouter } from 'vue-router'
 
 const routes = [
-    { path: '/', name: 'Home', component: ()=> import('../views/index/index.vue') },
-  { path: '/login', name: 'login', component: ()=> import('../views/login/index.vue') },
-  { path: '/register', name: 'register', component: ()=> import('../views/register/index.vue') },
-  { path: '/market', name: 'market', component: ()=> import('../components/HelloWorld.vue') },
+  { path: '/', name: 'Home', component: () => import('../views/index/index.vue') },
+  { path: '/login', name: 'login', component: () => import('../views/login/index.vue') },
+  { path: '/register', name: 'register', component: () => import('../views/register/index.vue') },
+  { path: '/market', name: 'market', component: () => import('../components/HelloWorld.vue') },
+  { path: '/warehouse', name: 'warehouse', component: () => import('../views/warehouse/index.vue') },
+  { path: '/me', name: 'me', component: () => import('../views/me/index.vue') },
+  { path: '/company', name: 'company', component: () => import('../views/index/Company.vue') },
 ]
 
 const router = createRouter({

@@ -1,7 +1,17 @@
-<!-- src/components/TabBar.vue -->
 <template>
     <div class="tabbar">
-        <div v-for="(item, index) in tabs" :key="index" class="tabbar-item"
+        <div class="tabbar-item" v-for="(item, index) in tabs.slice(0, 2)" :key="index"
+            :class="{ active: currentRoute === item.path }" @click="navigate(item.path)">
+            <img :src="currentRoute === item.path ? item.iconActive : item.icon" class="tabbar-icon" />
+            <span>{{ item.name }}</span>
+        </div>
+
+        <!-- 中间按钮 -->
+        <div class="tabbar-middle" @click="onCenterClick">
+            <img :src="centerIcon" class="center-icon" />
+        </div>
+
+        <div class="tabbar-item" v-for="(item, index) in tabs.slice(2)" :key="index + 2"
             :class="{ active: currentRoute === item.path }" @click="navigate(item.path)">
             <img :src="currentRoute === item.path ? item.iconActive : item.icon" class="tabbar-icon" />
             <span>{{ item.name }}</span>
@@ -11,43 +21,33 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
+import { computed } from 'vue'
+
+const getImageUrl = (name) => new URL(`../assets/img/${name}`, import.meta.url).href
 
 const router = useRouter()
 const route = useRoute()
 
 const tabs = [
-    {
-        name: '首页',
-        path: '/',
-        icon: require('@/assets/tabbar/home.png'),
-        iconActive: require('@/assets/tabbar/home-active.png'),
-    },
-    {
-        name: '分类',
-        path: '/category',
-        icon: require('@/assets/tabbar/category.png'),
-        iconActive: require('@/assets/tabbar/category-active.png'),
-    },
-    {
-        name: '购物车',
-        path: '/cart',
-        icon: require('@/assets/tabbar/cart.png'),
-        iconActive: require('@/assets/tabbar/cart-active.png'),
-    },
-    {
-        name: '我的',
-        path: '/profile',
-        icon: require('@/assets/tabbar/user.png'),
-        iconActive: require('@/assets/tabbar/user-active.png'),
-    },
+    { name: '首页', path: '/', icon: getImageUrl('home.svg'), iconActive: getImageUrl('home-active.svg') },
+    { name: '仓库', path: '/warehouse', icon: getImageUrl('warehouse.svg'), iconActive: getImageUrl('warehouse-active.svg') },
+    { name: 'CSKH', path: '/cskh', icon: getImageUrl('service.svg'), iconActive: getImageUrl('service-active.svg') },
+    { name: '我', path: '/me', icon: getImageUrl('user.svg'), iconActive: getImageUrl('user-active.svg') },
 ]
 
-const currentRoute = route.path
+const centerIcon = getImageUrl('center.svg')
+
+const currentRoute = computed(() => route.path)
 
 const navigate = (path) => {
-    if (path !== currentRoute) {
+    if (path !== currentRoute.value) {
         router.push(path)
     }
+}
+
+const onCenterClick = () => {
+    console.log('中间按钮点击')
+    // router.push('/center')
 }
 </script>
 
@@ -58,26 +58,55 @@ const navigate = (path) => {
     left: 0;
     right: 0;
     height: 60px;
-    background-color: #fff;
+    background: url("../assets/img/backgroundnavigate-WyoR1lk0.png") no-repeat center center;
+    background-size: 110% 100%;
     display: flex;
-    border-top: 1px solid #eee;
+    justify-content: space-around;
+    align-items: center;
     z-index: 999;
+    padding: 0 10px;
 }
 
 .tabbar-item {
     flex: 1;
-    text-align: center;
-    padding: 5px 0;
+    display: flex;
     font-size: 12px;
-    color: #999;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
 }
 
 .tabbar-item.active {
-    color: #409eff;
+    color: #fff;
+    font-weight: bold;
 }
 
 .tabbar-icon {
     width: 24px;
     height: 24px;
+    margin-bottom: 4px;
+}
+
+.tabbar-middle {
+    width: 70px;
+    height: 70px;
+    background-color: #0e7edb;
+    border-radius: 50%;
+    margin-top: -85px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #fff;
+}
+
+.center-icon {
+    width: 40px;
+    height: 40px;
+}
+
+@media (min-width: 768px) {
+    .tabbar {
+        background-size: 105% 100%;
+    }
 }
 </style>

@@ -1,0 +1,204 @@
+<template>
+  <div class="user-center">
+    <!-- 用户信息头部 -->
+    <div class="user-header">
+      <div class="avatar">
+        <img src="../../assets/img/smc5jpzklmkircocfkq1.png" alt="" />
+      </div>
+      <div class="user-info">
+        <p class="username">Linh198</p>
+        <p class="user-id">ID: VFZNFU</p>
+      </div>
+    </div>
+
+    <!-- 会员级别 -->
+
+    <div class="user-level-info">
+      <div class="balance-info">
+        <p class="balance-label">剩余</p>
+        <p class="balance-amount">532.94 €</p>
+      </div>
+      <div class="member-level">
+        <p class="section-label">会员级别</p>
+        <p class="level-name">Bạc</p>
+      </div>
+    </div>
+
+    <!-- 功能按钮区域 -->
+    <div class="action-buttons">
+      <button class="action-btn" @click="handleAction('withdraw')">提款</button>
+      <button class="action-btn" @click="handleAction('deposit')">取款</button>
+      <button class="action-btn" @click="handleAction('withdrawHistory')">
+        提款记录
+      </button>
+      <button class="action-btn" @click="handleAction('depositHistory')">
+        存款记录
+      </button>
+      <button class="action-btn" @click="handleAction('orderHistory')">
+        订单历史
+      </button>
+      <button class="action-btn" @click="handleAction('rewardHistory')">
+        奖励历史记录
+      </button>
+      <button class="action-btn" @click="handleAction('groupReport')">
+        小组报告
+      </button>
+      <button class="action-btn" @click="handleAction('bankInfo')">
+        银行信息
+      </button>
+      <button class="action-btn" @click="handleAction('address')">地址</button>
+      <button class="action-btn" @click="handleAction('language')">语言</button>
+      <button class="language-btn">中国</button>
+    </div>
+
+    <!-- 登出按钮 -->
+
+    <button class="logout-btn" @click="handleLogout">登出</button>
+  </div>
+</template>
+
+<script setup>
+const handleAction = (action) => {
+  console.log(`执行操作: ${action}`);
+  // 这里可以添加实际的操作逻辑
+  // 例如: router.push(`/${action}`)
+};
+
+const handleLogout = () => {
+  console.log("用户登出");
+  // 这里可以添加登出逻辑
+  // 例如: authStore.logout()
+};
+</script>
+
+<style scoped>
+.user-center {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: url("../../assets/img/BG-canhan-B0_5I1_l.png") no-repeat center
+    center fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5px;
+}
+
+.user-info {
+  color: #fff;
+  font-size: 12px;
+}
+
+.balance-label {
+  margin: 0;
+  font-size: 14px;
+  color: #fff;
+}
+
+.balance-amount {
+  margin: 5px 0 0;
+  font-weight: bold;
+  color: #fff;
+}
+
+.section-label {
+  margin: 0 0 5px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.avatar > img {
+  width: 50px;
+  height: 50px;
+}
+
+.level-name {
+  margin: 0;
+  color: #fff;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.action-btn {
+  padding: 8px;
+  font-size: 14px;
+  color: #fff;
+  text-align: left;
+  border: none;
+  box-sizing: border-box;
+  border-top: 1px solid #616272;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: transparent;
+}
+
+.language-btn {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: span 2;
+  background-color: #0d324f;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+}
+
+.language-arrow {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.logout-btn {
+  width: 20%;
+  margin-left: 40%;
+  padding: 10px;
+  background-color: #5b0606;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+@media (max-width: 480px) {
+  .user-center {
+    padding: 15px;
+  }
+
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .language-btn {
+    grid-column: span 1;
+  }
+}
+.user-level-info {
+  width: 200px;
+  font-size: 12px;
+  display: flex;
+  padding: 17px;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
+</style>
