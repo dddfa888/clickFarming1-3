@@ -1,14 +1,6 @@
 <template>
   <div class="distribution-history">
-    <div class="header">
-      <h2>
-        发行历史 <span class="total-amount">{{ totalAmount }} €</span>
-      </h2>
-      <div class="provider">
-        数据提供者 Mercado Libre <span class="remaining">剩余(€)</span>
-      </div>
-    </div>
-
+    <HeaderBar title="订单历史" />
     <div class="history-list">
       <div
         v-for="(item, index) in historyItems"
@@ -52,30 +44,14 @@
             <span class="amount highlight">{{ item.refundAmount }} €</span>
           </div>
         </div>
-
-        <button class="send-button" @click="showModal = true">发送分发</button>
       </div>
     </div>
-    <ProductModal
-      v-if="showModal"
-      :time="'17-06-2025 19:53:50'"
-      :id="'65f6d2c747241532e71f3515'"
-      :image="'/path/to/product.png'"
-      :title="'Candy CITT642C/E1 Piano Cottura...'"
-      :price="200"
-      :count="2"
-      :total="400"
-      :profit="0.96"
-      :refund="400.96"
-      @close="showModal = false"
-      @pay="handlePay"
-    />
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import ProductModal from "../../components/ProductModal.vue";
+import HeaderBar from "../../components/HeaderBar.vue";
 
 const totalAmount = ref("532,94");
 
@@ -132,55 +108,25 @@ const handlePay = () => {
   font-family: Arial, sans-serif;
   max-width: 800px;
   margin: 0 auto;
-  background: url("../../assets/img/BG-kho-B9q9tfZS.png") no-repeat center
+  background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center fixed;
   background-size: cover;
   color: #fff;
-  padding: 10px;
   padding-bottom: 70px;
-}
-
-.header {
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.header h2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-  font-size: 20px;
-}
-
-.total-amount {
-  font-weight: bold;
-  color: #fff;
-}
-
-.provider {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 5px;
-  font-size: 14px;
-  color: #fff;
-}
-
-.remaining {
-  font-weight: bold;
 }
 
 .history-list {
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 20px;
 }
 
 .history-item {
+  width: 85%;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 15px;
+  padding: 10px;
   background-color: transparent;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);

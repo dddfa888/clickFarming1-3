@@ -6,14 +6,26 @@
   </div>
 </template>
 <script setup>
-import { useRoute } from 'vue-router'
-import { computed } from 'vue'
-import TabBar from './components/TabBar.vue'
+import { useRoute } from "vue-router";
+import { computed } from "vue";
+import TabBar from "./components/TabBar.vue";
 
-const route = useRoute()
-const tabbarPaths = ['/', '/warehouse', '/cskh', '/me']
+const route = useRoute();
+const tabbarPaths = [
+  "/",
+  "/warehouse",
+  "/cskh",
+  "/me",
+  "/company",
+  "/rule",
+  "/cooperation",
+  "/notice",
+  "/withdraw",
+  "/orderHistory",
+  "/orderdetail",
+];
 
-const showTabBar = computed(() => tabbarPaths.includes(route.path))
+const showTabBar = computed(() => tabbarPaths.includes(route.path));
 </script>
 
 <style scoped>

@@ -47,7 +47,7 @@ const navigate = (path) => {
 
 const onCenterClick = () => {
     console.log('中间按钮点击')
-    // router.push('/center')
+    router.push('/orderdetail')
 }
 </script>
 

@@ -26,9 +26,9 @@
 
     <!-- 功能按钮区域 -->
     <div class="action-buttons">
-      <button class="action-btn" @click="handleAction('withdraw')">提款</button>
+      <!-- <button class="action-btn" @click="handleAction('withdraw')">提款</button> -->
       <button class="action-btn" @click="handleAction('deposit')">取款</button>
-      <button class="action-btn" @click="handleAction('withdrawHistory')">
+      <button class="action-btn" @click="handleAction('withdraw')">
         提款记录
       </button>
       <button class="action-btn" @click="handleAction('depositHistory')">
@@ -48,7 +48,21 @@
       </button>
       <button class="action-btn" @click="handleAction('address')">地址</button>
       <button class="action-btn" @click="handleAction('language')">语言</button>
-      <button class="language-btn">中国</button>
+      <button class="language-btn" @click="toggleDropdown">
+        {{ selectedLanguage }}
+      </button>
+
+      <!-- 语言选择下拉框 -->
+      <ul v-if="showDropdown" class="language-dropdown">
+        <li
+          v-for="lang in languageOptions"
+          :key="lang"
+          @click.stop="selectLanguage(lang)"
+          :class="{ active: lang === selectedLanguage }"
+        >
+          {{ lang }}
+        </li>
+      </ul>
     </div>
 
     <!-- 登出按钮 -->
@@ -58,8 +72,12 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const handleAction = (action) => {
   console.log(`执行操作: ${action}`);
+  router.push({ path: `/${action}` });
   // 这里可以添加实际的操作逻辑
   // 例如: router.push(`/${action}`)
 };
@@ -68,6 +86,27 @@ const handleLogout = () => {
   console.log("用户登出");
   // 这里可以添加登出逻辑
   // 例如: authStore.logout()
+};
+
+const showDropdown = ref(false);
+const selectedLanguage = ref("中国");
+const languageOptions = [
+  "越南语",
+  "英语",
+  "汉国",
+  "日本",
+  "俄罗斯",
+  "中国",
+  "法国",
+];
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+};
+
+const selectLanguage = (lang) => {
+  selectedLanguage.value = lang;
+  showDropdown.value = false;
 };
 </script>
 
@@ -80,6 +119,7 @@ const handleLogout = () => {
   background: url("../../assets/img/BG-canhan-B0_5I1_l.png") no-repeat center
     center fixed;
   background-size: cover;
+  padding-bottom: 120px;
   min-height: 100vh;
 }
 
@@ -176,10 +216,6 @@ const handleLogout = () => {
 }
 
 @media (max-width: 480px) {
-  .user-center {
-    padding: 15px;
-  }
-
   .action-buttons {
     grid-template-columns: 1fr;
   }
@@ -200,5 +236,29 @@ const handleLogout = () => {
   text-align: center;
   margin: 0 auto;
   margin-bottom: 15px;
+}
+
+.language-dropdown {
+  list-style: none;
+  padding: 0;
+  margin-top: 183px;
+  background: #0b1e34;
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  position: absolute;
+  width: 100px;
+  z-index: 100;
+}
+
+.language-dropdown li {
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.language-dropdown li:hover,
+.language-dropdown li.active {
+  background-color: gray;
 }
 </style>

@@ -30,7 +30,7 @@
         <p class="balance-amount">{{ user.balance }}</p>
       </div>
       <div class="action-buttons">
-        <div
+        <!-- <div
           @click="onWithdraw"
           style="
             display: flex;
@@ -41,7 +41,7 @@
         >
           <img src="../../assets/img/提款.png" alt="" />
           <p>提款</p>
-        </div>
+        </div> -->
         <div
           @click="onDeposit"
           style="
@@ -224,6 +224,12 @@ const handleButtonClick = (label) => {
   console.log(`点击了${label}按钮`);
   if (label === "公司简介") {
     router.push({ path: "/company" });
+  } else if (label === "基本原则") {
+    router.push({ path: "/rule" });
+  } else if (label === "开发合作") {
+    router.push({ path: "/cooperation" });
+  } else {
+    router.push({ path: "/notice" });
   }
 };
 
