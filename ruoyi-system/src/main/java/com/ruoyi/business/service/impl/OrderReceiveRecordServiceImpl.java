@@ -1,0 +1,246 @@
+package com.ruoyi.business.service.impl;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.ruoyi.business.domain.ProductManage;
+import com.ruoyi.business.mapper.ProductManageMapper;
+import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.DecimalUtil;
+import com.ruoyi.click.domain.MAccountChangeRecords;
+import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.mapper.MAccountChangeRecordsMapper;
+import com.ruoyi.click.mapper.MUserMapper;
+import com.ruoyi.click.mapper.UserGradeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.ruoyi.business.mapper.OrderReceiveRecordMapper;
+import com.ruoyi.business.domain.OrderReceiveRecord;
+import com.ruoyi.business.service.IOrderReceiveRecordService;
+
+import static com.ruoyi.common.utils.SecurityUtils.getUserId;
+
+/**
+ * 订单接收记录Service业务层处理
+ *
+ * @author ruoyi
+ * @date 2025-06-17
+ */
+@Service
+public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
+{
+    @Autowired
+    private OrderReceiveRecordMapper orderReceiveRecordMapper;
+    @Autowired
+    private ProductManageMapper productManageMapper;
+    @Autowired
+    private MUserMapper mUserMapper;
+    @Autowired
+    private UserGradeMapper userGradeMapper;
+    @Autowired
+    private MAccountChangeRecordsMapper mAccountChangeRecordsMapper;
+
+    /**
+     * 查询订单接收记录
+     *
+     * @param id 订单接收记录主键
+     * @return 订单接收记录
+     */
+    @Override
+    public OrderReceiveRecord selectOrderReceiveRecordById(Long id)
+    {
+        return orderReceiveRecordMapper.selectOrderReceiveRecordById(id);
+    }
+
+    /**
+     * 查询订单接收记录列表
+     *
+     * @param orderReceiveRecord 订单接收记录
+     * @return 订单接收记录
+     */
+    @Override
+    public List<OrderReceiveRecord> selectOrderReceiveRecordList(OrderReceiveRecord orderReceiveRecord)
+    {
+        return orderReceiveRecordMapper.selectOrderReceiveRecordList(orderReceiveRecord);
+    }
+
+    /**
+     * 新增订单接收记录
+     *
+     * @param orderReceiveRecord 订单接收记录
+     * @return 结果
+     */
+    @Override
+    public int insertOrderReceiveRecord(OrderReceiveRecord orderReceiveRecord)
+    {
+        orderReceiveRecord.setCreateTime(DateUtils.getNowDate());
+        return orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
+    }
+
+    /**
+     * 修改订单接收记录
+     *
+     * @param orderReceiveRecord 订单接收记录
+     * @return 结果
+     */
+    @Override
+    public int updateOrderReceiveRecord(OrderReceiveRecord orderReceiveRecord)
+    {
+        orderReceiveRecord.setUpdateTime(DateUtils.getNowDate());
+        return orderReceiveRecordMapper.updateOrderReceiveRecord(orderReceiveRecord);
+    }
+
+    /**
+     * 批量删除订单接收记录
+     *
+     * @param ids 需要删除的订单接收记录主键
+     * @return 结果
+     */
+    @Override
+    public int deleteOrderReceiveRecordByIds(Long[] ids)
+    {
+        return orderReceiveRecordMapper.deleteOrderReceiveRecordByIds(ids);
+    }
+
+    /**
+     * 删除订单接收记录信息
+     *
+     * @param id 订单接收记录主键
+     * @return 结果
+     */
+    @Override
+    public int deleteOrderReceiveRecordById(Long id)
+    {
+        return orderReceiveRecordMapper.deleteOrderReceiveRecordById(id);
+    }
+
+    /**
+     * 前台用户点击后添加订单
+     * 为了数据入库后返回id，orderReceiveRecord由Controller传过来而不是本方法内新建
+     * @return
+     */
+    @Override
+    public int insertOrderByUser(OrderReceiveRecord orderReceiveRecord){
+
+        MUser mUser = mUserMapper.selectMUserByUid(getUserId());
+        OrderReceiveRecord orderParam = new OrderReceiveRecord();
+        orderParam.setUserId(mUser.getUid());
+        orderParam.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
+        long unfinishedCount = orderReceiveRecordMapper.countNum(orderParam);
+        if(unfinishedCount>0)
+            throw new ServiceException("有订单未完成，请先付款");
+
+        UserGrade userGrade = userGradeMapper.selectUserGradeBySortNum(mUser.getLevel());
+        if(userGrade==null)
+            throw new ServiceException("用户等级不存在");
+        //若余额小于等级内设置的最低余额，则给出提示，下单失败
+        if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0)
+            throw new ServiceException("账户余额不足");
+
+        orderReceiveRecord.setUserId(mUser.getUid());
+        orderReceiveRecord.setUserName(mUser.getLoginAccount());
+
+        // 数据库中随机选产品
+        ProductManage product = getProductRand();
+        orderReceiveRecord.setProductId(product.getId());
+        orderReceiveRecord.setProductName(product.getProductName());
+        orderReceiveRecord.setProductImageUrl(product.getImageUrl());
+        orderReceiveRecord.setUnitPrice(product.getPrice());
+
+        // 计算产品数量，用户余额整除产品价格的商，即为用户可支付范围内的最大值（最大产品数量）
+        BigDecimal prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN);
+        orderReceiveRecord.setNumber(prodNum.intValue());
+        orderReceiveRecord.setTotalAmount(DecimalUtil.multiple(product.getPrice(), orderReceiveRecord.getNumber()));
+        orderReceiveRecord.setProfit(calcProfit(userGrade, orderReceiveRecord.getTotalAmount()));
+        orderReceiveRecord.setRefundAmount(DecimalUtil.add(orderReceiveRecord.getTotalAmount(), orderReceiveRecord.getProfit()));
+        orderReceiveRecord.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
+        orderReceiveRecord.setMultiType(OrderReceiveRecord.MULTI_TYPE_NO);
+        orderReceiveRecord.setFreezeStatus(OrderReceiveRecord.FREEZE_STATUS_NO);
+        orderReceiveRecord.setCreateTime(DateUtils.getNowDate());
+        return orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
+    }
+
+    /**
+     * 从数据库中随机查询一个产品
+     * @return
+     */
+    public ProductManage getProductRand(){
+        ProductManage paramCount = new ProductManage();
+        long count = productManageMapper.countNum(paramCount);
+        long beginIndex = Math.round(Math.floor(count * Math.random()));
+        Map<String,Object> paramSelect = new HashMap<>();
+        paramSelect.put("beginIndex", beginIndex);
+        paramSelect.put("num", 1L);
+        List<ProductManage> productList = productManageMapper.selectProductManageByLimit(paramSelect);
+        if(productList!=null && !productList.isEmpty()){
+            return productList.get(0);
+        }else{
+            //如果以上方法在统计数量后、查询列表前恰好人为删除了部分数据导致List为空，则调用以下方法随机查询一条数据。以下方法更容易查到id较大的数据。
+            ProductManage product = productManageMapper.selectProductManageByRandom();
+            if(product==null)
+                throw new ServiceException("未查到产品信息");
+            return product;
+        }
+    }
+
+    /**
+     * 计算利润
+     * @return
+     */
+    public BigDecimal calcProfit(UserGrade userGrade, BigDecimal totalAmount){
+        //最大值与最小值之差
+        BigDecimal range = DecimalUtil.subtract(userGrade.getMaxBonus(), userGrade.getMinBonus());
+        //最大值与最小值之差 * 随机数
+        BigDecimal num = DecimalUtil.multiply(range, DecimalUtil.toBigDecimal(Math.random()));
+        //最大值与最小值之差 * 随机数 + 最小值 = 最小值与最大值之间的随机数（利率）。原值用%表示，所以最后除以100后是实际利率值。
+        BigDecimal ratio = num.add(userGrade.getMinBonus()).divide(DecimalUtil.toBigDecimal(100));
+        //利率 * 订单总金额 = 利润  最终保留2位小数
+        return DecimalUtil.multiply(ratio, totalAmount).setScale(2, RoundingMode.HALF_UP);
+    }
+
+
+    /**
+     * 支付订单
+     * @param orderId
+     */
+    @Override
+    public int payOrder(Long orderId){
+        OrderReceiveRecord orderReceiveRecord = orderReceiveRecordMapper.selectOrderReceiveRecordById(orderId);
+        if(OrderReceiveRecord.PROCESS_STATUS_SUCCESS.equals(orderReceiveRecord.getProcessStatus()))
+            throw new ServiceException("订单已支付，不可重复支付");
+
+
+        MUser mUser = mUserMapper.selectMUserByUid(orderReceiveRecord.getUserId());
+
+        BigDecimal balanceBefore = mUser.getAccountBalance(); //记录变化前余额
+        BigDecimal balanceChange = orderReceiveRecord.getProfit(); //新增余额
+        BigDecimal balanceAfter = DecimalUtil.add(balanceBefore, balanceChange);
+        //更新用户余额
+        mUser.setAccountBalance(balanceAfter);
+        mUser.setUpdateTime(DateUtils.getNowDate());
+        mUserMapper.updateMUser(mUser);
+
+        //记录余额变化详情
+        MAccountChangeRecords changeRecords = new MAccountChangeRecords();
+        changeRecords.setAmount(balanceChange);
+        changeRecords.setType(0); //0收入 1支出
+        changeRecords.setAccountForward(balanceBefore);
+        changeRecords.setAccountBack(balanceAfter);
+        changeRecords.setUid(String.valueOf(mUser.getUid()));
+        changeRecords.setDescription(mUser.getLoginAccount()+"利润");
+        changeRecords.setTransactionType(0);
+        changeRecords.setCreateTime(mUser.getUpdateTime());
+        mAccountChangeRecordsMapper.insertMAccountChangeRecords(changeRecords);
+
+        //更新值  支付状态：完成
+        orderReceiveRecord.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
+        orderReceiveRecord.setUpdateTime(mUser.getUpdateTime());
+        return orderReceiveRecordMapper.updateOrderReceiveRecord(orderReceiveRecord);
+    }
+
+}

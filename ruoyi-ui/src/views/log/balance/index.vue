@@ -21,7 +21,7 @@
     <el-table v-loading="loading" :data="recordsList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="uuid" align="center" prop="uuid" />
-      <el-table-column label="用户名称" align="center" prop="loginAccount" />
+      <el-table-column label="用户名称" align="center" prop="userName" />
       <el-table-column label="类型" align="center" prop="type">
         <template slot-scope="scope">
           <span :style="{ color: scope.row.type === 0 ? 'green' : 'red' }">

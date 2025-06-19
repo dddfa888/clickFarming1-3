@@ -9,14 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.core.domain.entity.MUser;
-import com.ruoyi.common.utils.DecimalUtil;
 import com.ruoyi.framework.web.service.TokenService;
-import com.ruoyi.system.domain.click.MAccountChangeRecords;
-import com.ruoyi.system.domain.click.UserGrade;
-import com.ruoyi.system.domain.click.vo.balanceModel;
-import com.ruoyi.system.service.click.IMAccountChangeRecordsService;
-import com.ruoyi.system.service.click.IMUserService;
-import com.ruoyi.system.service.click.IUserGradeService;
+import com.ruoyi.click.domain.MAccountChangeRecords;
+import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.domain.vo.balanceModel;
+import com.ruoyi.click.service.IMAccountChangeRecordsService;
+import com.ruoyi.click.service.IMUserService;
+import com.ruoyi.click.service.IUserGradeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -172,7 +171,7 @@ public class MUserController extends BaseController
      */
     @GetMapping(value = "getAllSuperiorUids")
     public AjaxResult getAllSuperiorUids(String inviterCode) {
-        List<Long> uidList = new ArrayList<>();
+        List<MUser> uidList = new ArrayList<>();
         String currentInviterCode = inviterCode;
         while (currentInviterCode != null) {
             MUser inviter = mUserService.getOne(
@@ -182,7 +181,16 @@ public class MUserController extends BaseController
             if (inviter == null) {
                 break;
             }
-            uidList.add(inviter.getUid());
+
+
+            UserGrade userGrade = userGradeService.getOne(new LambdaQueryWrapper<UserGrade>()
+                    .eq(UserGrade::getSortNum,inviter.getLevel()));
+            if (userGrade != null) {
+                inviter.setLevelName(userGrade.getGradeName());
+            } else {
+                inviter.setLevelName("暂无");
+            }
+            uidList.add(inviter);
 
             // 向上查找下一个上级
             currentInviterCode = inviter.getInviterCode();

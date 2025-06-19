@@ -1,0 +1,70 @@
+package com.ruoyi.business.mapper;
+
+import java.util.List;
+import com.ruoyi.business.domain.OrderReceiveRecord;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * 订单接收记录Mapper接口
+ * 
+ * @author ruoyi
+ * @date 2025-06-17
+ */
+@Mapper
+public interface OrderReceiveRecordMapper
+{
+    /**
+     * 查询订单接收记录
+     * 
+     * @param id 订单接收记录主键
+     * @return 订单接收记录
+     */
+    OrderReceiveRecord selectOrderReceiveRecordById(Long id);
+
+    /**
+     * 查询订单接收记录列表
+     * 
+     * @param orderReceiveRecord 订单接收记录
+     * @return 订单接收记录集合
+     */
+    List<OrderReceiveRecord> selectOrderReceiveRecordList(OrderReceiveRecord orderReceiveRecord);
+
+    /**
+     * 新增订单接收记录
+     * 
+     * @param orderReceiveRecord 订单接收记录
+     * @return 结果
+     */
+    int insertOrderReceiveRecord(OrderReceiveRecord orderReceiveRecord);
+
+    /**
+     * 修改订单接收记录
+     * 
+     * @param orderReceiveRecord 订单接收记录
+     * @return 结果
+     */
+    int updateOrderReceiveRecord(OrderReceiveRecord orderReceiveRecord);
+
+    /**
+     * 删除订单接收记录
+     * 
+     * @param id 订单接收记录主键
+     * @return 结果
+     */
+    int deleteOrderReceiveRecordById(Long id);
+
+    /**
+     * 批量删除订单接收记录
+     * 
+     * @param ids 需要删除的数据主键集合
+     * @return 结果
+     */
+    int deleteOrderReceiveRecordByIds(Long[] ids);
+
+    /**
+     * 根据条件统计数量，也可用于判断符合条件的数据是否存在
+     * @param orderReceiveRecord
+     * @return 统计数量结果
+     */
+    long countNum(OrderReceiveRecord orderReceiveRecord);
+}

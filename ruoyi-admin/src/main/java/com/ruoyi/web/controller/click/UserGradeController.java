@@ -3,8 +3,8 @@ package com.ruoyi.web.controller.click;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ruoyi.system.domain.click.UserGrade;
-import com.ruoyi.system.service.click.IUserGradeService;
+import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.service.IUserGradeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
