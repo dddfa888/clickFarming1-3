@@ -78,7 +78,7 @@ public class MUserController extends BaseController
         changeRecords.setAccountForward(userAccountBalance);
         changeRecords.setAccountBack(accountBalance);
         changeRecords.setUid(String.valueOf(balanceModel.getUid()));
-        changeRecords.setDescription(userName+"后台修改");
+        changeRecords.setDescription(userName+"[后台修改余额]");
         changeRecords.setTransactionType(1);
         accountChangeRecordsService.insertMAccountChangeRecords(changeRecords);
         // 升级等级
