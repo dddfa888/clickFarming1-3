@@ -1,12 +1,16 @@
 package com.ruoyi.click.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import com.ruoyi.click.mapper.MAccountChangeRecordsMapper;
 import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.ruoyi.common.utils.SecurityUtils.getUserId;
 
 /**
  * 账变记录Service业务层处理
@@ -42,6 +46,21 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
     public List<MAccountChangeRecords> selectMAccountChangeRecordsList(MAccountChangeRecords mAccountChangeRecords)
     {
         return mAccountChangeRecordsMapper.selectMAccountChangeRecordsList(mAccountChangeRecords);
+    }
+
+    /**
+     * 查询账变记录列表-个人的奖励历史记录
+     *
+     * @param
+     * @return 账变记录
+     */
+    @Override
+    public List<Map<String,Object>> selectMAccountChangeForeByUserId()
+    {
+        MAccountChangeRecords mAccountChangeRecords = new MAccountChangeRecords();
+        mAccountChangeRecords.setUid(getUserId().toString());
+        mAccountChangeRecords.setTransactionType(3); // 3:专用于标记订单利润
+        return mAccountChangeRecordsMapper.selectMAccountChangeForeByUserId(mAccountChangeRecords);
     }
 
     /**

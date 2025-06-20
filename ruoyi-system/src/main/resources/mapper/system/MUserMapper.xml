@@ -153,6 +153,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where uid = #{uid}
     </update>
 
+    <update id="clearBrushNumber">
+        update m_user set brush_number = 0
+    </update>
+
+    <update id="increaseBrushNumber" parameterType="Long">
+        update m_user set brush_number = brush_number+1 where uid = #{uid}
+    </update>
+
     <delete id="deleteMUserByUid" parameterType="Long">
         delete from m_user where uid = #{uid}
     </delete>

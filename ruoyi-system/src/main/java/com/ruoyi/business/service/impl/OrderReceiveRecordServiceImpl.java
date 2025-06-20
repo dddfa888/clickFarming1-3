@@ -2,6 +2,8 @@ package com.ruoyi.business.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,6 +122,25 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     }
 
     /**
+     * 统计一个用户当日的订单数量
+     *
+     * @param
+     * @return 结果
+     */
+    @Override
+    public long countNumByUserDate()
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.now();
+        Map<String,Object> param = new HashMap<>();
+        param.put("userId", getUserId());
+        param.put("date1", formatter.format(today));
+        param.put("date2", formatter.format(today.plusDays(1)));
+        return orderReceiveRecordMapper.countNumByUserDate(param);
+    }
+
+
+    /**
      * 前台用户点击后添加订单
      * 为了数据入库后返回id，orderReceiveRecord由Controller传过来而不是本方法内新建
      * @return
@@ -142,6 +163,10 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0)
             throw new ServiceException("账户余额不足");
 
+        long todayCount = countNumByUserDate();
+        if(todayCount >= userGrade.getBuyProdNum())
+            throw new ServiceException("今天下单次数已达到上限，无法继续下单");
+
         orderReceiveRecord.setUserId(mUser.getUid());
         orderReceiveRecord.setUserName(mUser.getLoginAccount());
 
@@ -162,6 +187,9 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setMultiType(OrderReceiveRecord.MULTI_TYPE_NO);
         orderReceiveRecord.setFreezeStatus(OrderReceiveRecord.FREEZE_STATUS_NO);
         orderReceiveRecord.setCreateTime(DateUtils.getNowDate());
+
+        //用户当日订单数量加1
+        mUserMapper.increaseBrushNumber(mUser.getUid());
         return orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
     }
 
@@ -211,9 +239,10 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     @Override
     public int payOrder(Long orderId){
         OrderReceiveRecord orderReceiveRecord = orderReceiveRecordMapper.selectOrderReceiveRecordById(orderId);
+        if(orderReceiveRecord==null)
+            throw new ServiceException("订单不存在");
         if(OrderReceiveRecord.PROCESS_STATUS_SUCCESS.equals(orderReceiveRecord.getProcessStatus()))
             throw new ServiceException("订单已支付，不可重复支付");
-
 
         MUser mUser = mUserMapper.selectMUserByUid(orderReceiveRecord.getUserId());
 
@@ -232,9 +261,10 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         changeRecords.setAccountForward(balanceBefore);
         changeRecords.setAccountBack(balanceAfter);
         changeRecords.setUid(String.valueOf(mUser.getUid()));
-        changeRecords.setDescription(mUser.getLoginAccount()+"利润");
-        changeRecords.setTransactionType(0);
+        changeRecords.setDescription(mUser.getLoginAccount()+"订单奖励");
+        changeRecords.setTransactionType(3); // 3:专用于标记订单利润
         changeRecords.setCreateTime(mUser.getUpdateTime());
+        changeRecords.setRelatedId(orderId.toString());
         mAccountChangeRecordsMapper.insertMAccountChangeRecords(changeRecords);
 
         //更新值  支付状态：完成

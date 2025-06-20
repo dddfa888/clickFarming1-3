@@ -43,6 +43,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where uuid = #{uuid}
     </select>
 
+    <!-- 查询个人奖励历史记录 只需查3列 -->
+    <select id="selectMAccountChangeForeByUserId" parameterType="MAccountChangeRecords" resultType="java.util.Map">
+        select uuid, amount, description, account_back as "accountBack" from m_account_change_records
+        where uid = #{uid} and transaction_type=#{transactionType}
+        order by create_time desc
+    </select>
+
     <insert id="insertMAccountChangeRecords" parameterType="MAccountChangeRecords">
         insert into m_account_change_records
         <trim prefix="(" suffix=")" suffixOverrides=",">

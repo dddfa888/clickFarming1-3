@@ -156,4 +156,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
+    <!-- 统计一个用户当日的订单数量 -->
+    <select id="countNumByUserDate" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) n from m_order_receive_record
+        where user_id = #{userId}
+        and create_time <![CDATA[ >= ]]> #{date1} and create_time  <![CDATA[ < ]]> #{date2}
+    </select>
+
 </mapper>

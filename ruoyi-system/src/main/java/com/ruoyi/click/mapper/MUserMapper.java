@@ -61,4 +61,16 @@ public interface MUserMapper extends BaseMapper<MUser> {
      * @return 结果
      */
     public int deleteMUserByUids(Long[] uids);
+
+    /**
+     * 用户当天刷单数量清零
+     */
+    void clearBrushNumber();
+
+    /**
+     * 用户当日订单数量加1
+     * @param uid 用户主键
+     * @return
+     */
+    int increaseBrushNumber(Long uid);
 }

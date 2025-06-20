@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.click;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -65,6 +66,19 @@ public class MAccountChangeRecordsController extends BaseController
             }
         }
         dataTable.setRows(rows);
+        return dataTable;
+    }
+
+    /**
+     * 个人的奖励历史记录
+     */
+    @PreAuthorize("@ss.hasPermi('system:records:listForeByUserId')")
+    @GetMapping(value = "/selectMAccountChangeForeByUserId")
+    public TableDataInfo selectMAccountChangeForeByUserId()
+    {
+        startPage();
+        List<Map<String,Object>> list = mAccountChangeRecordsService.selectMAccountChangeForeByUserId();
+        TableDataInfo dataTable = getDataTable(list);
         return dataTable;
     }
 

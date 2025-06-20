@@ -62,6 +62,14 @@ public interface IOrderReceiveRecordService
     int deleteOrderReceiveRecordById(Long id);
 
     /**
+     * 统计一个用户当日的订单数量
+     *
+     * @param
+     * @return 结果
+     */
+    long countNumByUserDate();
+
+    /**
      * 前台用户点击后添加订单
      * @return
      */
