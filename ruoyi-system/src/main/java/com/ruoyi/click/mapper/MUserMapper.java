@@ -3,6 +3,7 @@ package com.ruoyi.click.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.common.core.domain.entity.MUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -72,5 +73,5 @@ public interface MUserMapper extends BaseMapper<MUser> {
      * @param uid 用户主键
      * @return
      */
-    int increaseBrushNumber(Long uid);
+    int increaseBrushNumber(@Param("uid") Long uid, @Param("num") Integer num);
 }

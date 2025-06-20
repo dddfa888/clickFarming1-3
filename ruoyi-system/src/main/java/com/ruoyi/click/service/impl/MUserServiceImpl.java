@@ -306,8 +306,8 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
      * @return
      */
     @Override
-    public int increaseBrushNumber(Long uid){
-        return mUserMapper.increaseBrushNumber(uid);
+    public int increaseBrushNumber(Long uid, Integer num){
+        return mUserMapper.increaseBrushNumber(uid, num);
     }
 
 }

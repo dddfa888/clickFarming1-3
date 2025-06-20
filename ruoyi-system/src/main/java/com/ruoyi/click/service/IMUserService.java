@@ -83,6 +83,6 @@ public interface IMUserService extends IService<MUser> {
      * @param uid 用户主键
      * @return
      */
-    int increaseBrushNumber(Long uid);
+    int increaseBrushNumber(Long uid, Integer num);
 
 }

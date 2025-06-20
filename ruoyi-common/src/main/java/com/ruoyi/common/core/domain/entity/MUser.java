@@ -108,6 +108,9 @@ public class MUser
     @Excel(name = "当天刷单数量")
     private Long brushNumber;
 
+    @Excel(name = "连单数量")
+    private Integer multiOrderNum;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 

@@ -143,7 +143,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     /**
      * 前台用户点击后添加订单
      * 为了数据入库后返回id，orderReceiveRecord由Controller传过来而不是本方法内新建
-     * @return
+     * @return 新增订单数量
      */
     @Override
     public int insertOrderByUser(OrderReceiveRecord orderReceiveRecord){
@@ -170,6 +170,29 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setUserId(mUser.getUid());
         orderReceiveRecord.setUserName(mUser.getLoginAccount());
 
+        //无论是否连单，至少需保存一个订单
+        setValueSaveProdList(orderReceiveRecord, mUser, userGrade);
+        int saveOrderNum = 1;
+
+        //检查用户表设置的值，判断是否连单，若multiOrderNum，说明需要生成多个订单
+        Integer multiOrderNum = mUser.getMultiOrderNum();
+        if(multiOrderNum!=null && multiOrderNum>1){
+            Long firstOrderId = orderReceiveRecord.getId();
+            for(int i=1; i<multiOrderNum; i++){ //上面已经保存1单，所以此处i初始值为1，而不是0
+                setValueSaveProdList(orderReceiveRecord, mUser, userGrade);
+            }
+            saveOrderNum = multiOrderNum;
+            //第1个订单的id返回到前端
+            orderReceiveRecord.setId(firstOrderId);
+        }
+        mUserMapper.increaseBrushNumber(mUser.getUid(), saveOrderNum);
+        return saveOrderNum;
+    }
+
+    /**
+     * 设置一个订单的数据并保存入数据库
+     */
+    public void setValueSaveProdList(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade){
         // 数据库中随机选产品
         ProductManage product = getProductRand();
         orderReceiveRecord.setProductId(product.getId());
@@ -187,10 +210,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setMultiType(OrderReceiveRecord.MULTI_TYPE_NO);
         orderReceiveRecord.setFreezeStatus(OrderReceiveRecord.FREEZE_STATUS_NO);
         orderReceiveRecord.setCreateTime(DateUtils.getNowDate());
-
-        //用户当日订单数量加1
-        mUserMapper.increaseBrushNumber(mUser.getUid());
-        return orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
+        orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
     }
 
     /**
