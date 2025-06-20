@@ -44,10 +44,9 @@
     </div>
 
     <div class="foundation-rules">
-      <h3>介绍基金会规则</h3>
+      <p>介绍基金会规则</p>
       <div class="rules-content">
         <!-- 这里可以添加基金会规则的具体内容 -->
-        <p>基金会相关规则说明文本...</p>
       </div>
     </div>
   </div>
@@ -138,8 +137,12 @@ const formatCurrency = (value) => {
 }
 
 .order-details-grid {
-  margin-bottom: 25px;
-  /* border:1px solid # */
+  padding: 10px;
+  border: 1px solid #7a797d;
+  border-radius: 10px;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .detail-item {
@@ -159,14 +162,13 @@ const formatCurrency = (value) => {
 
 .foundation-rules {
   margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-.foundation-rules h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
+  padding: 10px;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  border: 1px solid #7a797d;
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(5px);
+  text-align-last: center;
 }
 
 .rules-content {

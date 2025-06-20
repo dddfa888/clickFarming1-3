@@ -1,6 +1,6 @@
-import { computed } from 'vue'
 import { createWebHashHistory, createRouter } from 'vue-router'
 
+// 路由表
 const routes = [
   { path: '/', name: 'Home', component: () => import('../views/index/index.vue') },
   { path: '/login', name: 'login', component: () => import('../views/login/index.vue') },
@@ -25,6 +25,25 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+})
+
+// 路由守卫：未登录禁止访问其他页面
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token') // 假设你是用 token 存储登录状态
+  const whiteList = ['/login', '/register'] // 白名单路由
+
+  if (whiteList.includes(to.path)) {
+    // 登录页、注册页无需验证
+    return next()
+  }
+
+  if (token) {
+    // 有 token，放行
+    return next()
+  } else {
+    // 无 token，重定向到登录页
+    return next('/login')
+  }
 })
 
 export default router
