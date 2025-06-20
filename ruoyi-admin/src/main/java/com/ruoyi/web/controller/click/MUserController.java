@@ -56,6 +56,16 @@ public class MUserController extends BaseController
     @Autowired
     private IMAccountChangeRecordsService accountChangeRecordsService;
 
+
+    @GetMapping("/userInfo")
+    public AjaxResult userInfo(HttpServletRequest request) {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MUser mUser = mUserService.selectMUserByUid(userId);
+        mUser.setLevelName(userGradeService.getOne(new LambdaQueryWrapper<UserGrade>()
+                .eq(UserGrade::getSortNum,mUser.getLevel())).getGradeName());
+        return success(mUser);
+    }
+
     /**
      * 修改用户余额
      * @param balanceModel

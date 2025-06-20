@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.business.domain.OrderReceiveRecord;
+import com.ruoyi.business.mapper.OrderReceiveRecordMapper;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import com.ruoyi.click.domain.MMoneyInvestWithdraw;
 import com.ruoyi.click.domain.vo.BackOperateVo;
@@ -59,6 +61,26 @@ public class MMoneyInvestWithdrawController extends BaseController
 
     @Autowired
     private IMAccountChangeRecordsService mAccountChangeRecordsService;
+
+    @Autowired
+    private OrderReceiveRecordMapper orderReceiveRecordMapper;
+
+
+    /**
+     * 获取个人的提现记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/userList")
+    public TableDataInfo userList(HttpServletRequest request) {
+        startPage();
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MMoneyInvestWithdraw withdraw = new MMoneyInvestWithdraw();
+        withdraw.setUserId(userId);
+        List<MMoneyInvestWithdraw> list = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(withdraw);
+        return getDataTable(list);
+    }
+
     /**
      * 查询存款取款记录列表
      */
@@ -158,6 +180,13 @@ public class MMoneyInvestWithdrawController extends BaseController
         BigDecimal accountForward = mUser.getAccountBalance();
         if (accountForward.compareTo(withdrawVo.getAmount()) < 0) {
             return AjaxResult.error("余额不足");
+        }
+        OrderReceiveRecord orderParam = new OrderReceiveRecord();
+        orderParam.setUserId(mUser.getUid());
+        orderParam.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
+        long unfinishedCount = orderReceiveRecordMapper.countNum(orderParam);
+        if(unfinishedCount>0){
+            throw new ServiceException("有订单未完成，不可提现");
         }
         checkBank(mUser);
 
