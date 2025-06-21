@@ -45,7 +45,7 @@ public class OrderTipSseController {
                 try {
                     MMoneyInvestWithdraw withdraw = new MMoneyInvestWithdraw();
                     withdraw.setStatus(0);
-                    int randomValue = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(null).size(); // 生成 0-999 之间的随机数
+                    int randomValue = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(withdraw).size(); // 生成 0-999 之间的随机数
 
                     if (randomValue != lastValue) {
                         lastValue = randomValue;
