@@ -103,6 +103,16 @@ public class OrderReceiveRecordController extends BaseController
     }
 
     /**
+     * 统计一个用户当日的订单数量
+     */
+    @PreAuthorize("@ss.hasPermi('system:order:countNumByUserDate')")
+	@GetMapping("/countNumByUserDate")
+    public AjaxResult countNumByUserDate()
+    {
+        return success(orderReceiveRecordService.countNumByUserDate());
+    }
+
+    /**
      * 前台用户点击后添加订单
      */
     @PreAuthorize("@ss.hasPermi('system:order:insertOrderByUser')")

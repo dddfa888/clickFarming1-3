@@ -3,6 +3,7 @@ package com.ruoyi.click.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.common.core.domain.entity.MUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -61,4 +62,16 @@ public interface MUserMapper extends BaseMapper<MUser> {
      * @return 结果
      */
     public int deleteMUserByUids(Long[] uids);
+
+    /**
+     * 用户当天刷单数量清零
+     */
+    void clearBrushNumber();
+
+    /**
+     * 用户当日订单数量加1
+     * @param uid 用户主键
+     * @return
+     */
+    int increaseBrushNumber(@Param("uid") Long uid, @Param("num") Integer num);
 }

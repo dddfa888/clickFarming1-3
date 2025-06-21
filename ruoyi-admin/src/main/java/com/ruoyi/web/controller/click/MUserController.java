@@ -56,6 +56,16 @@ public class MUserController extends BaseController
     @Autowired
     private IMAccountChangeRecordsService accountChangeRecordsService;
 
+
+    @GetMapping("/userInfo")
+    public AjaxResult userInfo(HttpServletRequest request) {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MUser mUser = mUserService.selectMUserByUid(userId);
+        mUser.setLevelName(userGradeService.getOne(new LambdaQueryWrapper<UserGrade>()
+                .eq(UserGrade::getSortNum,mUser.getLevel())).getGradeName());
+        return success(mUser);
+    }
+
     /**
      * 修改用户余额
      * @param balanceModel
@@ -78,7 +88,7 @@ public class MUserController extends BaseController
         changeRecords.setAccountForward(userAccountBalance);
         changeRecords.setAccountBack(accountBalance);
         changeRecords.setUid(String.valueOf(balanceModel.getUid()));
-        changeRecords.setDescription(userName+"后台修改");
+        changeRecords.setDescription(userName+"[后台修改余额]");
         changeRecords.setTransactionType(1);
         accountChangeRecordsService.insertMAccountChangeRecords(changeRecords);
         // 升级等级

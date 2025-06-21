@@ -3,6 +3,7 @@ package com.ruoyi.click.service;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 账变记录Service接口
@@ -27,6 +28,14 @@ public interface IMAccountChangeRecordsService
      * @return 账变记录集合
      */
     public List<MAccountChangeRecords> selectMAccountChangeRecordsList(MAccountChangeRecords mAccountChangeRecords);
+
+    /**
+     * 查询账变记录列表-个人的奖励历史记录
+     *
+     * @param
+     * @return 账变记录集合
+     */
+    List<Map<String,Object>> selectMAccountChangeForeByUserId();
 
     /**
      * 新增账变记录

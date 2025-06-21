@@ -1,6 +1,8 @@
 package com.ruoyi.business.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.business.domain.OrderReceiveRecord;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -67,4 +69,11 @@ public interface OrderReceiveRecordMapper
      * @return 统计数量结果
      */
     long countNum(OrderReceiveRecord orderReceiveRecord);
+
+    /**
+     * 统计一个用户当日的订单数量
+     * @param param
+     * @return 统计数量结果
+     */
+    long countNumByUserDate(Map<String,Object> param);
 }

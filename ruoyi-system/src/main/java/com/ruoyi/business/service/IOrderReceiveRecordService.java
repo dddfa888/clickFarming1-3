@@ -1,7 +1,6 @@
 package com.ruoyi.business.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.ruoyi.business.domain.OrderReceiveRecord;
 
@@ -60,6 +59,14 @@ public interface IOrderReceiveRecordService
      * @return 结果
      */
     int deleteOrderReceiveRecordById(Long id);
+
+    /**
+     * 统计一个用户当日的订单数量
+     *
+     * @param
+     * @return 结果
+     */
+    long countNumByUserDate();
 
     /**
      * 前台用户点击后添加订单

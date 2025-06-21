@@ -31,12 +31,6 @@
       </el-table-column>
       <el-table-column label="金额" align="center" prop="amount" />
       <el-table-column label="描述" align="center" prop="description" />
-      <el-table-column label="订单说明" align="center" prop="transactionType">
-        <template slot-scope="scope">
-          <span v-if="scope.row.transactionType === 1">余额修改</span>
-          <span v-else>待定</span>
-        </template>
-      </el-table-column>
       <el-table-column label="账变前" align="center" prop="accountForward" />
       <el-table-column label="账变后" align="center" prop="accountBack" />
       <el-table-column label="账变后" align="center" prop="createTime" />
@@ -189,7 +183,7 @@ export default {
       this.ids = selection.map(item => item.uuid)
       this.single = selection.length!==1
       this.multiple = !selection.length
-    },
+  },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()

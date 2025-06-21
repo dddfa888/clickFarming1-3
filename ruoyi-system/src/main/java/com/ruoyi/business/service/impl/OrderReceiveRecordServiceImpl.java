@@ -2,6 +2,8 @@ package com.ruoyi.business.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,9 +122,28 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     }
 
     /**
+     * 统计一个用户当日的订单数量
+     *
+     * @param
+     * @return 结果
+     */
+    @Override
+    public long countNumByUserDate()
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.now();
+        Map<String,Object> param = new HashMap<>();
+        param.put("userId", getUserId());
+        param.put("date1", formatter.format(today));
+        param.put("date2", formatter.format(today.plusDays(1)));
+        return orderReceiveRecordMapper.countNumByUserDate(param);
+    }
+
+
+    /**
      * 前台用户点击后添加订单
      * 为了数据入库后返回id，orderReceiveRecord由Controller传过来而不是本方法内新建
-     * @return
+     * @return 新增订单数量
      */
     @Override
     public int insertOrderByUser(OrderReceiveRecord orderReceiveRecord){
@@ -142,9 +163,36 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0)
             throw new ServiceException("账户余额不足");
 
+        long todayCount = countNumByUserDate();
+        if(todayCount >= userGrade.getBuyProdNum())
+            throw new ServiceException("今天下单次数已达到上限，无法继续下单");
+
         orderReceiveRecord.setUserId(mUser.getUid());
         orderReceiveRecord.setUserName(mUser.getLoginAccount());
 
+        //无论是否连单，至少需保存一个订单
+        setValueSaveProdList(orderReceiveRecord, mUser, userGrade);
+        int saveOrderNum = 1;
+
+        //检查用户表设置的值，判断是否连单，若multiOrderNum，说明需要生成多个订单
+        Integer multiOrderNum = mUser.getMultiOrderNum();
+        if(multiOrderNum!=null && multiOrderNum>1){
+            Long firstOrderId = orderReceiveRecord.getId();
+            for(int i=1; i<multiOrderNum; i++){ //上面已经保存1单，所以此处i初始值为1，而不是0
+                setValueSaveProdList(orderReceiveRecord, mUser, userGrade);
+            }
+            saveOrderNum = multiOrderNum;
+            //第1个订单的id返回到前端
+            orderReceiveRecord.setId(firstOrderId);
+        }
+        mUserMapper.increaseBrushNumber(mUser.getUid(), saveOrderNum);
+        return saveOrderNum;
+    }
+
+    /**
+     * 设置一个订单的数据并保存入数据库
+     */
+    public void setValueSaveProdList(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade){
         // 数据库中随机选产品
         ProductManage product = getProductRand();
         orderReceiveRecord.setProductId(product.getId());
@@ -162,7 +210,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setMultiType(OrderReceiveRecord.MULTI_TYPE_NO);
         orderReceiveRecord.setFreezeStatus(OrderReceiveRecord.FREEZE_STATUS_NO);
         orderReceiveRecord.setCreateTime(DateUtils.getNowDate());
-        return orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
+        orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
     }
 
     /**
@@ -211,9 +259,10 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     @Override
     public int payOrder(Long orderId){
         OrderReceiveRecord orderReceiveRecord = orderReceiveRecordMapper.selectOrderReceiveRecordById(orderId);
+        if(orderReceiveRecord==null)
+            throw new ServiceException("订单不存在");
         if(OrderReceiveRecord.PROCESS_STATUS_SUCCESS.equals(orderReceiveRecord.getProcessStatus()))
             throw new ServiceException("订单已支付，不可重复支付");
-
 
         MUser mUser = mUserMapper.selectMUserByUid(orderReceiveRecord.getUserId());
 
@@ -232,9 +281,10 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         changeRecords.setAccountForward(balanceBefore);
         changeRecords.setAccountBack(balanceAfter);
         changeRecords.setUid(String.valueOf(mUser.getUid()));
-        changeRecords.setDescription(mUser.getLoginAccount()+"利润");
-        changeRecords.setTransactionType(0);
+        changeRecords.setDescription(mUser.getLoginAccount()+"订单奖励");
+        changeRecords.setTransactionType(3); // 3:专用于标记订单利润
         changeRecords.setCreateTime(mUser.getUpdateTime());
+        changeRecords.setRelatedId(orderId.toString());
         mAccountChangeRecordsMapper.insertMAccountChangeRecords(changeRecords);
 
         //更新值  支付状态：完成

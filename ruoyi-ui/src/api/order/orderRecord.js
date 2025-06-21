@@ -26,24 +26,6 @@ export function addRecord(data) {
   })
 }
 
-// 新增订单接收记录 测试，模拟用户点击
-export function addRecordTest(data) {
-  return request({
-    url: '/api/order/insertOrderByUser',
-    method: 'post',
-    data: data
-  })
-}
-
-// 支付订单 测试，模拟用户点击
-export function payOrderTest(data) {
-  return request({
-    url: '/api/order/payOrder/13',
-    method: 'put',
-    data: data
-  })
-}
-
 // 修改订单接收记录
 export function updateRecord(data) {
   return request({

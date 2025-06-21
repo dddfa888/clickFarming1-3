@@ -1,10 +1,15 @@
 package com.ruoyi.web.controller.click;
 
+import java.util.HashMap;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.service.IMUserService;
 import com.ruoyi.click.service.IUserGradeService;
+import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +39,31 @@ public class UserGradeController extends BaseController
 {
     @Autowired
     private IUserGradeService userGradeService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private IMUserService mUserService;
+
+    /**
+     * 查询用户等级列表
+     * @param request
+     * @return
+     */
+    @GetMapping("/userList")
+    public AjaxResult userList(HttpServletRequest request)
+    {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MUser mUser = mUserService.selectMUserByUid(userId);
+        UserGrade userGrade = new UserGrade();
+        List<UserGrade> list = userGradeService.selectUserGradeList(userGrade);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userGrade",list);
+        map.put("level",mUser.getLevel());
+        return success(map);
+    }
 
     /**
      * 查询用户等级列表

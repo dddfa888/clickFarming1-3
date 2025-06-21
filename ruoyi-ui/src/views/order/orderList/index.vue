@@ -33,7 +33,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="单价" prop="unitPrice">
+      <!--<el-form-item label="单价" prop="unitPrice">
         <el-input
           v-model="queryParams.unitPrice"
           placeholder="请输入单价"
@@ -80,7 +80,7 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -97,26 +97,6 @@
           @click="handleAdd"
           v-hasPermi="['system:order:add']"
         >新增</el-button>
-      </el-col>-->
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAddTest"
-          v-hasPermi="['system:order:add']"
-        >【测试】新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handlePayTest"
-          v-hasPermi="['system:order:add']"
-        >【测试】支付</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -128,7 +108,7 @@
           @click="handleUpdate"
           v-hasPermi="['system:order:edit']"
         >修改</el-button>
-      </el-col>
+      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -156,29 +136,33 @@
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="用户ID" align="center" prop="userId" />
+      <!--<el-table-column label="用户ID" align="center" prop="userId" />-->
       <el-table-column label="用户姓名" align="center" prop="userName" />
       <el-table-column label="产品id" align="center" prop="productId" />
       <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="产品图片URL" align="center" prop="productImageUrl" />
+      <el-table-column label="产品图片URL" align="center" prop="productImageUrl" >
+        <template slot-scope="scope">
+          <img class="orderListProdImg" :src="scope.row.productImageUrl" alt="图片无法显示"></img>
+        </template>
+	  </el-table-column>
       <el-table-column label="单价" align="center" prop="unitPrice" />
       <el-table-column label="数量" align="center" prop="number" />
       <el-table-column label="总金额" align="center" prop="totalAmount" />
       <el-table-column label="利润" align="center" prop="profit" />
       <el-table-column label="退款金额" align="center" prop="refundAmount" />
-      <el-table-column label="过程状态" align="center" prop="processStatus" />
-      <el-table-column label="是否连单" align="center" prop="multiType" />
+      <el-table-column label="过程状态" align="center" prop="processStatus" :formatter="formatStatus" />
+      <!--<el-table-column label="是否连单" align="center" prop="multiType" />
       <el-table-column label="连单id" align="center" prop="multiId" />
-      <el-table-column label="冻结状态" align="center" prop="freezeStatus" />
+      <el-table-column label="冻结状态" align="center" prop="freezeStatus" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+          <!--<el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:order:edit']"
-          >修改</el-button>
+          >修改</el-button>-->
           <el-button
             size="mini"
             type="text"
@@ -214,7 +198,7 @@
           <el-input v-model="form.productName" placeholder="请输入产品名称" />
         </el-form-item>
         <el-form-item label="产品图片URL" prop="productImageUrl">
-          <el-input v-model="form.productImageUrl" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.productImageUrl" type="textarea" />
         </el-form-item>
         <el-form-item label="单价" prop="unitPrice">
           <el-input v-model="form.unitPrice" placeholder="请输入单价" />
@@ -244,7 +228,7 @@
 </template>
 
 <script>
-import { listRecord, getRecord, delRecord, addRecord, updateRecord, addRecordTest } from "@/api/order/orderRecord"
+import { listRecord, getRecord, delRecord, addRecord, updateRecord } from "@/api/order/orderRecord"
 
 export default {
   name: "OrderRecord",
@@ -294,6 +278,10 @@ export default {
         userId: [
           { required: true, message: "用户ID不能为空", trigger: "blur" }
         ],
+      },
+      processStatusMap: {
+	    'Waiting': '待支付',
+	    'Success': '支付完成'
       }
     }
   },
@@ -301,6 +289,10 @@ export default {
     this.getList()
   },
   methods: {
+    // 过程状态 转换值
+    formatStatus(row){
+	    return this.processStatusMap[row.processStatus] || row.processStatus;
+    },
     /** 查询订单接收记录列表 */
     getList() {
       this.loading = true
@@ -362,12 +354,7 @@ export default {
       this.open = true
       this.title = "添加订单接收记录"
     },
-    handleAddTest(){
-	    addRecordTest().then(response => console.log(response));
-    },
-    handlePayTest(){
-	    payOrderTest().then(response => console.log(response));
-    },
+
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
@@ -417,3 +404,9 @@ export default {
   }
 }
 </script>
+<style>
+	.orderListProdImg {
+		width: 3rem;
+		height: 3rem;
+	}
+</style>

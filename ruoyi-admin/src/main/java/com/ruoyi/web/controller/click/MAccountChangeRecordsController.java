@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.click;
 
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -9,6 +11,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import com.ruoyi.click.service.IMUserService;
+import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +44,29 @@ public class MAccountChangeRecordsController extends BaseController
 
     @Autowired
     private IMUserService mUserService;
+
+    @Autowired
+    private TokenService tokenService;
+
+
+    /**
+     * 获取个人账变记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/userList")
+    public TableDataInfo userList(HttpServletRequest request)
+    {
+        startPage();
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MAccountChangeRecords mAccountChangeRecords = new MAccountChangeRecords();
+
+        mAccountChangeRecords.setUid(String.valueOf(userId));
+        List<MAccountChangeRecords> list = mAccountChangeRecordsService.selectMAccountChangeRecordsList(mAccountChangeRecords);
+
+        return getDataTable(list);
+    }
+
     /**
      * 查询账变记录列表
      */
@@ -65,6 +91,19 @@ public class MAccountChangeRecordsController extends BaseController
             }
         }
         dataTable.setRows(rows);
+        return dataTable;
+    }
+
+    /**
+     * 个人的奖励历史记录
+     */
+    @PreAuthorize("@ss.hasPermi('system:records:listForeByUserId')")
+    @GetMapping(value = "/selectMAccountChangeForeByUserId")
+    public TableDataInfo selectMAccountChangeForeByUserId()
+    {
+        startPage();
+        List<Map<String,Object>> list = mAccountChangeRecordsService.selectMAccountChangeForeByUserId();
+        TableDataInfo dataTable = getDataTable(list);
         return dataTable;
     }
 

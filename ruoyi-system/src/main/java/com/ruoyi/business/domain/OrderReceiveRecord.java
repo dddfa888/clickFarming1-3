@@ -8,7 +8,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 订单接收记录对象 m_order_receive_record
- * 
+ *
  * @author ruoyi
  * @date 2025-06-17
  */
@@ -82,72 +82,72 @@ public class OrderReceiveRecord extends BaseEntity
     @Excel(name = "冻结状态")
     private String freezeStatus;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
 
-    public void setUserId(Long userId) 
+    public void setUserId(Long userId)
     {
         this.userId = userId;
     }
 
-    public Long getUserId() 
+    public Long getUserId()
     {
         return userId;
     }
 
-    public void setUserName(String userName) 
+    public void setUserName(String userName)
     {
         this.userName = userName;
     }
 
-    public String getUserName() 
+    public String getUserName()
     {
         return userName;
     }
 
-    public void setProductId(Long productId) 
+    public void setProductId(Long productId)
     {
         this.productId = productId;
     }
 
-    public Long getProductId() 
+    public Long getProductId()
     {
         return productId;
     }
 
-    public void setProductName(String productName) 
+    public void setProductName(String productName)
     {
         this.productName = productName;
     }
 
-    public String getProductName() 
+    public String getProductName()
     {
         return productName;
     }
 
-    public void setProductImageUrl(String productImageUrl) 
+    public void setProductImageUrl(String productImageUrl)
     {
         this.productImageUrl = productImageUrl;
     }
 
-    public String getProductImageUrl() 
+    public String getProductImageUrl()
     {
         return productImageUrl;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) 
+    public void setUnitPrice(BigDecimal unitPrice)
     {
         this.unitPrice = unitPrice;
     }
 
-    public BigDecimal getUnitPrice() 
+    public BigDecimal getUnitPrice()
     {
         return unitPrice;
     }
@@ -162,72 +162,72 @@ public class OrderReceiveRecord extends BaseEntity
         return number;
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) 
+    public void setTotalAmount(BigDecimal totalAmount)
     {
         this.totalAmount = totalAmount;
     }
 
-    public BigDecimal getTotalAmount() 
+    public BigDecimal getTotalAmount()
     {
         return totalAmount;
     }
 
-    public void setProfit(BigDecimal profit) 
+    public void setProfit(BigDecimal profit)
     {
         this.profit = profit;
     }
 
-    public BigDecimal getProfit() 
+    public BigDecimal getProfit()
     {
         return profit;
     }
 
-    public void setRefundAmount(BigDecimal refundAmount) 
+    public void setRefundAmount(BigDecimal refundAmount)
     {
         this.refundAmount = refundAmount;
     }
 
-    public BigDecimal getRefundAmount() 
+    public BigDecimal getRefundAmount()
     {
         return refundAmount;
     }
 
-    public void setProcessStatus(String processStatus) 
+    public void setProcessStatus(String processStatus)
     {
         this.processStatus = processStatus;
     }
 
-    public String getProcessStatus() 
+    public String getProcessStatus()
     {
         return processStatus;
     }
 
-    public void setMultiType(String multiType) 
+    public void setMultiType(String multiType)
     {
         this.multiType = multiType;
     }
 
-    public String getMultiType() 
+    public String getMultiType()
     {
         return multiType;
     }
 
-    public void setMultiId(Long multiId) 
+    public void setMultiId(Long multiId)
     {
         this.multiId = multiId;
     }
 
-    public Long getMultiId() 
+    public Long getMultiId()
     {
         return multiId;
     }
 
-    public void setFreezeStatus(String freezeStatus) 
+    public void setFreezeStatus(String freezeStatus)
     {
         this.freezeStatus = freezeStatus;
     }
 
-    public String getFreezeStatus() 
+    public String getFreezeStatus()
     {
         return freezeStatus;
     }

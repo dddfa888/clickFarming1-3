@@ -4,6 +4,7 @@ import com.ruoyi.click.domain.MAccountChangeRecords;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 账变记录Mapper接口
@@ -29,6 +30,14 @@ public interface MAccountChangeRecordsMapper
      * @return 账变记录集合
      */
     public List<MAccountChangeRecords> selectMAccountChangeRecordsList(MAccountChangeRecords mAccountChangeRecords);
+
+    /**
+     * 查询账变记录列表-个人的奖励历史记录
+     *
+     * @param mAccountChangeRecords 账变记录
+     * @return 账变记录集合
+     */
+    List<Map<String,Object>> selectMAccountChangeForeByUserId(MAccountChangeRecords mAccountChangeRecords);
 
     /**
      * 新增账变记录

@@ -99,7 +99,7 @@
 
 
         <el-form-item label="用户名称" prop="userId">
-          <el-select  v-model="form.userId" filterable placeholder="请选择"   @change="handleUserChange">
+          <el-select  v-model="form.userId" filterable placeholder="请选择" >
             <el-option
               v-for="item in options"
               :key="item.uid"

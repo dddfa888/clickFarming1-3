@@ -70,4 +70,19 @@ public interface IMUserService extends IService<MUser> {
     HashMap<String, Object> updateBalance(MUser mUser, balanceModel balanceModel);
 
     void upgrade(Long uid);
+
+
+
+    /**
+     * 用户当天刷单数量清零
+     */
+    void clearBrushNumber();
+
+    /**
+     * 用户当日订单数量加1
+     * @param uid 用户主键
+     * @return
+     */
+    int increaseBrushNumber(Long uid, Integer num);
+
 }
