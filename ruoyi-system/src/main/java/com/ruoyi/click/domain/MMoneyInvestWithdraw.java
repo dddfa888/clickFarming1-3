@@ -68,4 +68,12 @@ public class MMoneyInvestWithdraw
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+
+    //账变前
+    private BigDecimal accountForward;
+
+
+    //账变后
+    private BigDecimal accountBack;
+
 }

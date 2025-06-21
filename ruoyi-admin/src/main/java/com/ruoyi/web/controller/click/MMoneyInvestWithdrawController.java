@@ -190,6 +190,11 @@ public class MMoneyInvestWithdrawController extends BaseController
         }
         checkBank(mUser);
 
+        BigDecimal accountBack = DecimalUtil.subtract(accountForward, withdrawVo.getAmount());
+        mUser.setAccountBalance(accountBack);
+        mUserService.updateMUser(mUser);
+
+
         MMoneyInvestWithdraw mMoneyInvestWithdraw = new MMoneyInvestWithdraw();
         mMoneyInvestWithdraw.setAmount(withdrawVo.getAmount());
         mMoneyInvestWithdraw.setUserId(mUser.getUid());
@@ -200,11 +205,10 @@ public class MMoneyInvestWithdrawController extends BaseController
         mMoneyInvestWithdraw.setOrderId(RandomUtil.generateRandomNumber(16));
         mMoneyInvestWithdraw.setType("0");
         mMoneyInvestWithdraw.setStatus(0);
+        mMoneyInvestWithdraw.setAccountForward(accountForward);
+        mMoneyInvestWithdraw.setAccountBack(accountBack);
         mMoneyInvestWithdrawService.insertMMoneyInvestWithdraw(mMoneyInvestWithdraw);
 
-        BigDecimal accountBack = DecimalUtil.subtract(accountForward, withdrawVo.getAmount());
-        mUser.setAccountBalance(accountBack);
-        mUserService.updateMUser(mUser);
 
         MAccountChangeRecords mAccountChangeRecords = new MAccountChangeRecords();
         mAccountChangeRecords.setUid(String.valueOf(mUser.getUid()));
