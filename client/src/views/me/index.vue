@@ -27,8 +27,8 @@
     <!-- 功能按钮区域 -->
     <div class="action-buttons">
       <!-- <button class="action-btn" @click="handleAction('withdraw')">提款</button> -->
-      <button class="action-btn" @click="handleAction('deposit')">取款</button>
-      <button class="action-btn" @click="handleAction('withdraw')">
+      <button class="action-btn" @click="handleAction('withdraw')">提现</button>
+      <button class="action-btn" @click="handleAction('withdrawHistory')">
         提款记录
       </button>
       <button class="action-btn" @click="handleAction('depositHistory')">

@@ -34,7 +34,7 @@
       </van-form>
 
       <div class="login-footer">
-        <span>注册</span>
+        <span @click="router.push('/register')">注册</span>
       </div>
     </div>
   </div>
@@ -43,6 +43,10 @@
 <script setup>
 import { reactive } from "vue";
 import { login } from "../../api/index.js";
+import { useRouter } from "vue-router";
+import { showToast } from "vant";
+
+const router = useRouter();
 const form = reactive({
   loginAccount: "",
   loginPassword: "",
@@ -50,7 +54,20 @@ const form = reactive({
 function onSubmit(values) {
   console.log("注册提交成功：", values);
   login(form).then((res) => {
-    cobsole.log(res);
+    console.log(res);
+    if (res.code === 200) {
+      showToast({
+        message: "操作成功",
+        type: "success",
+      });
+      localStorage.setItem("token", res.data.token);
+      router.push("/");
+    } else {
+      showToast({
+        message: res.msg,
+        type: "fail",
+      });
+    }
   });
   // 这里可以调用注册接口
 }

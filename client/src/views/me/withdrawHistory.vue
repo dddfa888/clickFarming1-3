@@ -1,6 +1,6 @@
 <template>
   <div class="company-intro">
-    <HeaderBar title="存款记录" />
+    <HeaderBar title="提款记录" />
     <div class="transaction-list">
       <div
         v-for="(transaction, index) in transactions"
@@ -13,7 +13,7 @@
             class="transaction-amount"
             :class="{ negative: transaction.amount < 0 }"
           >
-            金钱数额: +{{ formatAmount(transaction.amount) }}
+            金钱数额:- {{ formatAmount(transaction.amount) }}
           </div>
           <div class="transaction-balance">
             剩余: {{ formatAmount(transaction.accountBack) }}
@@ -30,14 +30,14 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
-import { getDepositRecord } from "../../api/index.js";
+import { getWithdrawRecord } from "../../api/index.js";
 const transactions = ref([]);
 
 const formatAmount = (amount) => {
   return amount.toFixed(2).replace(".", ",") + " €";
 };
 
-getDepositRecord().then((res) => {
+getWithdrawRecord().then((res) => {
   console.log(res.rows);
   transactions.value = res.rows;
   console.log(transactions.value, 21);

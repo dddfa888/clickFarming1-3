@@ -6,7 +6,7 @@
         <img class="avatar" src="../../assets/img/avatar.jpg" />
         <div class="user-details">
           <div>你好</div>
-          <div class="username">{{ user.name }}</div>
+          <div class="username">{{ userInfo.loginAccount }}</div>
         </div>
       </div>
       <div class="user-info-balance">
@@ -90,15 +90,18 @@
 
     <!-- 会员等级 -->
     <div class="title">会员级别</div>
-    <div v-for="item in 7" :key="item" class="member-level">
-      <div>开锁</div>
+    <div v-for="item in Recordlist" :key="item.id" class="member-level">
+      <div v-if="level > item.id">开锁</div>
       <div class="level-info">
-        <div class="col">升级费<br />{{ level.upgradeFee }}</div>
-        <div class="col">折扣<br />{{ level.discount }}</div>
+        <div class="col">升级费<br />{{ item.joinCost }}</div>
+        <div class="col">
+          折扣<br />{{ item.minBonus }}%-{{ item.maxBonus }}%
+        </div>
         <div class="col">
           分配数量<br />
-          {{ level.quota }}
-          <span class="badge">Bạc</span>
+          {{ item.buyProdNum }}
+          <span v-if="level < item.id" class="lock-icon">当前水平</span>
+          <span class="badge">{{ item.gradeName }}</span>
         </div>
       </div>
     </div>
@@ -131,14 +134,26 @@ import company from "../../assets/img/company.png";
 import rule from "../../assets/img/rule.png";
 import cooperation from "../../assets/img/cooperation.png";
 import notice from "../../assets/img/notice.png";
+import { getUserInfo, getMemberRecord } from "../../api/index.js";
 
 const promoRef = ref();
 const router = useRouter();
+const Recordlist = ref([]);
+const level = ref(null);
+const userInfo = ref({});
 
 const getImageUrl = (path) => {
   return new URL(`../../assets/${path}`, import.meta.url).href;
 };
 
+getUserInfo().then((res) => {
+  console.log(res.data);
+  userInfo.value = res.data;
+});
+getMemberRecord().then((res) => {
+  Recordlist.value = res.data.userGrade;
+  level.value = res.data.level;
+});
 // 生成随机用户名
 const generateUsername = () => {
   const prefix = [
@@ -214,11 +229,11 @@ const infoBtns = [
   { label: "通知邮件", icon: notice },
 ];
 
-const level = {
-  upgradeFee: "0.00 €",
-  discount: "0.24% - 0.3%",
-  quota: 60,
-};
+// const level = {
+//   upgradeFee: "0.00 €",
+//   discount: "0.24% - 0.3%",
+//   quota: 60,
+// };
 
 const handleButtonClick = (label) => {
   console.log(`点击了${label}按钮`);
@@ -437,6 +452,7 @@ const onDeposit = () => {
 }
 
 .member-level {
+  font-size: 15px;
   background-color: transparent;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -470,6 +486,20 @@ const onDeposit = () => {
   right: 0;
   background: #b13330;
   color: #ccc;
+  border-radius: 5px;
+  padding: 2px 5px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.lock-icon {
+  display: inline-block;
+  width: 20%;
+  position: fixed;
+  top: 0;
+  right: 22%;
+  color: #000;
+  background: #ffe747;
   border-radius: 5px;
   padding: 2px 5px;
   margin-left: 5px;

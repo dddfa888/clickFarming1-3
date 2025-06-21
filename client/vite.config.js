@@ -10,7 +10,7 @@ export default defineConfig({
     open: true,          // 自动打开浏览器（可选）
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8080/', // 
+        target: 'http://192.168.1.149:8080/', // 
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
         // rewrite: (path) => path.replace(/^\/api/, '') // 重写路径，移除'/api',

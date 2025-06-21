@@ -41,12 +41,18 @@
 
 <script setup>
 import { ref } from "vue";
+import { getGroupReport } from "../../api/index.js";
 import HeaderBar from "../../components/HeaderBar.vue";
 
 // 定义 tab 数据
 const tabs = ref(["第1级", "第2级", "第3级", "第4级"]);
-
 const activeTab = ref(0); // 当前激活的 tab 下标
+const grouplist = ref([]);
+
+getGroupReport().then((res) => {
+  console.log(res.data);
+  grouplist.value = res.data;
+});
 </script>
 
 <style scoped>

@@ -1,25 +1,52 @@
 <template>
-  <div class="company-intro">
-    <HeaderBar title="提款记录" />
-    <div class="transaction-list">
-      <div
-        v-for="(transaction, index) in transactions"
-        :key="index"
-        class="transaction-item"
-      >
-        <div class="transaction-time">{{ transaction.time }}</div>
-        <div
-          class="transaction-amount"
-          :class="{ negative: transaction.amount < 0 }"
-        >
-          {{ formatAmount(transaction.amount) }}
+  <div class="withdraw-page">
+    <div class="withdraw-container">
+      <div class="header">
+        <div @click="toback">
+          <van-icon name="arrow-left" />
+          <span class="back">取款</span>
         </div>
-        <div class="transaction-balance">
-          剩余: {{ formatBalance(transaction.balance) }}
+        <span class="balance">{{ balance }} €</span>
+      </div>
+
+      <div class="form">
+        <div class="form-group">
+          <label>账户名称</label>
+          <input type="text" v-model="accountName" disabled />
         </div>
-        <div v-if="transaction.status" class="transaction-status">
-          {{ transaction.status }}
+
+        <div class="form-group">
+          <label>账号</label>
+          <input type="text" v-model="accountNumber" disabled />
         </div>
+
+        <div class="form-group amount-group">
+          <label>金钱数额</label>
+          <input
+            style="border: 1px solid #e5e7eb"
+            type="text"
+            v-model="amount"
+            placeholder="金额数额"
+          />
+          <button @click="fillAll">全部</button>
+        </div>
+
+        <div class="form-group password-group">
+          <label>提现密码</label>
+          <input
+            style="border: 1px solid #e5e7eb"
+            :type="showPassword ? 'text' : 'password'"
+            v-model="password"
+            placeholder="提现密码"
+          />
+          <van-icon
+            :name="showPassword ? 'eye-o' : 'closed-eye'"
+            class="eye-icon"
+            @click="togglePassword"
+          />
+        </div>
+
+        <button class="submit-btn" @click="submit">取款</button>
       </div>
     </div>
   </div>
@@ -27,78 +54,138 @@
 
 <script setup>
 import { ref } from "vue";
-import HeaderBar from "../../components/HeaderBar.vue";
-const transactions = ref([
-  { time: "23:24:01", amount: -61.0, balance: 561.24, status: "成功" },
-  { time: "22:22:41", amount: -61.0, balance: 561.84, status: "成功" },
-  { time: "23:13:10", amount: -61.0, balance: 561.8, status: "成功" },
-  { time: "19:35:30", amount: -61.0, balance: 561.24, status: "成功" },
-  { time: "22:23:30", amount: -60.0, balance: 560.11 },
-  { time: "22:24:06", amount: -61.0, balance: 561.53 },
-  { time: "00:07:06", amount: -63.0, balance: 563.14 },
-]);
+import { useRouter } from "vue-router";
+import { withdraw } from "../../api/index.js";
+import { showToast } from "vant";
 
-const formatAmount = (amount) => {
-  return amount.toFixed(2).replace(".", ",") + " €";
-};
+const balance = ref("539,54");
+const accountName = ref("NGUYEN THUY LINH");
+const accountNumber = ref("1023****3102");
+const amount = ref("");
+const password = ref("");
+const showPassword = ref(false);
+const router = useRouter();
 
-const formatBalance = (balance) => {
-  return balance.toFixed(2).replace(".", ",") + " €";
-};
+function togglePassword() {
+  showPassword.value = !showPassword.value;
+}
+
+function fillAll() {
+  amount.value = balance.value;
+}
+
+function toback() {
+  router.go(-1);
+}
+
+function submit() {
+  console.log("提交提款：", amount.value, password.value);
+  withdraw({ amount: amount.value, fundPassword: password.value }).then(
+    (res) => {
+      if (res.code === 200) {
+        showToast({
+          message: "操作成功",
+          type: "success",
+        });
+      } else {
+        showToast({
+          message: res.msg,
+          type: "fail",
+        });
+      }
+      console.log(res);
+    }
+  );
+}
 </script>
 
 <style scoped>
-.company-intro {
+.withdraw-page {
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center;
   background-size: cover;
   height: 100vh;
-  overflow-y: auto;
+  padding: 20px;
+  color: white;
+  font-family: Arial, sans-serif;
 }
 
-.transaction-list {
+.withdraw-container {
+  max-width: 400px;
+  margin: auto;
+  padding-top: 40px;
+}
+
+.header {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
-.transaction-item {
-  padding: 15px;
+.form {
+  padding: 20px;
   border-radius: 8px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.transaction-time {
-  grid-column: 1;
-  grid-row: 1;
+.form-group {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  background-color: transparent !important;
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  border: none;
   color: #fff;
-  font-size: 14px;
+  border-radius: 4px;
 }
 
-.transaction-amount {
-  grid-column: 2;
-  grid-row: 1;
-  text-align: right;
-}
-
-.transaction-amount.negative {
-  color: #e74c3c;
-}
-.transaction-balance {
-  grid-column: 1 / span 2;
-  grid-row: 2;
+input[disabled] {
+  background-color: none;
+  border: 1px solid #e5e7eb;
   color: #fff;
-  font-size: 14px;
 }
 
-.transaction-status {
-  grid-column: 2;
-  grid-row: 2;
-  text-align: right;
-  color: #2ecc71;
+.amount-group button,
+.password-group button {
+  position: absolute;
+  right: 10px;
+  top: 32px;
+  background: none;
+  border: none;
+  color: #00f;
+  cursor: pointer;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #3b4d63;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.password-group {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 34px;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
 }
 </style>

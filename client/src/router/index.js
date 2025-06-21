@@ -12,6 +12,7 @@ const routes = [
   { path: '/rule', name: 'rule', component: () => import('../views/index/rule.vue') },
   { path: '/cooperation', name: 'cooperation', component: () => import('../views/index/cooperation.vue') },
   { path: '/notice', name: 'notice', component: () => import('../views/index/notice.vue') },
+  { path: '/withdrawHistory', name: 'withdrawHistory', component: () => import('../views/me/withdrawHistory.vue') },
   { path: '/withdraw', name: 'withdraw', component: () => import('../views/me/withdraw.vue') },
   { path: '/depositHistory', name: 'depositHistory', component: () => import('../views/me/deposit.vue') },
   { path: '/orderHistory', name: 'orderHistory', component: () => import('../views/me/order.vue') },

@@ -13,7 +13,7 @@
 
     <div class="order-summary">
       <img src="../../assets/img/banner1-8QRSYmQj.png" alt="" />
-      <div class="status-badge">收到</div>
+      <div class="status-badge" @click="handlePay">收到</div>
     </div>
 
     <div class="order-details-grid">
@@ -54,6 +54,8 @@
 
 <script setup>
 import { ref } from "vue";
+import { createOrder } from "../../api";
+import { showToast } from "vant";
 
 const order = ref({
   amount: 537.11,
@@ -69,6 +71,22 @@ const formatCurrency = (value) => {
     style: "currency",
     currency: "EUR",
     minimumFractionDigits: 2,
+  });
+};
+
+const handlePay = () => {
+  createOrder().then((res) => {
+    if (res.code === 200) {
+      showToast({
+        message: "操作成功",
+        type: "success",
+      });
+    } else {
+      showToast({
+        message: res.msg,
+        type: "fail",
+      });
+    }
   });
 };
 </script>
