@@ -145,7 +145,7 @@ public class MUserController extends BaseController
     /**
      * 获取前4级用户上级
      */
-    @GetMapping(value = "getUpToFourLevelInviters")
+    @GetMapping("/getUpToFourLevelInviters")
     public AjaxResult getUpToFourLevelInviters(HttpServletRequest request) {
         Long uid = tokenService.getLoginUser(request).getmUser().getUid();
         MUser mUser = mUserService.selectMUserByUid(uid);

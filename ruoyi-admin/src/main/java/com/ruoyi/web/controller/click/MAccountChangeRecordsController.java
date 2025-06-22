@@ -97,14 +97,24 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 个人的奖励历史记录
      */
-    @PreAuthorize("@ss.hasPermi('system:records:listForeByUserId')")
-    @GetMapping(value = "/selectMAccountChangeForeByUserId")
-    public TableDataInfo selectMAccountChangeForeByUserId()
+    //@PreAuthorize("@ss.hasPermi('system:records:listForeByUser')")
+    @GetMapping(value = "/selectMAccountChangeForeByUser")
+    public TableDataInfo selectMAccountChangeForeByUser()
     {
         startPage();
-        List<Map<String,Object>> list = mAccountChangeRecordsService.selectMAccountChangeForeByUserId();
+        List<Map<String,Object>> list = mAccountChangeRecordsService.selectMAccountChangeForeByUser();
         TableDataInfo dataTable = getDataTable(list);
         return dataTable;
+    }
+
+    /**
+     * 个人信息与近两日利润 前台《订单详细信息》页
+     */
+    //@PreAuthorize("@ss.hasPermi('system:records:getUserProfitInfo')")
+    @GetMapping(value = "/getUserProfitInfo")
+    public AjaxResult getUserProfitInfo()
+    {
+        return success(mAccountChangeRecordsService.getUserProfitInfo());
     }
 
     /**

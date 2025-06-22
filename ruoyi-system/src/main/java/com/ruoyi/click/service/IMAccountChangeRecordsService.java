@@ -35,7 +35,15 @@ public interface IMAccountChangeRecordsService
      * @param
      * @return 账变记录集合
      */
-    List<Map<String,Object>> selectMAccountChangeForeByUserId();
+    List<Map<String,Object>> selectMAccountChangeForeByUser();
+
+    /**
+     * 个人信息与近两日利润 前台《订单详细信息》页
+     *
+     * @param
+     * @return
+     */
+    Map<String,Object> getUserProfitInfo();
 
     /**
      * 新增账变记录

@@ -47,6 +47,18 @@ public class OrderReceiveRecordController extends BaseController
     }
 
     /**
+     * 查询当前用户的订单接收记录列表
+     */
+    //@PreAuthorize("@ss.hasPermi('system:order:listByUser')")
+    @GetMapping("/listByUser")
+    public TableDataInfo selectOrderListByUser(OrderReceiveRecord orderReceiveRecord)
+    {
+        startPage();
+        List<OrderReceiveRecord> list = orderReceiveRecordService.selectOrderListByUser(orderReceiveRecord);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出订单接收记录列表
      */
     @PreAuthorize("@ss.hasPermi('system:order:export')")
@@ -62,7 +74,7 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 获取订单接收记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:order:query')")
+    //@PreAuthorize("@ss.hasPermi('system:order:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -115,7 +127,7 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 前台用户点击后添加订单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:insertOrderByUser')")
+    //@PreAuthorize("@ss.hasPermi('system:order:insertOrderByUser')")
     @Log(title = "前台用户点击后添加订单", businessType = BusinessType.INSERT)
     @PostMapping("/insertOrderByUser")
     public AjaxResult insertOrderByUser()
@@ -128,7 +140,7 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 支付订单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:payOrder')")
+    //@PreAuthorize("@ss.hasPermi('system:order:payOrder')")
     @Log(title = "支付订单", businessType = BusinessType.UPDATE)
     @PutMapping("/payOrder/{id}")
     public AjaxResult payOrder(@PathVariable("id") Long id)
