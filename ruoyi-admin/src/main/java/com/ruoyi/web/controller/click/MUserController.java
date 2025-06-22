@@ -63,6 +63,8 @@ public class MUserController extends BaseController
         MUser mUser = mUserService.selectMUserByUid(userId);
         mUser.setLevelName(userGradeService.getOne(new LambdaQueryWrapper<UserGrade>()
                 .eq(UserGrade::getSortNum,mUser.getLevel())).getGradeName());
+        mUser.setLoginPassword("***************");
+        mUser.setFundPassword("***************");
         return success(mUser);
     }
 

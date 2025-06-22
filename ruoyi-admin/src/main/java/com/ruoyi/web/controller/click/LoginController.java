@@ -55,14 +55,17 @@ public class LoginController {
         // 生成token
         String token = tokenService.createToken(loginUser);
         // 获取用户是否认证和获取用户金额
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("token", token);
-        map.put("date", user);
         String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
         String address = AddressUtils.getRealAddressByIP(ip);
         user.setLastLoginIp(ip);
         user.setLastLoginIpAddress(address);
         mUserService.updateMUser(user);
+
+        HashMap<String, Object> map = new HashMap<>();
+        user.setLoginPassword("***************");
+        user.setFundPassword("***************");
+        map.put("token", token);
+        map.put("date", user);
         return AjaxResult.success(map);
     }
 }
