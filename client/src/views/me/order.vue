@@ -9,31 +9,31 @@
       >
         <div class="item-header">
           <div class="time-code">
-            <span class="time">时间: {{ item.time }}</span>
-            <span class="code">代码: {{ item.code }}</span>
+            <span class="time">时间: {{ item.createTime }}</span>
+            <span class="code">代码: {{ item.productId }}</span>
           </div>
         </div>
 
         <div class="product-info">
           <div class="product-name">
             <img
-              src="https://res.cloudinary.com/dh7cjddk2/image/upload/v1710674630/order_product/lugtxtmpgt63s0ka6ztq.jpg"
+              :src="'http://192.168.1.149:8080' + item.productImageUrl"
               alt=""
             />
             <div>
-              {{ item.product.name }}
+              {{ item.productName }}
             </div>
           </div>
           <div class="product-price">
-            {{ item.product.price }} €
-            <span class="quantity">x {{ item.product.quantity }}</span>
+            {{ item.unitPrice }} €
+            <span class="quantity">x {{ item.number }}</span>
           </div>
         </div>
 
         <div class="calculation">
           <div class="calc-row">
             <span>分配总额:</span>
-            <span class="amount">{{ item.distributionTotal }} €</span>
+            <span class="amount">{{ item.totalAmount }} €</span>
           </div>
           <div class="calc-row">
             <span>利润:</span>
@@ -52,53 +52,22 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
+import { getOrderHistory } from "../../api/index.js";
 
 const totalAmount = ref("532,94");
 
-const historyItems = ref([
-  {
-    time: "17-06-2025 19:53:50",
-    code: "65f6d2c747241532e71f3515",
-    product: {
-      name: "Candy CIT1642C/E1 Piano Cottura a Induzione, 4 fuochi, Vetroceramica, da Incasso, Power Management, Touch, Grill, Blocco Sicurezza Bambino, 59x55x52 cm, Nero",
-      price: "200,00",
-      quantity: 2,
-    },
-    distributionTotal: "400,00",
-    profit: "0,96",
-    refundAmount: "400,96",
-  },
-  {
-    time: "17-06-2025 19:53:13",
-    code: "65f6d07a625b1c3a5c3dc062",
-    product: {
-      name: "G3 Ferrari G10032 Pizzeria Snack Napoletana, Forno Pizza Plus Evo, Doppia Pietra Refrattaria (Diametro 31 Cm), 1200 W, Timer 5', Ricettario Incluso, Rosso",
-      price: "99,00",
-      quantity: 5,
-    },
-    distributionTotal: "495,00",
-    profit: "1,19",
-    refundAmount: "496,19",
-  },
-  {
-    time: "17-06-2025 19:53:13",
-    code: "65f6d07a625b1c3a5c3dc062",
-    product: {
-      name: "G3 Ferrari G10032 Pizzeria Snack Napoletana, Forno Pizza Plus Evo, Doppia Pietra Refrattaria (Diametro 31 Cm), 1200 W, Timer 5', Ricettario Incluso, Rosso",
-      price: "99,00",
-      quantity: 5,
-    },
-    distributionTotal: "495,00",
-    profit: "1,19",
-    refundAmount: "496,19",
-  },
-]);
+const historyItems = ref([]);
 const showModal = ref(false);
 
 const handlePay = () => {
   console.log("用户点击支付");
   showModal.value = false;
 };
+
+getOrderHistory().then((res) => {
+  console.log(res.rows);
+  historyItems.value = res.rows;
+});
 
 // 可以添加数据更新逻辑
 </script>
@@ -107,6 +76,7 @@ const handlePay = () => {
 .distribution-history {
   font-family: Arial, sans-serif;
   max-width: 800px;
+  height: 100vh;
   margin: 0 auto;
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center fixed;

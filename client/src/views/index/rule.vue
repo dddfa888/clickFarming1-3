@@ -1,27 +1,20 @@
 <!-- src/views/CompanyIntro.vue -->
 <template>
   <div class="company-intro">
-    <HeaderBar title="基本原则" />
+    <HeaderBar :title="t('基本原则')" />
     <div class="content-box">
       <p>
-        当您成为Mercado
-        Libre会员后，您将收到与您的订单相关的产品代码，包括产品信息、订单详情、产品价值、数量...等。
+        {{ t("Basic Introduction") }}
       </p>
-      <p>
-        Mercado Libre
-        会员将作为中间人，帮助确认制造商和合作伙伴（买家）之间的订单。
-      </p>
-      <p>
-        Mercado Libre
-        会员将作为中间人，帮助确认制造商和合作伙伴（买家）之间的订单。
-      </p>
-      <!-- 可将长文本继续补充 -->
     </div>
   </div>
 </template>
 
 <script setup>
 import HeaderBar from "../../components/HeaderBar.vue";
+import { useI18n } from "vue-i18n";
+// import { getCompanyRule } from "../../api/index";
+const { t } = useI18n();
 </script>
 
 <style scoped>

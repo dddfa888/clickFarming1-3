@@ -1,34 +1,61 @@
-import axios from "axios"
+// request.js
+import axios from 'axios';
+import router from '../router/index';
+import { showDialog } from 'vant';
 
-const BASE_URL = "/api"
-const token = localStorage.getItem("token") || ""
+let isTokenExpired = false;
+
 const request = axios.create({
-    baseURL: BASE_URL,
+    baseURL: '/api',
     timeout: 10000,
     headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        'Authorization': 'Bearer ' + token
+        'Content-Type': 'application/json;charset=UTF-8'
     }
-})
-
-// 添加请求拦截器
-request.interceptors.request.use(function (config) {
-    // 在发送请求之前做些什么
-    return config;
-}, function (error) {
-    // 对请求错误做些什么
-    return Promise.reject(error);
 });
 
-// 添加响应拦截器
-request.interceptors.response.use(function (response) {
-    // 2xx 范围内的状态码都会触发该函数。
-    // 对响应数据做点什么
-    return response.data;
-}, function (error) {
-    // 超出 2xx 范围的状态码都会触发该函数。
-    // 对响应错误做点什么
-    return Promise.reject(error);
-});
+// ✅ 请求拦截器：每次请求前都从 localStorage 获取最新 token
+request.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
-export default request
+// ✅ 响应拦截器：统一处理 token 失效
+request.interceptors.response.use(
+    (response) => {
+        const res = response.data;
+        if ((res.code === 401 || res.message === 'token失效') && !isTokenExpired) {
+            isTokenExpired = true;
+            showDialog({
+                title: '提示',
+                message: '登录已过期，请重新登录',
+            }).then(() => {
+                localStorage.removeItem('token');
+                router.replace({ path: '/login' });
+                isTokenExpired = false;
+            });
+        }
+        return res;
+    },
+    (error) => {
+        if (error.response && error.response.status === 401 && !isTokenExpired) {
+            isTokenExpired = true;
+            showDialog({
+                title: '提示',
+                message: '登录已过期，请重新登录',
+            }).then(() => {
+                localStorage.removeItem('token');
+                router.replace({ path: '/login' });
+                isTokenExpired = false;
+            });
+        }
+        return Promise.reject(error);
+    }
+);
+
+export default request;

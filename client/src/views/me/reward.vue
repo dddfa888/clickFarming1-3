@@ -7,12 +7,12 @@
         :key="index"
         class="transaction-item"
       >
-        <div class="transaction-time">描述：{{ transaction.describe }}</div>
         <div class="transaction-amount">
-          金钱数额：{{ formatAmount(transaction.amount) }}
+          金钱数额：+{{ formatAmount(transaction.amount) }}
         </div>
+        <div class="transaction-time">描述：{{ transaction.description }}</div>
         <div class="transaction-balance">
-          剩余: {{ formatBalance(transaction.balance) }}
+          剩余: {{ formatAmount(transaction.accountBack) }}
         </div>
       </div>
     </div>
@@ -22,23 +22,17 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
-const transactions = ref([
-  { amount: +61.0, balance: 561.24, describe: "订单奖励" },
-  { amount: +61.0, balance: 561.84, describe: "订单奖励" },
-  { amount: +61.0, balance: 561.8, describe: "订单奖励" },
-  { amount: +61.0, balance: 561.24, describe: "订单奖励" },
-  { amount: +60.0, balance: 560.11, describe: "订单奖励" },
-  { amount: +61.0, balance: 561.53, describe: "订单奖励" },
-  { amount: +63.0, balance: 563.14, describe: "订单奖励" },
-]);
+import { getRewardHistory } from "../../api/index.js";
+const transactions = ref([]);
 
 const formatAmount = (amount) => {
   return amount.toFixed(2).replace(".", ",") + " €";
 };
 
-const formatBalance = (balance) => {
-  return balance.toFixed(2).replace(".", ",") + " €";
-};
+getRewardHistory().then((res) => {
+  console.log(res.rows);
+  transactions.value = res.rows;
+});
 </script>
 
 <style scoped>
@@ -54,6 +48,7 @@ const formatBalance = (balance) => {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding: 10px;
 }
 
 .transaction-item {

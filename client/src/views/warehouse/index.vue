@@ -2,10 +2,12 @@
   <div class="distribution-history">
     <div class="header">
       <h2>
-        发行历史 <span class="total-amount">{{ totalAmount }} €</span>
+        {{ t("发行历史") }}
+        <span class="total-amount">{{ totalAmount }} €</span>
       </h2>
       <div class="provider">
-        数据提供者 Mercado Libre <span class="remaining">剩余(€)</span>
+        {{ t("数据提供者 Mercado Libre") }}
+        <span class="remaining">{{ t("剩余") }}(€)</span>
       </div>
     </div>
 
@@ -17,14 +19,17 @@
       >
         <div class="item-header">
           <div class="time-code">
-            <span class="time">时间: {{ item.createTime }}</span>
-            <span class="code">代码: {{ item.productId }}</span>
+            <span class="time">{{ t("时间") }}: {{ item.createTime }}</span>
+            <span class="code">{{ t("代码") }}: {{ item.productId }}</span>
           </div>
         </div>
 
         <div class="product-info">
           <div class="product-name">
-            <img :src="productImageUrl" alt="" />
+            <img
+              :src="'http://192.168.1.149:8080' + item.productImageUrl"
+              alt=""
+            />
             <div>
               {{ item.productName }}
             </div>
@@ -37,15 +42,15 @@
 
         <div class="calculation">
           <div class="calc-row">
-            <span>分配总额:</span>
+            <span>{{ t("分配总额") }}:</span>
             <span class="amount">{{ item.totalAmount }} €</span>
           </div>
           <div class="calc-row">
-            <span>利润:</span>
+            <span>{{ t("利润") }}:</span>
             <span class="amount">{{ item.profit }} €</span>
           </div>
           <div class="calc-row">
-            <span>退款金额:</span>
+            <span>{{ t("退款金额") }}:</span>
             <span class="amount highlight">{{ item.refundAmount }} €</span>
           </div>
         </div>
@@ -53,23 +58,15 @@
         <button
           v-if="item.processStatus === 'Waiting'"
           class="send-button"
-          @click="showModal = true"
+          @click="Sendbutton(item.id)"
         >
-          发送分发
+          {{ t("发送分发") }}
         </button>
       </div>
     </div>
     <ProductModal
       v-if="showModal"
-      :time="'17-06-2025 19:53:50'"
-      :id="'65f6d2c747241532e71f3515'"
-      :image="'/path/to/product.png'"
-      :title="'Candy CITT642C/E1 Piano Cottura...'"
-      :price="200"
-      :count="2"
-      :total="400"
-      :profit="0.96"
-      :refund="400.96"
+      :id="id"
       @close="showModal = false"
       @pay="handlePay"
     />
@@ -79,35 +76,39 @@
 <script setup>
 import { ref } from "vue";
 import ProductModal from "../../components/ProductModal.vue";
-import { getOrderList } from "../../api/index.js";
+import {
+  getOrderList,
+  sendDistribution,
+  getUserGradeAndBalanceAndDiscount,
+} from "../../api/index.js";
+import { useI18n } from "vue-i18n";
 
-const totalAmount = ref("532,94");
-
-const historyItems = ref([
-  // {
-  //   time: "17-06-2025 19:53:13",
-  //   code: "65f6d07a625b1c3a5c3dc062",
-  //   product: {
-  //     name: "G3 Ferrari G10032 Pizzeria Snack Napoletana, Forno Pizza Plus Evo, Doppia Pietra Refrattaria (Diametro 31 Cm), 1200 W, Timer 5', Ricettario Incluso, Rosso",
-  //     price: "99,00",
-  //     quantity: 5,
-  //   },
-  //   distributionTotal: "495,00",
-  //   profit: "1,19",
-  //   refundAmount: "496,19",
-  // },
-]);
+const { t } = useI18n();
+const totalAmount = ref(null);
+const id = ref(null);
+const historyItems = ref([]);
 const showModal = ref(false);
+
+const Sendbutton = (productId) => {
+  showModal.value = true;
+  id.value = productId;
+};
 
 const handlePay = () => {
   console.log("用户点击支付");
   showModal.value = false;
+  sendDistribution(id.value).then((res) => {
+    console.log(res);
+  });
 };
 
 getOrderList().then((res) => {
-  console.log(res.rows);
   historyItems.value = res.rows;
-  console.log(historyItems.value);
+});
+
+getUserGradeAndBalanceAndDiscount().then((res) => {
+  console.log(res.data);
+  totalAmount.value = res.data.userBalance;
 });
 // 可以添加数据更新逻辑
 </script>
@@ -137,7 +138,8 @@ getOrderList().then((res) => {
   justify-content: space-between;
   align-items: center;
   margin: 0;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .total-amount {

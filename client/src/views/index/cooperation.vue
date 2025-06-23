@@ -1,14 +1,17 @@
 <template>
   <div class="company-intro">
-    <HeaderBar title="开发合作" />
+    <HeaderBar :title="t('开发合作')" />
     <div class="content-box">
       <p>
-        平台代理模式
+        {{ t("平台代理模式") }}
         <br />
-        Mercado Libre会员可以成为电商平台的代理商
+        {{ t("Mercado Libre会员可以成为电商平台的代理商") }}
         <br />
-        通过推荐新会员成为 Mercado Libre 会员和代理商，可以获得价值 00.01%
-        的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。
+        {{
+          t(
+            "通过推荐新会员成为 Mercado Libre 会员和代理商，可以获得价值 00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。"
+          )
+        }}
       </p>
     </div>
   </div>
@@ -16,6 +19,9 @@
 
 <script setup>
 import HeaderBar from "../../components/HeaderBar.vue";
+// import { getCompanyCooperation } from "../../api/index";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <style scoped>

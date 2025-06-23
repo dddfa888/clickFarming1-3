@@ -1,64 +1,60 @@
 <template>
   <div class="register-container">
-    <div class="language-selector">
-      <span class="language">语言</span>
-      <span class="country"></span>
-    </div>
-
     <div class="register-form">
       <van-form @submit="onSubmit">
         <van-cell-group inset>
           <van-field
             v-model="form.loginAccount"
             name="loginAccount"
-            label="账号"
-            placeholder="请输入账号"
+            :label="$t('账号')"
+            :placeholder="$t('请输入账号')"
             left-icon="user-o"
-            :rules="[{ required: true, message: '请填写账号' }]"
+            :rules="[{ required: true, message: '$t(请填写用户名)' }]"
           />
           <van-field
             v-model="form.phone"
             name="phone"
-            label="电话号码"
-            placeholder="请输入电话号码"
+            :label="$t('电话号码')"
+            :placeholder="$t('请输入电话号码')"
             left-icon="phone-o"
-            :rules="[{ required: true, message: '请填写电话号码' }]"
+            :rules="[{ required: true, message: '$t(请填写电话号码)' }]"
           />
           <van-field
             v-model="form.loginPassword"
             type="password"
             name="loginPassword"
-            label="登陆密码"
-            placeholder="请输入密码"
+            :label="$t('登陆密码')"
+            :placeholder="$t('请输入密码')"
             left-icon="lock"
-            :rules="[{ required: true, message: '请填写密码' }]"
+            :rules="[{ required: true, message: '$t(请填写密码)' }]"
           />
           <van-field
             v-model="form.fundPassword"
             type="password"
             name="fundPassword"
-            label="交易密码"
-            placeholder="请输入交易密码"
+            :label="$t('交易密码')"
+            :placeholder="$t('请输入交易密码')"
             left-icon="lock"
-            :rules="[{ required: true, message: '请确认交易密码' }]"
+            :rules="[{ required: true, message: '$t(请填写交易密码)' }]"
           />
           <van-field
             v-model="form.invitationCode"
             name="invitationCode"
-            label="邀请码"
-            placeholder="请输入邀请码"
+            :label="$t('邀请码')"
+            :placeholder="$t('请输入邀请码')"
+            :rules="[{ required: true, message: '$t(请填写邀请码)' }]"
             left-icon="friends-o"
           />
         </van-cell-group>
         <div style="margin: 16px">
           <van-button round block type="primary" native-type="submit">
-            注册
+            {{ $t("注册") }}
           </van-button>
         </div>
       </van-form>
 
       <div class="register-footer">
-        <span>登录</span>
+        <span @click="$router.push('/login')">{{ $t("登录") }}</span>
       </div>
     </div>
   </div>

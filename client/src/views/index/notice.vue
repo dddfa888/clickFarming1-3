@@ -1,7 +1,7 @@
 <!-- src/views/CompanyIntro.vue -->
 <template>
   <div class="company-intro">
-    <HeaderBar title="通知邮件" />
+    <HeaderBar :title="t('通知邮件')" />
     <div class="content-box">
       <div class="notice-box">
         <p>Hệ thống đã thanh toán 61.00€ cho bạn!</p>
@@ -18,6 +18,8 @@
 
 <script setup>
 import HeaderBar from "../../components/HeaderBar.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <style scoped>

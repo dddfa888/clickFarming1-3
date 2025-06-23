@@ -1,5 +1,4 @@
 import request from "../utils/index"
-const token = localStorage.getItem('token')
 
 // 登录
 export function login(data) {
@@ -84,3 +83,68 @@ export function getMemberRecord() {
         method: 'get',
     })
 }
+
+// 订单历史
+export function getOrderHistory() {
+    return request({
+        url: '/api/order/listByUser',
+        method: 'get',
+    })
+}
+
+// 奖励历史记录
+export function getRewardHistory() {
+    return request({
+        url: '/api/records/selectMAccountChangeForeByUser',
+        method: 'get',
+    })
+}
+
+// 用id查询订单
+export function getOrderById(id) {
+    return request({
+        url: `/api/order/${id}`,
+        method: 'get',
+    })
+}
+
+// 用户等级、余额、折扣
+export function getUserGradeAndBalanceAndDiscount() {
+    return request({
+        url: '/api/records/getUserProfitInfo',
+        method: 'get',
+    })
+}
+
+// 发送分发（支付订单）
+export function sendDistribution(id) {
+    return request({
+        url: `/api/order/payOrder/${id}`,
+        method: 'put',
+    })
+}
+
+
+// //公司简介
+// export function getCompanyProfile() {
+//     return request({
+//         url: '/api/settingComProfile/getByLang',
+//         method: 'get',
+//     })
+// }
+
+// //基本原则
+// export function getCompanyRule() {
+//     return request({
+//         url: '/api/settingFoundRule/getByLang',
+//         method: 'get',
+//     })
+// }
+
+// //开发合作
+// export function getCompanyCooperation() {
+//     return request({
+//         url: '/api/settingDevCooperate/getByLang',
+//         method: 'get',
+//     })
+// }

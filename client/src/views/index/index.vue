@@ -5,8 +5,8 @@
       <div class="user-info-avatar">
         <img class="avatar" src="../../assets/img/avatar.jpg" />
         <div class="user-details">
-          <div>你好</div>
-          <div class="username">{{ userInfo.loginAccount }}</div>
+          <div>{{ t("你好") }}</div>
+          <div class="username">{{ userInfo.loginAccount || "" }}</div>
         </div>
       </div>
       <div class="user-info-balance">
@@ -25,9 +25,9 @@
           "
         >
           <img src="../../assets/img/可用余额.png" alt="" />
-          <p class="balance-label">可用余额</p>
+          <p class="balance-label">{{ t("可用余额") }}</p>
         </div>
-        <p class="balance-amount">{{ user.balance }}</p>
+        <p class="balance-amount">{{ userInfo.accountBalance }}€</p>
       </div>
       <div class="action-buttons">
         <!-- <div
@@ -52,7 +52,7 @@
           "
         >
           <img src="../../assets/img/收款.png" alt="" />
-          <p>取款</p>
+          <p>{{ t("取款") }}</p>
         </div>
       </div>
     </div>
@@ -70,43 +70,45 @@
       src="../../assets/videos/mcd-DJnKgbK7.mp4"
     ></video>
 
-    <h5>概述 Mercado Libre</h5>
+    <h5>{{ t("概述 Mercado Libre") }}</h5>
     <!-- 功能按钮 -->
     <div class="info-buttons">
       <div
         class="btn"
         v-for="item in infoBtns"
         :key="item.label"
-        @click="handleButtonClick(item.label)"
+        @click="handleButtonClick(item.icon)"
       >
         <img
           style="width: 35px; height: 35px"
           class="icon-img"
           :src="item.icon"
         />
-        <div>{{ item.label }}</div>
+        <div style="text-align: center; margin-top: 5px">{{ item.label }}</div>
       </div>
     </div>
 
     <!-- 会员等级 -->
-    <div class="title">会员级别</div>
+    <div class="title">{{ t("会员级别") }}</div>
     <div v-for="item in Recordlist" :key="item.id" class="member-level">
-      <div v-if="level > item.id">开锁</div>
+      <div v-if="level > item.id">{{ t("开锁") }}</div>
       <div class="level-info">
-        <div class="col">升级费<br />{{ item.joinCost }}</div>
+        <div class="col">{{ t("升级费") }}<br />{{ item.joinCost }}</div>
         <div class="col">
-          折扣<br />{{ item.minBonus }}%-{{ item.maxBonus }}%
+          {{ t("折扣") }}<br />{{ item.minBonus }}%-{{ item.maxBonus }}%
         </div>
         <div class="col">
-          分配数量<br />
+          {{ t("分配数量") }}<br />
           {{ item.buyProdNum }}
-          <span v-if="level < item.id" class="lock-icon">当前水平</span>
+          <span v-if="level < item.id" class="lock-icon">{{
+            t("当前水平")
+          }}</span>
           <span class="badge">{{ item.gradeName }}</span>
         </div>
       </div>
     </div>
     <!-- 奖励获得者名单 -->
-    <div class="title">奖励获得者名单</div>
+    <div class="title">{{ t("奖励获得者名单") }}</div>
     <div class="reward">
       <div class="reward-list">
         <div
@@ -115,9 +117,13 @@
           class="reward-item"
         >
           <span class="reward-date">{{ reward.date }}</span>
-          <span class="reward-message"
-            >恭喜 {{ reward.username }} 收到 {{ formatAmount(reward.amount) }} €
-            利润</span
+          <span class="reward-message">
+            {{
+              t("rewardMessage", {
+                username: reward.username,
+                amount: formatAmount(reward.amount),
+              })
+            }}</span
           >
         </div>
       </div>
@@ -127,7 +133,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import PromotionModal from "../../components/PromotionModal.vue";
 import company from "../../assets/img/company.png";
@@ -135,15 +141,17 @@ import rule from "../../assets/img/rule.png";
 import cooperation from "../../assets/img/cooperation.png";
 import notice from "../../assets/img/notice.png";
 import { getUserInfo, getMemberRecord } from "../../api/index.js";
+import { useI18n } from "vue-i18n";
 
 const promoRef = ref();
 const router = useRouter();
 const Recordlist = ref([]);
 const level = ref(null);
 const userInfo = ref({});
+const { t } = useI18n();
 
 const getImageUrl = (path) => {
-  return new URL(`../../assets/${path}`, import.meta.url).href;
+  return new URL(`../../assets/{path}`, import.meta.url).href;
 };
 
 getUserInfo().then((res) => {
@@ -151,8 +159,10 @@ getUserInfo().then((res) => {
   userInfo.value = res.data;
 });
 getMemberRecord().then((res) => {
-  Recordlist.value = res.data.userGrade;
-  level.value = res.data.level;
+  if (res.code) {
+    Recordlist.value = res.data.userGrade;
+    level.value = res.data.level;
+  }
 });
 // 生成随机用户名
 const generateUsername = () => {
@@ -171,6 +181,7 @@ const generateUsername = () => {
   const suffix = ["b", "r", "e", "n", "y", "k", "m", "s", "d", "f"];
   const randomPrefix = prefix[Math.floor(Math.random() * prefix.length)];
   const randomSuffix = suffix[Math.floor(Math.random() * suffix.length)];
+
   return `${randomPrefix}****${randomSuffix}`;
 };
 
@@ -178,7 +189,8 @@ const generateUsername = () => {
 const generateAmount = () => {
   const whole = 100 + Math.floor(Math.random() * 1900); // 100-1999
   const decimal = Math.floor(Math.random() * 100); // 0-99
-  return `${whole.toLocaleString("de-DE")},${decimal
+
+  return `${whole.toLocaleString("de-DE")}.${decimal
     .toString()
     .padStart(2, "0")}`;
 };
@@ -221,27 +233,19 @@ const user = {
   name: "Linh198",
   balance: "0.00 €",
 };
+const infoBtns = computed(() => [
+  { label: t("公司简介"), icon: notice },
+  { label: t("基本原则"), icon: rule },
+  { label: t("开发合作"), icon: cooperation },
+  { label: t("通知邮件"), icon: company },
+]);
 
-const infoBtns = [
-  { label: "公司简介", icon: company },
-  { label: "基本原则", icon: rule },
-  { label: "开发合作", icon: cooperation },
-  { label: "通知邮件", icon: notice },
-];
-
-// const level = {
-//   upgradeFee: "0.00 €",
-//   discount: "0.24% - 0.3%",
-//   quota: 60,
-// };
-
-const handleButtonClick = (label) => {
-  console.log(`点击了${label}按钮`);
-  if (label === "公司简介") {
+const handleButtonClick = (icon) => {
+  if (icon === notice) {
     router.push({ path: "/company" });
-  } else if (label === "基本原则") {
+  } else if (icon === rule) {
     router.push({ path: "/rule" });
-  } else if (label === "开发合作") {
+  } else if (icon === cooperation) {
     router.push({ path: "/cooperation" });
   } else {
     router.push({ path: "/notice" });
@@ -324,6 +328,7 @@ const onDeposit = () => {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border-radius: 20px;
+  font-size: 10px;
   max-width: 600px;
   margin: 0 auto;
   border: 1px solid #7a797d;
@@ -355,6 +360,10 @@ const onDeposit = () => {
 
 .reward-message {
   color: #fff;
+  white-space: nowrap; /* 不换行 */
+  overflow: hidden; /* 超出隐藏 */
+  text-overflow: ellipsis; /* 超出显示省略号 */
+  max-width: 220px; /* 根据布局调整宽度 */
 }
 
 @keyframes fadeIn {
@@ -376,6 +385,7 @@ const onDeposit = () => {
 .balance-amount {
   font-size: 14px;
   font-weight: bold;
+  color: #fff;
 }
 
 .action-buttons {

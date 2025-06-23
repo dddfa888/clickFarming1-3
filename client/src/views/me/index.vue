@@ -6,21 +6,20 @@
         <img src="../../assets/img/smc5jpzklmkircocfkq1.png" alt="" />
       </div>
       <div class="user-info">
-        <p class="username">Linh198</p>
-        <p class="user-id">ID: VFZNFU</p>
+        <p class="username">{{ userInfo.loginAccount }}</p>
+        <p class="user-id">ID:</p>
       </div>
     </div>
 
     <!-- 会员级别 -->
-
     <div class="user-level-info">
       <div class="balance-info">
         <p class="balance-label">剩余</p>
-        <p class="balance-amount">532.94 €</p>
+        <p class="balance-amount">{{ userInfo.accountBalance }} €</p>
       </div>
       <div class="member-level">
         <p class="section-label">会员级别</p>
-        <p class="level-name">Bạc</p>
+        <p class="level-name">{{ userInfo.levelName }}</p>
       </div>
     </div>
 
@@ -74,31 +73,30 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { useLangStore } from "../../store/useLangStore";
+import { storeToRefs } from "pinia";
+import { getUserInfo } from "../../api/index";
+
 const router = useRouter();
-const handleAction = (action) => {
-  console.log(`执行操作: ${action}`);
-  router.push({ path: `/${action}` });
-  // 这里可以添加实际的操作逻辑
-  // 例如: router.push(`/${action}`)
-};
+const { locale: i18nLocale } = useI18n();
+const userInfo = ref({});
+const langStore = useLangStore();
+const { locale: langStoreLocale } = storeToRefs(langStore);
 
-const handleLogout = () => {
-  console.log("用户登出");
-  // 这里可以添加登出逻辑
-  // 例如: authStore.logout()
-};
+i18nLocale.value = langStoreLocale.value; // 同步 i18n
 
+const langMap = {
+  中国: "zh",
+  越南语: "vi",
+};
+const reverseLangMap = Object.fromEntries(
+  Object.entries(langMap).map(([k, v]) => [v, k])
+);
+
+const selectedLanguage = ref(reverseLangMap[langStoreLocale.value] || "中国");
+const languageOptions = Object.keys(langMap);
 const showDropdown = ref(false);
-const selectedLanguage = ref("中国");
-const languageOptions = [
-  "越南语",
-  "英语",
-  "汉国",
-  "日本",
-  "俄罗斯",
-  "中国",
-  "法国",
-];
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
@@ -106,8 +104,15 @@ const toggleDropdown = () => {
 
 const selectLanguage = (lang) => {
   selectedLanguage.value = lang;
+  const langCode = langMap[lang] || "zh";
+  langStore.setLocale(langCode);
+  i18nLocale.value = langCode;
   showDropdown.value = false;
 };
+
+getUserInfo().then((res) => {
+  userInfo.value = res.data;
+});
 </script>
 
 <style scoped>
@@ -241,7 +246,7 @@ const selectLanguage = (lang) => {
 .language-dropdown {
   list-style: none;
   padding: 0;
-  margin-top: 183px;
+  margin-top: 461px;
   background: #0b1e34;
   color: white;
   border: 1px solid #ccc;

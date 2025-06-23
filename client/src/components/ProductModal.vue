@@ -5,20 +5,22 @@
       <h3 class="modal-title">产品信息</h3>
 
       <div class="info">
-        <p>时间: {{ time }}</p>
-        <p>代码: {{ id }}</p>
-
+        <p>时间: {{ data.createTime }}</p>
+        <p>代码: {{ data.productId }}</p>
         <div class="product">
-          <img :src="image" class="product-img" />
+          <img
+            :src="'http://192.168.1.149:8080' + data.productImageUrl"
+            class="product-img"
+          />
           <div class="product-desc">
-            <p>{{ title }}</p>
-            <p>{{ price }} € x {{ count }}</p>
+            <p>{{ data.productName }}</p>
+            <p>{{ data.unitPrice }} € x {{ data.number }}</p>
           </div>
         </div>
 
-        <p>分配总额: {{ total }} €</p>
-        <p>利润: {{ profit }} €</p>
-        <p class="highlight">退款金额: {{ refund }} €</p>
+        <p>分配总额: {{ data.totalAmount }} €</p>
+        <p>利润: {{ data.profit }} €</p>
+        <p class="highlight">退款金额: {{ data.refundAmount }} €</p>
       </div>
 
       <div class="actions">
@@ -30,20 +32,22 @@
 </template>
 
 <script setup>
-defineProps({
-  time: String,
-  id: String,
-  image: String,
-  title: String,
-  price: Number,
-  count: Number,
-  total: Number,
-  profit: Number,
-  refund: Number,
+import { defineProps, toRefs, ref } from "vue";
+import { getOrderById } from "../api/index.js";
+const props = defineProps({
+  id: {
+    type: [String, Number],
+    required: true,
+  },
+});
+
+const { id } = toRefs(props);
+const data = ref({});
+getOrderById(id.value).then((res) => {
+  data.value = res.data;
 });
 
 const emit = defineEmits(["close", "pay"]);
-
 const close = () => emit("close");
 const onPay = () => emit("pay");
 </script>

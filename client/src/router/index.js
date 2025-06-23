@@ -2,10 +2,10 @@ import { createWebHashHistory, createRouter } from 'vue-router'
 
 // 路由表
 const routes = [
+  { path: '/market', name: 'market', component: () => import('../components/HelloWorld.vue') },
   { path: '/', name: 'Home', component: () => import('../views/index/index.vue') },
   { path: '/login', name: 'login', component: () => import('../views/login/index.vue') },
   { path: '/register', name: 'register', component: () => import('../views/register/index.vue') },
-  { path: '/market', name: 'market', component: () => import('../components/HelloWorld.vue') },
   { path: '/warehouse', name: 'warehouse', component: () => import('../views/warehouse/index.vue') },
   { path: '/me', name: 'me', component: () => import('../views/me/index.vue') },
   { path: '/company', name: 'company', component: () => import('../views/index/Company.vue') },
@@ -31,7 +31,7 @@ const router = createRouter({
 // 路由守卫：未登录禁止访问其他页面
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token') // 假设你是用 token 存储登录状态
-  const whiteList = ['/login', '/register'] // 白名单路由
+  const whiteList = ['/login', '/register', "/market"] // 白名单路由
 
   if (whiteList.includes(to.path)) {
     // 登录页、注册页无需验证
@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
     return next()
   } else {
     // 无 token，重定向到登录页
-    return next('/login')
+    return next('/market')
   }
 })
 

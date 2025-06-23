@@ -2,49 +2,51 @@
   <div class="order-detail-container">
     <div class="order-header">
       <div>
-        <p style="font-size: 15px">订单详细信息</p>
-        <div class="data-provider">数据提供者 Mercado Libre</div>
+        <p style="font-size: 15px">{{ t("订单详细信息") }}</p>
+        <div class="data-provider">{{ t("数据提供者 Mercado Libre") }}</div>
       </div>
       <div class="amount-section">
-        <div class="amount-display">{{ formatCurrency(order.amount) }}</div>
-        <div class="amount-label">剩余(€)</div>
+        <div class="amount-display">
+          {{ formatCurrency(order.userBalance) }}
+        </div>
+        <div class="amount-label">{{ t("剩余") }}(€)</div>
       </div>
     </div>
 
     <div class="order-summary">
       <img src="../../assets/img/banner1-8QRSYmQj.png" alt="" />
-      <div class="status-badge" @click="handlePay">收到</div>
+      <div class="status-badge" @click="handlePay">{{ t("收到") }}</div>
     </div>
 
     <div class="order-details-grid">
       <div class="detail-item">
-        <div class="detail-label">剩余</div>
-        <div class="detail-value">{{ formatCurrency(order.remaining) }}</div>
+        <div class="detail-label">{{ t("剩余") }}</div>
+        <div class="detail-value">{{ formatCurrency(order.userBalance) }}</div>
       </div>
       <div class="detail-item">
-        <div class="detail-label">当前水平</div>
-        <div class="detail-value">{{ order.currentLevel }}</div>
+        <div class="detail-label">{{ t("当前水平") }}</div>
+        <div class="detail-value">{{ order.userLevel }}</div>
       </div>
       <div class="detail-item">
-        <div class="detail-label">订单已付款</div>
-        <div class="detail-value">{{ order.paymentStatus }}</div>
+        <div class="detail-label">{{ t("订单已付款") }}</div>
+        <div class="detail-value">{{ order.orderNum }}</div>
       </div>
       <div class="detail-item">
-        <div class="detail-label">昨天折扣</div>
+        <div class="detail-label">{{ t("昨天折扣") }}</div>
         <div class="detail-value">
-          {{ formatCurrency(order.yesterdayDiscount) }}
+          {{ formatCurrency(order.numYesterday) }}
         </div>
       </div>
       <div class="detail-item">
-        <div class="detail-label">今天折扣</div>
+        <div class="detail-label">{{ t("今天折扣") }}</div>
         <div class="detail-value">
-          {{ formatCurrency(order.todayDiscount) }}
+          {{ formatCurrency(order.numToday) }}
         </div>
       </div>
     </div>
 
     <div class="foundation-rules">
-      <p>介绍基金会规则</p>
+      <p>{{ t("介绍基金会规则") }}</p>
       <div class="rules-content">
         <!-- 这里可以添加基金会规则的具体内容 -->
       </div>
@@ -54,24 +56,16 @@
 
 <script setup>
 import { ref } from "vue";
-import { createOrder } from "../../api";
+import { createOrder, getUserGradeAndBalanceAndDiscount } from "../../api";
 import { showToast } from "vant";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
-const order = ref({
-  amount: 537.11,
-  remaining: 537.11,
-  currentLevel: "Bac 4/60",
-  paymentStatus: "昨天折扣",
-  yesterdayDiscount: 0.0,
-  todayDiscount: 0.0,
-});
+const order = ref({});
 
 const formatCurrency = (value) => {
-  return value.toLocaleString("de-DE", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-  });
+  if (typeof value !== "number") return "0 €";
+  return value.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 };
 
 const handlePay = () => {
@@ -89,6 +83,11 @@ const handlePay = () => {
     }
   });
 };
+
+getUserGradeAndBalanceAndDiscount().then((res) => {
+  console.log(res.data);
+  order.value = res.data;
+});
 </script>
 
 <style scoped>
@@ -98,7 +97,7 @@ const handlePay = () => {
   margin: 0 auto;
   color: #fff;
   padding: 10px;
-  padding-bottom: 220px;
+  height: 100vh;
   background: url("../../assets/img/BG-nhandon-B-V7rk8F.png") no-repeat center
     center fixed;
   background-size: cover;
