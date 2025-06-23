@@ -310,4 +310,19 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         return mUserMapper.increaseBrushNumber(uid, num);
     }
 
+
+
+    /**
+     * 修改用户连单数量
+     *
+     * @param mUser 用户
+     * @return 结果
+     */
+    @Override
+    public int updateMultiOrderNum(MUser mUser)
+    {
+        mUser.setUpdateTime(DateUtils.getNowDate());
+        return mUserMapper.updateMUser(mUser);
+    }
+
 }

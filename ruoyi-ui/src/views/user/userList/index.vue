@@ -161,9 +161,6 @@
           <el-input v-model="balanceForm.balance"></el-input>
         </el-form-item>
 
-
-
-
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCloseBalance">取 消</el-button>
@@ -210,6 +207,60 @@
       <span slot="footer" class="dialog-footer">
 <!--        <el-button @click="handleCloseGroupInformation">取 消</el-button>-->
 <!--        <el-button type="primary" @click="submitBalanceForm">确 定</el-button>-->
+      </span>
+    </el-dialog>
+
+
+    <el-dialog
+        title="查看订单"
+        :visible.sync="dialogUserOrder"
+        width="80%"
+        :before-close="handleCloseUserOrderList"
+    >
+      <el-table
+          :data="orderListTableData"
+          style="width: 100%">
+        <el-table-column label="产品名称" align="center" prop="productName" width="180" />
+        <el-table-column label="产品图片URL" align="center" prop="productImageUrl" >
+          <template slot-scope="scope">
+            <img class="orderListProdImg" :src="baseUrl+scope.row.productImageUrl" alt="图片无法显示"></img>
+          </template>
+        </el-table-column>
+        <el-table-column label="单价" align="center" prop="unitPrice" />
+        <el-table-column label="数量" align="center" prop="number" />
+        <el-table-column label="总金额" align="center" prop="totalAmount" />
+        <el-table-column label="利润" align="center" prop="profit" />
+        <el-table-column label="退款金额" align="center" prop="refundAmount" />
+        <el-table-column label="过程状态" align="center" prop="processStatus" :formatter="formatStatus" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+<!-- <el-button @click="">取 消</el-button>-->
+<!-- <el-button @click="" type="primary">确 定</el-button>-->
+      </span>
+
+      <pagination
+        v-show="orderTotal>0"
+        :total="orderTotal"
+        :page.sync="queryParamsOrder.pageNum"
+        :limit.sync="queryParamsOrder.pageSize"
+        @pagination="handleOpenUserOrderList(clickedRow)"
+      />
+    </el-dialog>
+
+    <el-dialog
+        title="设置连单数量"
+        :visible.sync="dialogOrderNum"
+        width="30%"
+        :before-close="handleCloseOrderNum"
+    >
+      <el-form ref="form" :model="orderNumForm" label-width="80px">
+        <el-form-item label="连单数量">
+          <el-input-number v-model="orderNumForm.multiOrderNum" :min="1" :max="9999999" :precision="0" ></el-input-number>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseOrderNum">取 消</el-button>
+        <el-button type="primary" @click="submitOrderNumForm">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -299,7 +350,7 @@
 </template>
 
 <script>
-import {getAllSuperiorUids,updateBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType} from "@/api/user/user"
+import {getAllSuperiorUids,updateBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum} from "@/api/user/user"
 import { listGrade } from "@/api/user/grade"
 
 export default {
@@ -307,11 +358,18 @@ export default {
   data() {
     return {
       tableData: [],
+      orderListTableData: [],
       dialogGroupInformation: false,
+      dialogUserOrder: false,
+      dialogOrderNum: false,
       balanceForm:{
         uid:  "",
         increaseDecrease: true,
         balance: 0
+      },
+      orderNumForm:{
+        uid: '',
+        multiOrderNum: 0
       },
       dialogBalance: false,
       //操作
@@ -335,6 +393,14 @@ export default {
         {
           label: "查看集团信息",
           value: "handleListGroupInformation",
+        },
+        {
+          label: "查看订单",
+          value: "handleOpenUserOrderList",
+        },
+        {
+          label: "设置连单数量",
+          value: "handleOpenSetOrderNum",
         }
       ],
       options: [{
@@ -421,6 +487,18 @@ export default {
         createTime: [
           { required: true, message: "创建时间不能为空", trigger: "blur" }
         ],
+      },
+      queryParamsOrder: {
+        pageNum: 1,
+        pageSize: 10,
+        userId: '',
+      },
+      orderTotal: 0,
+      clickedRow: '',
+      baseUrl: process.env.VUE_APP_BASE_API,
+      processStatusMap: {
+        'Waiting': '待支付',
+        'Success': '支付完成'
       }
     }
   },
@@ -443,6 +521,51 @@ export default {
         // 如果你需要将数据赋值到页面上显示，例如：
       })
     },
+
+    //用户订单列表
+    handleCloseUserOrderList(){
+      this.dialogUserOrder = false
+    },
+    handleOpenUserOrderList(row){
+      let that = this;
+      that.clickedRow = row;
+      that.dialogUserOrder = true;
+      that.queryParamsOrder.userId = row.uid;
+      // 调用封装好的 API，传入参数对象
+      getOrderList(that.queryParamsOrder).then(res => {
+        that.orderListTableData = res.rows;
+        that.orderTotal = res.total
+      })
+    },
+    // 订单过程状态 转换值
+    formatStatus(row){
+      return this.processStatusMap[row.processStatus] || row.processStatus;
+    },
+
+
+    //关闭设置连单数量
+    handleCloseOrderNum(){
+      this.dialogOrderNum = false
+    },
+    //打开设置连单数量
+    handleOpenSetOrderNum(row){
+      this.orderNumForm.uid = row.uid;
+      this.orderNumForm.multiOrderNum = row.multiOrderNum || 1;
+      this.dialogOrderNum = true
+    },
+    //提交设置连单数量
+    submitOrderNumForm(){
+      updateMultiOrderNum(this.orderNumForm).then(res => {
+        if(res.code != 200){
+          this.$message.error('修改失败')
+          return
+        }
+        this.handleCloseOrderNum()
+        //this.getList()
+        this.$message.success('修改成功')
+      })
+    },
+
     submitBalanceForm(){
       console.log(this.balanceForm)
       updateBalance(this.balanceForm).then(res => {
@@ -646,3 +769,9 @@ export default {
   }
 }
 </script>
+<style>
+	.orderListProdImg {
+		width: 3rem;
+		height: 3rem;
+	}
+</style>

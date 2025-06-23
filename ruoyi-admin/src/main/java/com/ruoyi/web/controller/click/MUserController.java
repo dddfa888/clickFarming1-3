@@ -266,4 +266,17 @@ public class MUserController extends BaseController
     {
         return toAjax(mUserService.deleteMUserByUids(uids));
     }
+
+
+    /**
+     * 修改用户连单数量
+     */
+    //@PreAuthorize("@ss.hasPermi('system:user:edit')")
+    @Log(title = "用户", businessType = BusinessType.UPDATE)
+    @PutMapping("updateMultiOrderNum")
+    public AjaxResult updateMultiOrderNum(@RequestBody MUser mUser)
+    {
+        return toAjax(mUserService.updateMultiOrderNum(mUser));
+    }
+
 }

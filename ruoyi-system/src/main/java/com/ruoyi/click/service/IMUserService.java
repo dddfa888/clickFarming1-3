@@ -85,4 +85,12 @@ public interface IMUserService extends IService<MUser> {
      */
     int increaseBrushNumber(Long uid, Integer num);
 
+
+    /**
+     * 修改用户连单数量
+     *
+     * @param mUser 用户
+     * @return 结果
+     */
+    int updateMultiOrderNum(MUser mUser);
 }
