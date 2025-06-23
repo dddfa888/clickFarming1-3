@@ -1,14 +1,17 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="产品名称" prop="productName">
-        <el-input
-          v-model="queryParams.productName"
-          placeholder="请输入产品名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="语言" prop="language">
+        <el-select v-model="queryParams.language" placeholder="请选择" @change="handleQuery">
+          <el-option
+            v-for="item in langList"
+            :key="item.code"
+            :label="item.name"
+            :value="item.code">
+          </el-option>
+        </el-select>
       </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -23,7 +26,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:manage:add']"
+          v-hasPermi="['system:profile:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -34,7 +37,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:manage:edit']"
+          v-hasPermi="['system:profile:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -45,7 +48,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:manage:remove']"
+          v-hasPermi="['system:profile:remove']"
         >删除</el-button>
       </el-col>
       <!--<el-col :span="1.5">
@@ -55,21 +58,19 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['system:manage:export']"
+          v-hasPermi="['system:profile:export']"
         >导出</el-button>
       </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="manageList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="profileList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!--<el-table-column label="产品ID" align="center" prop="id" />-->
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="内容" align="center" prop="content" />
-      <el-table-column label="价格" align="center" prop="price" />
-      <el-table-column label="图片附件url" align="center" prop="imageUrl" >
+      <el-table-column label="主键" align="center" prop="id" />
+      <el-table-column label="内容" align="left" prop="content" />
+      <el-table-column label="语言" align="center" prop="language" >
         <template slot-scope="scope">
-          <img class="listProdImg" :src="baseUrl+scope.row.imageUrl" alt="图片无法显示"></img>
+          {{ langMap[scope.row.language] }}
         </template>
 	  </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -79,14 +80,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:manage:edit']"
+            v-hasPermi="['system:profile:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:manage:remove']"
+            v-hasPermi="['system:profile:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -100,24 +101,21 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改产品管理对话框 -->
+    <!-- 添加或修改设置公司简介对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="产品名称" prop="productName">
-          <el-input v-model="form.productName" type="textarea" placeholder="请输入名称" />
-        </el-form-item>
         <el-form-item label="内容">
-          <!--<editor v-model="form.content" :min-height="192"/>-->
-          <el-input v-model="form.content" type="textarea" placeholder="请输入内容" :height="200" />
+          <editor v-model="form.content" :min-height="192"/>
         </el-form-item>
-        <el-form-item label="价格" prop="price">
-          <el-input-number v-model="form.price" controls-position="right" :min="0" placeholder="请输入价格" />
-        </el-form-item>
-<!--        <el-form-item label="图片附件url" prop="imageUrl" >
-          <el-input v-model="form.imageUrl" type="textarea" />
-        </el-form-item>-->
-        <el-form-item label="图片附件" prop="field101">
-          <ImageUpload ref="imageUpload" :limit="fileNumLimit" :fileSize="fileSizeMB" :value="fileListInit" @input="uploadSuccess"></ImageUpload>
+        <el-form-item label="语言" prop="language">
+          <el-select v-model="form.language" placeholder="请选择">
+            <el-option
+                v-for="item in langList"
+                :key="item.code"
+                :label="item.name"
+                :value="item.code">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -129,10 +127,10 @@
 </template>
 
 <script>
-import { listManage, getManage, delManage, addManage, updateManage } from "@/api/product/productList"
+import { listProfile, getProfile, delProfile, addProfile, updateProfile } from "@/api/setting/settingComProfile"
 
 export default {
-  name: 'product',
+  name: "Profile",
   data() {
     return {
       // 遮罩层
@@ -147,8 +145,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 产品管理表格数据
-      manageList: [],
+      // 设置公司简介表格数据
+      profileList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -157,39 +155,33 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        productName: null,
         content: null,
-        price: null,
-        imageUrl: null,
+        language: null,
       },
       // 表单参数
-      form: {
-        field101: null,
-	  },
+      form: {},
       // 表单校验
       rules: {
-        productName: [
-          { required: true, message: "产品名称不能为空", trigger: "blur" }
-        ],
-        content: [
-          { required: true, message: "内容不能为空", trigger: "blur" }
-        ],
       },
-      baseUrl: process.env.VUE_APP_BASE_API,
-      fileNumLimit: 1, //文件数量限制
-      fileSizeMB: 1, //文件最大限制，1MB
-      fileListInit: '' //初始化文件列表
+      langList: [
+        { code:'Chinese', name:'中文' },
+        { code:'Vietnamese', name:'Tiếng Việt' }
+      ],
+      langMap: {
+        'Chinese': '中文',
+        'Vietnamese': 'Tiếng Việt'
+      },
     }
   },
   created() {
     this.getList()
   },
   methods: {
-    /** 查询产品管理列表 */
+    /** 查询设置公司简介列表 */
     getList() {
       this.loading = true
-      listManage(this.queryParams).then(response => {
-        this.manageList = response.rows
+      listProfile(this.queryParams).then(response => {
+        this.profileList = response.rows
         this.total = response.total
         this.loading = false
       })
@@ -203,17 +195,14 @@ export default {
     reset() {
       this.form = {
         id: null,
-        productName: null,
         content: null,
-        price: null,
-        imageUrl: null,
+        language: null,
         createBy: null,
         createTime: null,
         updateBy: null,
         updateTime: null
       }
-      this.resetForm("form");
-      this.fileListInit = '';
+      this.resetForm("form")
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -235,39 +224,30 @@ export default {
     handleAdd() {
       this.reset()
       this.open = true
-      this.title = "添加产品管理"
+      this.title = "添加设置公司简介"
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
       const id = row.id || this.ids
-      getManage(id).then(response => {
+      getProfile(id).then(response => {
         this.form = response.data
         this.open = true
-        this.title = "修改产品管理"
-        this.setFileListInit();
+        this.title = "修改设置公司简介"
       })
     },
-    setFileListInit(){
-      this.fileListInit = this.form.imageUrl;
-    },
-    // <ImageUpload> 上传图片成功后的回调函数，值是数组，内部元素是字符串（文件相对路径）
-    uploadSuccess(fileListStr){
-      this.form.imageUrl = fileListStr;
-    },
-
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateManage(this.form).then(response => {
+            updateProfile(this.form).then(response => {
               this.$modal.msgSuccess("修改成功")
               this.open = false
               this.getList()
             })
           } else {
-            addManage(this.form).then(response => {
+            addProfile(this.form).then(response => {
               this.$modal.msgSuccess("新增成功")
               this.open = false
               this.getList()
@@ -279,8 +259,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids
-      this.$modal.confirm('是否确认删除产品管理编号为"' + ids + '"的数据项？').then(function() {
-        return delManage(ids)
+      this.$modal.confirm('是否确认删除设置公司简介编号为"' + ids + '"的数据项？').then(function() {
+        return delProfile(ids)
       }).then(() => {
         this.getList()
         this.$modal.msgSuccess("删除成功")
@@ -288,16 +268,10 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/manage/export', {
+      this.download('system/profile/export', {
         ...this.queryParams
-      }, `manage_${new Date().getTime()}.xlsx`)
+      }, `profile_${new Date().getTime()}.xlsx`)
     }
   }
 }
 </script>
-<style>
-	.listProdImg {
-		width: 3rem;
-		height: 3rem;
-	}
-</style>
