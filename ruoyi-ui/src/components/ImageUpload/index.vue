@@ -131,7 +131,7 @@ export default {
           this.fileList = list.map(item => {
             if (typeof item === "string") {
               if (item.indexOf(this.baseUrl) === -1 && !isExternal(item)) {
-                  item = { name: this.baseUrl + item, url: this.baseUrl + item }
+                  item = { name: item, url: this.baseUrl + item }
               } else {
                   item = { name: item, url: item }
               }
@@ -239,8 +239,13 @@ export default {
       let strs = ""
       separator = separator || ","
       for (let i in list) {
-        if (list[i].url) {
+        // 测试环境中 this.baseUrl 值是 '/dev-api'，不存在于文件路径中。如果要替换掉前缀，应该把location.origin换为空。
+        // 此处 list[i].name 就是相对路径。
+        /*if (list[i].url) {
           strs += list[i].url.replace(this.baseUrl, "") + separator
+        }*/
+        if (list[i].name) {
+          strs += list[i].name + separator
         }
       }
       return strs != '' ? strs.substr(0, strs.length - 1) : ''

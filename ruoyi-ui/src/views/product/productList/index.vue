@@ -67,7 +67,11 @@
       <el-table-column label="产品名称" align="center" prop="productName" />
       <el-table-column label="内容" align="center" prop="content" />
       <el-table-column label="价格" align="center" prop="price" />
-      <el-table-column label="图片附件url" align="center" prop="imageUrl" />
+      <el-table-column label="图片附件url" align="center" prop="imageUrl" >
+        <template slot-scope="scope">
+          <img class="listProdImg" :src="baseUrl+scope.row.imageUrl" alt="图片无法显示"></img>
+        </template>
+	  </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -112,7 +116,7 @@
 <!--        <el-form-item label="图片附件url" prop="imageUrl" >
           <el-input v-model="form.imageUrl" type="textarea" />
         </el-form-item>-->
-        <el-form-item label="上传" prop="field101">
+        <el-form-item label="图片附件" prop="field101">
           <ImageUpload ref="imageUpload" :limit="fileNumLimit" :fileSize="fileSizeMB" :value="fileListInit" @input="uploadSuccess"></ImageUpload>
         </el-form-item>
       </el-form>
@@ -171,6 +175,7 @@ export default {
           { required: true, message: "内容不能为空", trigger: "blur" }
         ],
       },
+      baseUrl: process.env.VUE_APP_BASE_API,
       fileNumLimit: 1, //文件数量限制
       fileSizeMB: 1, //文件最大限制，1MB
       fileListInit: '' //初始化文件列表
@@ -290,3 +295,9 @@ export default {
   }
 }
 </script>
+<style>
+	.listProdImg {
+		width: 3rem;
+		height: 3rem;
+	}
+</style>

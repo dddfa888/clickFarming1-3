@@ -3,6 +3,7 @@ package com.ruoyi.click.mapper;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public interface MAccountChangeRecordsMapper
      * @param mAccountChangeRecords 账变记录
      * @return 账变记录集合
      */
-    List<Map<String,Object>> selectMAccountChangeForeByUserId(MAccountChangeRecords mAccountChangeRecords);
+    List<Map<String,Object>> selectMAccountChangeForeByUser(MAccountChangeRecords mAccountChangeRecords);
 
     /**
      * 新增账变记录
@@ -70,4 +71,11 @@ public interface MAccountChangeRecordsMapper
      * @return 结果
      */
     public int deleteMAccountChangeRecordsByUuids(String[] uuids);
+
+    /**
+     * 一个用户一天内的利润总计
+     * @param param
+     * @return 统计数量结果
+     */
+    BigDecimal sumAmountByUserDate(Map<String,Object> param);
 }

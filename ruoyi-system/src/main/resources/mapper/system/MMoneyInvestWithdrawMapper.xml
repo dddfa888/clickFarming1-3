@@ -16,12 +16,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="reasonForRejection"    column="reason_for_rejection"    />
         <result property="status"    column="status"    />
         <result property="orderId"    column="order_id"    />
+        <result property="accountForward" column="account_forward" />
+        <result property="accountBack"    column="account_back"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectMMoneyInvestWithdrawVo">
-        select id, user_id, user_name, amount, bank_name, bank_account_name, bank_account_number, type, reason_for_rejection, status, order_id, create_time, update_time from m_money_invest_withdraw
+        select id, user_id, user_name, amount, bank_name, bank_account_name, bank_account_number, type, reason_for_rejection, status, order_id, account_forward,account_back, create_time, update_time from m_money_invest_withdraw
     </sql>
 
     <select id="selectMMoneyInvestWithdrawList" parameterType="MMoneyInvestWithdraw" resultMap="MMoneyInvestWithdrawResult">
@@ -37,6 +39,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="reasonForRejection != null  and reasonForRejection != ''"> and reason_for_rejection = #{reasonForRejection}</if>
             <if test="status != null "> and status = #{status}</if>
             <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="accountForward != null "> and account_forward = #{accountForward}</if>
+            <if test="accountBack != null "> and account_back = #{accountBack}</if>
         </where>
         ORDER BY
         CASE WHEN status = 0 THEN 0 ELSE 1 END,
@@ -63,6 +67,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="reasonForRejection != null">reason_for_rejection,</if>
             <if test="status != null">status,</if>
             <if test="orderId != null">order_id,</if>
+            <if test="accountForward != null">account_forward,</if>
+            <if test="accountBack != null">account_back,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
          </trim>
@@ -78,6 +84,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="reasonForRejection != null">#{reasonForRejection},</if>
             <if test="status != null">#{status},</if>
             <if test="orderId != null">#{orderId},</if>
+            <if test="accountForward != null">#{accountForward},</if>
+            <if test="accountBack != null">#{accountBack},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
          </trim>
@@ -96,6 +104,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="reasonForRejection != null">reason_for_rejection = #{reasonForRejection},</if>
             <if test="status != null">status = #{status},</if>
             <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="accountForward != null">account_forward = #{accountForward},</if>
+            <if test="accountBack != null">account_back = #{accountBack},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>

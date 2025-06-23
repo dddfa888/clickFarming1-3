@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.click.sse;
 
+import com.ruoyi.click.domain.MMoneyInvestWithdraw;
 import com.ruoyi.click.service.IMMoneyInvestWithdrawService;
 import com.ruoyi.common.annotation.Anonymous;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,10 @@ public class OrderTipSseController {
             int lastValue = 0;
             while (running.get()) {
                 try {
-                    int randomValue = ThreadLocalRandom.current().nextInt(1000); // 生成 0-999 之间的随机数
+                    MMoneyInvestWithdraw withdraw = new MMoneyInvestWithdraw();
+                    withdraw.setStatus(0);
+                    withdraw.setType("0");
+                    int randomValue = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(withdraw).size();
 
                     if (randomValue != lastValue) {
                         lastValue = randomValue;

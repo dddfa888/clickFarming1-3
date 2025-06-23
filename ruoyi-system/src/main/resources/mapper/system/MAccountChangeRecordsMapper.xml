@@ -44,8 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!-- 查询个人奖励历史记录 只需查3列 -->
-    <select id="selectMAccountChangeForeByUserId" parameterType="MAccountChangeRecords" resultType="java.util.Map">
-        select uuid, amount, description, account_back as "accountBack" from m_account_change_records
+    <select id="selectMAccountChangeForeByUser" parameterType="MAccountChangeRecords" resultType="java.util.Map">
+        select uuid "id", ROUND(amount,2) as "amount", description, ROUND(account_back,2) as "accountBack" from m_account_change_records
         where uid = #{uid} and transaction_type=#{transactionType}
         order by create_time desc
     </select>
@@ -107,4 +107,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{uuid}
         </foreach>
     </delete>
+
+
+    <!-- 一个用户一天内的利润总计 -->
+    <select id="sumAmountByUserDate" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+        select IFNULL(sum(amount),0) n from m_account_change_records
+        where uid = #{userId}
+        and create_time <![CDATA[ >= ]]> #{date1} and create_time  <![CDATA[ < ]]> #{date2}
+        <if test="transactionType != null"> and transaction_type = #{transactionType}</if>
+    </select>
+
 </mapper>

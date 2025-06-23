@@ -29,6 +29,14 @@ public interface IOrderReceiveRecordService
     List<OrderReceiveRecord> selectOrderReceiveRecordList(OrderReceiveRecord orderReceiveRecord);
 
     /**
+     * 查询订单接收记录列表
+     *
+     * @param orderReceiveRecord 订单接收记录
+     * @return 订单接收记录集合
+     */
+    List<OrderReceiveRecord> selectOrderListByUser(OrderReceiveRecord orderReceiveRecord);
+
+    /**
      * 新增订单接收记录
      * 
      * @param orderReceiveRecord 订单接收记录

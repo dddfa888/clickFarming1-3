@@ -72,7 +72,7 @@ spring:
     # 端口，默认为6379
     port: 6379
     # 数据库索引
-    database: 0
+    database: 6
     # 密码
     password:
     # 连接超时时间
@@ -93,7 +93,7 @@ token:
   # 令牌自定义标识
   header: Authorization
   # 令牌密钥
-  secret: abcdefghijklmnopqrstuvwxyz
+  secret: qwejznxvmbtgryokluhcspaidf
   # 令牌有效期（默认30分钟）
   expireTime: 30
 

@@ -63,6 +63,8 @@ public class MUserController extends BaseController
         MUser mUser = mUserService.selectMUserByUid(userId);
         mUser.setLevelName(userGradeService.getOne(new LambdaQueryWrapper<UserGrade>()
                 .eq(UserGrade::getSortNum,mUser.getLevel())).getGradeName());
+        mUser.setLoginPassword("***************");
+        mUser.setFundPassword("***************");
         return success(mUser);
     }
 
@@ -145,7 +147,7 @@ public class MUserController extends BaseController
     /**
      * 获取前4级用户上级
      */
-    @GetMapping(value = "getUpToFourLevelInviters")
+    @GetMapping("/getUpToFourLevelInviters")
     public AjaxResult getUpToFourLevelInviters(HttpServletRequest request) {
         Long uid = tokenService.getLoginUser(request).getmUser().getUid();
         MUser mUser = mUserService.selectMUserByUid(uid);
@@ -264,4 +266,17 @@ public class MUserController extends BaseController
     {
         return toAjax(mUserService.deleteMUserByUids(uids));
     }
+
+
+    /**
+     * 修改用户连单数量
+     */
+    //@PreAuthorize("@ss.hasPermi('system:user:edit')")
+    @Log(title = "用户", businessType = BusinessType.UPDATE)
+    @PutMapping("updateMultiOrderNum")
+    public AjaxResult updateMultiOrderNum(@RequestBody MUser mUser)
+    {
+        return toAjax(mUserService.updateMultiOrderNum(mUser));
+    }
+
 }

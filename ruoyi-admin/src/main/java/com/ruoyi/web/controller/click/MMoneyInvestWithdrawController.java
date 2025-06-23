@@ -17,6 +17,7 @@ import com.ruoyi.click.service.IMUserService;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DecimalUtil;
+import com.ruoyi.common.utils.EncoderUtil;
 import com.ruoyi.common.utils.RandomUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.service.TokenService;
@@ -177,6 +178,11 @@ public class MMoneyInvestWithdrawController extends BaseController
         Long userId = tokenService.getLoginUser(request).getmUser().getUid();
 
         MUser mUser = mUserService.selectMUserByUid(userId);
+        boolean matches = EncoderUtil.matches(withdrawVo.getFundPassword(), mUser.getFundPassword());
+        if(!matches){
+            throw new ServiceException("资金密码错误");
+
+        }
         BigDecimal accountForward = mUser.getAccountBalance();
         if (accountForward.compareTo(withdrawVo.getAmount()) < 0) {
             return AjaxResult.error("余额不足");
@@ -190,6 +196,11 @@ public class MMoneyInvestWithdrawController extends BaseController
         }
         checkBank(mUser);
 
+        BigDecimal accountBack = DecimalUtil.subtract(accountForward, withdrawVo.getAmount());
+        mUser.setAccountBalance(accountBack);
+        mUserService.updateMUser(mUser);
+
+
         MMoneyInvestWithdraw mMoneyInvestWithdraw = new MMoneyInvestWithdraw();
         mMoneyInvestWithdraw.setAmount(withdrawVo.getAmount());
         mMoneyInvestWithdraw.setUserId(mUser.getUid());
@@ -200,11 +211,10 @@ public class MMoneyInvestWithdrawController extends BaseController
         mMoneyInvestWithdraw.setOrderId(RandomUtil.generateRandomNumber(16));
         mMoneyInvestWithdraw.setType("0");
         mMoneyInvestWithdraw.setStatus(0);
+        mMoneyInvestWithdraw.setAccountForward(accountForward);
+        mMoneyInvestWithdraw.setAccountBack(accountBack);
         mMoneyInvestWithdrawService.insertMMoneyInvestWithdraw(mMoneyInvestWithdraw);
 
-        BigDecimal accountBack = DecimalUtil.subtract(accountForward, withdrawVo.getAmount());
-        mUser.setAccountBalance(accountBack);
-        mUserService.updateMUser(mUser);
 
         MAccountChangeRecords mAccountChangeRecords = new MAccountChangeRecords();
         mAccountChangeRecords.setUid(String.valueOf(mUser.getUid()));

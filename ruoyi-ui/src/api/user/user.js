@@ -69,10 +69,30 @@ export function updateUser(data) {
   })
 }
 
+// 修改用户连单数量
+export function updateMultiOrderNum(data) {
+  return request({
+    url: '/api/user/updateMultiOrderNum',
+    method: 'put',
+    data: data
+  })
+}
+
+
 // 删除用户
 export function delUser(uid) {
   return request({
     url: '/api/user/' + uid,
     method: 'delete'
   })
+}
+
+
+// 查询订单
+export function getOrderList(query) {
+  return request({
+    url: '/api/order/list',
+    method: 'get',
+    params: query
+  });
 }
