@@ -26,7 +26,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'http://192.168.1.149:8080/',
+        target: 'https://cfapi.khkjhkh.top/',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
       }

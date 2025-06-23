@@ -9,7 +9,7 @@
         <p>代码: {{ data.productId }}</p>
         <div class="product">
           <img
-            :src="'http://192.168.1.149:8080' + data.productImageUrl"
+            :src="'https://cfapi.khkjhkh.top' + data.productImageUrl"
             class="product-img"
           />
           <div class="product-desc">

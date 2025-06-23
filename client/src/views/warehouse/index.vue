@@ -27,7 +27,7 @@
         <div class="product-info">
           <div class="product-name">
             <img
-              :src="'http://192.168.1.149:8080' + item.productImageUrl"
+              :src="'https://cfapi.khkjhkh.top' + item.productImageUrl"
               alt=""
             />
             <div>
