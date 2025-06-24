@@ -2,12 +2,14 @@ package com.ruoyi.web.controller.click;
 
 import java.util.List;
 import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.click.domain.MNotify;
 import com.ruoyi.click.service.IMNotifyService;
 import com.ruoyi.click.service.IMUserService;
 import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,19 @@ public class MNotifyController extends BaseController
 
     @Autowired
     private IMUserService mUserService;
+
+    @Autowired
+    private TokenService tokenService;
+
+
+    @GetMapping("/userList")
+    public AjaxResult userList(HttpServletRequest request) {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MNotify mNotify = new MNotify();
+        mNotify.setUserId(userId);
+        List<MNotify> mNotifies = mNotifyService.selectMNotifyList(mNotify);
+        return success(mNotifies);
+    }
     /**
      * 查询通知列表
      */
