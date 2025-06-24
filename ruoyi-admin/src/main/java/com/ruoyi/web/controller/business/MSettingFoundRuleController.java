@@ -37,7 +37,6 @@ public class MSettingFoundRuleController extends BaseController
     /**
      * 查询设置基本原则列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:foundRule:list')")
     @GetMapping("/list")
     public TableDataInfo list(MSettingFoundRule mSettingFoundRule)
     {
@@ -49,7 +48,6 @@ public class MSettingFoundRuleController extends BaseController
     /**
      * 导出设置基本原则列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:foundRule:export')")
     @Log(title = "设置基本原则", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MSettingFoundRule mSettingFoundRule)
@@ -62,7 +60,6 @@ public class MSettingFoundRuleController extends BaseController
     /**
      * 获取设置基本原则详细信息
      */
-    @PreAuthorize("@ss.hasPermi('setting:foundRule:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class MSettingFoundRuleController extends BaseController
     /**
      * 新增设置基本原则
      */
-    @PreAuthorize("@ss.hasPermi('setting:foundRule:add')")
     @Log(title = "设置基本原则", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MSettingFoundRule mSettingFoundRule)
@@ -83,7 +79,6 @@ public class MSettingFoundRuleController extends BaseController
     /**
      * 修改设置基本原则
      */
-    @PreAuthorize("@ss.hasPermi('setting:foundRule:edit')")
     @Log(title = "设置基本原则", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MSettingFoundRule mSettingFoundRule)
@@ -94,7 +89,6 @@ public class MSettingFoundRuleController extends BaseController
     /**
      * 删除设置基本原则
      */
-    @PreAuthorize("@ss.hasPermi('setting:foundRule:remove')")
     @Log(title = "设置基本原则", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

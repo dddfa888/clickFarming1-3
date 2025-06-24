@@ -37,7 +37,6 @@ public class MSettingReceiveAccountController extends BaseController
     /**
      * 查询设置收款账户列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:receiveAccount:list')")
     @GetMapping("/list")
     public TableDataInfo list(MSettingReceiveAccount mSettingReceiveAccount)
     {
@@ -49,7 +48,6 @@ public class MSettingReceiveAccountController extends BaseController
     /**
      * 导出设置收款账户列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:receiveAccount:export')")
     @Log(title = "设置收款账户", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MSettingReceiveAccount mSettingReceiveAccount)
@@ -62,7 +60,6 @@ public class MSettingReceiveAccountController extends BaseController
     /**
      * 获取设置收款账户详细信息
      */
-    @PreAuthorize("@ss.hasPermi('setting:receiveAccount:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class MSettingReceiveAccountController extends BaseController
     /**
      * 新增设置收款账户
      */
-    @PreAuthorize("@ss.hasPermi('setting:receiveAccount:add')")
     @Log(title = "设置收款账户", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MSettingReceiveAccount mSettingReceiveAccount)
@@ -83,7 +79,6 @@ public class MSettingReceiveAccountController extends BaseController
     /**
      * 修改设置收款账户
      */
-    @PreAuthorize("@ss.hasPermi('setting:receiveAccount:edit')")
     @Log(title = "设置收款账户", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MSettingReceiveAccount mSettingReceiveAccount)
@@ -94,7 +89,6 @@ public class MSettingReceiveAccountController extends BaseController
     /**
      * 删除设置收款账户
      */
-    @PreAuthorize("@ss.hasPermi('setting:receiveAccount:remove')")
     @Log(title = "设置收款账户", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

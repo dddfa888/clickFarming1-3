@@ -37,7 +37,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 查询订单接收记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:order:list')")
     @GetMapping("/list")
     public TableDataInfo list(OrderReceiveRecord orderReceiveRecord)
     {
@@ -49,7 +48,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 查询当前用户的订单接收记录列表
      */
-    //@PreAuthorize("@ss.hasPermi('system:order:listByUser')")
     @GetMapping("/listByUser")
     public TableDataInfo selectOrderListByUser(OrderReceiveRecord orderReceiveRecord)
     {
@@ -61,7 +59,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 导出订单接收记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:order:export')")
     @Log(title = "订单接收记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, OrderReceiveRecord orderReceiveRecord)
@@ -74,7 +71,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 获取订单接收记录详细信息
      */
-    //@PreAuthorize("@ss.hasPermi('system:order:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -84,7 +80,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 新增订单接收记录
      */
-    @PreAuthorize("@ss.hasPermi('system:order:add')")
     @Log(title = "订单接收记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody OrderReceiveRecord orderReceiveRecord)
@@ -95,7 +90,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 修改订单接收记录
      */
-    @PreAuthorize("@ss.hasPermi('system:order:edit')")
     @Log(title = "订单接收记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody OrderReceiveRecord orderReceiveRecord)
@@ -106,7 +100,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 删除订单接收记录
      */
-    @PreAuthorize("@ss.hasPermi('system:order:remove')")
     @Log(title = "订单接收记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
@@ -117,7 +110,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 统计一个用户当日的订单数量
      */
-    @PreAuthorize("@ss.hasPermi('system:order:countNumByUserDate')")
 	@GetMapping("/countNumByUserDate")
     public AjaxResult countNumByUserDate()
     {
@@ -127,7 +119,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 前台用户点击后添加订单
      */
-    //@PreAuthorize("@ss.hasPermi('system:order:insertOrderByUser')")
     @Log(title = "前台用户点击后添加订单", businessType = BusinessType.INSERT)
     @PostMapping("/insertOrderByUser")
     public AjaxResult insertOrderByUser()
@@ -140,7 +131,6 @@ public class OrderReceiveRecordController extends BaseController
     /**
      * 支付订单
      */
-    //@PreAuthorize("@ss.hasPermi('system:order:payOrder')")
     @Log(title = "支付订单", businessType = BusinessType.UPDATE)
     @PutMapping("/payOrder/{id}")
     public AjaxResult payOrder(@PathVariable("id") Long id)

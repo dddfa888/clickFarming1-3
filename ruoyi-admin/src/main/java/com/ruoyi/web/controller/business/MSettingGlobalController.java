@@ -37,7 +37,6 @@ public class MSettingGlobalController extends BaseController
     /**
      * 查询设置全球化列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:global:list')")
     @GetMapping("/list")
     public TableDataInfo list(MSettingGlobal mSettingGlobal)
     {
@@ -49,7 +48,6 @@ public class MSettingGlobalController extends BaseController
     /**
      * 导出设置全球化列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:global:export')")
     @Log(title = "设置全球化", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MSettingGlobal mSettingGlobal)
@@ -62,7 +60,6 @@ public class MSettingGlobalController extends BaseController
     /**
      * 获取设置全球化详细信息
      */
-    @PreAuthorize("@ss.hasPermi('setting:global:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class MSettingGlobalController extends BaseController
     /**
      * 新增设置全球化
      */
-    @PreAuthorize("@ss.hasPermi('setting:global:add')")
     @Log(title = "设置全球化", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MSettingGlobal mSettingGlobal)
@@ -83,7 +79,6 @@ public class MSettingGlobalController extends BaseController
     /**
      * 修改设置全球化
      */
-    @PreAuthorize("@ss.hasPermi('setting:global:edit')")
     @Log(title = "设置全球化", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MSettingGlobal mSettingGlobal)
@@ -94,7 +89,6 @@ public class MSettingGlobalController extends BaseController
     /**
      * 删除设置全球化
      */
-    @PreAuthorize("@ss.hasPermi('setting:global:remove')")
     @Log(title = "设置全球化", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

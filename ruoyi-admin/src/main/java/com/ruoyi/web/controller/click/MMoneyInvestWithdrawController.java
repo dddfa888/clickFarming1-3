@@ -85,7 +85,6 @@ public class MMoneyInvestWithdrawController extends BaseController
     /**
      * 查询存款取款记录列表
      */
-    @PreAuthorize("@ss.hasPermi('api:withdraw:list')")
     @GetMapping("/list")
     public TableDataInfo list(MMoneyInvestWithdraw mMoneyInvestWithdraw)
     {
@@ -97,7 +96,6 @@ public class MMoneyInvestWithdrawController extends BaseController
     /**
      * 导出存款取款记录列表
      */
-    @PreAuthorize("@ss.hasPermi('api:withdraw:export')")
     @Log(title = "存款取款记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MMoneyInvestWithdraw mMoneyInvestWithdraw)
@@ -110,7 +108,6 @@ public class MMoneyInvestWithdrawController extends BaseController
     /**
      * 获取存款取款记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('api:withdraw:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -240,7 +237,6 @@ public class MMoneyInvestWithdrawController extends BaseController
     /**
      * 修改存款取款记录
      */
-    @PreAuthorize("@ss.hasPermi('api:withdraw:edit')")
     @Log(title = "存款取款记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MMoneyInvestWithdraw mMoneyInvestWithdraw)
@@ -251,7 +247,6 @@ public class MMoneyInvestWithdrawController extends BaseController
     /**
      * 删除存款取款记录
      */
-    @PreAuthorize("@ss.hasPermi('api:withdraw:remove')")
     @Log(title = "存款取款记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

@@ -70,7 +70,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 查询账变记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:records:list')")
     @GetMapping("/list")
     public TableDataInfo list(MAccountChangeRecords mAccountChangeRecords)
     {
@@ -97,7 +96,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 个人的奖励历史记录
      */
-    //@PreAuthorize("@ss.hasPermi('system:records:listForeByUser')")
     @GetMapping(value = "/selectMAccountChangeForeByUser")
     public TableDataInfo selectMAccountChangeForeByUser()
     {
@@ -110,7 +108,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 个人信息与近两日利润 前台《订单详细信息》页
      */
-    //@PreAuthorize("@ss.hasPermi('system:records:getUserProfitInfo')")
     @GetMapping(value = "/getUserProfitInfo")
     public AjaxResult getUserProfitInfo()
     {
@@ -120,7 +117,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 导出账变记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:records:export')")
     @Log(title = "账变记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MAccountChangeRecords mAccountChangeRecords)
@@ -133,7 +129,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 获取账变记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:records:query')")
     @GetMapping(value = "/{uuid}")
     public AjaxResult getInfo(@PathVariable("uuid") String uuid)
     {
@@ -143,7 +138,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 新增账变记录
      */
-    @PreAuthorize("@ss.hasPermi('system:records:add')")
     @Log(title = "账变记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MAccountChangeRecords mAccountChangeRecords)
@@ -154,7 +148,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 修改账变记录
      */
-    @PreAuthorize("@ss.hasPermi('system:records:edit')")
     @Log(title = "账变记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MAccountChangeRecords mAccountChangeRecords)
@@ -165,7 +158,6 @@ public class MAccountChangeRecordsController extends BaseController
     /**
      * 删除账变记录
      */
-    @PreAuthorize("@ss.hasPermi('system:records:remove')")
     @Log(title = "账变记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{uuids}")
     public AjaxResult remove(@PathVariable String[] uuids)

@@ -37,7 +37,6 @@ public class MSettingOrderRuleController extends BaseController
     /**
      * 查询设置订购规则列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:orderRule:list')")
     @GetMapping("/list")
     public TableDataInfo list(MSettingOrderRule mSettingOrderRule)
     {
@@ -49,7 +48,6 @@ public class MSettingOrderRuleController extends BaseController
     /**
      * 导出设置订购规则列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:orderRule:export')")
     @Log(title = "设置订购规则", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MSettingOrderRule mSettingOrderRule)
@@ -62,7 +60,6 @@ public class MSettingOrderRuleController extends BaseController
     /**
      * 获取设置订购规则详细信息
      */
-    @PreAuthorize("@ss.hasPermi('setting:orderRule:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class MSettingOrderRuleController extends BaseController
     /**
      * 新增设置订购规则
      */
-    @PreAuthorize("@ss.hasPermi('setting:orderRule:add')")
     @Log(title = "设置订购规则", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MSettingOrderRule mSettingOrderRule)
@@ -83,7 +79,6 @@ public class MSettingOrderRuleController extends BaseController
     /**
      * 修改设置订购规则
      */
-    @PreAuthorize("@ss.hasPermi('setting:orderRule:edit')")
     @Log(title = "设置订购规则", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MSettingOrderRule mSettingOrderRule)
@@ -94,7 +89,6 @@ public class MSettingOrderRuleController extends BaseController
     /**
      * 删除设置订购规则
      */
-    @PreAuthorize("@ss.hasPermi('setting:orderRule:remove')")
     @Log(title = "设置订购规则", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

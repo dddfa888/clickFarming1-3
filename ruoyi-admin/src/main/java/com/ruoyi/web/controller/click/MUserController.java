@@ -100,7 +100,6 @@ public class MUserController extends BaseController
     /**
      * 查询用户列表
      */
-    @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/list")
     public TableDataInfo list(MUser mUser)
     {
@@ -124,7 +123,6 @@ public class MUserController extends BaseController
     /**
      * 导出用户列表
      */
-    @PreAuthorize("@ss.hasPermi('system:user:export')")
     @Log(title = "用户", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MUser mUser)
@@ -137,7 +135,6 @@ public class MUserController extends BaseController
     /**
      * 获取用户详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping(value = "/{uid}")
     public AjaxResult getInfo(@PathVariable("uid") Long uid)
     {
@@ -234,7 +231,6 @@ public class MUserController extends BaseController
     /**
      * 新增用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "用户", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MUser mUser)
@@ -248,7 +244,6 @@ public class MUserController extends BaseController
     /**
      * 修改用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MUser mUser)
@@ -259,7 +254,6 @@ public class MUserController extends BaseController
     /**
      * 删除用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:remove')")
     @Log(title = "用户", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{uids}")
     public AjaxResult remove(@PathVariable Long[] uids)
@@ -271,7 +265,6 @@ public class MUserController extends BaseController
     /**
      * 修改用户连单数量
      */
-    //@PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户", businessType = BusinessType.UPDATE)
     @PutMapping("updateMultiOrderNum")
     public AjaxResult updateMultiOrderNum(@RequestBody MUser mUser)

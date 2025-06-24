@@ -58,7 +58,6 @@ public class MNotifyController extends BaseController
     /**
      * 查询通知列表
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:list')")
     @GetMapping("/list")
     public TableDataInfo list(MNotify mNotify)
     {
@@ -70,7 +69,6 @@ public class MNotifyController extends BaseController
     /**
      * 导出通知列表
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:export')")
     @Log(title = "通知", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MNotify mNotify)
@@ -83,7 +81,6 @@ public class MNotifyController extends BaseController
     /**
      * 获取通知详细信息
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:query')")
     @GetMapping(value = "/{uid}")
     public AjaxResult getInfo(@PathVariable("uid") Long uid)
     {
@@ -93,7 +90,6 @@ public class MNotifyController extends BaseController
     /**
      * 新增通知
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:add')")
     @Log(title = "通知", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MNotify mNotify)
@@ -108,7 +104,6 @@ public class MNotifyController extends BaseController
     /**
      * 修改通知
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:edit')")
     @Log(title = "通知", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MNotify mNotify) {
@@ -125,7 +120,6 @@ public class MNotifyController extends BaseController
     /**
      * 删除通知
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:remove')")
     @Log(title = "通知", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{uids}")
     public AjaxResult remove(@PathVariable Long[] uids)

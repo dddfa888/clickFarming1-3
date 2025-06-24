@@ -37,7 +37,6 @@ public class MSettingComProfileController extends BaseController
     /**
      * 查询设置公司简介列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:comProfile:list')")
     @GetMapping("/list")
     public TableDataInfo list(MSettingComProfile mSettingComProfile)
     {
@@ -49,7 +48,6 @@ public class MSettingComProfileController extends BaseController
     /**
      * 导出设置公司简介列表
      */
-    @PreAuthorize("@ss.hasPermi('setting:comProfile:export')")
     @Log(title = "设置公司简介", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MSettingComProfile mSettingComProfile)
@@ -62,7 +60,6 @@ public class MSettingComProfileController extends BaseController
     /**
      * 获取设置公司简介详细信息
      */
-    @PreAuthorize("@ss.hasPermi('setting:comProfile:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class MSettingComProfileController extends BaseController
     /**
      * 新增设置公司简介
      */
-    @PreAuthorize("@ss.hasPermi('setting:comProfile:add')")
     @Log(title = "设置公司简介", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MSettingComProfile mSettingComProfile)
@@ -83,7 +79,6 @@ public class MSettingComProfileController extends BaseController
     /**
      * 修改设置公司简介
      */
-    @PreAuthorize("@ss.hasPermi('setting:comProfile:edit')")
     @Log(title = "设置公司简介", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MSettingComProfile mSettingComProfile)
@@ -94,7 +89,6 @@ public class MSettingComProfileController extends BaseController
     /**
      * 删除设置公司简介
      */
-    @PreAuthorize("@ss.hasPermi('setting:comProfile:remove')")
     @Log(title = "设置公司简介", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
@@ -106,7 +100,6 @@ public class MSettingComProfileController extends BaseController
     /**
      * 根据语言查询设置公司简介
      */
-    //@PreAuthorize("@ss.hasPermi('setting:comProfile:list')")
     @GetMapping("/getByLang")
     public AjaxResult getByLang(String lang)
     {
