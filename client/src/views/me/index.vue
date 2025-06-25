@@ -14,11 +14,11 @@
     <!-- 会员级别 -->
     <div class="user-level-info">
       <div class="balance-info">
-        <p class="balance-label">剩余</p>
+        <p class="balance-label">{{ t("剩余") }}</p>
         <p class="balance-amount">{{ userInfo.accountBalance }} €</p>
       </div>
       <div class="member-level">
-        <p class="section-label">会员级别</p>
+        <p class="section-label">{{ t("会员级别") }}</p>
         <p class="level-name">{{ userInfo.levelName }}</p>
       </div>
     </div>
@@ -26,29 +26,33 @@
     <!-- 功能按钮区域 -->
     <div class="action-buttons">
       <!-- <button class="action-btn" @click="handleAction('withdraw')">提款</button> -->
-      <button class="action-btn" @click="handleAction('withdraw')">提现</button>
+      <button class="action-btn" @click="handleAction('withdraw')">
+        {{ t("提现") }}
+      </button>
       <button class="action-btn" @click="handleAction('withdrawHistory')">
-        提款记录
+        {{ t("提款记录") }}
       </button>
       <button class="action-btn" @click="handleAction('depositHistory')">
-        存款记录
+        {{ t("存款记录") }}
       </button>
       <button class="action-btn" @click="handleAction('orderHistory')">
-        订单历史
+        {{ t("订单历史") }}
       </button>
       <button class="action-btn" @click="handleAction('rewardHistory')">
-        奖励历史记录
+        {{ t("奖励历史记录") }}
       </button>
       <button class="action-btn" @click="handleAction('groupReport')">
-        小组报告
+        {{ t("小组报告") }}
       </button>
       <button class="action-btn" @click="handleAction('bankInfo')">
-        银行信息
+        {{ t("银行信息") }}
       </button>
-      <button class="action-btn" @click="handleAction('address')">地址</button>
-      <button class="action-btn" @click="handleAction('language')">语言</button>
+      <button class="action-btn" @click="handleAction('address')">
+        {{ t("地址") }}
+      </button>
+      <button class="action-btn">{{ t("语言") }}</button>
       <button class="language-btn" @click="toggleDropdown">
-        {{ selectedLanguage }}
+        {{ t(selectedLanguage) }}
       </button>
 
       <!-- 语言选择下拉框 -->
@@ -59,14 +63,14 @@
           @click.stop="selectLanguage(lang)"
           :class="{ active: lang === selectedLanguage }"
         >
-          {{ lang }}
+          {{ t(lang) }}
         </li>
       </ul>
     </div>
 
     <!-- 登出按钮 -->
 
-    <button class="logout-btn" @click="handleLogout">登出</button>
+    <button class="logout-btn" @click="handleLogout">{{ t("登出") }}</button>
   </div>
 </template>
 
@@ -80,6 +84,7 @@ import { getUserInfo } from "../../api/index";
 
 const router = useRouter();
 const { locale: i18nLocale } = useI18n();
+const { t } = useI18n();
 const userInfo = ref({});
 const langStore = useLangStore();
 const { locale: langStoreLocale } = storeToRefs(langStore);
@@ -88,13 +93,18 @@ i18nLocale.value = langStoreLocale.value; // 同步 i18n
 
 const langMap = {
   中国: "zh",
+  英语: "en",
   越南语: "vi",
+  日本: "ja",
+  法国: "fr",
+  俄罗斯: "ru",
+  韩国: "ko",
 };
 const reverseLangMap = Object.fromEntries(
   Object.entries(langMap).map(([k, v]) => [v, k])
 );
 
-const selectedLanguage = ref(reverseLangMap[langStoreLocale.value] || "中国");
+const selectedLanguage = ref(reverseLangMap[langStoreLocale.value] || "越南语");
 const languageOptions = Object.keys(langMap);
 const showDropdown = ref(false);
 
@@ -131,8 +141,6 @@ const handleAction = (row) => {
     router.push("/bankInfo");
   } else if (row === "address") {
     router.push("/address");
-  } else if (row === "language") {
-    router.push("/language");
   }
   console.log(row);
 };
@@ -231,9 +239,9 @@ const handleAction = (row) => {
 }
 
 .logout-btn {
-  width: 20%;
+  /* width: 20%; */
   margin-left: 40%;
-  padding: 10px;
+  padding: 10px 15px;
   background-color: #5b0606;
   border: none;
   border-radius: 6px;

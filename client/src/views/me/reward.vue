@@ -1,6 +1,6 @@
 <template>
   <div class="company-intro">
-    <HeaderBar title="奖励历史记录" />
+    <HeaderBar :title="t('奖励历史记录')" />
     <div class="transaction-list">
       <div
         v-for="(transaction, index) in transactions"
@@ -8,11 +8,11 @@
         class="transaction-item"
       >
         <div class="transaction-amount">
-          金钱数额：+{{ formatAmount(transaction.amount) }}
+          {{ t("金钱数额") }}:+{{ formatAmount(transaction.amount) }}
         </div>
         <div class="transaction-time">描述：{{ transaction.description }}</div>
         <div class="transaction-balance">
-          剩余: {{ formatAmount(transaction.accountBack) }}
+          {{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}
         </div>
       </div>
     </div>
@@ -23,6 +23,8 @@
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
 import { getRewardHistory } from "../../api/index.js";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const transactions = ref([]);
 
 const formatAmount = (amount) => {

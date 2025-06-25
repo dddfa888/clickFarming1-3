@@ -1,8 +1,8 @@
 <template>
   <div class="company-intro">
-    <HeaderBar title="地址" />
+    <HeaderBar :title="t('地址')" />
     <div class="form-group">
-      <label :class="{ floated: inputValue }">地址</label>
+      <label :class="{ floated: inputValue }">{{ t("地址") }}</label>
       <input v-model="inputValue" type="text" placeholder=" " class="input" />
     </div>
   </div>
@@ -11,7 +11,9 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
-const value = ref("");
+const inputValue = ref("");
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <style scoped>

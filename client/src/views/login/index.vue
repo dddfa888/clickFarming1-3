@@ -4,7 +4,7 @@
     <div class="language-selector">
       <span class="label">{{ $t("语言") }}</span>
       <div class="dropdown-wrapper" @click="toggleLangList">
-        {{ $t(selectedLanguage) }}
+        {{ t(selectedLanguage) }}
 
         <ul v-if="showLangList" class="lang-dropdown">
           <li
@@ -13,7 +13,7 @@
             @click.stop="selectLanguage(lang)"
             :class="{ active: lang === selectedLanguage }"
           >
-            {{ $t(lang) }}
+            {{ t(lang) }}
           </li>
         </ul>
       </div>
@@ -26,30 +26,30 @@
           <van-field
             v-model="form.loginAccount"
             name="loginAccount"
-            :label="$t('用户名')"
-            :placeholder="$t('请填写用户名')"
+            :label="t('用户名')"
+            :placeholder="t('请填写用户名')"
             left-icon="user-o"
-            :rules="[{ required: true, message: $t('请填写用户名') }]"
+            :rules="[{ required: true, message: t('请填写用户名') }]"
           />
           <van-field
             v-model="form.loginPassword"
             type="password"
             name="loginPassword"
-            :label="$t('密码')"
-            :placeholder="$t('请填写密码')"
+            :label="t('密码')"
+            :placeholder="t('请填写密码')"
             left-icon="lock"
-            :rules="[{ required: true, message: '请填写密码' }]"
+            :rules="[{ required: true, message: t('请填写密码') }]"
           />
         </van-cell-group>
         <div style="margin: 16px">
           <van-button round block type="primary" native-type="submit">
-            {{ $t("现在登录") }}
+            {{ t("现在登录") }}
           </van-button>
         </div>
       </van-form>
 
       <div class="login-footer">
-        <span @click="router.push('/register')">{{ $t("注册") }}</span>
+        <span @click="router.push('/register')">{{ t("注册") }}</span>
       </div>
     </div>
   </div>
@@ -71,6 +71,7 @@ const form = reactive({
 
 const langStore = useLangStore();
 const { locale } = useI18n();
+const { t } = useI18n();
 const showLangList = ref(false);
 const langMap = {
   中国: "zh",

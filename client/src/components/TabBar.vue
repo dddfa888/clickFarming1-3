@@ -38,7 +38,9 @@
 <script setup>
 import { useRouter, useRoute } from "vue-router";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const getImageUrl = (name) =>
   new URL(`../assets/img/${name}`, import.meta.url).href;
 
@@ -47,13 +49,13 @@ const route = useRoute();
 
 const tabs = [
   {
-    name: "首页",
+    name: t("首页"),
     path: "/",
     icon: getImageUrl("home.svg"),
     iconActive: getImageUrl("home-active.svg"),
   },
   {
-    name: "仓库",
+    name: t("仓库"),
     path: "/warehouse",
     icon: getImageUrl("warehouse.svg"),
     iconActive: getImageUrl("warehouse-active.svg"),
@@ -65,7 +67,7 @@ const tabs = [
     iconActive: getImageUrl("service-active.svg"),
   },
   {
-    name: "我",
+    name: t("我"),
     path: "/me",
     icon: getImageUrl("user.svg"),
     iconActive: getImageUrl("user-active.svg"),

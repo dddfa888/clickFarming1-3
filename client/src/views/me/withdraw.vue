@@ -4,40 +4,40 @@
       <div class="header">
         <div @click="toback">
           <van-icon name="arrow-left" />
-          <span class="back">取款</span>
+          <span class="back">{{ t("取款") }}</span>
         </div>
         <span class="balance">{{ balance }} €</span>
       </div>
 
       <div class="form">
         <div class="form-group">
-          <label>账户名称</label>
+          <label>{{ t("账户名称") }}</label>
           <input type="text" v-model="accountName" disabled />
         </div>
 
         <div class="form-group">
-          <label>账号</label>
+          <label>{{ t("账号") }}</label>
           <input type="text" v-model="accountNumber" disabled />
         </div>
 
         <div class="form-group amount-group">
-          <label>金钱数额</label>
+          <label>{{ t("金钱数额") }}</label>
           <input
             style="border: 1px solid #e5e7eb"
             type="text"
             v-model="amount"
-            placeholder="金额数额"
+            :placeholder="t('金额数额')"
           />
-          <button @click="fillAll">全部</button>
+          <button @click="fillAll">{{ t("全部") }}</button>
         </div>
 
         <div class="form-group password-group">
-          <label>提现密码</label>
+          <label>{{ t("提现密码") }}</label>
           <input
             style="border: 1px solid #e5e7eb"
             :type="showPassword ? 'text' : 'password'"
             v-model="password"
-            placeholder="提现密码"
+            :placeholder="{{t('提现密码')}}"
           />
           <van-icon
             :name="showPassword ? 'eye-o' : 'closed-eye'"
@@ -46,7 +46,7 @@
           />
         </div>
 
-        <button class="submit-btn" @click="submit">取款</button>
+        <button class="submit-btn" @click="submit">{{ t("取款") }}</button>
       </div>
     </div>
   </div>
@@ -57,6 +57,8 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { withdraw } from "../../api/index.js";
 import { showToast } from "vant";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const balance = ref("539,54");
 const accountName = ref("NGUYEN THUY LINH");

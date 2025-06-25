@@ -1,6 +1,6 @@
 <template>
   <div class="distribution-history">
-    <HeaderBar title="订单历史" />
+    <HeaderBar :title="t('订单历史')" />
     <div class="history-list">
       <div
         v-for="(item, index) in historyItems"
@@ -9,8 +9,8 @@
       >
         <div class="item-header">
           <div class="time-code">
-            <span class="time">时间: {{ item.createTime }}</span>
-            <span class="code">代码: {{ item.productId }}</span>
+            <span class="time">{{ t("时间") }}: {{ item.createTime }}</span>
+            <span class="code">{{ t("代码") }}: {{ item.productId }}</span>
           </div>
         </div>
 
@@ -32,17 +32,15 @@
 
         <div class="calculation">
           <div class="calc-row">
-            <span>分配总额:</span>
+            <span>{{ t("分配总额") }}:</span>
             <span class="amount">{{ item.totalAmount }} €</span>
           </div>
           <div class="calc-row">
-            <span>利润:</span>
+            <span>{{ t("利润") }}:</span>
             <span class="amount">{{ item.profit }} €</span>
           </div>
-          <div class="calc-row">
-            <span>退款金额:</span>
-            <span class="amount highlight">{{ item.refundAmount }} €</span>
-          </div>
+          <span>{{ t("退款金额") }}:</span>
+          <span class="amount highlight">{{ item.refundAmount }} €</span>
         </div>
       </div>
     </div>
@@ -53,6 +51,8 @@
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
 import { getOrderHistory } from "../../api/index.js";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const totalAmount = ref("532,94");
 

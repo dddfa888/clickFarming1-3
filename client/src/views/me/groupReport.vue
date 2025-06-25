@@ -1,6 +1,6 @@
 <template>
   <div class="company-intro">
-    <HeaderBar title="团体" />
+    <HeaderBar :title="t('团体')" />
     <!-- Tab 导航栏 -->
     <div class="tab-header">
       <div
@@ -21,19 +21,19 @@
           class="group-report"
           style="color: #fff; padding: 10px"
         >
-          暂无数据
+          {{ t("暂无数据") }}
         </div>
         <div v-for="item in filteredList" :key="item.uid" class="group-report">
           <div class="group-member-item">
-            <img src="../../assets/img/3-DHl9k9P6.png" alt="头像" />
+            <img src="../../assets/img/3-DHl9k9P6.png" />
             <div>
               <p>{{ item.loginAccount }}</p>
-              <p>剩余: {{ item.accountBalance.toFixed(2) }} €</p>
+              <p>{{ t("剩余") }}: {{ item.accountBalance.toFixed(2) }} €</p>
             </div>
           </div>
           <div>
             <p>SĐT: {{ item.phoneNumber }}</p>
-            <p>注册时间: {{ item.createTime }}</p>
+            <p>{{ t("注册时间") }}: {{ item.createTime }}</p>
           </div>
         </div>
       </div>
@@ -45,9 +45,11 @@
 import { ref, computed } from "vue";
 import { getGroupReport } from "../../api/index.js";
 import HeaderBar from "../../components/HeaderBar.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 // 定义 tab 数据
-const tabs = ref(["第1级", "第2级", "第3级", "第4级"]);
+const tabs = ref([t("第1级"), t("第2级"), t("第3级"), t("第4级")]);
 const activeTab = ref(0); // 当前激活的 tab 下标
 const grouplist = ref([]);
 

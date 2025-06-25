@@ -2,7 +2,7 @@
 <template>
   <div class="modal-backdrop" @click.self="close">
     <div class="modal-box">
-      <h3 class="modal-title">产品信息</h3>
+      <h3 class="modal-title">{{ t("产品信息") }}</h3>
 
       <div class="info">
         <p>时间: {{ data.createTime }}</p>
@@ -18,14 +18,14 @@
           </div>
         </div>
 
-        <p>分配总额: {{ data.totalAmount }} €</p>
-        <p>利润: {{ data.profit }} €</p>
-        <p class="highlight">退款金额: {{ data.refundAmount }} €</p>
+        <p>{{ t("分配总额") }}: {{ data.totalAmount }} €</p>
+        <p>{{ t("利润") }}: {{ data.profit }} €</p>
+        <p class="highlight">{{ t("退款金额") }}: {{ data.refundAmount }} €</p>
       </div>
 
       <div class="actions">
-        <button class="btn btn-pay" @click="onPay">支付</button>
-        <button class="btn btn-cancel" @click="close">取消</button>
+        <button class="btn btn-pay" @click="onPay">{{ t("支付") }}</button>
+        <button class="btn btn-cancel" @click="close">{{ t("取消") }}</button>
       </div>
     </div>
   </div>
@@ -34,6 +34,7 @@
 <script setup>
 import { defineProps, toRefs, ref } from "vue";
 import { getOrderById } from "../api/index.js";
+import { useI18n } from "vue-i18n";
 const props = defineProps({
   id: {
     type: [String, Number],
@@ -42,6 +43,7 @@ const props = defineProps({
 });
 
 const { id } = toRefs(props);
+const { t } = useI18n();
 const data = ref({});
 getOrderById(id.value).then((res) => {
   data.value = res.data;

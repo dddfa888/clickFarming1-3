@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import ProductModal from "../../components/ProductModal.vue";
 import {
   getOrderList,
@@ -109,6 +109,23 @@ getOrderList().then((res) => {
 getUserGradeAndBalanceAndDiscount().then((res) => {
   console.log(res.data);
   totalAmount.value = res.data.userBalance;
+});
+
+onMounted(async () => {
+  try {
+    const [orderRes, userRes] = await Promise.all([
+      getOrderList(),
+      getUserGradeAndBalanceAndDiscount(),
+    ]);
+
+    // 设置订单列表
+    historyItems.value = orderRes.rows;
+
+    // 设置用户余额
+    totalAmount.value = userRes.data.userBalance;
+  } catch (error) {
+    console.error("并发加载数据失败", error);
+  }
 });
 // 可以添加数据更新逻辑
 </script>

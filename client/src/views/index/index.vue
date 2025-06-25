@@ -91,7 +91,7 @@
     <!-- 会员等级 -->
     <div class="title">{{ t("会员级别") }}</div>
     <div v-for="item in Recordlist" :key="item.id" class="member-level">
-      <div v-if="level > item.id">{{ t("开锁") }}</div>
+      <div v-if="level != item.id">{{ t("开锁") }}</div>
       <div class="level-info">
         <div class="col">{{ t("升级费") }}<br />{{ item.joinCost }}</div>
         <div class="col">
@@ -100,7 +100,7 @@
         <div class="col">
           {{ t("分配数量") }}<br />
           {{ item.buyProdNum }}
-          <span v-if="level < item.id" class="lock-icon">{{
+          <span v-if="level === item.id" class="lock-icon">{{
             t("当前水平")
           }}</span>
           <span class="badge">{{ item.gradeName }}</span>
@@ -159,9 +159,10 @@ getUserInfo().then((res) => {
   userInfo.value = res.data;
 });
 getMemberRecord().then((res) => {
-  if (res.code) {
+  if (res.code === 200) {
     Recordlist.value = res.data.userGrade;
     level.value = res.data.level;
+    console.log(res.data.level, "等级");
   }
 });
 // 生成随机用户名
@@ -259,6 +260,40 @@ const onWithdraw = () => {
 const onDeposit = () => {
   console.log("执行取款操作");
 };
+
+function withTimeout(promise, timeout = 5000) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("请求超时")), timeout)
+    ),
+  ]);
+}
+
+onMounted(async () => {
+  promoRef.value?.show();
+  updateRewards();
+
+  try {
+    const [userRes, memberRes] = await Promise.all([
+      withTimeout(getUserInfo(), 5000),
+      withTimeout(getMemberRecord(), 5000),
+    ]);
+
+    // 设置用户信息
+    userInfo.value = userRes.data;
+
+    // 设置等级信息
+    if (memberRes.code) {
+      Recordlist.value = memberRes.data.userGrade;
+      level.value = memberRes.data.level;
+    }
+  } catch (error) {
+    console.error("加载数据失败：", error);
+  }
+
+  setInterval(updateRewards, 1000);
+});
 </script>
 
 <style scoped>

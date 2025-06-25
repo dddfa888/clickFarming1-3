@@ -21,6 +21,11 @@ const routes = [
   { path: '/bankInfo', name: 'bankInfo', component: () => import('../views/me/bankInfo.vue') },
   { path: '/address', name: 'address', component: () => import('../views/me/address.vue') },
   { path: '/orderdetail', name: 'orderdetail', component: () => import('../views/index/orderdetail.vue') },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue')
+  }
 ]
 
 const router = createRouter({

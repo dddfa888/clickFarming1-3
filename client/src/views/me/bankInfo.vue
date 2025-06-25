@@ -1,16 +1,16 @@
 <template>
   <div class="company-intro">
-    <HeaderBar title="银行信息" />
+    <HeaderBar :title="t('银行信息')" />
     <div class="form-group">
-      <label :class="{ floated: inputValue }">选择银行</label>
+      <label :class="{ floated: inputValue }">{{ t("选择银行") }}</label>
       <input v-model="inputValue" type="text" placeholder=" " class="input" />
     </div>
     <div class="form-group">
-      <label :class="{ floated: inputValue }">账号名称</label>
+      <label :class="{ floated: inputValue }">{{ t("账号名称") }}</label>
       <input v-model="inputValue" type="text" placeholder=" " class="input" />
     </div>
     <div class="form-group">
-      <label :class="{ floated: inputValue }">账号</label>
+      <label :class="{ floated: inputValue }">{{ t("账号") }}</label>
       <input v-model="inputValue" type="text" placeholder=" " class="input" />
     </div>
   </div>
@@ -19,7 +19,9 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
-const value = ref("");
+const inputValue = ref("");
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <style scoped>
