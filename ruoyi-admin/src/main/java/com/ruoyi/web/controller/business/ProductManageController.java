@@ -37,7 +37,6 @@ public class ProductManageController extends BaseController
     /**
      * 查询产品管理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:product:list')")
     @GetMapping("/list")
     public TableDataInfo list(ProductManage productManage)
     {
@@ -49,7 +48,6 @@ public class ProductManageController extends BaseController
     /**
      * 导出产品管理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:product:export')")
     @Log(title = "产品管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, ProductManage productManage)
@@ -62,7 +60,6 @@ public class ProductManageController extends BaseController
     /**
      * 获取产品管理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:product:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class ProductManageController extends BaseController
     /**
      * 新增产品管理
      */
-    @PreAuthorize("@ss.hasPermi('system:product:add')")
     @Log(title = "产品管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ProductManage productManage)
@@ -83,7 +79,6 @@ public class ProductManageController extends BaseController
     /**
      * 修改产品管理
      */
-    @PreAuthorize("@ss.hasPermi('system:product:edit')")
     @Log(title = "产品管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ProductManage productManage)
@@ -94,7 +89,6 @@ public class ProductManageController extends BaseController
     /**
      * 删除产品管理
      */
-    @PreAuthorize("@ss.hasPermi('system:product:remove')")
     @Log(title = "产品管理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

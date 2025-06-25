@@ -2,12 +2,14 @@ package com.ruoyi.web.controller.click;
 
 import java.util.List;
 import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.click.domain.MNotify;
 import com.ruoyi.click.service.IMNotifyService;
 import com.ruoyi.click.service.IMUserService;
 import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,10 +42,22 @@ public class MNotifyController extends BaseController
 
     @Autowired
     private IMUserService mUserService;
+
+    @Autowired
+    private TokenService tokenService;
+
+
+    @GetMapping("/userList")
+    public AjaxResult userList(HttpServletRequest request) {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MNotify mNotify = new MNotify();
+        mNotify.setUserId(userId);
+        List<MNotify> mNotifies = mNotifyService.selectMNotifyList(mNotify);
+        return success(mNotifies);
+    }
     /**
      * 查询通知列表
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:list')")
     @GetMapping("/list")
     public TableDataInfo list(MNotify mNotify)
     {
@@ -55,7 +69,6 @@ public class MNotifyController extends BaseController
     /**
      * 导出通知列表
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:export')")
     @Log(title = "通知", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, MNotify mNotify)
@@ -68,7 +81,6 @@ public class MNotifyController extends BaseController
     /**
      * 获取通知详细信息
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:query')")
     @GetMapping(value = "/{uid}")
     public AjaxResult getInfo(@PathVariable("uid") Long uid)
     {
@@ -78,7 +90,6 @@ public class MNotifyController extends BaseController
     /**
      * 新增通知
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:add')")
     @Log(title = "通知", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MNotify mNotify)
@@ -93,7 +104,6 @@ public class MNotifyController extends BaseController
     /**
      * 修改通知
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:edit')")
     @Log(title = "通知", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody MNotify mNotify) {
@@ -110,7 +120,6 @@ public class MNotifyController extends BaseController
     /**
      * 删除通知
      */
-    @PreAuthorize("@ss.hasPermi('api:notify:remove')")
     @Log(title = "通知", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{uids}")
     public AjaxResult remove(@PathVariable Long[] uids)

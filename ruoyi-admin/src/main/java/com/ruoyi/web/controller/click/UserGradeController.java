@@ -68,7 +68,6 @@ public class UserGradeController extends BaseController
     /**
      * 查询用户等级列表
      */
-    @PreAuthorize("@ss.hasPermi('system:grade:list')")
     @GetMapping("/list")
     public TableDataInfo list(UserGrade userGrade)
     {
@@ -80,7 +79,6 @@ public class UserGradeController extends BaseController
     /**
      * 导出用户等级列表
      */
-    @PreAuthorize("@ss.hasPermi('system:grade:export')")
     @Log(title = "用户等级", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, UserGrade userGrade)
@@ -93,7 +91,6 @@ public class UserGradeController extends BaseController
     /**
      * 获取用户等级详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:grade:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -103,7 +100,6 @@ public class UserGradeController extends BaseController
     /**
      * 新增用户等级
      */
-    @PreAuthorize("@ss.hasPermi('system:grade:add')")
     @Log(title = "用户等级", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody UserGrade userGrade)
@@ -114,7 +110,6 @@ public class UserGradeController extends BaseController
     /**
      * 修改用户等级
      */
-    @PreAuthorize("@ss.hasPermi('system:grade:edit')")
     @Log(title = "用户等级", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody UserGrade userGrade)
@@ -125,7 +120,6 @@ public class UserGradeController extends BaseController
     /**
      * 删除用户等级
      */
-    @PreAuthorize("@ss.hasPermi('system:grade:remove')")
     @Log(title = "用户等级", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
