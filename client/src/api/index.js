@@ -124,27 +124,10 @@ export function sendDistribution(id) {
     })
 }
 
-
-// //公司简介
-// export function getCompanyProfile() {
-//     return request({
-//         url: '/api/settingComProfile/getByLang',
-//         method: 'get',
-//     })
-// }
-
-// //基本原则
-// export function getCompanyRule() {
-//     return request({
-//         url: '/api/settingFoundRule/getByLang',
-//         method: 'get',
-//     })
-// }
-
-// //开发合作
-// export function getCompanyCooperation() {
-//     return request({
-//         url: '/api/settingDevCooperate/getByLang',
-//         method: 'get',
-//     })
-// }
+// 获取用户通知 
+export function getUserNotification() {
+    return request({
+        url: '/api/notify/userList',
+        method: 'get',
+    })
+}

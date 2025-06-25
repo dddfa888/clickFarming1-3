@@ -36,25 +36,7 @@
             <p>注册时间: {{ item.createTime }}</p>
           </div>
         </div>
-        <!-- <div class="group-report">
-          <div class="group-member-item">
-            <img src="../../assets/img/3-DHl9k9P6.png" alt="" />
-            <div>
-              <p>Linh199</p>
-              <p>剩余: 0,00 €</p>
-            </div>
-          </div>
-          <div>
-            <p>SĐT: 191619018917</p>
-            <p>注册时间: 2025-06-12</p>
-          </div>
-        </div> -->
       </div>
-
-      <!-- <div v-else-if="activeTab === 1">1</div>
-
-      <div v-else-if="activeTab === 2">2</div>
-      <div v-else-if="activeTab === 3">3</div> -->
     </div>
   </div>
 </template>

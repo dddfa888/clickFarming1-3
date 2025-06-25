@@ -113,6 +113,29 @@ const selectLanguage = (lang) => {
 getUserInfo().then((res) => {
   userInfo.value = res.data;
 });
+
+const handleAction = (row) => {
+  if (row === "withdraw") {
+    router.push("/withdraw");
+  } else if (row === "withdrawHistory") {
+    router.push("/withdrawHistory");
+  } else if (row === "depositHistory") {
+    router.push("/depositHistory");
+  } else if (row === "orderHistory") {
+    router.push("/orderHistory");
+  } else if (row === "rewardHistory") {
+    router.push("/rewardHistory");
+  } else if (row === "groupReport") {
+    router.push("/groupReport");
+  } else if (row === "bankInfo") {
+    router.push("/bankInfo");
+  } else if (row === "address") {
+    router.push("/address");
+  } else if (row === "language") {
+    router.push("/language");
+  }
+  console.log(row);
+};
 </script>
 
 <style scoped>

@@ -117,6 +117,7 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
 .distribution-history {
   font-family: Arial, sans-serif;
   max-width: 800px;
+  overflow: auto;
   height: 100vh;
   margin: 0 auto;
   background: url("../../assets/img/BG-kho-B9q9tfZS.png") no-repeat center
@@ -124,7 +125,7 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
   background-size: cover;
   color: #fff;
   padding: 10px;
-  padding-bottom: 70px;
+  padding-bottom: 105px;
 }
 
 .header {

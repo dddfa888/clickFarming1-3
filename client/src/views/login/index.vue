@@ -74,12 +74,12 @@ const { locale } = useI18n();
 const showLangList = ref(false);
 const langMap = {
   中国: "zh",
-  // 英语: "en",
+  英语: "en",
   越南语: "vi",
-  // 日本: "ja",
-  // 法国: "fr",
-  // 俄罗斯: "ru",
-  // 韩国: "ko",
+  日本: "ja",
+  法国: "fr",
+  俄罗斯: "ru",
+  韩国: "ko",
 };
 const languageList = Object.keys(langMap);
 const reverseLangMap = Object.fromEntries(

@@ -1,112 +1,151 @@
 <template>
-    <div class="tabbar">
-        <div class="tabbar-item" v-for="(item, index) in tabs.slice(0, 2)" :key="index"
-            :class="{ active: currentRoute === item.path }" @click="navigate(item.path)">
-            <img :src="currentRoute === item.path ? item.iconActive : item.icon" class="tabbar-icon" />
-            <span>{{ item.name }}</span>
-        </div>
-
-        <!-- 中间按钮 -->
-        <div class="tabbar-middle" @click="onCenterClick">
-            <img :src="centerIcon" class="center-icon" />
-        </div>
-
-        <div class="tabbar-item" v-for="(item, index) in tabs.slice(2)" :key="index + 2"
-            :class="{ active: currentRoute === item.path }" @click="navigate(item.path)">
-            <img :src="currentRoute === item.path ? item.iconActive : item.icon" class="tabbar-icon" />
-            <span>{{ item.name }}</span>
-        </div>
+  <div class="tabbar">
+    <div
+      class="tabbar-item"
+      v-for="(item, index) in tabs.slice(0, 2)"
+      :key="index"
+      :class="{ active: currentRoute === item.path }"
+      @click="navigate(item.path)"
+    >
+      <img
+        :src="currentRoute === item.path ? item.iconActive : item.icon"
+        class="tabbar-icon"
+      />
+      <span>{{ item.name }}</span>
     </div>
+
+    <!-- 中间按钮 -->
+    <div class="tabbar-middle" @click="onCenterClick">
+      <img :src="centerIcon" class="center-icon" />
+    </div>
+
+    <div
+      class="tabbar-item"
+      v-for="(item, index) in tabs.slice(2)"
+      :key="index + 2"
+      :class="{ active: currentRoute === item.path }"
+      @click="navigate(item.path)"
+    >
+      <img
+        :src="currentRoute === item.path ? item.iconActive : item.icon"
+        class="tabbar-icon"
+      />
+      <span>{{ item.name }}</span>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { useRouter, useRoute } from "vue-router";
+import { computed } from "vue";
 
-const getImageUrl = (name) => new URL(`../assets/img/${name}`, import.meta.url).href
+const getImageUrl = (name) =>
+  new URL(`../assets/img/${name}`, import.meta.url).href;
 
-const router = useRouter()
-const route = useRoute()
+const router = useRouter();
+const route = useRoute();
 
 const tabs = [
-    { name: '首页', path: '/', icon: getImageUrl('home.svg'), iconActive: getImageUrl('home-active.svg') },
-    { name: '仓库', path: '/warehouse', icon: getImageUrl('warehouse.svg'), iconActive: getImageUrl('warehouse-active.svg') },
-    { name: 'CSKH', path: '/cskh', icon: getImageUrl('service.svg'), iconActive: getImageUrl('service-active.svg') },
-    { name: '我', path: '/me', icon: getImageUrl('user.svg'), iconActive: getImageUrl('user-active.svg') },
-]
+  {
+    name: "首页",
+    path: "/",
+    icon: getImageUrl("home.svg"),
+    iconActive: getImageUrl("home-active.svg"),
+  },
+  {
+    name: "仓库",
+    path: "/warehouse",
+    icon: getImageUrl("warehouse.svg"),
+    iconActive: getImageUrl("warehouse-active.svg"),
+  },
+  {
+    name: "CSKH",
+    path: "https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi",
+    icon: getImageUrl("service.svg"),
+    iconActive: getImageUrl("service-active.svg"),
+  },
+  {
+    name: "我",
+    path: "/me",
+    icon: getImageUrl("user.svg"),
+    iconActive: getImageUrl("user-active.svg"),
+  },
+];
 
-const centerIcon = getImageUrl('center.svg')
+const centerIcon = getImageUrl("center.svg");
 
-const currentRoute = computed(() => route.path)
+const currentRoute = computed(() => route.path);
 
 const navigate = (path) => {
-    if (path !== currentRoute.value) {
-        router.push(path)
-    }
-}
+  if (path.startsWith("http")) {
+    window.open(path, "_blank");
+  } else if (path !== currentRoute.value) {
+    router.push(path);
+  }
+};
 
 const onCenterClick = () => {
-    console.log('中间按钮点击')
-    router.push('/orderdetail')
-}
+  router.push("/orderdetail");
+};
 </script>
 
 <style scoped>
 .tabbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: url("../assets/img/backgroundnavigate-WyoR1lk0.png") no-repeat center center;
-    background-size: 110% 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 999;
-    padding: 0 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: url("../assets/img/backgroundnavigate-WyoR1lk0.png") no-repeat
+    center center;
+  background-size: 110% 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999;
+  padding: 0 10px;
 }
 
 .tabbar-item {
-    flex: 1;
-    display: flex;
-    font-size: 12px;
-    flex-direction: column;
-    align-items: center;
-    color: #fff;
+  flex: 1;
+  display: flex;
+  font-size: 12px;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
 }
 
 .tabbar-item.active {
-    color: #fff;
-    font-weight: bold;
+  color: #fff;
+  font-weight: bold;
 }
 
 .tabbar-icon {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 4px;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px;
 }
 
 .tabbar-middle {
-    width: 70px;
-    height: 70px;
-    background-color: #0e7edb;
-    border-radius: 50%;
-    margin-top: -85px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #fff;
+  width: 70px;
+  height: 70px;
+  background-color: #0e7edb;
+  border-radius: 50%;
+  margin-top: -85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #fff;
 }
 
 .center-icon {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
 
 @media (min-width: 768px) {
-    .tabbar {
-        background-size: 105% 100%;
-    }
+  .tabbar {
+    background-size: 105% 100%;
+  }
 }
 </style>

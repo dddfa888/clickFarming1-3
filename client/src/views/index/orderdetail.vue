@@ -15,7 +15,9 @@
 
     <div class="order-summary">
       <img src="../../assets/img/banner1-8QRSYmQj.png" alt="" />
-      <div class="status-badge" @click="handlePay">{{ t("收到") }}</div>
+      <div class="status-badge" @click="Sendbutton">
+        {{ t("收到") }}
+      </div>
     </div>
 
     <div class="order-details-grid">
@@ -51,28 +53,57 @@
         <!-- 这里可以添加基金会规则的具体内容 -->
       </div>
     </div>
+    <ProductModal
+      v-if="showModal"
+      :id="id"
+      @close="showModal = false"
+      @pay="handlePay"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { createOrder, getUserGradeAndBalanceAndDiscount } from "../../api";
+import {
+  createOrder,
+  getUserGradeAndBalanceAndDiscount,
+  sendDistribution,
+} from "../../api";
 import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
+import ProductModal from "../../components/ProductModal.vue";
 const { t } = useI18n();
-
 const order = ref({});
+const showModal = ref(false);
+const id = ref(null);
 
 const formatCurrency = (value) => {
   if (typeof value !== "number") return "0 €";
   return value.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 };
 
-const handlePay = () => {
+const Sendbutton = () => {
   createOrder().then((res) => {
+    console.log(res.orderId);
+    if (res.code === 200) {
+      showModal.value = true;
+      id.value = res.orderId;
+    } else {
+      showToast({
+        message: res.msg,
+        type: "fail",
+      });
+    }
+  });
+};
+
+const handlePay = () => {
+  showModal.value = false;
+  sendDistribution(id.value).then((res) => {
+    console.log(res);
     if (res.code === 200) {
       showToast({
-        message: "操作成功",
+        message: res.msg,
         type: "success",
       });
     } else {

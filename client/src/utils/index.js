@@ -4,16 +4,16 @@ import router from '../router/index';
 import { showDialog } from 'vant';
 
 let isTokenExpired = false;
-
+const baseURL = "http://localhost:8080/"
 const request = axios.create({
-    baseURL: '/api',
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json;charset=UTF-8'
-    }
-});
+    // baseURL: import.meta.env.MODE === 'development'
+    //     ? '/api'
+    //     : 'https://cfapi.khkjhkh.top/',
+    baseURL: baseURL,
+    timeout: 10000
+})
 
-// ✅ 请求拦截器：每次请求前都从 localStorage 获取最新 token
+//请求拦截器：每次请求前都从 localStorage 获取最新 token
 request.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
@@ -25,7 +25,7 @@ request.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// ✅ 响应拦截器：统一处理 token 失效
+// 响应拦截器：统一处理 token 失效
 request.interceptors.response.use(
     (response) => {
         const res = response.data;

@@ -23,6 +23,12 @@ const tabbarPaths = [
   "/withdraw",
   "/orderHistory",
   "/orderdetail",
+  "/address",
+  "/bankInfo",
+  "/groupReport",
+  "/rewardHistory",
+  "/depositHistory",
+  "/withdrawHistory",
 ];
 
 const showTabBar = computed(() => tabbarPaths.includes(route.path));

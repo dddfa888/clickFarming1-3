@@ -3,14 +3,12 @@
   <div class="company-intro">
     <HeaderBar :title="t('通知邮件')" />
     <div class="content-box">
-      <div class="notice-box">
-        <p>Hệ thống đã thanh toán 61.00€ cho bạn!</p>
-      </div>
-      <div class="notice-box" v-for="item in 35" :key="item">
-        <p>Bạn đã đặt lệnh rút 61.00€.Yêu cầu của bạn đang được xét duyệt</p>
-      </div>
-      <div class="notice-box">
-        <p>Hệ thống đã thanh toán 61.00€ cho bạn!</p>
+      <div class="notice-box" v-for="item in noticeList" :key="item.uid">
+        <div class="notice-title">
+          <p>{{ item.title }}</p>
+          <p>{{ item.createTime }}</p>
+        </div>
+        <p v-html="item.content"></p>
       </div>
     </div>
   </div>
@@ -18,8 +16,15 @@
 
 <script setup>
 import HeaderBar from "../../components/HeaderBar.vue";
+import { ref } from "vue";
+import { getUserNotification } from "../../api/index";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
+const noticeList = ref([]);
+getUserNotification().then((res) => {
+  console.log(res.data);
+  noticeList.value = res.data;
+});
 </script>
 
 <style scoped>
@@ -33,8 +38,8 @@ const { t } = useI18n();
 }
 
 .content-box {
-  margin: 12px;
-  padding: 12px;
+  margin: 8px;
+  padding: 10px;
   color: white;
   font-size: 12px;
   border-top: 1px solid #dad8da;
@@ -42,5 +47,12 @@ const { t } = useI18n();
 
 .notice-box {
   border-bottom: 1px solid #dad8da;
+}
+
+.notice-title {
+  display: flex;
+}
+.notice-title p {
+  padding-right: 12px;
 }
 </style>
