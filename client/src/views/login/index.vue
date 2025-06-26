@@ -122,7 +122,6 @@ function onSubmit(values) {
   flex-direction: column;
   justify-content: flex-end;
   background: url("../../assets/img/login-bg.png") no-repeat center center;
-  background-size: cover;
   min-height: 100vh;
   width: 100%;
   padding: 20px;

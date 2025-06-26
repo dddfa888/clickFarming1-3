@@ -81,6 +81,7 @@ import {
   sendDistribution,
   getUserGradeAndBalanceAndDiscount,
 } from "../../api/index.js";
+import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -99,6 +100,19 @@ const handlePay = () => {
   showModal.value = false;
   sendDistribution(id.value).then((res) => {
     console.log(res);
+    if (res.code === 200) {
+      showToast({
+        message: res.msg,
+        type: "success",
+      });
+      // 刷新页面
+      location.reload();
+    } else {
+      showToast({
+        message: res.msg,
+        type: "error",
+      });
+    }
   });
 };
 
@@ -117,7 +131,6 @@ onMounted(async () => {
       getOrderList(),
       getUserGradeAndBalanceAndDiscount(),
     ]);
-
     // 设置订单列表
     historyItems.value = orderRes.rows;
 
@@ -139,7 +152,6 @@ onMounted(async () => {
   margin: 0 auto;
   background: url("../../assets/img/BG-kho-B9q9tfZS.png") no-repeat center
     center fixed;
-  background-size: cover;
   color: #fff;
   padding: 10px;
   padding-bottom: 105px;

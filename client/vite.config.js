@@ -19,7 +19,6 @@ export default defineConfig({
       }
     }
   },
-
   server: {
     host: '127.0.0.1',
     port: 8080,
@@ -31,5 +30,8 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/api/, '') // 去掉本地请求的 /api，避免变成 /api/api
       }
     }
-  }
+  },
+  css: {
+    postcss: './postcss.config.js', // 明确指明配置文件路径
+  },
 })

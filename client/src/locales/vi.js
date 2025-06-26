@@ -6,6 +6,11 @@ export default {
     "注册": 'Đăng ký',
     "越南语": 'Tiếng Việt',
     "语言": "Ngôn ngữ",
+    "英语": "Tiếng Việt",
+    "日本": "Nhật Bản",
+    "俄罗斯": "Nga",
+    "韩国": "Hàn Quốc",
+    "法国": "Pháp",
     "中国": "Trung Quốc",
     "用户名": "Tên đăng nhập",
     "请填写用户名": "Vui lòng nhập tên đăng nhập",
@@ -92,7 +97,8 @@ export default {
     "我": "Tôi",
     "transaction": {
         "success": "Thành công",
-        "failed": "Thất bại"
+        "failed": "Thất bại",
+        "pending": "Đang xét duyệt"
     },
     "404 页面不存在": "404 Không tìm thấy trang",
     "您访问的页面未找到": "Không thể tìm thấy trang bạn đang tìm kiếm"

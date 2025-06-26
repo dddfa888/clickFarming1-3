@@ -93,7 +93,8 @@ export default {
     "我": "Me",
     "transaction": {
         "success": "Success",
-        "failed": "Failed"
+        "failed": "Failed",
+        "pending": "Pending"
     },
     "404 页面不存在": "404 Page Not Found",
     "您访问的页面未找到": "The page you are looking for could not be found"

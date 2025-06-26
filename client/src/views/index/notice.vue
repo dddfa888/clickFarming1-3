@@ -31,10 +31,9 @@ getUserNotification().then((res) => {
 .company-intro {
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center;
-  background-size: cover;
   height: 100vh;
   overflow-y: auto;
-  padding-bottom: 70px;
+  /* padding-bottom: 70px; */
 }
 
 .content-box {
@@ -42,6 +41,7 @@ getUserNotification().then((res) => {
   padding: 10px;
   color: white;
   font-size: 12px;
+  overflow: auto;
   border-top: 1px solid #dad8da;
 }
 

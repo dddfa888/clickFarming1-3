@@ -6,8 +6,7 @@
         <img src="../../assets/img/smc5jpzklmkircocfkq1.png" alt="" />
       </div>
       <div class="user-info">
-        <p class="username">{{ userInfo.loginAccount }}</p>
-        <p class="user-id">ID:</p>
+        <p class="user-id">ID:{{ userInfo.loginAccount }}</p>
       </div>
     </div>
 
@@ -27,7 +26,7 @@
     <div class="action-buttons">
       <!-- <button class="action-btn" @click="handleAction('withdraw')">提款</button> -->
       <button class="action-btn" @click="handleAction('withdraw')">
-        {{ t("提现") }}
+        {{ t("取款") }}
       </button>
       <button class="action-btn" @click="handleAction('withdrawHistory')">
         {{ t("提款记录") }}
@@ -143,6 +142,11 @@ const handleAction = (row) => {
     router.push("/address");
   }
   console.log(row);
+};
+
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  router.push("/login");
 };
 </script>
 

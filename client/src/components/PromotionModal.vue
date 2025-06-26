@@ -68,6 +68,9 @@ defineExpose({ show });
   display: block;
   width: 100%;
   height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  z-index: 99;
   border-radius: 10px;
 }
 

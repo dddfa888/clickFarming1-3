@@ -61,7 +61,6 @@
     <video
       class="videos"
       controls
-      autoplay
       muted
       loop
       width="100%"
@@ -259,6 +258,7 @@ const onWithdraw = () => {
 
 const onDeposit = () => {
   console.log("执行取款操作");
+  router.push({ path: "/withdraw" });
 };
 
 function withTimeout(promise, timeout = 5000) {
@@ -300,7 +300,6 @@ onMounted(async () => {
 .home {
   padding: 10px;
   background: url("../../assets/img/bg.png") no-repeat center center fixed;
-  background-size: cover;
   min-height: 100vh;
   color: white;
   padding-bottom: 120px;
@@ -461,6 +460,8 @@ onMounted(async () => {
   width: 100%;
   border-radius: 8px;
   margin: 15px 0;
+  z-index: 1;
+  position: relative;
 }
 
 .info-buttons {

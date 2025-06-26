@@ -3,7 +3,13 @@
     <HeaderBar :title="t('地址')" />
     <div class="form-group">
       <label :class="{ floated: inputValue }">{{ t("地址") }}</label>
-      <input v-model="inputValue" type="text" placeholder=" " class="input" />
+      <input
+        v-model="withdrawalAddress"
+        type="text"
+        placeholder=" "
+        class="input"
+        disabled="true"
+      />
     </div>
   </div>
 </template>
@@ -11,9 +17,16 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
+import { getUserInfo } from "../../api/index";
 const inputValue = ref("");
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
+const withdrawalAddress = ref("");
+
+getUserInfo().then((res) => {
+  console.log(res.data.withdrawalAddress);
+  withdrawalAddress.value = res.data.withdrawalAddress;
+});
 </script>
 
 <style scoped>
@@ -41,7 +54,7 @@ const { t } = useI18n();
   outline: none;
   font-size: 16px;
   background: transparent;
-  color: #333;
+  color: #fff;
   padding: 0;
   z-index: 2;
 }

@@ -103,7 +103,6 @@ function onSubmit(values) {
   justify-content: flex-end;
   align-items: center;
   background: url("../../assets/img/login-bg.png") no-repeat center center;
-  background-size: cover;
   min-height: 100vh;
   width: 100%;
   padding: 20px;

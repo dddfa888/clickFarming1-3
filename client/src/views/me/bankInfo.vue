@@ -3,15 +3,33 @@
     <HeaderBar :title="t('银行信息')" />
     <div class="form-group">
       <label :class="{ floated: inputValue }">{{ t("选择银行") }}</label>
-      <input v-model="inputValue" type="text" placeholder=" " class="input" />
+      <input
+        v-model="accountName"
+        type="text"
+        placeholder=""
+        class="input"
+        disabled="true"
+      />
     </div>
     <div class="form-group">
       <label :class="{ floated: inputValue }">{{ t("账号名称") }}</label>
-      <input v-model="inputValue" type="text" placeholder=" " class="input" />
+      <input
+        v-model="accountNumber"
+        type="text"
+        placeholder=" "
+        class="input"
+        disabled="true"
+      />
     </div>
     <div class="form-group">
       <label :class="{ floated: inputValue }">{{ t("账号") }}</label>
-      <input v-model="inputValue" type="text" placeholder=" " class="input" />
+      <input
+        v-model="bankName"
+        type="text"
+        placeholder=" "
+        class="input"
+        disabled="true"
+      />
     </div>
   </div>
 </template>
@@ -19,9 +37,20 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
+import { getUserInfo } from "../../api/index";
 const inputValue = ref("");
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
+const accountName = ref("");
+const accountNumber = ref("");
+const bankName = ref("");
+
+getUserInfo().then((res) => {
+  console.log(res.data);
+  accountName.value = res.data.bankAccountName;
+  accountNumber.value = res.data.bankAccountNumber;
+  bankName.value = res.data.bankName;
+});
 </script>
 
 <style scoped>
@@ -48,7 +77,7 @@ const { t } = useI18n();
   outline: none;
   font-size: 16px;
   background: transparent;
-  color: #333;
+  color: #fff;
   padding: 0;
   z-index: 2;
 }

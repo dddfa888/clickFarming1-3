@@ -15,18 +15,19 @@
             class="transaction-amount"
             :class="{ negative: transaction.amount < 0 }"
           >
-            {{ t("金钱数额") }}: +{{ formatAmount(transaction.amount) }}
+            {{ t("金钱数额") }}: {{ transaction.type === 0 ? "+" : "-" }}
+            {{ formatAmount(transaction.amount) }}
           </div>
           <div class="transaction-balance">
             {{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}
           </div>
         </div>
         <div class="transaction-status">
-          {{
+          <!-- {{
             transaction.status === 1
               ? t("transaction.success")
               : t("transaction.failed")
-          }}
+          }} -->
         </div>
       </div>
     </div>
@@ -56,7 +57,6 @@ getDepositRecord().then((res) => {
 .company-intro {
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center;
-  background-size: cover;
   height: 100vh;
   overflow-y: auto;
 }

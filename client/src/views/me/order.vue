@@ -74,22 +74,20 @@ getOrderHistory().then((res) => {
 
 <style scoped>
 .distribution-history {
-  font-family: Arial, sans-serif;
-  max-width: 800px;
-  height: 100vh;
-  margin: 0 auto;
-  background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
-    center fixed;
+  background-image: url("../../assets/img/background-D7o_xTde.png");
+  background-repeat: no-repeat;
   background-size: cover;
+  background-position: center top;
   color: #fff;
-  padding-bottom: 70px;
+  background-attachment: scroll; /* 移除 fixed，避免 iOS bug */
 }
-
 .history-list {
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 20px;
+  overflow: auto;
+  height: 100vh;
 }
 
 .history-item {

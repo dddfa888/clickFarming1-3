@@ -131,7 +131,6 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
   height: 100vh;
   background: url("../../assets/img/BG-nhandon-B-V7rk8F.png") no-repeat center
     center fixed;
-  background-size: cover;
 }
 
 .order-header {

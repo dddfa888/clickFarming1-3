@@ -28,7 +28,6 @@ const { t } = useI18n();
 .company-intro {
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center;
-  background-size: cover;
   height: 100vh;
   overflow-y: auto;
 }

@@ -91,7 +91,8 @@ export default {
     "我": "Moi",
     "transaction": {
         "success": "Succès",
-        "failed": "Échec"
+        "failed": "Échec",
+        "pending": "En cours d'examen"
     },
     "404 页面不存在": "404 Page non trouvée",
     "您访问的页面未找到": "La page que vous recherchez est introuvable"

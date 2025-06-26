@@ -20,13 +20,22 @@
           <div class="transaction-balance">
             {{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}
           </div>
+          <div class="transaction-balance">
+            {{
+              transaction.reasonForRejection === null
+                ? transaction.reasonForRejection
+                : "原因:" + transaction.reasonForRejection
+            }}
+          </div>
         </div>
-        <div class="transaction-status">
-          {{
-            transaction.status === 1
-              ? t("transaction.success")
-              : t("transaction.failed")
-          }}
+        <div v-if="transaction.status === 0" class="transaction-status">
+          {{ t("transaction.pending") }}
+        </div>
+        <div v-if="transaction.status === 1" class="transaction-status">
+          {{ t("transaction.success") }}
+        </div>
+        <div v-if="transaction.status === 2" class="transaction-status">
+          {{ t("transaction.failed") }}
         </div>
       </div>
     </div>
@@ -56,7 +65,6 @@ getWithdrawRecord().then((res) => {
 .company-intro {
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center;
-  background-size: cover;
   height: 100vh;
   overflow-y: auto;
 }

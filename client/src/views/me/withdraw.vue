@@ -37,7 +37,7 @@
             style="border: 1px solid #e5e7eb"
             :type="showPassword ? 'text' : 'password'"
             v-model="password"
-            :placeholder="{{t('提现密码')}}"
+            :placeholder="t('提现密码')"
           />
           <van-icon
             :name="showPassword ? 'eye-o' : 'closed-eye'"
@@ -55,14 +55,14 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { withdraw } from "../../api/index.js";
+import { withdraw, getUserInfo } from "../../api/index.js";
 import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const balance = ref("539,54");
-const accountName = ref("NGUYEN THUY LINH");
-const accountNumber = ref("1023****3102");
+const accountName = ref("");
+const accountNumber = ref("");
 const amount = ref("");
 const password = ref("");
 const showPassword = ref(false);
@@ -95,17 +95,20 @@ function submit() {
           type: "fail",
         });
       }
-      console.log(res);
     }
   );
 }
+
+getUserInfo().then((res) => {
+  accountName.value = res.data.bankAccountName;
+  accountNumber.value = res.data.bankAccountNumber;
+});
 </script>
 
 <style scoped>
 .withdraw-page {
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center;
-  background-size: cover;
   height: 100vh;
   padding: 20px;
   color: white;

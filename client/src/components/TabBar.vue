@@ -47,7 +47,7 @@ const getImageUrl = (name) =>
 const router = useRouter();
 const route = useRoute();
 
-const tabs = [
+const tabs = computed(() => [
   {
     name: t("首页"),
     path: "/",
@@ -61,7 +61,7 @@ const tabs = [
     iconActive: getImageUrl("warehouse-active.svg"),
   },
   {
-    name: "CSKH",
+    name: "CSKH", // 这个是固定外链名，你也可以用 t("客服") 自定义
     path: "https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi",
     icon: getImageUrl("service.svg"),
     iconActive: getImageUrl("service-active.svg"),
@@ -72,7 +72,7 @@ const tabs = [
     icon: getImageUrl("user.svg"),
     iconActive: getImageUrl("user-active.svg"),
   },
-];
+]);
 
 const centerIcon = getImageUrl("center.svg");
 
