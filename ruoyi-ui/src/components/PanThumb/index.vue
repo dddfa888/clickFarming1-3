@@ -1,36 +1,39 @@
 <template>
-  <div :style="{zIndex:zIndex,height:height,width:width}" class="pan-item">
+  <div
+    :style="{ zIndex: zIndex, height: height, width: width }"
+    class="pan-item"
+  >
     <div class="pan-info">
       <div class="pan-info-roles-container">
         <slot />
       </div>
     </div>
-    <div :style="{backgroundImage: `url(${image})`}" class="pan-thumb"></div>
+    <div :style="{ backgroundImage: `url(${image})` }" class="pan-thumb"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PanThumb',
+  name: "PanThumb",
   props: {
     image: {
       type: String,
-      required: true
+      required: true,
     },
     zIndex: {
       type: Number,
-      default: 1
+      default: 1,
     },
     width: {
       type: String,
-      default: '150px'
+      default: "150px",
     },
     height: {
       type: String,
-      default: '150px'
-    }
-  }
-}
+      default: "150px",
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -53,7 +56,6 @@ export default {
   width: 100%;
   height: 100%;
   background-position: center center;
-  background-size: cover;
   border-radius: 50%;
   overflow: hidden;
   position: absolute;
@@ -92,7 +94,7 @@ export default {
   margin: 0 60px;
   padding: 22px 0 0 0;
   height: 85px;
-  font-family: 'Open Sans', Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   text-shadow: 0 0 1px #fff, 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -120,9 +122,10 @@ export default {
   letter-spacing: 1px;
   padding-top: 24px;
   margin: 7px auto 0;
-  font-family: 'Open Sans', Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   opacity: 0;
-  transition: transform 0.3s ease-in-out 0.2s, opacity 0.3s ease-in-out 0.2s, background 0.2s linear 0s;
+  transition: transform 0.3s ease-in-out 0.2s, opacity 0.3s ease-in-out 0.2s,
+    background 0.2s linear 0s;
   transform: translateX(60px) rotate(90deg);
 }
 
