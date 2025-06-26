@@ -2,7 +2,9 @@ package com.ruoyi.click.service;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.click.domain.MMoneyInvestWithdraw;
+import com.ruoyi.click.domain.UserGrade;
 
 /**
  * 存款取款记录Service接口
@@ -10,7 +12,7 @@ import com.ruoyi.click.domain.MMoneyInvestWithdraw;
  * @author ruoyi
  * @date 2025-06-19
  */
-public interface IMMoneyInvestWithdrawService
+public interface IMMoneyInvestWithdrawService extends IService<MMoneyInvestWithdraw>
 {
     /**
      * 查询存款取款记录

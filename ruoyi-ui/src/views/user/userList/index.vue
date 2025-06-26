@@ -110,11 +110,11 @@
               type="primary"
               size="small"
               :style="{
-                backgroundColor: scope.row.status === 1 ? 'green' : 'red',
-                borderColor: scope.row.status === 1 ? 'green' : 'red'
+                backgroundColor: scope.row.status === 1 ? 'red' : 'green',
+                borderColor: scope.row.status === 1 ? 'red' : 'green'
               }"
             >
-              {{ scope.row.status === 1 ? '解锁账户' : '锁定账户' }}
+              {{ scope.row.status === 1 ? '锁定账户' : '解锁账户' }}
             </el-button>
 
             <el-button
@@ -168,9 +168,9 @@
       <el-table-column label="状态" align="center" prop="withdrawalAddress">
         <template slot-scope="scope">
           <el-tag
-            :type="scope.row.status === 1 ? 'danger' : 'success'"
+            :type="scope.row.status === 1 ? 'success' : 'danger'"
           >
-            {{ scope.row.status === 1 ? '已锁定' : '正常' }}
+            {{ scope.row.status === 1 ? '正常' : '已锁定' }}
           </el-tag>
         </template>
       </el-table-column>

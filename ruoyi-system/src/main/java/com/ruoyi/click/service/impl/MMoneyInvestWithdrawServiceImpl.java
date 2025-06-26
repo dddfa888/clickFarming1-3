@@ -2,6 +2,7 @@ package com.ruoyi.click.service.impl;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.click.domain.MMoneyInvestWithdraw;
 import com.ruoyi.click.mapper.MMoneyInvestWithdrawMapper;
 import com.ruoyi.click.service.IMMoneyInvestWithdrawService;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @date 2025-06-19
  */
 @Service
-public class MMoneyInvestWithdrawServiceImpl implements IMMoneyInvestWithdrawService
+public class MMoneyInvestWithdrawServiceImpl extends ServiceImpl<MMoneyInvestWithdrawMapper, MMoneyInvestWithdraw> implements IMMoneyInvestWithdrawService
 {
     @Autowired
     private MMoneyInvestWithdrawMapper mMoneyInvestWithdrawMapper;

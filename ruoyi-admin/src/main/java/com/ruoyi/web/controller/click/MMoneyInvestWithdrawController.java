@@ -2,9 +2,11 @@ package com.ruoyi.web.controller.click;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.ruoyi.business.domain.OrderReceiveRecord;
 import com.ruoyi.business.mapper.OrderReceiveRecordMapper;
@@ -90,7 +92,16 @@ public class MMoneyInvestWithdrawController extends BaseController
     {
         startPage();
         List<MMoneyInvestWithdraw> list = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(mMoneyInvestWithdraw);
-        return getDataTable(list);
+        TableDataInfo dataTable = getDataTable(list);
+        List<MMoneyInvestWithdraw> rows = (List<MMoneyInvestWithdraw>) dataTable.getRows();
+        rows.forEach(item -> {
+            MUser mUser = mUserService.selectMUserByUid(item.getUserId());
+            if (mUser != null) {
+                item.setRegisterType(mUser.getRegisterType());
+            }
+        });
+        dataTable.setRows(rows);
+        return dataTable;
     }
 
     /**
@@ -128,6 +139,32 @@ public class MMoneyInvestWithdrawController extends BaseController
         withdraw.setStatus(1);
         mMoneyInvestWithdrawService.updateMMoneyInvestWithdraw( withdraw);
         return success();
+    }
+
+    /**
+     * 一键同意所有员工提现
+     * @return
+     */
+    @GetMapping(value = "/oneClickAgree")
+    public AjaxResult oneClickAgree() {
+        MUser mUser = new MUser();
+        mUser.setRegisterType("0");
+        List<Long> userIdList = mUserService.selectMUserList(mUser).stream().map(MUser::getUid).collect(Collectors.toList());
+        if(userIdList.isEmpty()){
+            return error("暂无员工");
+        }
+        LambdaQueryWrapper<MMoneyInvestWithdraw> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(MMoneyInvestWithdraw::getUserId,userIdList);
+        wrapper.eq(MMoneyInvestWithdraw::getStatus,0);
+        List<MMoneyInvestWithdraw> list = mMoneyInvestWithdrawService.list(wrapper);
+        if(list.isEmpty()){
+            return error("暂无员工提现");
+        }
+        list.forEach(item -> {
+            item.setStatus(1);
+        });
+        mMoneyInvestWithdrawService.updateBatchById(list);
+        return success(list);
     }
 
     /**
