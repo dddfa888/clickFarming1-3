@@ -60,7 +60,7 @@ import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
-const balance = ref("539,54");
+const balance = ref("");
 const accountName = ref("");
 const accountNumber = ref("");
 const amount = ref("");
@@ -79,21 +79,30 @@ function fillAll() {
 function toback() {
   router.go(-1);
 }
-
 function submit() {
-  console.log("提交提款：", amount.value, password.value);
   withdraw({ amount: amount.value, fundPassword: password.value }).then(
     (res) => {
       if (res.code === 200) {
         showToast({
-          message: "操作成功",
+          message: t("操作成功"),
           type: "success",
+        });
+
+        // 清空输入
+        amount.value = "";
+        password.value = "";
+
+        // 重新获取用户信息更新余额
+        getUserInfo().then((res) => {
+          balance.value = res.data.accountBalance;
         });
       } else {
         showToast({
           message: res.msg,
           type: "fail",
         });
+        amount.value = "";
+        password.value = "";
       }
     }
   );
@@ -102,6 +111,7 @@ function submit() {
 getUserInfo().then((res) => {
   accountName.value = res.data.bankAccountName;
   accountNumber.value = res.data.bankAccountNumber;
+  balance.value = res.data.accountBalance;
 });
 </script>
 

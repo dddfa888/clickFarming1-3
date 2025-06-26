@@ -5,8 +5,9 @@
       <h1>MERCADO LIBRE</h1>
       <h2>E-commerce shopping center</h2>
       <p>
-        We are 21 years old since the beginning of that adventure in a garage in the Saavedra neighborhood,
-        in the city of Buenos Aires. We have come a long way, but we are convinced that the best is yet to come.
+        We are 21 years old since the beginning of that adventure in a garage in
+        the Saavedra neighborhood, in the city of Buenos Aires. We have come a
+        long way, but we are convinced that the best is yet to come.
       </p>
       <div class="buttons">
         <button @click="toLogin">LOGIN</button>
@@ -16,14 +17,14 @@
   </div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 const router = useRouter();
 const toLogin = () => {
-  router.push({ name: 'login' });
-}
+  router.push({ name: "login" });
+};
 const toRegister = () => {
-  router.push({ name: 'register' });
-}
+  router.push({ name: "register" });
+};
 </script>
 
 <style scoped>
@@ -33,13 +34,13 @@ const toRegister = () => {
   left: 0;
   height: 100vh;
   width: 100vw;
-  background: url('../assets/img/background.jpg') no-repeat center center/cover;
+  background: url("../assets/img/background.jpg") no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   color: white;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .overlay {
@@ -70,14 +71,14 @@ h2 {
 
 p {
   margin-bottom: 3rem;
-  font-size: 0.95rem;
+  font-size: 1.5rem;
   line-height: 1.5;
 }
 
 .buttons {
   display: flex;
   justify-content: center;
-  margin-bottom: 9rem;
+  margin-bottom: 2rem;
   gap: 20px;
 }
 
@@ -87,12 +88,31 @@ button {
   padding: 0.75rem 2rem;
   border: none;
   font-weight: bold;
-  width:180px;
+  width: 15rem;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 button:hover {
   background-color: #ffdb00;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  button {
+    text-align: center;
+    background-color: #ffe600;
+    color: black;
+    border: none;
+    font-size: 0.7rem;
+    width: 7rem;
+    transition: background 0.3s ease;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
 }
 </style>

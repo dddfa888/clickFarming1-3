@@ -65,7 +65,6 @@
       loop
       width="100%"
       height="200px"
-      poster="../../assets/videos/mcd-DJnKgbK7.mp4"
       src="../../assets/videos/mcd-DJnKgbK7.mp4"
     ></video>
 

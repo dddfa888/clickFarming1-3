@@ -1,4 +1,4 @@
-<template>
+<template to="body">
   <div v-if="visible" class="modal-overlay">
     <div class="modal-content">
       <img
@@ -76,16 +76,26 @@ defineExpose({ show });
 
 .modal-close {
   position: absolute;
-  bottom: 70px;
+  bottom: 4vh; /* 相对于视口高度 */
   left: 50%;
   transform: translateX(-50%);
-  background: #000;
-  color: white;
-  font-size: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 5vw;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 10vw;
+  height: 10vw;
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 320px) {
+  .modal-close {
+    bottom: 12vh;
+    font-size: 5vw;
+  }
 }
 </style>
