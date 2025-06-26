@@ -149,7 +149,7 @@ public class MMoneyInvestWithdrawController extends BaseController
         MUser mUser = mUserService.selectMUserByUid(withdraw.getUserId());
         BigDecimal accountForward = mUser.getAccountBalance();
         BigDecimal accountBack = DecimalUtil.add(accountForward, withdraw.getAmount());
-        mUser.setAccountBalance(accountForward);
+        mUser.setAccountBalance(accountBack);
         mUserService.updateMUser(mUser);
 
         // 日志

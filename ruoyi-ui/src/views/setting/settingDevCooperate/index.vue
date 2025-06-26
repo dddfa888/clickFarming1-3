@@ -69,7 +69,7 @@
       <el-table-column label="内容" align="left" prop="content" />
       <el-table-column label="语言" align="center" prop="language" >
         <template slot-scope="scope">
-          {{ langMap[scope.row.language] }}
+          {{ langMap[scope.row.language] || scope.row.language }}
         </template>
 	  </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -163,12 +163,22 @@ export default {
       rules: {
       },
       langList: [
-        { code:'Chinese', name:'中文' },
-        { code:'Vietnamese', name:'Tiếng Việt' }
+        { code:'vn', name:'越南语' },
+        { code:'cn', name:'中文' },
+        { code:'en', name:'英语' },
+        { code:'kr', name:'韩语' },
+        { code:'jp', name:'日语' },
+        { code:'rs', name:'俄语' },
+        { code:'fr', name:'法语' }
       ],
       langMap: {
-        'Chinese': '中文',
-        'Vietnamese': 'Tiếng Việt'
+        'vn': '越南语',
+        'cn': '中文',
+        'en': '英语',
+        'kr': '韩语',
+        'jp': '日语',
+        'rs': '俄语',
+        'fr': '法语',
       },
     }
   },
