@@ -99,7 +99,7 @@ public class MAccountChangeRecordsController extends BaseController
     @GetMapping(value = "/selectMAccountChangeForeByUser")
     public TableDataInfo selectMAccountChangeForeByUser()
     {
-        startPage();
+        //startPage(); //暂时不分页
         List<Map<String,Object>> list = mAccountChangeRecordsService.selectMAccountChangeForeByUser();
         TableDataInfo dataTable = getDataTable(list);
         return dataTable;

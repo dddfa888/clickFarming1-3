@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.ruoyi.business.domain.OrderReceiveRecord;
 import com.ruoyi.business.mapper.OrderReceiveRecordMapper;
 import com.ruoyi.click.domain.MAccountChangeRecords;
@@ -21,7 +22,6 @@ import com.ruoyi.common.utils.EncoderUtil;
 import com.ruoyi.common.utils.RandomUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.service.TokenService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -178,10 +178,11 @@ public class MMoneyInvestWithdrawController extends BaseController
         boolean matches = EncoderUtil.matches(withdrawVo.getFundPassword(), mUser.getFundPassword());
         if(!matches){
             throw new ServiceException("资金密码错误");
-
         }
         BigDecimal accountForward = mUser.getAccountBalance();
-        if (accountForward.compareTo(withdrawVo.getAmount()) < 0) {
+        Assert.notEmpty(withdrawVo.getAmount(), "请填写提现数额");
+        BigDecimal withdrawAmount = DecimalUtil.parseNumberBothCommaPoint(withdrawVo.getAmount());
+        if (accountForward.compareTo(withdrawAmount) < 0) {
             return AjaxResult.error("余额不足");
         }
         OrderReceiveRecord orderParam = new OrderReceiveRecord();
@@ -193,13 +194,13 @@ public class MMoneyInvestWithdrawController extends BaseController
         }
         checkBank(mUser);
 
-        BigDecimal accountBack = DecimalUtil.subtract(accountForward, withdrawVo.getAmount());
+        BigDecimal accountBack = DecimalUtil.subtract(accountForward, withdrawAmount);
         mUser.setAccountBalance(accountBack);
         mUserService.updateMUser(mUser);
 
 
         MMoneyInvestWithdraw mMoneyInvestWithdraw = new MMoneyInvestWithdraw();
-        mMoneyInvestWithdraw.setAmount(withdrawVo.getAmount());
+        mMoneyInvestWithdraw.setAmount(withdrawAmount);
         mMoneyInvestWithdraw.setUserId(mUser.getUid());
         mMoneyInvestWithdraw.setUserName(mUser.getLoginAccount());
         mMoneyInvestWithdraw.setBankName(mUser.getBankName());
@@ -215,7 +216,7 @@ public class MMoneyInvestWithdrawController extends BaseController
 
         MAccountChangeRecords mAccountChangeRecords = new MAccountChangeRecords();
         mAccountChangeRecords.setUid(String.valueOf(mUser.getUid()));
-        mAccountChangeRecords.setAmount(withdrawVo.getAmount());
+        mAccountChangeRecords.setAmount(withdrawAmount);
         mAccountChangeRecords.setAccountBack(accountBack);
         mAccountChangeRecords.setAccountForward(accountForward);
         mAccountChangeRecords.setType(1);

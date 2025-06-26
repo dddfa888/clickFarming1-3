@@ -142,7 +142,7 @@
       <el-table-column label="产品名称" align="center" prop="productName" />
       <el-table-column label="产品图片URL" align="center" prop="productImageUrl" >
         <template slot-scope="scope">
-          <img class="orderListProdImg" :src="baseUrl+scope.row.productImageUrl" alt="图片无法显示"></img>
+          <img class="orderListProdImg" :src="scope.row.productImageUrl" alt="图片无法显示"></img>
         </template>
 	  </el-table-column>
       <el-table-column label="单价" align="center" prop="unitPrice" />
