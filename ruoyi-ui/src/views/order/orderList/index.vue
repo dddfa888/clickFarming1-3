@@ -139,8 +139,8 @@
       <!--<el-table-column label="用户ID" align="center" prop="userId" />-->
       <el-table-column label="用户姓名" align="center" prop="userName" />
       <el-table-column label="产品id" align="center" prop="productId" />
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="产品图片URL" align="center" prop="productImageUrl" >
+      <el-table-column label="产品名称" align="center" prop="productName" width="450" />
+      <el-table-column label="产品图片" align="center" prop="productImageUrl" >
         <template slot-scope="scope">
           <img class="orderListProdImg" :src="scope.row.productImageUrl" alt="图片无法显示"></img>
         </template>

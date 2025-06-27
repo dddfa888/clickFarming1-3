@@ -218,7 +218,12 @@ public class MMoneyInvestWithdrawController extends BaseController
         }
         BigDecimal accountForward = mUser.getAccountBalance();
         Assert.notEmpty(withdrawVo.getAmount(), "请填写提现数额");
-        BigDecimal withdrawAmount = DecimalUtil.parseNumberBothCommaPoint(withdrawVo.getAmount());
+        BigDecimal withdrawAmount = null;
+        try{
+            withdrawAmount = DecimalUtil.parseNumberBothCommaPoint(withdrawVo.getAmount());
+        }catch (Exception e){
+            throw new ServiceException("取款数额格式错误，无法解析");
+        }
         if (accountForward.compareTo(withdrawAmount) < 0) {
             return AjaxResult.error("余额不足");
         }

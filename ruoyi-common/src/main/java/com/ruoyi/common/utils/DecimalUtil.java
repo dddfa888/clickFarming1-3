@@ -282,7 +282,7 @@ public class DecimalUtil {
             try {
                 num = new BigDecimal(newStr);
             }catch (Exception e2){
-                throw new ServiceException("数字【"+str+"】格式错误，无法解析");
+                throw new ServiceException("数字格式错误，无法解析");
             }
         }
         return num;

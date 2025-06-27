@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.common.utils.DecimalUtil;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import com.ruoyi.click.domain.UserGrade;
@@ -69,12 +70,12 @@ public class MUserController extends BaseController
     }
 
     /**
-     * 修改用户余额
+     * 修改用户余额，前端输入增减的变化量，后端计算出余额新值
      * @param balanceModel
      * @return
      */
-    @PostMapping("setBalance")
-    public AjaxResult setBalance(HttpServletRequest request,@Validated @RequestBody balanceModel balanceModel) {
+    @PostMapping("changeBalance")
+    public AjaxResult changeBalance(HttpServletRequest request,@Validated @RequestBody balanceModel balanceModel) {
         MUser mUser = mUserService.selectMUserByUid(balanceModel.getUid());
         BigDecimal userAccountBalance = mUser.getAccountBalance();
         String userName = tokenService.getLoginUser(request).getUser().getUserName();
@@ -90,13 +91,54 @@ public class MUserController extends BaseController
         changeRecords.setAccountForward(userAccountBalance);
         changeRecords.setAccountBack(accountBalance);
         changeRecords.setUid(String.valueOf(balanceModel.getUid()));
-        changeRecords.setDescription(userName+"[后台修改余额]");
+        changeRecords.setDescription(userName+"[后台增减余额]");
         changeRecords.setTransactionType(1);
         accountChangeRecordsService.insertMAccountChangeRecords(changeRecords);
         // 升级等级
         mUserService.upgrade(mUser.getUid());
         return success();
     }
+
+    /**
+     * 修改用户余额 前端直接输入余额新值
+     * @param request, mUser
+     * @return
+     */
+    @PostMapping("setBalance")
+    public AjaxResult setBalance(HttpServletRequest request, MUser mUser) {
+        MUser originMUser = mUserService.selectMUserByUid(mUser.getUid());
+        mUserService.updateMUserSimple(mUser);
+
+        BigDecimal balanceBefore = originMUser.getAccountBalance();
+        BigDecimal balanceAfter = mUser.getAccountBalance();
+        String userName = tokenService.getLoginUser(request).getUser().getUserName();
+
+        Integer type = null; // 0收入 1支出
+        BigDecimal balanceChange = null;
+        if(balanceBefore.compareTo(balanceAfter) < 0){
+            type = 0;
+            balanceChange = DecimalUtil.subtract(balanceAfter, balanceBefore);
+        }else{
+            type = 1;
+            balanceChange = DecimalUtil.subtract(balanceBefore, balanceAfter);
+        }
+
+        // 日志记录
+        MAccountChangeRecords changeRecords = new MAccountChangeRecords();
+        changeRecords.setAmount(balanceChange);
+        changeRecords.setType(type);
+        changeRecords.setAccountForward(balanceBefore);
+        changeRecords.setAccountBack(balanceAfter);
+        changeRecords.setUid(String.valueOf(mUser.getUid()));
+        changeRecords.setDescription(userName+"[后台重新设置余额]");
+        changeRecords.setTransactionType(1);
+        accountChangeRecordsService.insertMAccountChangeRecords(changeRecords);
+        // 升级等级
+        mUserService.upgrade(mUser.getUid());
+        return success();
+    }
+
+
     /**
      * 查询用户列表
      */
