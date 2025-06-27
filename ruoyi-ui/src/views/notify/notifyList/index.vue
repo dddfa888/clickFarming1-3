@@ -90,14 +90,6 @@
     <!-- 添加或修改通知对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-<!--        <el-form-item label="用户id" prop="userId">-->
-<!--          <el-input v-model="form.userId" placeholder="请输入用户id" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="用户名称" prop="userName">-->
-<!--          <el-input v-model="form.userName" placeholder="请输入用户名称" />-->
-<!--        </el-form-item>-->
-
-
         <el-form-item label="用户名称" prop="userId">
           <el-select  v-model="form.userId" filterable placeholder="请选择" >
             <el-option

@@ -12,12 +12,12 @@ import store from "./store";
 import router from "./router";
 import directive from "./directive"; // directive
 import plugins from "./plugins"; // plugins
-import { download } from "@/utils/request";
+import {download} from "@/utils/request";
 
 import "./assets/icons"; // icon
 import "./permission"; // permission control
-import { getDicts } from "@/api/system/dict/data";
-import { getConfigKey } from "@/api/system/config";
+import {getDicts} from "@/api/system/dict/data";
+import {getConfigKey} from "@/api/system/config";
 import {
   parseTime,
   resetForm,
@@ -72,7 +72,7 @@ DictData.install();
 
 Vue.use(VueI18n);
 const i18n = new VueI18n({
-  locale: "zh", // 默认语言
+  locale: localStorage.getItem("lang") || "en", // 默认语言
   messages,
 });
 

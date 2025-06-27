@@ -1,6 +1,9 @@
 package com.ruoyi.click.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.click.domain.MMoneyInvestWithdraw;
+import com.ruoyi.click.domain.UserGrade;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -10,7 +13,8 @@ import java.util.List;
  * @author ruoyi
  * @date 2025-06-19
  */
-public interface MMoneyInvestWithdrawMapper
+@Mapper
+public interface MMoneyInvestWithdrawMapper extends BaseMapper<MMoneyInvestWithdraw>
 {
     /**
      * 查询存款取款记录

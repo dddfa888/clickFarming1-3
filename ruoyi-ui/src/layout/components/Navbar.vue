@@ -43,10 +43,10 @@
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip> -->
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <screenfull id="screenfull" class="right-menu-item hover-effect"/>
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
+          <size-select id="size-select" class="right-menu-item hover-effect"/>
         </el-tooltip>
       </template>
 
@@ -55,7 +55,7 @@
         trigger="hover"
       >
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar" />
+          <img :src="avatar" class="user-avatar"/>
           <span class="user-nickname"> {{ nickName }} </span>
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -73,14 +73,14 @@
         @click="setLayout"
         v-if="setting"
       >
-        <svg-icon icon-class="more-up" />
+        <svg-icon icon-class="more-up"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import TopNav from "@/components/TopNav";
 import Hamburger from "@/components/Hamburger";
@@ -118,6 +118,7 @@ export default {
   methods: {
     changeLang(lang) {
       this.$i18n.locale = lang;
+      localStorage.setItem("lang", lang)
     },
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
@@ -136,7 +137,8 @@ export default {
             location.href = "/index";
           });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
   },
 };

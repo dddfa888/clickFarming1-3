@@ -1,6 +1,7 @@
 package com.ruoyi.click.mapper;
 
 import com.ruoyi.click.domain.MNotify;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2025-06-18
  */
+@Mapper
 public interface MNotifyMapper
 {
     /**

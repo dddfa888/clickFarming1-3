@@ -79,7 +79,7 @@
       <el-table-column label="内容" align="left" prop="content" />
       <el-table-column label="标识图片" align="center" prop="iconImageUrl" >
         <template slot-scope="scope">
-          <img class="settingListImg" :src="baseUrl+scope.row.iconImageUrl" alt="图片无法显示"></img>
+          <img class="settingListImg" :src="scope.row.iconImageUrl" alt="图片无法显示"></img>
         </template>
 	  </el-table-column>
       <el-table-column label="链接支持" align="left" prop="linkSupport" />
@@ -90,7 +90,7 @@
 	  </el-table-column>
       <el-table-column label="弹出图片" align="center" prop="ejectImageUrl" >
         <template slot-scope="scope">
-          <img class="settingListImg" :src="baseUrl+scope.row.ejectImageUrl" alt="图片无法显示"></img>
+          <img class="settingListImg" :src="scope.row.ejectImageUrl" alt="图片无法显示"></img>
         </template>
 	  </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

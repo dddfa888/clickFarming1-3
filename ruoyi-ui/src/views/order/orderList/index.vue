@@ -142,7 +142,7 @@
       <el-table-column label="产品名称" align="center" prop="productName" />
       <el-table-column label="产品图片URL" align="center" prop="productImageUrl" >
         <template slot-scope="scope">
-          <img class="orderListProdImg" :src="baseUrl+scope.row.productImageUrl" alt="图片无法显示"></img>
+          <img class="orderListProdImg" :src="scope.row.productImageUrl" alt="图片无法显示"></img>
         </template>
 	  </el-table-column>
       <el-table-column label="单价" align="center" prop="unitPrice" />
@@ -151,6 +151,7 @@
       <el-table-column label="利润" align="center" prop="profit" />
       <el-table-column label="退款金额" align="center" prop="refundAmount" />
       <el-table-column label="过程状态" align="center" prop="processStatus" :formatter="formatStatus" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180" />
       <!--<el-table-column label="是否连单" align="center" prop="multiType" />
       <el-table-column label="连单id" align="center" prop="multiId" />
       <el-table-column label="冻结状态" align="center" prop="freezeStatus" />-->

@@ -62,74 +62,146 @@
           </span>
         </template>
       </el-table-column>
+      <el-table-column label="行为" width="360" align="center" prop="withdrawalAddress">
+        <template slot-scope="scope">
+          <div class="action-buttons">
+            <el-button
+              @click="handleUpdateBalance(scope.row)"
+              type="primary"
+              size="small"
+            >
+              更改账户余额
+            </el-button>
+
+            <el-button
+              @click="handleListGroupInformation(scope.row)"
+              type="primary"
+              size="small"
+            >
+              查看集团信息
+            </el-button>
+            <el-button
+              @click="handleRegisterType(scope.row)"
+              type="primary"
+              size="small"
+              :style="{
+                backgroundColor: scope.row.registerType === '0' ? 'red' : 'green',
+                borderColor: scope.row.registerType === '0' ? 'red' : 'green'
+              }"
+            >
+              {{ scope.row.registerType === '0' ? '成为客人' : '成为员工' }}
+            </el-button>
+
+            <el-button
+              @click="handleOpenUserOrderList(scope.row)"
+              size="small"
+              :style="{
+                backgroundColor: '#fadb14',
+                borderColor: '#fadb14',
+                color: '#fff'
+              }"
+            >
+              订单接收历史记录
+            </el-button>
+
+
+            <el-button
+              @click="handleStatusChange(scope.row)"
+              type="primary"
+              size="small"
+              :style="{
+                backgroundColor: scope.row.status === 1 ? 'red' : 'green',
+                borderColor: scope.row.status === 1 ? 'red' : 'green'
+              }"
+            >
+              {{ scope.row.status === 1 ? '锁定账户' : '解锁账户' }}
+            </el-button>
+
+            <el-button
+              @click="handleDelete(scope.row)"
+              type="primary"
+              size="small"
+              :style="{
+                backgroundColor: 'red',
+                borderColor: 'red'
+              }"
+            >
+              删除账户
+            </el-button>
+
+            <el-button
+              @click="handleUpdate(scope.row)"
+              type="primary"
+              size="small"
+            >
+              修改账户
+            </el-button>
+
+
+
+            <el-button
+              @click="handleOpenSetOrderNum(scope.row)"
+              type="primary"
+              size="small"
+            >
+              设置连单数量
+            </el-button>
+
+            <el-button
+              @click="notifyOpenop(scope.row)"
+              type="primary"
+              size="small">发送通知
+            </el-button>
+
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="等级" align="center" prop="levelName" />
       <el-table-column label="电话号码" align="center" prop="phoneNumber" />
       <el-table-column label="账户余额" align="center" prop="accountBalance" />
+
       <el-table-column label="邀请人姓名" align="center" prop="inviterName">
         <template slot-scope="scope">
           {{ scope.row.inviterName || '/' }}
         </template>
       </el-table-column>
-<!--      <el-table-column label="状态 1:启用 0:禁用" align="center" prop="status" />-->
-      <el-table-column label="是否禁用" align="center" prop="status">
+      <el-table-column label="状态" align="center" prop="withdrawalAddress">
         <template slot-scope="scope">
-          <el-switch
-              v-model="scope.row.status"
-              :active-value="1"
-              :inactive-value="0"
-              @change="handleStatusChange(scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="提现地址" align="center" prop="withdrawalAddress">
-        <template slot-scope="scope">
-          {{ scope.row.withdrawalAddress || '/' }}
+          <el-tag
+            :type="scope.row.status === 1 ? 'success' : 'danger'"
+          >
+            {{ scope.row.status === 1 ? '正常' : '已锁定' }}
+          </el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column label="银行名称" align="center" prop="bankName">
-        <template slot-scope="scope">
-          {{ scope.row.bankName || '/' }}
-        </template>
-      </el-table-column>
 
-      <el-table-column label="银行账户名称" align="center" prop="bankAccountName">
-        <template slot-scope="scope">
-          {{ scope.row.bankAccountName || '/' }}
-        </template>
-      </el-table-column>
 
-      <el-table-column label="银行账号" align="center" prop="bankAccountNumber">
-        <template slot-scope="scope">
-          {{ scope.row.bankAccountNumber || '/' }}
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="提现地址" align="center" prop="withdrawalAddress">-->
+<!--        <template slot-scope="scope">-->
+<!--          {{ scope.row.withdrawalAddress || '/' }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+
+<!--      <el-table-column label="银行名称" align="center" prop="bankName">-->
+<!--        <template slot-scope="scope">-->
+<!--          {{ scope.row.bankName || '/' }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+
+<!--      <el-table-column label="银行账户名称" align="center" prop="bankAccountName">-->
+<!--        <template slot-scope="scope">-->
+<!--          {{ scope.row.bankAccountName || '/' }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+
+<!--      <el-table-column label="银行账号" align="center" prop="bankAccountNumber">-->
+<!--        <template slot-scope="scope">-->
+<!--          {{ scope.row.bankAccountNumber || '/' }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 
       <el-table-column label="当天刷单数量" align="center" prop="brushNumber" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-dropdown trigger="click" @command="handleCommand">
-            <el-button type="primary">
-              操作<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                  v-for="item in operateOptions"
-                  :key="item.value"
-                  :command="{ item: item, row: scope.row }"
-              >
-                {{ item.label }}
-              </el-dropdown-item>
-              <!-- 动态设置贷款等级按钮 -->
-              <el-dropdown-item
-                  :command="{ item: { value: 'handleRegisterType' }, row: scope.row }"
-              >
-                {{ scope.row.registerType === "0" ? '转为客人' : '转为员工' }}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
     </el-table>
 
     <pagination
@@ -210,6 +282,21 @@
       </span>
     </el-dialog>
 
+    <el-dialog :title="notifyTitle" :visible.sync="notifyOpen" width="500px" append-to-body>
+      <el-form ref="notifyForm" :model="notifyForm" :rules="notifyRules" label-width="80px">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="notifyForm.title" placeholder="请输入标题" />
+        </el-form-item>
+        <el-form-item label="内容">
+          <editor v-model="notifyForm.content" :min-height="192"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitNotifyForm">确 定</el-button>
+        <el-button @click="notifyCancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
 
     <el-dialog
         title="查看订单"
@@ -232,6 +319,7 @@
         <el-table-column label="利润" align="center" prop="profit" />
         <el-table-column label="退款金额" align="center" prop="refundAmount" />
         <el-table-column label="过程状态" align="center" prop="processStatus" :formatter="formatStatus" />
+        <el-table-column label="创建时间" align="center" prop="createTime" />
       </el-table>
       <span slot="footer" class="dialog-footer">
 <!-- <el-button @click="">取 消</el-button>-->
@@ -352,11 +440,24 @@
 <script>
 import {getAllSuperiorUids,updateBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum} from "@/api/user/user"
 import { listGrade } from "@/api/user/grade"
+import {  addNotify } from "@/api/notify/notify"
 
 export default {
   name: "User",
   data() {
     return {
+      notifyOpen: false, // 弹框是否显示
+      notifyTitle: "发送通知", // 弹框标题
+      notifyForm: { // 表单数据
+        userId: '',
+        title: '',
+        content: ''
+      },
+      notifyRules: { // 表单验证规则
+        title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
+      },
+      notifyOptions: [], // 用户列表选项
       tableData: [],
       orderListTableData: [],
       dialogGroupInformation: false,
@@ -377,32 +478,6 @@ export default {
       operateTitle: "",
       operateOpen: false,
       operateForm: "",
-      operateOptions: [
-        {
-          label: "修改",
-          value: "handleUpdate",
-        },
-        {
-          label: "删除",
-          value: "handleDelete",
-        },
-        {
-          label: "修改账户余额",
-          value: "handleUpdateBalance",
-        },
-        {
-          label: "查看集团信息",
-          value: "handleListGroupInformation",
-        },
-        {
-          label: "查看订单",
-          value: "handleOpenUserOrderList",
-        },
-        {
-          label: "设置连单数量",
-          value: "handleOpenSetOrderNum",
-        }
-      ],
       options: [{
         value: '1',
         label: '客人'
@@ -507,6 +582,31 @@ export default {
     this.getGradeList()
   },
   methods: {
+    notifyOpenop(e){
+      console.log(e)
+      this.notifyOpen = true
+      this.notifyForm.userId = e.uid
+    },
+    // 发送通知的方法
+    submitNotifyForm() {
+      this.$refs.notifyForm.validate((valid) => {
+        if (valid) {
+          addNotify(this.notifyForm).then(response => {
+            this.$modal.msgSuccess("新增成功");
+            this.notifyOpen = false;
+            this.getList();
+          }).catch(error => {
+            this.$modal.msgError("新增失败");
+          });
+        } else {
+          this.$modal.msgError("请检查表单输入");
+        }
+      });
+    },
+    // 关闭弹框
+    notifyCancel() {
+      this.notifyOpen = false;
+    },
     handleCloseGroupInformation(){
       this.dialogGroupInformation = false
 
@@ -633,13 +733,37 @@ export default {
         }
       })
     },
-    handleStatusChange(e){
-      setStatus(e.uid).then(response=>{
-        if(response.code === 200){
-          this.getList()
+    handleStatusChange(row) {
+      // 弹出确认框，询问是否锁定或解锁账户
+      this.$confirm(
+        row.status === 1 ? '确定要解锁该账户吗？' : '确定要锁定该账户吗？',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      })
-      console.log(e)
+      )
+        .then(() => {
+          // 用户点击确定后执行
+          this.toggleUserStatus(row);
+        })
+        .catch(() => {
+          // 用户点击取消时的操作
+          console.log('操作已取消');
+        });
+    },
+
+    toggleUserStatus(row) {
+      // 切换账户状态，1为启用，0为禁用
+      const newStatus = row.status === 1 ? 0 : 1; // 启用状态为1，禁用状态为0
+      setStatus(row.uid, newStatus).then(response => {
+        if (response.code === 200) {
+          this.getList(); // 刷新用户列表
+        }
+      }).catch((error) => {
+        console.error('请求出错:', error);
+      });
     },
     getGradeList() {
       this.loading = true
@@ -770,8 +894,16 @@ export default {
 }
 </script>
 <style>
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: flex-start; /* 左对齐 */
+}
+
+
 	.orderListProdImg {
-		width: 3rem;
+		width: 1rem;
 		height: 3rem;
 	}
 </style>

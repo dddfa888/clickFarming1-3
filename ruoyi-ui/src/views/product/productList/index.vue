@@ -69,7 +69,7 @@
       <el-table-column label="价格" align="center" prop="price" />
       <el-table-column label="图片附件url" align="center" prop="imageUrl" >
         <template slot-scope="scope">
-          <img class="listProdImg" :src="baseUrl+scope.row.imageUrl" alt="图片无法显示"></img>
+          <img class="listProdImg" :src="scope.row.imageUrl" alt="图片无法显示"></img>
         </template>
 	  </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

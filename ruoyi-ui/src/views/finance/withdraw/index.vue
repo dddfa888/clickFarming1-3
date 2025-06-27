@@ -13,12 +13,30 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          size="mini"
+          @click="oneClick()"
+        >一键同意员工提现</el-button>
+      </el-col>
+    </el-row>
 
     <!-- 表格区域 -->
     <el-table v-loading="loading" :data="withdrawList" @selection-change="handleSelectionChange">
       <el-table-column label="订单id" align="center" prop="orderId" />
       <el-table-column label="用户ID" align="center" prop="userId" />
-      <el-table-column label="用户姓名" align="center" prop="userName" />
+<!--      <el-table-column label="用户姓名" align="center" prop="userName" />-->
+      <el-table-column label="用户姓名" align="center" prop="userName">
+        <template slot-scope="scope">
+          {{ scope.row.userName }}<br />
+          <span :style="{ color: scope.row.registerType === '0' ? 'red' : 'green' }">
+          {{ scope.row.registerType == '0' ? '虚拟的' : scope.row.registerType == '1' ? '真实的' : '未知' }}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column label="金额" align="center" prop="amount" />
       <el-table-column label="银行名称" align="center" prop="bankName" />
       <el-table-column label="银行账户名称" align="center" prop="bankAccountName" />
@@ -92,7 +110,7 @@
 </template>
 
 <script>
-import { agree, reject, listWithdraw } from "@/api/finance/withdraw"
+import {oneClickAgree, agree, reject, listWithdraw } from "@/api/finance/withdraw"
 
 export default {
   name: "Withdraw",
@@ -121,6 +139,29 @@ export default {
     this.getList()
   },
   methods: {
+    oneClick() {
+      // 弹出确认框
+      this.$confirm('是否确认一键通过？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 用户点击 "确定" 后执行请求
+        oneClickAgree().then(res => {
+          console.log(res);
+          // 判断状态码是否为 200
+          if (res.code === 200) {
+            this.getList(); // 如果是200，调用 getList 方法
+          }
+        }).catch(error => {
+          console.error('请求失败:', error);
+        });
+      }).catch(() => {
+        // 用户点击 "取消" 时的处理
+        console.log('用户取消了一键通过');
+      });
+    },
+
     getStatusLabel(status) {
       switch (status) {
         case 0:

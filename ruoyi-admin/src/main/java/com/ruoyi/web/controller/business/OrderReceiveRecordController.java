@@ -51,7 +51,7 @@ public class OrderReceiveRecordController extends BaseController
     @GetMapping("/listByUser")
     public TableDataInfo selectOrderListByUser(OrderReceiveRecord orderReceiveRecord)
     {
-        startPage();
+        //startPage(); //暂时不分页
         List<OrderReceiveRecord> list = orderReceiveRecordService.selectOrderListByUser(orderReceiveRecord);
         return getDataTable(list);
     }

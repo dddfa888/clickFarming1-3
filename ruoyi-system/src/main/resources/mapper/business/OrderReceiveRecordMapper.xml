@@ -50,6 +50,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
+    <select id="selectOrderListOrderDescId" parameterType="OrderReceiveRecord" resultMap="OrderReceiveRecordResult">
+        <include refid="selectOrderReceiveRecordVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productImageUrl != null  and productImageUrl != ''"> and product_image_url = #{productImageUrl}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+            <if test="profit != null "> and profit = #{profit}</if>
+            <if test="refundAmount != null "> and refund_amount = #{refundAmount}</if>
+            <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+            <if test="multiType != null  and multiType != ''"> and multi_type = #{multiType}</if>
+            <if test="multiId != null "> and multi_id = #{multiId}</if>
+            <if test="freezeStatus != null  and freezeStatus != ''"> and freeze_status = #{freezeStatus}</if>
+        </where>
+        order by id desc
+    </select>
+
     <!-- 倒序查询 -->
     <select id="selectListOrderDesc" parameterType="java.util.Map" resultMap="OrderReceiveRecordResult">
         <include refid="selectOrderReceiveRecordVo"/>

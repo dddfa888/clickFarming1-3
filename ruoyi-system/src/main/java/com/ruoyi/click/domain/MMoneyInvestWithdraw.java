@@ -1,5 +1,6 @@
 package com.ruoyi.click.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import com.ruoyi.common.annotation.Excel;
@@ -76,4 +77,6 @@ public class MMoneyInvestWithdraw
     //账变后
     private BigDecimal accountBack;
 
+    @TableField(exist = false)
+    private String registerType;
 }

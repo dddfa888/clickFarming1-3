@@ -1,5 +1,7 @@
 package com.ruoyi.common.utils;
 
+import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.ruoyi.common.exception.ServiceException;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -261,4 +263,28 @@ public class DecimalUtil {
         return x.stripTrailingZeros();
     }
 
+    /**
+     * 字符串解析为数字，兼容逗号与小数点格式
+     * @param str
+     * @return
+     */
+    public static BigDecimal parseNumberBothCommaPoint(String str){
+        Assert.notEmpty(str, "数字为空，无法解析");
+
+        String newStr = str.replace(" ", "");
+        BigDecimal num = null;
+        try {
+            // 首先按照句点为小数点的格式解析，例：123.45
+            num = new BigDecimal(newStr);
+        }catch (Exception e){
+            // 假设数字格式是逗号作为小数点导致前面解析失败，例：12345.67写作了12345,67，此处转换后再解析
+            newStr = newStr.replace(",", ".");
+            try {
+                num = new BigDecimal(newStr);
+            }catch (Exception e2){
+                throw new ServiceException("数字【"+str+"】格式错误，无法解析");
+            }
+        }
+        return num;
+    }
 }
