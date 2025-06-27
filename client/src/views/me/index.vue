@@ -91,13 +91,13 @@ const { locale: langStoreLocale } = storeToRefs(langStore);
 i18nLocale.value = langStoreLocale.value; // 同步 i18n
 
 const langMap = {
+  越南语: "vi",
   中国: "zh",
   英语: "en",
-  越南语: "vi",
-  日本: "ja",
-  法国: "fr",
-  俄罗斯: "ru",
-  韩国: "ko",
+  // 日本: "ja",
+  // 法国: "fr",
+  // 俄罗斯: "ru",
+  // 韩国: "ko",
 };
 const reverseLangMap = Object.fromEntries(
   Object.entries(langMap).map(([k, v]) => [v, k])
@@ -281,7 +281,7 @@ const handleLogout = () => {
 .language-dropdown {
   list-style: none;
   padding: 0;
-  margin-top: 183px;
+  margin-top: 450px;
   background: #0b1e34;
   color: white;
   border: 1px solid #ccc;

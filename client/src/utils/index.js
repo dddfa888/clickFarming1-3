@@ -4,7 +4,7 @@ import router from '../router/index';
 import { showDialog } from 'vant';
 
 let isTokenExpired = false;
-const baseURL = "http://localhost:8080/"
+const baseURL = "http://192.168.0.198:8089/"
 const request = axios.create({
     baseURL: import.meta.env.MODE === 'development'
         ? '/api'

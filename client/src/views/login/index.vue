@@ -74,13 +74,13 @@ const { locale } = useI18n();
 const { t } = useI18n();
 const showLangList = ref(false);
 const langMap = {
+  越南语: "vi",
   中国: "zh",
   英语: "en",
-  越南语: "vi",
-  日本: "ja",
-  法国: "fr",
-  俄罗斯: "ru",
-  韩国: "ko",
+  // 日本: "ja",
+  // 法国: "fr",
+  // 俄罗斯: "ru",
+  // 韩国: "ko",
 };
 const languageList = Object.keys(langMap);
 const reverseLangMap = Object.fromEntries(
@@ -93,7 +93,7 @@ locale.value = langStore.locale;
 
 function selectLanguage(lang) {
   selectedLanguage.value = lang;
-  const langCode = langMap[lang] || "zh";
+  const langCode = langMap[lang] || "vi";
   langStore.setLocale(langCode);
   locale.value = langCode;
   showLangList.value = !showLangList.value;
@@ -106,11 +106,11 @@ function toggleLangList() {
 function onSubmit(values) {
   login(form).then((res) => {
     if (res.code === 200) {
-      showToast({ message: "操作成功", type: "success" });
+      showToast({ message: t("操作成功"), type: "success" });
       localStorage.setItem("token", res.data.token);
       router.push("/");
     } else {
-      showToast({ message: res.msg, type: "fail" });
+      showToast({ message: t(res.msg), type: "fail" });
     }
   });
 }

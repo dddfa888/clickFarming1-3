@@ -26,10 +26,7 @@
 
         <div class="product-info">
           <div class="product-name">
-            <img
-              :src="'https://cfapi.khkjhkh.top' + item.productImageUrl"
-              alt=""
-            />
+            <img :src="item.productImageUrl" alt="" />
             <div>
               {{ item.productName }}
             </div>
@@ -102,14 +99,14 @@ const handlePay = () => {
     console.log(res);
     if (res.code === 200) {
       showToast({
-        message: res.msg,
+        message: t(res.msg),
         type: "success",
       });
       // 刷新页面
       location.reload();
     } else {
       showToast({
-        message: res.msg,
+        message: t(res.msg),
         type: "error",
       });
     }

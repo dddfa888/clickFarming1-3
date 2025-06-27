@@ -35,15 +35,11 @@
       </div>
       <div class="detail-item">
         <div class="detail-label">{{ t("昨天折扣") }}</div>
-        <div class="detail-value">
-          {{ formatCurrency(order.numYesterday) }}
-        </div>
+        <div class="detail-value">{{ order.numYesterday }}€</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">{{ t("今天折扣") }}</div>
-        <div class="detail-value">
-          {{ formatCurrency(order.numToday) }}
-        </div>
+        <div class="detail-value">{{ order.numToday }}€</div>
       </div>
     </div>
 
@@ -90,7 +86,7 @@ const Sendbutton = () => {
       id.value = res.orderId;
     } else {
       showToast({
-        message: res.msg,
+        message: t(res.msg),
         type: "fail",
       });
     }
@@ -103,12 +99,16 @@ const handlePay = () => {
     console.log(res);
     if (res.code === 200) {
       showToast({
-        message: res.msg,
+        message: t(res.msg),
         type: "success",
+      });
+      // 支付成功后刷新余额
+      getUserGradeAndBalanceAndDiscount().then((refreshRes) => {
+        order.value = refreshRes.data;
       });
     } else {
       showToast({
-        message: res.msg,
+        message: t(res.msg),
         type: "fail",
       });
     }

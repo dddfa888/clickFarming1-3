@@ -26,7 +26,7 @@
             style="border: 1px solid #e5e7eb"
             type="text"
             v-model="amount"
-            :placeholder="t('金额数额')"
+            :placeholder="t('金钱数额')"
           />
           <button @click="fillAll">{{ t("全部") }}</button>
         </div>
@@ -98,7 +98,7 @@ function submit() {
         });
       } else {
         showToast({
-          message: res.msg,
+          message: t(res.msg),
           type: "fail",
         });
         amount.value = "";

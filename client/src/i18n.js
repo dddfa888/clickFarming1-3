@@ -13,9 +13,9 @@ const i18n = createI18n({
     globalInjection: true,
     locale: localStorage.getItem('locale') || 'zh', // 默认中文
     messages: {
+        vi,
         zh,
         en,
-        vi,
         ko,
         fr,
         ru,

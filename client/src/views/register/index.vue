@@ -81,13 +81,13 @@ function onSubmit(values) {
     console.log(res);
     if (res.code === 200) {
       showToast({
-        message: "操作成功",
+        message: t("操作成功"),
         type: "success",
       });
       router.push("/login");
     } else {
       showToast({
-        message: res.msg,
+        message: t(res.msg),
         type: "fail",
       });
     }
