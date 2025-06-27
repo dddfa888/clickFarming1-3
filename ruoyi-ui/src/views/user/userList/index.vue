@@ -319,6 +319,7 @@
         <el-table-column label="利润" align="center" prop="profit" />
         <el-table-column label="退款金额" align="center" prop="refundAmount" />
         <el-table-column label="过程状态" align="center" prop="processStatus" :formatter="formatStatus" />
+        <el-table-column label="创建时间" align="center" prop="createTime" />
       </el-table>
       <span slot="footer" class="dialog-footer">
 <!-- <el-button @click="">取 消</el-button>-->

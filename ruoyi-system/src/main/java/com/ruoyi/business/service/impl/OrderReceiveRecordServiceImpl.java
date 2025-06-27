@@ -68,7 +68,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     @Override
     public List<OrderReceiveRecord> selectOrderReceiveRecordList(OrderReceiveRecord orderReceiveRecord)
     {
-        return orderReceiveRecordMapper.selectOrderReceiveRecordList(orderReceiveRecord);
+        return orderReceiveRecordMapper.selectOrderListOrderDescId(orderReceiveRecord);
     }
 
     /**
