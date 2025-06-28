@@ -41,7 +41,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain size="mini" @click="oneClick()"
-          >一键同意员工提现</el-button
+          >一键同意客户提现</el-button
         >
       </el-col>
     </el-row>
@@ -259,7 +259,6 @@ export default {
       this.loading = true;
       listWithdraw(this.queryParams)
         .then((response) => {
-          console.log(response, "response");
           this.withdrawList = response.rows;
           this.total = response.total;
           this.loading = false;

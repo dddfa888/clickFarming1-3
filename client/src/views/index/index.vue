@@ -9,7 +9,7 @@
           <div class="username">{{ userInfo.loginAccount || "" }}</div>
         </div>
       </div>
-      <div class="user-info-balance">
+      <div class="user-info-balance" @click="router.push('/notice')">
         <img src="../../assets/img/tongzhi.png" alt="通知图标" />
       </div>
     </div>

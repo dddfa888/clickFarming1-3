@@ -131,3 +131,28 @@ export function getUserNotification() {
         method: 'get',
     })
 }
+
+//公司简介
+export function getcompanyProfile(lang) {
+    return request({
+        url: `/api/settingComProfile/getByLang?lang=${lang}`,
+        method: "get"
+    })
+}
+
+// 基本原则
+export function getBasicPrinciple(lang) {
+    return request({
+        url: `/api/settingFoundRule/getByLang?lang=${lang}`,
+        method: "get"
+    })
+}
+
+// 开发合作
+export function getPartnership(lang) {
+    return request({
+        url: `/api/settingDevCooperate/getByLang?lang=${lang}`,
+        method: "get"
+    })
+}
+

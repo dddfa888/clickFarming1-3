@@ -3,18 +3,26 @@
   <div class="company-intro">
     <HeaderBar :title="t('基本原则')" />
     <div class="content-box">
-      <p>
-        {{ t("Basic Introduction") }}
-      </p>
+      <p v-html="companyProfile"></p>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
 import { useI18n } from "vue-i18n";
-// import { getCompanyRule } from "../../api/index";
+import { getBasicPrinciple } from "../../api/index";
+import { useLangStore } from "../../store/useLangStore";
+
 const { t } = useI18n();
+const langStore = useLangStore();
+const companyProfile = ref("");
+
+getBasicPrinciple(langStore.locale).then((res) => {
+  companyProfile.value = res.data.content;
+  console.log(res.data.content);
+});
 </script>
 
 <style scoped>

@@ -48,6 +48,26 @@
           v-hasPermi="['system:user:remove']"
         >删除</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          @click="handlePrice('staff')"
+          v-hasPermi="['system:user:remove']"
+        >从用户哪里提取资金</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+           @click="handlePrice('customer')"
+          v-hasPermi="['system:user:remove']"
+        >员工充值</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -61,6 +81,11 @@
           {{ scope.row.registerType == '0' ? '虚拟的' : scope.row.registerType == '1' ? '真实的' : '未知' }}
           </span>
         </template>
+      </el-table-column>
+       <el-table-column label="订单设置" align="center" prop="loginAccount">
+        <template slot-scope="scope">
+       <el-button @click="handleOpenoreder(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">订单设置</el-button>
+          </template>
       </el-table-column>
       <el-table-column label="行为" width="360" align="center" prop="withdrawalAddress">
         <template slot-scope="scope">
@@ -231,17 +256,26 @@
       <el-form-item label="金钱数额">
         <el-input disabled v-model="balanceForm.accountBalance"></el-input>
       </el-form-item>
-      <el-form-item label="选择一个理由">
-        <el-input v-model="没有理由"></el-input>
-      </el-form-item>
-      <el-form-item label="或者">
-        <el-input></el-input>
-      </el-form-item>
+       <el-form-item label="选择一个理由">
+      <el-select v-model="balanceForm.reason" placeholder="请选择一个理由">
+        <el-option
+          v-for="item in reasonOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="或者">
+      <el-input v-model="balanceForm.reason"></el-input>
+    </el-form-item>
       <el-form-item style="display: flex;align-items: center;justify-content: center;">
         <el-button @click="handleCloseBalance">取消</el-button>
          <el-button type="primary" @click="submitBalanceForm">创建新的</el-button>
       </el-form-item>
     </el-form>
+
+
       <!-- <el-form ref="form" :model="balanceForm" label-width="80px">
         <el-form-item label="">
           <el-switch
@@ -262,6 +296,24 @@
         <el-button @click="handleCloseBalance">取 消</el-button>
         <el-button type="primary" @click="submitBalanceForm">确 定</el-button>
       </span> -->
+    </el-dialog>
+
+
+    <el-dialog :title="orderTitle" :visible.sync="Orderopen" width="750px" append-to-body>
+      <el-form>
+        <el-form-item v-for="item in 10" :key="item">
+          配置 命令
+          <input class="orderListInput" type="number" min="0" max="100" step="1" value="0">
+          命令 (0 表示禁用)
+          <input class="orderListInput" type="number" min="0" max="100" step="1" value="0">
+          <span>-</span>
+          <input class=orderListInput type="number" min="0" max="100" step="1" value="0">
+        </el-form-item>
+        </el-form>
+      <div slot="footer" class="dialog-footer" style="display: flex;justify-content: space-evenly;align-items: center;">
+        <el-button type="primary">取消</el-button>
+        <el-button>创建新的</el-button>
+      </div>
     </el-dialog>
 
 
@@ -470,6 +522,8 @@ export default {
   name: "User",
   data() {
     return {
+      orderTitle:"个人设置",
+      Orderopen:false,
       notifyOpen: false, // 弹框是否显示
       notifyTitle: "发送通知", // 弹框标题
       notifyForm: { // 表单数据
@@ -487,6 +541,10 @@ export default {
       dialogGroupInformation: false,
       dialogUserOrder: false,
       dialogOrderNum: false,
+       reasonOptions: [
+        { value: '没有理由', label: '没有理由' },
+        { value: '平衡调整', label: '平衡调整' }
+      ],
       balanceForm:{
         uid:  "",
         increaseDecrease: true,
@@ -495,7 +553,8 @@ export default {
         bankAccountNumber:"",
         accountBalance:"",
         brushNumber:"",
-        loginAccount:""
+        loginAccount:"",
+         reason: ''
       },
       orderNumForm:{
         uid: '',
@@ -611,6 +670,21 @@ export default {
     this.getGradeList()
   },
   methods: {
+    handleOpenoreder(row)
+    {
+      this.Orderopen=true
+      console.log(row)
+    },
+    handlePrice(row)
+    {
+      if(row==="staff")
+    {
+      this.$router.push({path:"/finance/withdrawCustomer"})
+    }else
+    {
+ this.$router.push({path:"/finance/withdraw"})
+    }
+    },
     notifyOpenop(e){
       console.log(e)
       this.notifyOpen = true
@@ -940,4 +1014,10 @@ export default {
 		width: 3rem;
 		height: 3rem;
 	}
+.orderListInput 
+{
+  width: 7rem;
+  height: 2rem;
+  margin: 0rem 0.5rem;
+}
 </style>

@@ -2,26 +2,26 @@
   <div class="company-intro">
     <HeaderBar :title="t('开发合作')" />
     <div class="content-box">
-      <p>
-        {{ t("平台代理模式") }}
-        <br />
-        {{ t("Mercado Libre会员可以成为电商平台的代理商") }}
-        <br />
-        {{
-          t(
-            "通过推荐新会员成为 Mercado Libre 会员和代理商，可以获得价值 00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。"
-          )
-        }}
-      </p>
+      <p v-html="companyProfile"></p>
     </div>
   </div>
 </template>
 
 <script setup>
 import HeaderBar from "../../components/HeaderBar.vue";
-// import { getCompanyCooperation } from "../../api/index";
+import { getPartnership } from "../../api/index";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useLangStore } from "../../store/useLangStore";
+
 const { t } = useI18n();
+const langStore = useLangStore();
+const companyProfile = ref("");
+
+getPartnership(langStore.locale).then((res) => {
+  companyProfile.value = res.data.content;
+  console.log(res.data.content);
+});
 </script>
 
 <style scoped>

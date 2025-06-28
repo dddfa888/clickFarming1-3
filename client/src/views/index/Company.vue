@@ -3,9 +3,7 @@
   <div class="company-intro">
     <HeaderBar :title="t('公司简介')" />
     <div class="content-box">
-      <p>
-        {{ t("Company Profile") }}
-      </p>
+      <p v-html="companyProfile"></p>
       <p></p>
       <!-- 可将长文本继续补充 -->
     </div>
@@ -13,9 +11,19 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
+import { getcompanyProfile } from "../../api/index";
+import { useLangStore } from "../../store/useLangStore";
+
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
+const langStore = useLangStore();
+const companyProfile = ref("");
+getcompanyProfile(langStore.locale).then((res) => {
+  companyProfile.value = res.data.content;
+  console.log(res.data.content);
+});
 </script>
 
 <style scoped>
