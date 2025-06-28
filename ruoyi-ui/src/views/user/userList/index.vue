@@ -325,16 +325,16 @@
     <el-dialog
         title="查看订单"
         :visible.sync="dialogUserOrder"
-        width="80%"
+        width="90%"
         :before-close="handleCloseUserOrderList"
     >
       <el-table
           :data="orderListTableData"
           style="width: 100%">
-        <el-table-column label="产品名称" align="center" prop="productName" width="180" />
-        <el-table-column label="产品图片URL" align="center" prop="productImageUrl" >
+        <el-table-column label="产品名称" align="center" prop="productName" width="400" />
+        <el-table-column label="产品图片" align="center" prop="productImageUrl" >
           <template slot-scope="scope">
-            <img class="orderListProdImg" :src="baseUrl+scope.row.productImageUrl" alt="图片无法显示"></img>
+            <img class="orderListProdImg" :src="scope.row.productImageUrl" alt="图片无法显示"></img>
           </template>
         </el-table-column>
         <el-table-column label="单价" align="center" prop="unitPrice" />
@@ -462,7 +462,7 @@
 </template>
 
 <script>
-import {getAllSuperiorUids,updateBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum} from "@/api/user/user"
+import {getAllSuperiorUids,changeBalance,setBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum} from "@/api/user/user"
 import { listGrade } from "@/api/user/grade"
 import {  addNotify } from "@/api/notify/notify"
 
@@ -697,7 +697,7 @@ export default {
 
     submitBalanceForm(){
       console.log(this.balanceForm)
-      updateBalance(this.balanceForm).then(res => {
+      changeBalance(this.balanceForm).then(res => {
         if(res.code != 200){
           this.$message.error("修改失败")
           return
@@ -937,7 +937,7 @@ export default {
 
 
 	.orderListProdImg {
-		width: 1rem;
+		width: 3rem;
 		height: 3rem;
 	}
 </style>

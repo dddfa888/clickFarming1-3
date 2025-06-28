@@ -64,10 +64,10 @@
     <el-table v-loading="loading" :data="manageList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!--<el-table-column label="产品ID" align="center" prop="id" />-->
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="内容" align="center" prop="content" />
+      <el-table-column label="产品名称" align="center" prop="productName" width="500" />
+      <el-table-column label="内容" align="center" prop="content" width="500" />
       <el-table-column label="价格" align="center" prop="price" />
-      <el-table-column label="图片附件url" align="center" prop="imageUrl" >
+      <el-table-column label="图片附件" align="center" prop="imageUrl" >
         <template slot-scope="scope">
           <img class="listProdImg" :src="scope.row.imageUrl" alt="图片无法显示"></img>
         </template>

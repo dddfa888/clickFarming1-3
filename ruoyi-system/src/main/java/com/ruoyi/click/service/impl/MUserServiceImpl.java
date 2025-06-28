@@ -313,6 +313,19 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
 
 
     /**
+     * 直接修改用户信息，不涉及其他业务
+     *
+     * @param mUser 用户
+     * @return 结果
+     */
+    @Override
+    public int updateMUserSimple(MUser mUser)
+    {
+        mUser.setUpdateTime(DateUtils.getNowDate());
+        return mUserMapper.updateMUser(mUser);
+    }
+
+    /**
      * 修改用户连单数量
      *
      * @param mUser 用户

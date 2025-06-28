@@ -52,7 +52,16 @@ export function addUser(data) {
   })
 }
 
-export function updateBalance(data) {
+export function changeBalance(data) {
+  return request({
+    url: '/api/user/changeBalance',
+    method: 'post',
+    data: data
+  })
+}
+
+
+export function setBalance(data) {
   return request({
     url: '/api/user/setBalance',
     method: 'post',
