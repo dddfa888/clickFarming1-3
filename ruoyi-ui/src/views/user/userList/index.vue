@@ -218,7 +218,31 @@
         width="30%"
         :before-close="handleCloseBalance"
     >
-      <el-form ref="form" :model="balanceForm" label-width="80px">
+    <el-form ref="form" :model="balanceForm" label-width="80px">
+      <el-form-item label="账户">
+        <el-input v-model="balanceForm.loginAccount"></el-input>
+      </el-form-item>
+      <el-form-item label="电话号码">
+        <el-input v-model="balanceForm.phoneNumber"></el-input>
+      </el-form-item>
+      <el-form-item label="剩余">
+        <el-input v-model="balanceForm.balance"></el-input>
+      </el-form-item>
+      <el-form-item label="金钱数额">
+        <el-input disabled v-model="balanceForm.accountBalance"></el-input>
+      </el-form-item>
+      <el-form-item label="选择一个理由">
+        <el-input v-model="没有理由"></el-input>
+      </el-form-item>
+      <el-form-item label="或者">
+        <el-input></el-input>
+      </el-form-item>
+      <el-form-item style="display: flex;align-items: center;justify-content: center;">
+        <el-button @click="handleCloseBalance">取消</el-button>
+         <el-button type="primary" @click="submitBalanceForm">创建新的</el-button>
+      </el-form-item>
+    </el-form>
+      <!-- <el-form ref="form" :model="balanceForm" label-width="80px">
         <el-form-item label="">
           <el-switch
               style="display: block"
@@ -237,7 +261,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCloseBalance">取 消</el-button>
         <el-button type="primary" @click="submitBalanceForm">确 定</el-button>
-      </span>
+      </span> -->
     </el-dialog>
 
 
@@ -466,7 +490,12 @@ export default {
       balanceForm:{
         uid:  "",
         increaseDecrease: true,
-        balance: 0
+        balance: 0,
+        phoneNumber: "",
+        bankAccountNumber:"",
+        accountBalance:"",
+        brushNumber:"",
+        loginAccount:""
       },
       orderNumForm:{
         uid: '',
@@ -686,7 +715,12 @@ export default {
 
     },
     handleUpdateBalance(row){
+      console.log(row,"456789")
       this.balanceForm.uid = row.uid
+      this.balanceForm.accountBalance=row.accountBalance
+      this.balanceForm.phoneNumber=row.phoneNumber
+      this.balanceForm.bankAccountNumber=row.bankAccountNumber
+      this.balanceForm.loginAccount=row.loginAccount
       this.dialogBalance = true
     },
     /** 下拉列表操作 */
