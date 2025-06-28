@@ -6,7 +6,7 @@ export default {
     "注册": 'Đăng ký',
     "越南语": 'Tiếng Việt',
     "语言": "Ngôn ngữ",
-    "英语": "Tiếng Việt",
+    "英语": "Tiếng Anh",
     "日本": "Nhật Bản",
     "俄罗斯": "Nga",
     "韩国": "Hàn Quốc",
