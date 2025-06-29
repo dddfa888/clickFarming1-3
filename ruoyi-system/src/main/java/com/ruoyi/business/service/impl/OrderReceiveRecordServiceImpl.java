@@ -4,11 +4,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.business.domain.MRewardRecord;
 import com.ruoyi.business.domain.ProductManage;
+import com.ruoyi.business.mapper.MRewardRecordMapper;
 import com.ruoyi.business.mapper.ProductManageMapper;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
@@ -46,6 +49,8 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     private UserGradeMapper userGradeMapper;
     @Autowired
     private MAccountChangeRecordsMapper mAccountChangeRecordsMapper;
+    @Autowired
+    private MRewardRecordMapper mRewardRecordMapper;
 
     /**
      * 查询订单接收记录
@@ -282,9 +287,11 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         BigDecimal balanceBefore = mUser.getAccountBalance(); //记录变化前余额
         BigDecimal balanceChange = orderReceiveRecord.getProfit(); //新增余额
         BigDecimal balanceAfter = DecimalUtil.add(balanceBefore, balanceChange);
+
+        Date nowDate =DateUtils.getNowDate();
         //更新用户余额
         mUser.setAccountBalance(balanceAfter);
-        mUser.setUpdateTime(DateUtils.getNowDate());
+        mUser.setUpdateTime(nowDate);
         mUserMapper.updateMUser(mUser);
 
         //记录余额变化详情
@@ -296,13 +303,25 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         changeRecords.setUid(String.valueOf(mUser.getUid()));
         changeRecords.setDescription(mUser.getLoginAccount()+"订单奖励");
         changeRecords.setTransactionType(3); // 3:专用于标记订单利润
-        changeRecords.setCreateTime(mUser.getUpdateTime());
+        changeRecords.setCreateTime(nowDate);
         changeRecords.setRelatedId(orderId.toString());
         mAccountChangeRecordsMapper.insertMAccountChangeRecords(changeRecords);
 
+        //添加奖励记录
+        MRewardRecord mRewardRecord= new MRewardRecord();
+        mRewardRecord.setUserId(mUser.getUid());
+        mRewardRecord.setUserName(mUser.getLoginAccount());
+        mRewardRecord.setRewardTime(nowDate);
+        mRewardRecord.setRewardAmount(balanceChange);
+        mRewardRecord.setBalanceBefore(balanceBefore);
+        mRewardRecord.setBalanceAfter(balanceAfter);
+        mRewardRecord.setDescription("订单奖励");
+        mRewardRecord.setCreateTime(nowDate);
+        mRewardRecordMapper.insertMRewardRecord(mRewardRecord);
+
         //更新值  支付状态：完成
         orderReceiveRecord.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
-        orderReceiveRecord.setUpdateTime(mUser.getUpdateTime());
+        orderReceiveRecord.setUpdateTime(nowDate);
         return orderReceiveRecordMapper.updateOrderReceiveRecord(orderReceiveRecord);
     }
 

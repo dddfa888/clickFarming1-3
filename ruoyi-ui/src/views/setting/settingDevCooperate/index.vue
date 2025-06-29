@@ -66,7 +66,7 @@
     <el-table v-loading="loading" :data="cooperateList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键" align="center" prop="id" />
-      <el-table-column label="内容" align="left" prop="content" />
+      <el-table-column label="内容" align="left" prop="content" width="1000" />
       <el-table-column label="语言" align="center" prop="language" >
         <template slot-scope="scope">
           {{ langMap[scope.row.language] || scope.row.language }}
@@ -101,7 +101,7 @@
     />
 
     <!-- 添加或修改设置发展合作对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="50%" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="内容">
           <editor v-model="form.content" :min-height="192"/>
@@ -163,8 +163,8 @@ export default {
       rules: {
       },
       langList: [
-        { code:'vn', name:'越南语' },
-        { code:'cn', name:'中文' },
+        { code:'vi', name:'越南语' },
+        { code:'zh', name:'中文' },
         { code:'en', name:'英语' },
         { code:'kr', name:'韩语' },
         { code:'jp', name:'日语' },
@@ -172,8 +172,8 @@ export default {
         { code:'fr', name:'法语' }
       ],
       langMap: {
-        'vn': '越南语',
-        'cn': '中文',
+        'vi': '越南语',
+        'zh': '中文',
         'en': '英语',
         'kr': '韩语',
         'jp': '日语',

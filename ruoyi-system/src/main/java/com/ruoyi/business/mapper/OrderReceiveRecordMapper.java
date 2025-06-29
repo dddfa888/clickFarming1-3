@@ -1,5 +1,6 @@
 package com.ruoyi.business.mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -92,4 +93,12 @@ public interface OrderReceiveRecordMapper
      * @return 统计数量结果
      */
     long countNumByUserDate(Map<String,Object> param);
+
+    /**
+     * 一个用户一天内的利润总计
+     * @param param
+     * @return 统计数量结果
+     */
+    BigDecimal sumAmountByUserDate(Map<String,Object> param);
+
 }

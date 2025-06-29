@@ -207,4 +207,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
     </select>
 
+    <!-- 一个用户一天内的利润总计 -->
+    <select id="sumAmountByUserDate" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+        select IFNULL(sum(profit),0) n from m_order_receive_record
+        where user_id = #{userId}
+        and create_time <![CDATA[ >= ]]> #{date1} and create_time  <![CDATA[ < ]]> #{date2}
+        <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+    </select>
+
 </mapper>

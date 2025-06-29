@@ -56,7 +56,7 @@
           size="mini"
           @click="handlePrice('staff')"
           v-hasPermi="['system:user:remove']"
-        >从用户哪里提取资金</el-button>
+        >从客户那里提取资金</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -238,26 +238,26 @@
     />
 
     <el-dialog
-        title="修改账户余额"
+        title="更改账户余额"
         :visible.sync="dialogBalance"
         width="30%"
         :before-close="handleCloseBalance"
     >
-    <el-form ref="form" :model="balanceForm" label-width="80px">
+    <el-form ref="balanceForm" :model="balanceForm" :rules="balanceRules" label-width="80px">
       <el-form-item label="账户">
-        <el-input v-model="balanceForm.loginAccount"></el-input>
+        <el-input readonly v-model="balanceForm.loginAccount"></el-input>
       </el-form-item>
       <el-form-item label="电话号码">
-        <el-input v-model="balanceForm.phoneNumber"></el-input>
+        <el-input readonly v-model="balanceForm.phoneNumber"></el-input>
       </el-form-item>
       <el-form-item label="剩余">
-        <el-input v-model="balanceForm.balance"></el-input>
+        <el-input readonly v-model="balanceForm.originalBalance"></el-input>
       </el-form-item>
-      <el-form-item label="金钱数额">
-        <el-input disabled v-model="balanceForm.accountBalance"></el-input>
+      <el-form-item label="金钱数额" prop="balance">
+        <el-input-number v-model="balanceForm.balance"></el-input-number>
       </el-form-item>
        <el-form-item label="选择一个理由">
-      <el-select v-model="balanceForm.reason" placeholder="请选择一个理由">
+      <el-select v-model="selectedReason" placeholder="请选择一个理由" @change="changeReason">
         <el-option
           v-for="item in reasonOptions"
           :key="item.value"
@@ -266,7 +266,7 @@
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="或者">
+    <el-form-item label="或者" prop="reason">
       <el-input v-model="balanceForm.reason"></el-input>
     </el-form-item>
       <el-form-item style="display: flex;align-items: center;justify-content: center;">
@@ -547,14 +547,19 @@ export default {
       ],
       balanceForm:{
         uid:  "",
-        increaseDecrease: true,
-        balance: 0,
-        phoneNumber: "",
-        bankAccountNumber:"",
-        accountBalance:"",
-        brushNumber:"",
         loginAccount:"",
-         reason: ''
+        phoneNumber: "",
+        originalBalance:"",
+        balance: '',
+        reason: ''
+        //increaseDecrease: true,
+        //bankAccountNumber:"",
+        //brushNumber:"",
+      },
+      selectedReason: '',
+      balanceRules: { // 表单验证规则
+        balance: [{ required: true, message: '请输入金钱数额', trigger: 'blur' }],
+        reason: [{ required: true, message: '请输入理由', trigger: 'blur' }]
       },
       orderNumForm:{
         uid: '',
@@ -770,32 +775,47 @@ export default {
     },
 
     submitBalanceForm(){
-      console.log(this.balanceForm)
-      changeBalance(this.balanceForm).then(res => {
-        if(res.code != 200){
-          this.$message.error("修改失败")
-          return
+      let that = this;
+      this.$refs.balanceForm.validate(valid => {
+        if (valid) {
+          let form = {
+            uid : that.balanceForm.uid,
+            balance : that.balanceForm.balance,
+            reason : that.balanceForm.reason
+          };
+          changeBalance(form).then(res => {
+            if(res.code != 200){
+              this.$message.error("修改失败")
+              return
+            }
+            this.handleCloseBalance()
+            this.getList()
+            this.$message.success("修改成功")
+          })
         }
-        this.handleCloseBalance()
-        this.getList()
-        this.$message.success("修改成功")
       })
     },
     handleCloseBalance(){
       this.dialogBalance = false
-      this.balanceForm.uid = 0
-      this.balanceForm.increaseDecrease = true
-      this.balanceForm.balance = 0
-
+      let m = this.balanceForm;
+      for(let k in m){
+        m[k] = ''
+      }
+      this.selectedReason = ''
     },
     handleUpdateBalance(row){
-      console.log(row,"456789")
       this.balanceForm.uid = row.uid
-      this.balanceForm.accountBalance=row.accountBalance
-      this.balanceForm.phoneNumber=row.phoneNumber
-      this.balanceForm.bankAccountNumber=row.bankAccountNumber
       this.balanceForm.loginAccount=row.loginAccount
+      this.balanceForm.phoneNumber=row.phoneNumber
+      this.balanceForm.originalBalance=row.accountBalance
+      this.balanceForm.balance=''
+      this.balanceForm.reason=''
+      //this.balanceForm.bankAccountNumber=row.bankAccountNumber
+      this.selectedReason = ''
       this.dialogBalance = true
+    },
+    changeReason(value){
+      this.balanceForm.reason = this.balanceForm.reason+value;
     },
     /** 下拉列表操作 */
     handleCommand(command) {
@@ -1014,7 +1034,7 @@ export default {
 		width: 3rem;
 		height: 3rem;
 	}
-.orderListInput 
+.orderListInput
 {
   width: 7rem;
   height: 2rem;

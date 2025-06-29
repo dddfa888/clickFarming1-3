@@ -8,16 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ruoyi.business.domain.MRewardRecord;
+import com.ruoyi.business.service.IMRewardRecordService;
 import com.ruoyi.common.core.domain.entity.MUser;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.DecimalUtil;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import com.ruoyi.click.domain.UserGrade;
-import com.ruoyi.click.domain.vo.balanceModel;
+import com.ruoyi.click.domain.vo.BalanceModel;
 import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import com.ruoyi.click.service.IMUserService;
 import com.ruoyi.click.service.IUserGradeService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +59,9 @@ public class MUserController extends BaseController
     @Autowired
     private IMAccountChangeRecordsService accountChangeRecordsService;
 
+    @Autowired
+    private IMRewardRecordService mRewardRecordService;
+
 
     @GetMapping("/userInfo")
     public AjaxResult userInfo(HttpServletRequest request) {
@@ -75,25 +80,40 @@ public class MUserController extends BaseController
      * @return
      */
     @PostMapping("changeBalance")
-    public AjaxResult changeBalance(HttpServletRequest request,@Validated @RequestBody balanceModel balanceModel) {
+    public AjaxResult changeBalance(HttpServletRequest request,@Validated @RequestBody BalanceModel balanceModel) {
         MUser mUser = mUserService.selectMUserByUid(balanceModel.getUid());
-        BigDecimal userAccountBalance = mUser.getAccountBalance();
+        BigDecimal accountForward = mUser.getAccountBalance();
         String userName = tokenService.getLoginUser(request).getUser().getUserName();
         // 修改余额
         HashMap<String, Object> map = mUserService.updateBalance(mUser, balanceModel);
 
         // 日志记录
-        BigDecimal accountBalance = (BigDecimal) map.get("accountBalance");
+        BigDecimal accountBack = (BigDecimal) map.get("accountBalance");
         Integer type = (Integer) map.get("type");
         MAccountChangeRecords changeRecords = new MAccountChangeRecords();
-        changeRecords.setAmount(balanceModel.getBalance());
+        changeRecords.setAmount(balanceModel.getBalance().abs());
         changeRecords.setType(type);
-        changeRecords.setAccountForward(userAccountBalance);
-        changeRecords.setAccountBack(accountBalance);
+        changeRecords.setAccountForward(accountForward);
+        changeRecords.setAccountBack(accountBack);
         changeRecords.setUid(String.valueOf(balanceModel.getUid()));
-        changeRecords.setDescription(userName+"[后台增减余额]");
+        changeRecords.setDescription(userName+"[后台增减余额] "+balanceModel.getReason());
         changeRecords.setTransactionType(1);
         accountChangeRecordsService.insertMAccountChangeRecords(changeRecords);
+
+        //如果是增加余额，添加奖励记录
+        if(balanceModel.getBalance().signum()>0){
+            MRewardRecord mRewardRecord= new MRewardRecord();
+            mRewardRecord.setUserId(mUser.getUid());
+            mRewardRecord.setUserName(mUser.getLoginAccount());
+            mRewardRecord.setRewardTime(DateUtils.getNowDate());
+            mRewardRecord.setRewardAmount(balanceModel.getBalance());
+            mRewardRecord.setBalanceBefore(accountForward);
+            mRewardRecord.setBalanceAfter(accountBack);
+            mRewardRecord.setDescription(balanceModel.getReason());
+            mRewardRecord.setCreateTime(mRewardRecord.getRewardTime());
+            mRewardRecordService.insertMRewardRecord(mRewardRecord);
+        }
+
         // 升级等级
         mUserService.upgrade(mUser.getUid());
         return success();

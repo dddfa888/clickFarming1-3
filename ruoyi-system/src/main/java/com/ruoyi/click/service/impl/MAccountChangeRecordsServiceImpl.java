@@ -99,24 +99,25 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
         String strToday = formatter.format(localDate);
         String strTomorrow = formatter.format(localDate.plusDays(1));
 
-        //已付款订单数量
+        //今日已付款订单数量
         Map<String,Object> param = new HashMap<>();
         param.put("userId", getUserId());
         param.put("processStatus", OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
-        param.put("date1", strYesterday);
-        param.put("date2", strToday);
+        param.put("date1", strToday);
+        param.put("date2", strTomorrow);
         long finishNum = orderReceiveRecordMapper.countNumByUserDate(param);
 
         //近2日折扣
         param = new HashMap<>();
         param.put("userId", getUserId());
-        param.put("transactionType", 3); // 3:专用于标记订单利润
+        param.put("processStatus", OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
+        //param.put("transactionType", 3); // 3:专用于标记订单利润，用于查账变表
         param.put("date1", strYesterday);
         param.put("date2", strToday);
-        BigDecimal numYesterday = mAccountChangeRecordsMapper.sumAmountByUserDate(param);
+        BigDecimal numYesterday = orderReceiveRecordMapper.sumAmountByUserDate(param);
         param.put("date1", strToday);
         param.put("date2", strTomorrow);
-        BigDecimal numToday = mAccountChangeRecordsMapper.sumAmountByUserDate(param);
+        BigDecimal numToday = orderReceiveRecordMapper.sumAmountByUserDate(param);
 
         Map<String, Object> res = new HashMap<>();
         res.put("userBalance", mUser.getAccountBalance().setScale(2, RoundingMode.HALF_UP)); //用户余额

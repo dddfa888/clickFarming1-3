@@ -163,8 +163,8 @@ export default {
       rules: {
       },
       langList: [
-        { code:'vn', name:'越南语' },
-        { code:'cn', name:'中文' },
+        { code:'vi', name:'越南语' },
+        { code:'zh', name:'中文' },
         { code:'en', name:'英语' },
         { code:'kr', name:'韩语' },
         { code:'jp', name:'日语' },
@@ -172,8 +172,8 @@ export default {
         { code:'fr', name:'法语' }
       ],
       langMap: {
-        'vn': '越南语',
-        'cn': '中文',
+        'vi': '越南语',
+        'zh': '中文',
         'en': '英语',
         'kr': '韩语',
         'jp': '日语',

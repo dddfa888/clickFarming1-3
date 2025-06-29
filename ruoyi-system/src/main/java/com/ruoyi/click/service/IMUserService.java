@@ -3,7 +3,7 @@ package com.ruoyi.click.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.click.domain.vo.UserRegisterModel;
-import com.ruoyi.click.domain.vo.balanceModel;
+import com.ruoyi.click.domain.vo.BalanceModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +67,7 @@ public interface IMUserService extends IService<MUser> {
 
     MUser getUserOne(String loginAccount, String loginPassword);
 
-    HashMap<String, Object> updateBalance(MUser mUser, balanceModel balanceModel);
+    HashMap<String, Object> updateBalance(MUser mUser, BalanceModel balanceModel);
 
     void upgrade(Long uid);
 

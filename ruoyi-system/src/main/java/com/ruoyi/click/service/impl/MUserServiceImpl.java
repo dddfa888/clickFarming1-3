@@ -13,7 +13,7 @@ import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import com.ruoyi.click.domain.UserGrade;
 import com.ruoyi.click.domain.vo.UserRegisterModel;
-import com.ruoyi.click.domain.vo.balanceModel;
+import com.ruoyi.click.domain.vo.BalanceModel;
 import com.ruoyi.click.mapper.MUserMapper;
 import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import com.ruoyi.click.service.IMUserService;
@@ -228,23 +228,22 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     }
 
     @Override
-    public HashMap<String, Object> updateBalance(MUser mUser, balanceModel balanceModel) {
+    public HashMap<String, Object> updateBalance(MUser mUser, BalanceModel balanceModel) {
         if(mUser==null){
             throw new ServiceException("用户已删除");
         }
         BigDecimal accountBalance = mUser.getAccountBalance();
+        BigDecimal changeBalance = balanceModel.getBalance();
         Integer type = 0;
-        if(balanceModel.isIncreaseDecrease()){
+        if(changeBalance.signum()>=0){ //changeBalance大于或等于0
             type = 0;
-            accountBalance = DecimalUtil.add(accountBalance, balanceModel.getBalance());
         }else {
-            if (accountBalance.compareTo(balanceModel.getBalance()) < 0) {
+            if (accountBalance.compareTo(changeBalance) < 0) {
                 throw new ServiceException("当前账户金额小于减少金额");
             }
             type = 1;
-            accountBalance = DecimalUtil.subtract(accountBalance, balanceModel.getBalance());
-
         }
+        accountBalance = DecimalUtil.add(accountBalance, changeBalance);
         mUser.setAccountBalance(accountBalance);
         this.updateMUser(mUser);
 
