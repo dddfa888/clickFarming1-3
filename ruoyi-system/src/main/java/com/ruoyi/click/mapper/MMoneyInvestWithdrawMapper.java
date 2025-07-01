@@ -5,7 +5,9 @@ import com.ruoyi.click.domain.MMoneyInvestWithdraw;
 import com.ruoyi.click.domain.UserGrade;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 存款取款记录Mapper接口
@@ -22,7 +24,7 @@ public interface MMoneyInvestWithdrawMapper extends BaseMapper<MMoneyInvestWithd
      * @param id 存款取款记录主键
      * @return 存款取款记录
      */
-    public MMoneyInvestWithdraw selectMMoneyInvestWithdrawById(Long id);
+    MMoneyInvestWithdraw selectMMoneyInvestWithdrawById(Long id);
 
     /**
      * 查询存款取款记录列表
@@ -30,7 +32,7 @@ public interface MMoneyInvestWithdrawMapper extends BaseMapper<MMoneyInvestWithd
      * @param mMoneyInvestWithdraw 存款取款记录
      * @return 存款取款记录集合
      */
-    public List<MMoneyInvestWithdraw> selectMMoneyInvestWithdrawList(MMoneyInvestWithdraw mMoneyInvestWithdraw);
+    List<MMoneyInvestWithdraw> selectMMoneyInvestWithdrawList(MMoneyInvestWithdraw mMoneyInvestWithdraw);
 
     /**
      * 新增存款取款记录
@@ -38,7 +40,7 @@ public interface MMoneyInvestWithdrawMapper extends BaseMapper<MMoneyInvestWithd
      * @param mMoneyInvestWithdraw 存款取款记录
      * @return 结果
      */
-    public int insertMMoneyInvestWithdraw(MMoneyInvestWithdraw mMoneyInvestWithdraw);
+    int insertMMoneyInvestWithdraw(MMoneyInvestWithdraw mMoneyInvestWithdraw);
 
     /**
      * 修改存款取款记录
@@ -46,7 +48,7 @@ public interface MMoneyInvestWithdrawMapper extends BaseMapper<MMoneyInvestWithd
      * @param mMoneyInvestWithdraw 存款取款记录
      * @return 结果
      */
-    public int updateMMoneyInvestWithdraw(MMoneyInvestWithdraw mMoneyInvestWithdraw);
+    int updateMMoneyInvestWithdraw(MMoneyInvestWithdraw mMoneyInvestWithdraw);
 
     /**
      * 删除存款取款记录
@@ -54,7 +56,7 @@ public interface MMoneyInvestWithdrawMapper extends BaseMapper<MMoneyInvestWithd
      * @param id 存款取款记录主键
      * @return 结果
      */
-    public int deleteMMoneyInvestWithdrawById(Long id);
+    int deleteMMoneyInvestWithdrawById(Long id);
 
     /**
      * 批量删除存款取款记录
@@ -62,5 +64,20 @@ public interface MMoneyInvestWithdrawMapper extends BaseMapper<MMoneyInvestWithd
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteMMoneyInvestWithdrawByIds(Long[] ids);
+    int deleteMMoneyInvestWithdrawByIds(Long[] ids);
+
+    /**
+     * 一个用户一天内的取现或充值数额总计
+     * @param param
+     * @return 统计数量结果
+     */
+    BigDecimal sumAmountByUserDateType(Map<String,Object> param);
+
+    /**
+     * 根据用户id修改用户信息
+     *
+     * @param param
+     * @return 结果
+     */
+    int updateUserInfoByUserId(Map<String,Object> param);
 }

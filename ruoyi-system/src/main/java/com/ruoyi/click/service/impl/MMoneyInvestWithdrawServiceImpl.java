@@ -1,6 +1,8 @@
 package com.ruoyi.click.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.click.domain.MMoneyInvestWithdraw;
@@ -95,4 +97,26 @@ public class MMoneyInvestWithdrawServiceImpl extends ServiceImpl<MMoneyInvestWit
     {
         return mMoneyInvestWithdrawMapper.deleteMMoneyInvestWithdrawById(id);
     }
+
+
+    /**
+     * 一个用户一天内的取现或充值数额总计
+     * @param param
+     * @return 统计数量结果
+     */
+    @Override
+    public BigDecimal sumAmountByUserDateType(Map<String,Object> param){
+        return mMoneyInvestWithdrawMapper.sumAmountByUserDateType(param);
+    }
+
+    /**
+     * 根据用户id修改用户信息
+     * @param param
+     * @return 修改数量
+     */
+    @Override
+    public int updateUserInfoByUserId(Map<String,Object> param){
+        return mMoneyInvestWithdrawMapper.updateUserInfoByUserId(param);
+    }
+
 }

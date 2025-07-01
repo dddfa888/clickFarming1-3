@@ -105,3 +105,21 @@ export function getOrderList(query) {
     params: query
   });
 }
+
+// 查询订单设置
+export function selectByUserId(data) {
+  return request({
+    url: '/api/userOrderSet/selectByUserId/'+data,
+    method: 'get',
+    params: data
+  });
+}
+
+// 保存订单设置
+export function updateOrederSet(data) {
+  return request({
+    url: '/api/userOrderSet/saveOrderSetByUser',
+    method: 'post',
+    data: data
+  });
+}

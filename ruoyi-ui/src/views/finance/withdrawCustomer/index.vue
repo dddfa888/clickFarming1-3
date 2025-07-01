@@ -108,6 +108,7 @@
         align="center"
         prop="reasonForRejection"
       />
+      <el-table-column align="center" label="提现时间" prop="createTime" width="150" />
       <el-table-column
         label="操作"
         align="center"
@@ -192,6 +193,7 @@ export default {
         pageSize: 10,
         userId: null,
         userName: null,
+        userType: '1', // 真实客户
         orderId: null,
       },
       rejectDialogVisible: false,

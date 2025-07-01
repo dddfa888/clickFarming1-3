@@ -30,6 +30,9 @@ public class MMoneyInvestWithdraw
     @Excel(name = "用户姓名")
     private String userName;
 
+    @Excel(name = "用户类型")
+    private String userType;
+
     /** 金额 */
     @Excel(name = "金额")
     private BigDecimal amount;

@@ -2,6 +2,7 @@ package com.ruoyi.web.controller.click;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,11 +13,13 @@ import com.ruoyi.business.domain.OrderReceiveRecord;
 import com.ruoyi.business.mapper.OrderReceiveRecordMapper;
 import com.ruoyi.click.domain.MAccountChangeRecords;
 import com.ruoyi.click.domain.MMoneyInvestWithdraw;
+import com.ruoyi.click.domain.UserGrade;
 import com.ruoyi.click.domain.vo.BackOperateVo;
 import com.ruoyi.click.domain.vo.WithdrawVo;
 import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import com.ruoyi.click.service.IMMoneyInvestWithdrawService;
 import com.ruoyi.click.service.IMUserService;
+import com.ruoyi.click.service.IUserGradeService;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DecimalUtil;
@@ -67,6 +70,8 @@ public class MMoneyInvestWithdrawController extends BaseController
 
     @Autowired
     private OrderReceiveRecordMapper orderReceiveRecordMapper;
+    @Autowired
+    private IUserGradeService userGradeService;
 
 
     /**
@@ -212,6 +217,9 @@ public class MMoneyInvestWithdrawController extends BaseController
         Long userId = tokenService.getLoginUser(request).getmUser().getUid();
 
         MUser mUser = mUserService.selectMUserByUid(userId);
+        if(mUser.getStatus() != 1){
+            throw new ServiceException("用户被禁用");
+        }
         boolean matches = EncoderUtil.matches(withdrawVo.getFundPassword(), mUser.getFundPassword());
         if(!matches){
             throw new ServiceException("资金密码错误");
@@ -234,6 +242,13 @@ public class MMoneyInvestWithdrawController extends BaseController
         if(unfinishedCount>0){
             throw new ServiceException("有订单未完成，不可提现");
         }
+        // 用户当日刷单数达到等级规定的“每天购买的产品数量”，才可以提现
+        UserGrade userGrade = userGradeService.getOne(new LambdaQueryWrapper<UserGrade>().eq(UserGrade::getSortNum,mUser.getLevel()));
+        Assert.notNull(userGrade, "用户等级不存在");
+        if(mUser.getBrushNumber() < userGrade.getBuyProdNum()){
+            throw new ServiceException("今日下单数量不够，无法提现");
+        }
+
         checkBank(mUser);
 
         BigDecimal accountBack = DecimalUtil.subtract(accountForward, withdrawAmount);
@@ -245,6 +260,7 @@ public class MMoneyInvestWithdrawController extends BaseController
         mMoneyInvestWithdraw.setAmount(withdrawAmount);
         mMoneyInvestWithdraw.setUserId(mUser.getUid());
         mMoneyInvestWithdraw.setUserName(mUser.getLoginAccount());
+        mMoneyInvestWithdraw.setUserType(mUser.getRegisterType());
         mMoneyInvestWithdraw.setBankName(mUser.getBankName());
         mMoneyInvestWithdraw.setBankAccountName(mUser.getBankAccountName());
         mMoneyInvestWithdraw.setBankAccountNumber(mUser.getBankAccountNumber());
@@ -296,4 +312,25 @@ public class MMoneyInvestWithdrawController extends BaseController
     {
         return toAjax(mMoneyInvestWithdrawService.deleteMMoneyInvestWithdrawByIds(ids));
     }
+
+    /**
+     * 查询存款取款记录列表
+     */
+    @GetMapping("/sumAmountByUserDateType")
+    public AjaxResult sumAmountByUserDateType(Map<String,Object> param)
+    {
+        return success(mMoneyInvestWithdrawService.sumAmountByUserDateType(param));
+    }
+
+
+    /**
+     * 根据用户id修改用户信息
+     */
+    @Log(title = "根据用户id修改用户信息", businessType = BusinessType.UPDATE)
+    @PutMapping(value="updateUserInfoByUserId")
+    public AjaxResult updateUserInfoByUserId(Map<String,Object> param)
+    {
+        return toAjax(mMoneyInvestWithdrawService.updateUserInfoByUserId(param));
+    }
+
 }
