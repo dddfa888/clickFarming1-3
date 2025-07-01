@@ -103,7 +103,7 @@
             </el-button>
 
             <el-button
-              @click="handleUpdate(scope.row)"
+              @click="handleOpenBank(scope.row)"
               size="small"
               :style="{
                 backgroundColor: '#00CFE8',
@@ -111,7 +111,7 @@
                 color: '#fff'
               }"
             >
-              账户修改
+              银行修改
             </el-button>
 
             <el-button
@@ -175,6 +175,17 @@
               集团信息
             </el-button>
 
+            <el-button
+              @click="handleUpdate(scope.row)"
+              size="small"
+              :style="{
+                backgroundColor: '#00CFE8',
+                borderColor: '#00CFE8',
+                color: '#fff'
+              }"
+            >
+              账户信息
+            </el-button>
 
             <!--<el-button
               @click="handleOpenSetOrderNum(scope.row)"
@@ -334,9 +345,9 @@
 
 
     <el-dialog
-        title="查看集团信息"
+        title="集团信息"
         :visible.sync="dialogGroupInformation"
-        width="30%"
+        width="40%"
         :before-close="handleCloseGroupInformation"
     >
       <el-table
@@ -350,7 +361,7 @@
         <el-table-column
             prop="levelName"
             label="等级"
-            width="180">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="accountBalance"
@@ -367,10 +378,18 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="登记时间" align="center" prop="createTime" width="180" />
       </el-table>
       <span slot="footer" class="dialog-footer">
 <!--        <el-button @click="handleCloseGroupInformation">取 消</el-button>-->
 <!--        <el-button type="primary" @click="submitBalanceForm">确 定</el-button>-->
+      <pagination
+        v-show="invitationTableTotal>0"
+        :total="invitationTableTotal"
+        :page.sync="queryParamsInvite.pageNum"
+        :limit.sync="queryParamsInvite.pageSize"
+        @pagination="handleOpenUserOrderList(clickedRow)"
+      />
       </span>
     </el-dialog>
 
@@ -556,6 +575,13 @@ export default {
           { num:'0', min:'0', max:'0' },
           { num:'0', min:'0', max:'0' }
       ],
+      showUpdateBank: false,
+      updateBankForm: {
+        uid: '',
+        bankName: '',
+        bankAccountName: '',
+        bankAccountNumber: ''
+      },
       notifyOpen: false, // 弹框是否显示
       notifyTitle: "发送通知", // 弹框标题
       notifyForm: { // 表单数据
@@ -694,6 +720,12 @@ export default {
         userId: '',
       },
       orderTotal: 0,
+      queryParamsInvite: {
+        pageNum: 1,
+        pageSize: 10,
+        inviterCode: '',
+      },
+      invitationTableTotal:0,
       clickedRow: '',
       baseUrl: process.env.VUE_APP_BASE_API,
       processStatusMap: {
@@ -762,6 +794,27 @@ export default {
       });
     },
 
+    //打开《银行修改》
+    handleOpenBank(row){
+      this.showUpdateBank = true;
+      this.updateBankForm.uid = row.uid
+      this.updateBankForm.bankName = row.bankName;
+      this.updateBankForm.bankAccountName = row.bankAccountName;
+      this.updateBankForm.bankAccountNumber = row.bankAccountNumber;
+    },
+    //保存《银行修改》
+    saveBank(){
+        updateUser(this.updateBankForm).then(response => {
+          this.$modal.msgSuccess('修改成功');
+          this.showUpdateBank = false;
+          this.getList();
+        })
+    },
+    //关闭《银行修改》
+    closeBank(){
+      this.showUpdateBank = false;
+    },
+
     //打开提现审核页面
     handleGotoWithdraw(row){
       if(row==="staff"){
@@ -800,13 +853,22 @@ export default {
 
     },
     handleListGroupInformation(row) {
+      let that = this;
       this.dialogGroupInformation = true;
 
       // 调用封装好的 API，传入参数对象
-      getAllSuperiorUids({ inviterCode: row.inviterCode }).then(res => {
+      /*getAllSuperiorUids({ inviterCode: row.inviterCode }).then(res => {
         console.log('上级 UID 列表:', res.data);
         this.tableData = res.data
         // 如果你需要将数据赋值到页面上显示，例如：
+      })*/
+      that.clickedRow = row;
+      that.loading = true
+      that.queryParamsInvite.inviterCode = row.invitationCode;
+      listUser(that.queryParamsInvite).then(response => {
+        that.tableData = response.rows
+        that.invitationTableTotal = response.total
+        that.loading = false
       })
     },
 

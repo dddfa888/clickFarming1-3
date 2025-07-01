@@ -1,6 +1,7 @@
 package com.ruoyi.click.mapper;
 
 import com.ruoyi.click.domain.MAccountChangeRecords;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.math.BigDecimal;
@@ -38,6 +39,7 @@ public interface MAccountChangeRecordsMapper
      * @param mAccountChangeRecords 账变记录
      * @return 账变记录集合
      */
+    @MapKey("id")
     List<Map<String,Object>> selectMAccountChangeForeByUser(MAccountChangeRecords mAccountChangeRecords);
 
     /**
