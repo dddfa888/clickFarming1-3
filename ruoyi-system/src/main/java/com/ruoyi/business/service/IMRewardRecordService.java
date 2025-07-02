@@ -1,6 +1,8 @@
 package com.ruoyi.business.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.business.domain.MRewardRecord;
 
 /**
@@ -18,6 +20,22 @@ public interface IMRewardRecordService
      * @return 奖励记录
      */
     MRewardRecord selectMRewardRecordById(Long id);
+
+    /**
+     * 查询一个用户的奖励记录
+     * 
+     * @param userId
+     * @return 奖励记录
+     */
+    List<MRewardRecord> selectByUserId(Long userId);
+
+    /**
+     * 查询一个用户的奖励记录，适用前端
+     *
+     * @param userId
+     * @return 奖励记录
+     */
+    List<Map<String,Object>> selectSimpleByUserId(Long userId);
 
     /**
      * 查询奖励记录列表

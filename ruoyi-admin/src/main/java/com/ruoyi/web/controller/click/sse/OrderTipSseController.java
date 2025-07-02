@@ -43,17 +43,22 @@ public class OrderTipSseController {
             int lastValue = 0;
             while (running.get()) {
                 try {
-                    MMoneyInvestWithdraw withdraw = new MMoneyInvestWithdraw();
-                    withdraw.setStatus(0);
-                    withdraw.setType("0");
-                    int randomValue = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(withdraw).size();
+                    MMoneyInvestWithdraw employeesWithdraw = new MMoneyInvestWithdraw();
+                    employeesWithdraw.setStatus(0);
+                    employeesWithdraw.setType("0");
+                    employeesWithdraw.setUserType("0");
+                    int employeesWithdrawCount = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(employeesWithdraw).size();
 
-                    if (randomValue != lastValue) {
-                        lastValue = randomValue;
-                        Map<String, Object> fixedData = new HashMap<>();
-                        fixedData.put("withdraw", randomValue);
-                        emitter.send(SseEmitter.event().name("NOTICE").data(fixedData));
-                    }
+                    MMoneyInvestWithdraw clientsWithdraw = new MMoneyInvestWithdraw();
+                    clientsWithdraw.setStatus(0);
+                    clientsWithdraw.setType("0");
+                    clientsWithdraw.setUserType("1");
+                    int clientsWithdrawWithdrawCount = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(clientsWithdraw).size();
+
+                    Map<String, Object> fixedData = new HashMap<>();
+                    fixedData.put("employeesWithdrawCount", employeesWithdrawCount);
+                    fixedData.put("clientsWithdrawWithdrawCount", clientsWithdrawWithdrawCount);
+                    emitter.send(SseEmitter.event().name("NOTICE").data(fixedData));
 
                     Thread.sleep(3000); // 每秒推送一次
                 } catch (Exception e) {

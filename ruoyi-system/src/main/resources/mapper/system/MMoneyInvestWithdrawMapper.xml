@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="userId"    column="user_id"    />
         <result property="userName"    column="user_name"    />
+        <result property="userType"    column="user_type" />
         <result property="amount"    column="amount"    />
         <result property="bankName"    column="bank_name"    />
         <result property="bankAccountName"    column="bank_account_name"    />
@@ -23,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectMMoneyInvestWithdrawVo">
-        select id, user_id, user_name, amount, bank_name, bank_account_name, bank_account_number, type, reason_for_rejection, status, order_id, account_forward,account_back, create_time, update_time from m_money_invest_withdraw
+        select id, user_id, user_name, user_type, amount, bank_name, bank_account_name, bank_account_number, type, reason_for_rejection, status, order_id, account_forward,account_back, create_time, update_time from m_money_invest_withdraw
     </sql>
 
     <select id="selectMMoneyInvestWithdrawList" parameterType="MMoneyInvestWithdraw" resultMap="MMoneyInvestWithdrawResult">
@@ -31,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userType != null "> and user_type = #{userType}</if>
             <if test="amount != null "> and amount = #{amount}</if>
             <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
             <if test="bankAccountName != null  and bankAccountName != ''"> and bank_account_name like concat('%', #{bankAccountName}, '%')</if>
@@ -59,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">id,</if>
             <if test="userId != null">user_id,</if>
             <if test="userName != null">user_name,</if>
+            <if test="userType != null">user_type,</if>
             <if test="amount != null">amount,</if>
             <if test="bankName != null">bank_name,</if>
             <if test="bankAccountName != null">bank_account_name,</if>
@@ -76,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">#{id},</if>
             <if test="userId != null">#{userId},</if>
             <if test="userName != null">#{userName},</if>
+            <if test="userType != null">#{userType},</if>
             <if test="amount != null">#{amount},</if>
             <if test="bankName != null">#{bankName},</if>
             <if test="bankAccountName != null">#{bankAccountName},</if>
@@ -96,6 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="userId != null">user_id = #{userId},</if>
             <if test="userName != null">user_name = #{userName},</if>
+            <if test="userType != null">user_type = #{userType},</if>
             <if test="amount != null">amount = #{amount},</if>
             <if test="bankName != null">bank_name = #{bankName},</if>
             <if test="bankAccountName != null">bank_account_name = #{bankAccountName},</if>
@@ -122,4 +127,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <!-- 一个用户一天内的取现或充值数额总计 -->
+    <select id="sumAmountByUserDateType" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+        select IFNULL(sum(amount),0) n from m_money_invest_withdraw
+        where user_id = #{userId}
+        and create_time <![CDATA[ >= ]]> #{date1} and create_time  <![CDATA[ < ]]> #{date2}
+        <if test="type != null  and type != ''"> and type = #{type}</if>
+    </select>
+
+    <!-- 根据用户id修改用户信息-->
+    <update id="updateUserInfoByUserId" parameterType="java.util.Map">
+        update m_money_invest_withdraw
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userType != null">user_type = #{userType},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
 </mapper>

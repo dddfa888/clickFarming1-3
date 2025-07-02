@@ -54,7 +54,7 @@
           plain
           icon="el-icon-edit"
           size="mini"
-          @click="handlePrice('staff')"
+          @click="handleGotoWithdraw('staff')"
           v-hasPermi="['system:user:remove']"
         >从客户那里提取资金</el-button>
       </el-col>
@@ -64,7 +64,7 @@
           plain
           icon="el-icon-edit"
           size="mini"
-           @click="handlePrice('customer')"
+           @click="handleGotoWithdraw('customer')"
           v-hasPermi="['system:user:remove']"
         >员工充值</el-button>
       </el-col>
@@ -84,7 +84,7 @@
       </el-table-column>
        <el-table-column label="订单设置" align="center" prop="loginAccount">
         <template slot-scope="scope">
-       <el-button @click="handleOpenoreder(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">订单设置</el-button>
+       <el-button @click="handleOpenOrederSet(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">订单设置</el-button>
           </template>
       </el-table-column>
       <el-table-column label="行为" width="360" align="center" prop="withdrawalAddress">
@@ -92,19 +92,28 @@
           <div class="action-buttons">
             <el-button
               @click="handleUpdateBalance(scope.row)"
-              type="primary"
+              :style="{
+                backgroundColor: '#00CFE8',
+                borderColor: '#00CFE8',
+                color: '#fff'
+              }"
               size="small"
             >
               更改账户余额
             </el-button>
 
             <el-button
-              @click="handleListGroupInformation(scope.row)"
-              type="primary"
+              @click="handleOpenBank(scope.row)"
               size="small"
+              :style="{
+                backgroundColor: '#00CFE8',
+                borderColor: '#00CFE8',
+                color: '#fff'
+              }"
             >
-              查看集团信息
+              银行修改
             </el-button>
+
             <el-button
               @click="handleRegisterType(scope.row)"
               type="primary"
@@ -121,8 +130,8 @@
               @click="handleOpenUserOrderList(scope.row)"
               size="small"
               :style="{
-                backgroundColor: '#fadb14',
-                borderColor: '#fadb14',
+                backgroundColor: '#FF9F43',
+                borderColor: '#FF9F43',
                 color: '#fff'
               }"
             >
@@ -139,7 +148,7 @@
                 borderColor: scope.row.status === 1 ? 'red' : 'green'
               }"
             >
-              {{ scope.row.status === 1 ? '锁定账户' : '解锁账户' }}
+              {{ scope.row.status === 1 ? '账户锁定' : '解锁账户' }}
             </el-button>
 
             <el-button
@@ -155,27 +164,45 @@
             </el-button>
 
             <el-button
-              @click="handleUpdate(scope.row)"
-              type="primary"
+              @click="handleListGroupInformation(scope.row)"
+              :style="{
+                backgroundColor: '#00CFE8',
+                borderColor: '#00CFE8',
+                color: '#fff'
+              }"
               size="small"
             >
-              修改账户
+              集团信息
             </el-button>
 
-
-
             <el-button
+              @click="handleUpdate(scope.row)"
+              size="small"
+              :style="{
+                backgroundColor: '#00CFE8',
+                borderColor: '#00CFE8',
+                color: '#fff'
+              }"
+            >
+              账户信息
+            </el-button>
+
+            <!--<el-button
               @click="handleOpenSetOrderNum(scope.row)"
               type="primary"
               size="small"
             >
               设置连单数量
-            </el-button>
+            </el-button>-->
 
             <el-button
               @click="notifyOpenop(scope.row)"
-              type="primary"
-              size="small">发送通知
+              :style="{
+                backgroundColor: '#00CFE8',
+                borderColor: '#00CFE8',
+                color: '#fff'
+              }"
+              size="small">发信息
             </el-button>
 
           </div>
@@ -299,28 +326,28 @@
     </el-dialog>
 
 
-    <el-dialog :title="orderTitle" :visible.sync="Orderopen" width="750px" append-to-body>
-      <el-form>
-        <el-form-item v-for="item in 10" :key="item">
+    <el-dialog :title="orderSetTitle" :visible.sync="showOrderSet" width="750px" append-to-body>
+      <el-form ref="orderSetForm" :model="orderSetForm" >
+        <el-form-item v-for="item in orderSetList" :key="index">
           配置 命令
-          <input class="orderListInput" type="number" min="0" max="100" step="1" value="0">
+          <el-input-number class="orderListInput" type="number" step="1" v-model="item.num" :min="0" :max="1000000" :precision="0"></el-input-number>
           命令 (0 表示禁用)
-          <input class="orderListInput" type="number" min="0" max="100" step="1" value="0">
+          <el-input-number class="orderListInput" type="number" step="1" v-model="item.min" :min="0" :controls="false"></el-input-number>
           <span>-</span>
-          <input class=orderListInput type="number" min="0" max="100" step="1" value="0">
+          <el-input-number class="orderListInput" type="number" step="1" v-model="item.max" :min="0" :controls="false"></el-input-number>
         </el-form-item>
         </el-form>
       <div slot="footer" class="dialog-footer" style="display: flex;justify-content: space-evenly;align-items: center;">
-        <el-button type="primary">取消</el-button>
-        <el-button>创建新的</el-button>
+        <el-button @click="closeOrederSet">取消</el-button>
+        <el-button @click="saveOrederSet" type="primary">创建新的</el-button>
       </div>
     </el-dialog>
 
 
     <el-dialog
-        title="查看集团信息"
+        title="集团信息"
         :visible.sync="dialogGroupInformation"
-        width="30%"
+        width="40%"
         :before-close="handleCloseGroupInformation"
     >
       <el-table
@@ -334,7 +361,7 @@
         <el-table-column
             prop="levelName"
             label="等级"
-            width="180">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="accountBalance"
@@ -351,10 +378,18 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="登记时间" align="center" prop="createTime" width="180" />
       </el-table>
       <span slot="footer" class="dialog-footer">
 <!--        <el-button @click="handleCloseGroupInformation">取 消</el-button>-->
 <!--        <el-button type="primary" @click="submitBalanceForm">确 定</el-button>-->
+      <pagination
+        v-show="invitationTableTotal>0"
+        :total="invitationTableTotal"
+        :page.sync="queryParamsInvite.pageNum"
+        :limit.sync="queryParamsInvite.pageSize"
+        @pagination="handleOpenUserOrderList(clickedRow)"
+      />
       </span>
     </el-dialog>
 
@@ -514,7 +549,7 @@
 </template>
 
 <script>
-import {getAllSuperiorUids,changeBalance,setBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum} from "@/api/user/user"
+import {getAllSuperiorUids,changeBalance,setBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum,selectByUserId,updateOrederSet} from "@/api/user/user"
 import { listGrade } from "@/api/user/grade"
 import {  addNotify } from "@/api/notify/notify"
 
@@ -522,8 +557,31 @@ export default {
   name: "User",
   data() {
     return {
-      orderTitle:"个人设置",
-      Orderopen:false,
+      orderSetTitle:"个人配置",
+      showOrderSet:false,
+      orderSetForm: {
+        userId: '',
+        orderSetData: ''
+      },
+      orderSetList: [
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' },
+          { num:'0', min:'0', max:'0' }
+      ],
+      showUpdateBank: false,
+      updateBankForm: {
+        uid: '',
+        bankName: '',
+        bankAccountName: '',
+        bankAccountNumber: ''
+      },
       notifyOpen: false, // 弹框是否显示
       notifyTitle: "发送通知", // 弹框标题
       notifyForm: { // 表单数据
@@ -662,6 +720,12 @@ export default {
         userId: '',
       },
       orderTotal: 0,
+      queryParamsInvite: {
+        pageNum: 1,
+        pageSize: 10,
+        inviterCode: '',
+      },
+      invitationTableTotal:0,
       clickedRow: '',
       baseUrl: process.env.VUE_APP_BASE_API,
       processStatusMap: {
@@ -675,20 +739,89 @@ export default {
     this.getGradeList()
   },
   methods: {
-    handleOpenoreder(row)
-    {
-      this.Orderopen=true
-      console.log(row)
+    //打开《订单设置》
+    handleOpenOrederSet(row){
+      let that = this;
+      that.showOrderSet=true
+      that.orderSetForm.userId = row.uid;
+      that.orderSetForm.orderSetData = '';
+      that.orderSetList.forEach(r => {
+        r.num = '0';
+        r.min = '0';
+        r.max = '0';
+      })
+      selectByUserId(row.uid).then(response => {
+        //查询结果在 this.orderSetList 中回显
+        let data = response.data;
+        let diff = data.length-that.orderSetList.length;
+        if(diff > 0){
+          while(diff > 0){
+            that.orderSetList.push({num:'0', min:'0', max:'0' });
+            diff--;
+          }
+        }
+        for(let i in data){
+          that.orderSetList[i].num = data[i].orderNum;
+          that.orderSetList[i].min = data[i].minNum;
+          that.orderSetList[i].max = data[i].maxNum;
+        }
+      });
     },
-    handlePrice(row)
-    {
-      if(row==="staff")
-    {
-      this.$router.push({path:"/finance/withdrawCustomer"})
-    }else
-    {
- this.$router.push({path:"/finance/withdraw"})
-    }
+    //关闭《订单设置》
+    closeOrederSet(){
+      this.showOrderSet = false;
+    },
+    //保存《订单设置》
+    saveOrederSet(){
+      let that = this;
+      let str = '';
+      for(let i in that.orderSetList){
+        let row = that.orderSetList[i];
+        if(row.num=='0'){
+	        continue ;
+        }
+        str = str + '#' + row.num + '_' + row.min + '_' + row.max;
+      }
+      if(str.length>0){
+        str = str.substr(1);
+      }
+      that.orderSetForm.orderSetData = str;
+      updateOrederSet(that.orderSetForm).then(response => {
+        that.$modal.msgSuccess('保存成功');
+        that.showOrderSet = false;
+      }).catch(error => {
+        that.$modal.msgError('保存失败');
+      });
+    },
+
+    //打开《银行修改》
+    handleOpenBank(row){
+      this.showUpdateBank = true;
+      this.updateBankForm.uid = row.uid
+      this.updateBankForm.bankName = row.bankName;
+      this.updateBankForm.bankAccountName = row.bankAccountName;
+      this.updateBankForm.bankAccountNumber = row.bankAccountNumber;
+    },
+    //保存《银行修改》
+    saveBank(){
+        updateUser(this.updateBankForm).then(response => {
+          this.$modal.msgSuccess('修改成功');
+          this.showUpdateBank = false;
+          this.getList();
+        })
+    },
+    //关闭《银行修改》
+    closeBank(){
+      this.showUpdateBank = false;
+    },
+
+    //打开提现审核页面
+    handleGotoWithdraw(row){
+      if(row==="staff"){
+        this.$router.push({path:"/finance/withdrawCustomer"})
+      }else {
+        this.$router.push({path:"/finance/withdraw"})
+      }
     },
     notifyOpenop(e){
       console.log(e)
@@ -720,13 +853,22 @@ export default {
 
     },
     handleListGroupInformation(row) {
+      let that = this;
       this.dialogGroupInformation = true;
 
       // 调用封装好的 API，传入参数对象
-      getAllSuperiorUids({ inviterCode: row.inviterCode }).then(res => {
+      /*getAllSuperiorUids({ inviterCode: row.inviterCode }).then(res => {
         console.log('上级 UID 列表:', res.data);
         this.tableData = res.data
         // 如果你需要将数据赋值到页面上显示，例如：
+      })*/
+      that.clickedRow = row;
+      that.loading = true
+      that.queryParamsInvite.inviterCode = row.invitationCode;
+      listUser(that.queryParamsInvite).then(response => {
+        that.tableData = response.rows
+        that.invitationTableTotal = response.total
+        that.loading = false
       })
     },
 
@@ -1030,7 +1172,7 @@ export default {
 }
 
 
-	.orderListProdImg {
+.orderListProdImg {
 		width: 3rem;
 		height: 3rem;
 	}

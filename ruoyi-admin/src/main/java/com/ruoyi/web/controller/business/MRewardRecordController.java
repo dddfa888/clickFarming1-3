@@ -1,7 +1,10 @@
 package com.ruoyi.web.controller.business;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +35,8 @@ public class MRewardRecordController extends BaseController
 {
     @Autowired
     private IMRewardRecordService mRewardRecordService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询奖励记录列表
@@ -42,6 +47,28 @@ public class MRewardRecordController extends BaseController
         startPage();
         List<MRewardRecord> list = mRewardRecordService.selectMRewardRecordList(mRewardRecord);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询一个用户的奖励记录
+     */
+    @GetMapping("/selectByUserId/{userId}")
+    public TableDataInfo selectByUserId(@PathVariable("userId") Long userId)
+    {
+        startPage();
+        List<MRewardRecord> list = mRewardRecordService.selectByUserId(userId);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询当前用户的奖励记录
+     */
+    @GetMapping("/selectSimpleByUserId")
+    public AjaxResult selectByCurrentUser(HttpServletRequest request)
+    {
+        //startPage();
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        return success(mRewardRecordService.selectSimpleByUserId(userId));
     }
 
     /**

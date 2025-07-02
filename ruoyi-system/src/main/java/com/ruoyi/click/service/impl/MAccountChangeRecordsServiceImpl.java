@@ -11,6 +11,7 @@ import java.util.Map;
 import com.ruoyi.business.domain.OrderReceiveRecord;
 import com.ruoyi.business.mapper.OrderReceiveRecordMapper;
 import com.ruoyi.click.domain.UserGrade;
+import com.ruoyi.click.mapper.MMoneyInvestWithdrawMapper;
 import com.ruoyi.click.mapper.MUserMapper;
 import com.ruoyi.click.mapper.UserGradeMapper;
 import com.ruoyi.common.core.domain.entity.MUser;
@@ -40,6 +41,8 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
     private UserGradeMapper userGradeMapper;
     @Autowired
     private OrderReceiveRecordMapper orderReceiveRecordMapper;
+    @Autowired
+    private MMoneyInvestWithdrawMapper mMoneyInvestWithdrawMapper;
 
     /**
      * 查询账变记录
@@ -107,24 +110,34 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
         param.put("date2", strTomorrow);
         long finishNum = orderReceiveRecordMapper.countNumByUserDate(param);
 
-        //近2日折扣
+        //近2日订单利润 （前端的“昨天折扣”和“今天折扣”）
         param = new HashMap<>();
         param.put("userId", getUserId());
         param.put("processStatus", OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
         //param.put("transactionType", 3); // 3:专用于标记订单利润，用于查账变表
         param.put("date1", strYesterday);
         param.put("date2", strToday);
-        BigDecimal numYesterday = orderReceiveRecordMapper.sumAmountByUserDate(param);
+        BigDecimal profitYesterday = orderReceiveRecordMapper.sumAmountByUserDate(param);
         param.put("date1", strToday);
         param.put("date2", strTomorrow);
-        BigDecimal numToday = orderReceiveRecordMapper.sumAmountByUserDate(param);
+        BigDecimal profitToday = orderReceiveRecordMapper.sumAmountByUserDate(param);
+        //近2日提现数额 —— 无用
+        /*param = new HashMap<>();
+        param.put("userId", getUserId());
+        param.put("processStatus", OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
+        param.put("date1", strYesterday);
+        param.put("date2", strToday);
+        BigDecimal withdrawYesterday = mMoneyInvestWithdrawMapper.sumAmountByUserDateType(param);
+        param.put("date1", strToday);
+        param.put("date2", strTomorrow);
+        BigDecimal withdrawToday = mMoneyInvestWithdrawMapper.sumAmountByUserDateType(param);*/
 
         Map<String, Object> res = new HashMap<>();
         res.put("userBalance", mUser.getAccountBalance().setScale(2, RoundingMode.HALF_UP)); //用户余额
         res.put("userLevel", userGrade.getGradeName()); //用户等级
         res.put("orderNum", finishNum + "/" + userGrade.getBuyProdNum()); //已付款订单数量
-        res.put("numYesterday", numYesterday.setScale(2, RoundingMode.HALF_UP).toString()); //昨天折扣
-        res.put("numToday", numToday.setScale(2, RoundingMode.HALF_UP).toString()); //今天折扣
+        res.put("numYesterday", profitYesterday.setScale(2, RoundingMode.HALF_UP).toString()); //昨天折扣
+        res.put("numToday", profitToday.setScale(2, RoundingMode.HALF_UP).toString()); //今天折扣
         return res;
     }
 

@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.business.domain.MRewardRecord;
 import com.ruoyi.business.service.IMRewardRecordService;
+import com.ruoyi.click.service.IMMoneyInvestWithdrawService;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.DecimalUtil;
@@ -61,6 +63,8 @@ public class MUserController extends BaseController
 
     @Autowired
     private IMRewardRecordService mRewardRecordService;
+    @Autowired
+    private IMMoneyInvestWithdrawService mMoneyInvestWithdrawService;
 
 
     @GetMapping("/userInfo")
@@ -287,6 +291,13 @@ public class MUserController extends BaseController
     {
         MUser byId = mUserService.selectMUserByUid(uid);
         byId.setRegisterType(byId.getRegisterType().equals("0") ? "1" : "0");
+
+        //同步修改提现表中的“用户类型”
+        Map<String,Object> param = new HashMap<>();
+        param.put("userId", uid);
+        param.put("userType", byId.getRegisterType());
+        mMoneyInvestWithdrawService.updateUserInfoByUserId(param);
+
         return success(mUserService.updateMUser(byId));
     }
 

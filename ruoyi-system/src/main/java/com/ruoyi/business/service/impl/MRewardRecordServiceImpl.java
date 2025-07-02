@@ -1,6 +1,8 @@
 package com.ruoyi.business.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,30 @@ public class MRewardRecordServiceImpl implements IMRewardRecordService
     public MRewardRecord selectMRewardRecordById(Long id)
     {
         return mRewardRecordMapper.selectMRewardRecordById(id);
+    }
+
+    /**
+     * 查询一个用户的奖励记录
+     * 
+     * @param userId
+     * @return 奖励记录
+     */
+    @Override
+    public List<MRewardRecord> selectByUserId(Long userId)
+    {
+        return mRewardRecordMapper.selectByUserId(userId);
+    }
+
+    /**
+     * 查询一个用户的奖励记录，适用前端
+     *
+     * @param userId
+     * @return 奖励记录
+     */
+    @Override
+    public List<Map<String,Object>> selectSimpleByUserId(Long userId)
+    {
+        return mRewardRecordMapper.selectSimpleByUserId(userId);
     }
 
     /**
