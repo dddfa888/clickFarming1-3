@@ -16,10 +16,7 @@
 
         <div class="product-info">
           <div class="product-name">
-            <img
-              :src="'https://cfapi.khkjhkh.top' + item.productImageUrl"
-              alt=""
-            />
+            <img :src="item.productImageUrl" alt="" />
             <div>
               {{ item.productName }}
             </div>

@@ -142,5 +142,6 @@ export default {
     "订单已支付，不可重复支付": "Order has already been paid, duplicate payment not allowed",
     "操作失败": "Operation failed",
     "资金密码不能为空": "Fund password cannot be empty",
-    "取款数额不能为空": "The withdrawal amount cannot be empty"
+    "取款数额不能为空": "The withdrawal amount cannot be empty",
+    "您尚未完成当天的订单数量，无法提现": "You have not completed the number of orders for today, withdrawal not allowed"
 };

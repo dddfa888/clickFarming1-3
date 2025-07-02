@@ -32,8 +32,8 @@ const formatAmount = (amount) => {
 };
 
 getRewardHistory().then((res) => {
-  console.log(res.rows);
-  transactions.value = res.rows;
+  console.log(res.data);
+  transactions.value = res.data;
 });
 </script>
 

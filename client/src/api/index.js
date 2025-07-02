@@ -95,7 +95,7 @@ export function getOrderHistory() {
 // 奖励历史记录
 export function getRewardHistory() {
     return request({
-        url: '/api/records/selectMAccountChangeForeByUser',
+        url: '/api/rewardRecord/selectSimpleByUserId',
         method: 'get',
     })
 }

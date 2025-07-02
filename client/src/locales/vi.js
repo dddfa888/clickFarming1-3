@@ -147,5 +147,6 @@ export default {
     "订单已支付，不可重复支付": "Đơn hàng đã thanh toán, không thể thanh toán lại",
     "操作失败": "Thao tác thất bại",
     "资金密码不能为空": "Mật khẩu quỹ không được để trống",
-    "取款数额不能为空": "Số tiền rút không được để trống"
+    "取款数额不能为空": "Số tiền rút không được để trống",
+    "您尚未完成当天的订单数量，无法提现": "Bạn chưa hoàn thành số đơn trong ngày"
 };
