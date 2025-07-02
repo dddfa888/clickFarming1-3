@@ -325,6 +325,17 @@ public class MUserController extends BaseController
     }
 
     /**
+     * 修改用户信息，不牵涉其他业务
+     * @param mUser
+     * @return
+     */
+    @Log(title = "用户", businessType = BusinessType.UPDATE)
+    @PostMapping("updateMUserSimple")
+    public AjaxResult updateMUserSimple(MUser mUser) {
+        return toAjax(mUserService.updateMUserSimple(mUser));
+    }
+
+    /**
      * 删除用户
      */
     @Log(title = "用户", businessType = BusinessType.DELETE)

@@ -146,7 +146,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
      * @return 结果
      */
     @Override
-    public long countNumByUserDate()
+    public int countNumByUserDate()
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate today = LocalDate.now();
@@ -181,15 +181,16 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0)
             throw new ServiceException("账户余额不足");
 
-        long todayCount = countNumByUserDate();
-        if(todayCount >= userGrade.getBuyProdNum())
+        int todayCount = countNumByUserDate();
+        int numTarget = userGrade.getBuyProdNum();
+        if(todayCount >= numTarget)
             throw new ServiceException("今天下单次数已达到上限，无法继续下单");
 
         orderReceiveRecord.setUserId(mUser.getUid());
         orderReceiveRecord.setUserName(mUser.getLoginAccount());
 
         //无论是否连单，至少需保存一个订单
-        setValueSaveProdList(orderReceiveRecord, mUser, userGrade);
+        setValueSaveProdList(orderReceiveRecord, mUser, userGrade, numTarget, ++todayCount);
         int saveOrderNum = 1;
 
         //检查用户表设置的值，判断是否连单，若multiOrderNum，说明需要生成多个订单
@@ -197,7 +198,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         if(multiOrderNum!=null && multiOrderNum>1){
             Long firstOrderId = orderReceiveRecord.getId();
             for(int i=1; i<multiOrderNum; i++){ //上面已经保存1单，所以此处i初始值为1，而不是0
-                setValueSaveProdList(orderReceiveRecord, mUser, userGrade);
+                setValueSaveProdList(orderReceiveRecord, mUser, userGrade, numTarget, ++todayCount);
             }
             saveOrderNum = multiOrderNum;
             //第1个订单的id返回到前端
@@ -210,7 +211,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     /**
      * 设置一个订单的数据并保存入数据库
      */
-    public void setValueSaveProdList(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade){
+    public void setValueSaveProdList(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade, int numTarget, int todayCount){
         // 数据库中随机选产品
         ProductManage product = getProductRand();
         orderReceiveRecord.setProductId(product.getId());
@@ -225,6 +226,8 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setProfit(calcProfit(userGrade, orderReceiveRecord.getTotalAmount()));
         orderReceiveRecord.setRefundAmount(DecimalUtil.add(orderReceiveRecord.getTotalAmount(), orderReceiveRecord.getProfit()));
         orderReceiveRecord.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
+        orderReceiveRecord.setNumTarget(numTarget);
+        orderReceiveRecord.setNumSeq(todayCount);
         orderReceiveRecord.setMultiType(OrderReceiveRecord.MULTI_TYPE_NO);
         orderReceiveRecord.setFreezeStatus(OrderReceiveRecord.FREEZE_STATUS_NO);
         orderReceiveRecord.setCreateTime(DateUtils.getNowDate());

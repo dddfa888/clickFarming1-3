@@ -59,12 +59,12 @@
         <template slot-scope="scope">
           {{ scope.row.userName }}<br />
           <span
-            :style="{ color: scope.row.registerType === '0' ? 'red' : 'green' }"
+            :style="{ color: scope.row.userType === '0' ? 'red' : 'green' }"
           >
             {{
-              scope.row.registerType == "0"
+              scope.row.userType == "0"
                 ? "虚拟的"
-                : scope.row.registerType == "1"
+                : scope.row.userType == "1"
                 ? "真实的"
                 : "未知"
             }}

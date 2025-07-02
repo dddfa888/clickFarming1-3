@@ -90,7 +90,8 @@ export default {
       default() {
         return {
           userAuth: 0,
-          withdraw: 0,
+          withdrawCustomer: 0,
+          withdrawEmployee: 0,
           loanOrder: 0,
         };
       },
@@ -99,8 +100,8 @@ export default {
   data() {
     this.onlyOneChild = null;
     return {
-      fabadgePath: ["/user", "/finance"],
-      badgePath: ["userAuth", "withdraw", "loanOrder"],
+      fabadgePath: ["/user"],
+      badgePath: ["userAuth", "withdrawCustomer", "withdrawEmployee", "loanOrder"],
       badgePathObj: this.badge,
     };
   },
@@ -152,8 +153,7 @@ export default {
         };
 
         const pathConditions = {
-          "/user": valueMap.userAuth > 0,
-          "/finance": valueMap.withdraw > 0 || valueMap.loanOrder > 0,
+          "/user": valueMap.userAuth > 0 || valueMap.withdrawCustomer > 0 || valueMap.withdrawEmployee > 0,
         };
 
         Object.entries(this.item).forEach(([key, value]) => {

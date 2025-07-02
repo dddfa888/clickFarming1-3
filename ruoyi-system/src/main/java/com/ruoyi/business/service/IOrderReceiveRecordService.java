@@ -74,7 +74,7 @@ public interface IOrderReceiveRecordService
      * @param
      * @return 结果
      */
-    long countNumByUserDate();
+    int countNumByUserDate();
 
     /**
      * 前台用户点击后添加订单

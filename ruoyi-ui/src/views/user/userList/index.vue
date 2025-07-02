@@ -325,6 +325,25 @@
       </span> -->
     </el-dialog>
 
+    <!-- 编辑银行信息 -->
+    <el-dialog title="编辑银行信息" :visible.sync="showUpdateBank" width="600px" append-to-body>
+      <el-form ref="updateBankForm" :model="updateBankForm" label-width="100px">
+        <el-form-item label="银行名称" prop="bankName">
+          <el-input v-model="updateBankForm.bankName" placeholder="请输入银行名称" />
+        </el-form-item>
+        <el-form-item label="银行账户名称" prop="bankAccountName">
+          <el-input v-model="updateBankForm.bankAccountName" placeholder="请输入银行账户名称" />
+        </el-form-item>
+        <el-form-item label="银行账号" prop="bankAccountNumber">
+          <el-input v-model="updateBankForm.bankAccountNumber" placeholder="请输入银行账号" />
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="saveBank">确 定</el-button>
+        <el-button @click="closeBank">取 消</el-button>
+      </div>
+    </el-dialog>
 
     <el-dialog :title="orderSetTitle" :visible.sync="showOrderSet" width="750px" append-to-body>
       <el-form ref="orderSetForm" :model="orderSetForm" >
@@ -344,7 +363,7 @@
     </el-dialog>
 
 
-    <el-dialog
+    <el-dialog v-loading="loadingInviteTable"
         title="集团信息"
         :visible.sync="dialogGroupInformation"
         width="40%"
@@ -388,7 +407,7 @@
         :total="invitationTableTotal"
         :page.sync="queryParamsInvite.pageNum"
         :limit.sync="queryParamsInvite.pageSize"
-        @pagination="handleOpenUserOrderList(clickedRow)"
+        @pagination="handleListGroupInformation(clickedRow)"
       />
       </span>
     </el-dialog>
@@ -429,7 +448,12 @@
         <el-table-column label="总金额" align="center" prop="totalAmount" />
         <el-table-column label="利润" align="center" prop="profit" />
         <el-table-column label="退款金额" align="center" prop="refundAmount" />
-        <el-table-column label="过程状态" align="center" prop="processStatus" :formatter="formatStatus" />
+        <el-table-column label="过程状态" align="center" >
+          <template slot-scope="scope">
+            <div>{{ formatStatus(scope.row) }}</div>
+            <div>{{ scope.row.numSeq }} / {{ scope.row.numTarget }}</div>
+          </template>
+	    </el-table-column>
         <el-table-column label="创建时间" align="center" prop="createTime" />
       </el-table>
       <span slot="footer" class="dialog-footer">
@@ -549,7 +573,7 @@
 </template>
 
 <script>
-import {getAllSuperiorUids,changeBalance,setBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum,selectByUserId,updateOrederSet} from "@/api/user/user"
+import {getAllSuperiorUids,changeBalance,setBalance,setStatus, listUser, getUser, delUser, addUser, updateUser, setRegisterType, getOrderList,updateMultiOrderNum,selectByUserId,updateMUserSimple,updateOrederSet} from "@/api/user/user"
 import { listGrade } from "@/api/user/grade"
 import {  addNotify } from "@/api/notify/notify"
 
@@ -638,6 +662,8 @@ export default {
       }],
       // 遮罩层
       loading: true,
+      // 《集团信息》表 加载状态
+      loadingInviteTable: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -729,8 +755,8 @@ export default {
       clickedRow: '',
       baseUrl: process.env.VUE_APP_BASE_API,
       processStatusMap: {
-        'Waiting': '待支付',
-        'Success': '支付完成'
+	    'Waiting': '未付',
+	    'Success': '成功'
       }
     }
   },
@@ -804,7 +830,7 @@ export default {
     },
     //保存《银行修改》
     saveBank(){
-        updateUser(this.updateBankForm).then(response => {
+        updateMUserSimple(this.updateBankForm).then(response => {
           this.$modal.msgSuccess('修改成功');
           this.showUpdateBank = false;
           this.getList();
@@ -818,9 +844,9 @@ export default {
     //打开提现审核页面
     handleGotoWithdraw(row){
       if(row==="staff"){
-        this.$router.push({path:"/finance/withdrawCustomer"})
+        this.$router.push({path:"/user/withdrawCustomer"})
       }else {
-        this.$router.push({path:"/finance/withdraw"})
+        this.$router.push({path:"/user/withdrawEmployee"})
       }
     },
     notifyOpenop(e){
@@ -863,12 +889,12 @@ export default {
         // 如果你需要将数据赋值到页面上显示，例如：
       })*/
       that.clickedRow = row;
-      that.loading = true
+      that.loadingInviteTable = true
       that.queryParamsInvite.inviterCode = row.invitationCode;
       listUser(that.queryParamsInvite).then(response => {
         that.tableData = response.rows
         that.invitationTableTotal = response.total
-        that.loading = false
+        that.loadingInviteTable = false
       })
     },
 

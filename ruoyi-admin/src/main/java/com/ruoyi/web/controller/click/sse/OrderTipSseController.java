@@ -1,5 +1,7 @@
 package com.ruoyi.web.controller.click.sse;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.click.domain.MMoneyInvestWithdraw;
 import com.ruoyi.click.service.IMMoneyInvestWithdrawService;
 import com.ruoyi.common.annotation.Anonymous;
@@ -12,7 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
@@ -43,7 +44,7 @@ public class OrderTipSseController {
             int lastValue = 0;
             while (running.get()) {
                 try {
-                    MMoneyInvestWithdraw employeesWithdraw = new MMoneyInvestWithdraw();
+                    /*MMoneyInvestWithdraw employeesWithdraw = new MMoneyInvestWithdraw();
                     employeesWithdraw.setStatus(0);
                     employeesWithdraw.setType("0");
                     employeesWithdraw.setUserType("0");
@@ -53,11 +54,22 @@ public class OrderTipSseController {
                     clientsWithdraw.setStatus(0);
                     clientsWithdraw.setType("0");
                     clientsWithdraw.setUserType("1");
-                    int clientsWithdrawWithdrawCount = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(clientsWithdraw).size();
+                    int clientsWithdrawWithdrawCount = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(clientsWithdraw).size();*/
+
+                    Wrapper wrapperE = new LambdaQueryWrapper<MMoneyInvestWithdraw>()
+                            .eq(MMoneyInvestWithdraw::getStatus, 0)
+                            .eq(MMoneyInvestWithdraw::getType, "0")
+                            .eq(MMoneyInvestWithdraw::getUserType, "0");
+                    long employeesWithdrawCount = mMoneyInvestWithdrawService.count(wrapperE);
+                    Wrapper wrapperC = new LambdaQueryWrapper<MMoneyInvestWithdraw>()
+                            .eq(MMoneyInvestWithdraw::getStatus, 0)
+                            .eq(MMoneyInvestWithdraw::getType, "0")
+                            .eq(MMoneyInvestWithdraw::getUserType, "1");
+                    long clientsWithdrawWithdrawCount = mMoneyInvestWithdrawService.count(wrapperC);
 
                     Map<String, Object> fixedData = new HashMap<>();
-                    fixedData.put("employeesWithdrawCount", employeesWithdrawCount);
-                    fixedData.put("clientsWithdrawWithdrawCount", clientsWithdrawWithdrawCount);
+                    fixedData.put("withdrawEmployee", employeesWithdrawCount);
+                    fixedData.put("withdrawCustomer", clientsWithdrawWithdrawCount);
                     emitter.send(SseEmitter.event().name("NOTICE").data(fixedData));
 
                     Thread.sleep(3000); // 每秒推送一次
