@@ -68,7 +68,7 @@ defineExpose({ show });
   display: block;
   width: 100%;
   height: auto;
-  max-height: 80vh;
+  max-height: 70vh;
   object-fit: contain;
   z-index: 99;
   border-radius: 10px;
@@ -76,7 +76,7 @@ defineExpose({ show });
 
 .modal-close {
   position: absolute;
-  bottom: 4vh; /* 相对于视口高度 */
+  bottom: 7vh; /* 相对于视口高度 */
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.7);

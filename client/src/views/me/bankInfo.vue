@@ -48,9 +48,22 @@ const bankName = ref("");
 getUserInfo().then((res) => {
   console.log(res.data);
   accountName.value = res.data.bankAccountName;
-  accountNumber.value = res.data.bankAccountNumber;
+  accountNumber.value = formatBankCard(res.data.bankAccountNumber);
   bankName.value = res.data.bankName;
 });
+
+function formatBankCard(cardNo) {
+  if (!cardNo) return "";
+  // 去掉空格
+  const clean = cardNo.replace(/\s+/g, "");
+  // 如果卡号太短，直接返回
+  if (clean.length <= 8) return clean;
+  // 截取前4位和后4位
+  const start = clean.slice(0, 4);
+  const end = clean.slice(-4);
+  // 中间用 **** ****
+  return `${start} **** **** ${end}`;
+}
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
     <div class="order-header">
       <div>
         <p style="font-size: 15px">{{ t("订单详细信息") }}</p>
-        <div class="data-provider">{{ t("数据提供者 Mercado Libre") }}</div>
+        <div class="data-provider">{{ t("数据提供者 Mercado Asia") }}</div>
       </div>
       <div class="amount-section">
         <div class="amount-display">
@@ -45,8 +45,21 @@
 
     <div class="foundation-rules">
       <p>{{ t("介绍基金会规则") }}</p>
-      <div class="rules-content">
+      <div class="rules-content" v-if="locale === 'vi'">
         <!-- 这里可以添加基金会规则的具体内容 -->
+        <p>
+          Khi bạn trở thành thành viên Mercado Asia, bạn sẽ nhận được các mã sản
+          phẩm có liên quan về đơn đặt hàng , bao gồm thông tin sản phẩm chi
+          tiết đơn hàng , giá trị sản phẩm , số lượng ...vv..
+        </p>
+        <p>
+          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
+          hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
+        </p>
+        <p>
+          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
+          hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
+        </p>
       </div>
     </div>
     <ProductModal
@@ -68,10 +81,15 @@ import {
 import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
 import ProductModal from "../../components/ProductModal.vue";
+import { useLangStore } from "../../store/useLangStore";
+import { storeToRefs } from "pinia";
+
 const { t } = useI18n();
 const order = ref({});
 const showModal = ref(false);
 const id = ref(null);
+const langStore = useLangStore();
+const { locale } = storeToRefs(langStore);
 
 const formatCurrency = (value) => {
   if (typeof value !== "number") return "0 €";
@@ -208,7 +226,7 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
 }
 
 .foundation-rules {
-  margin-top: 30px;
+  margin-top: 15px;
   padding: 10px;
   background-color: transparent;
   backdrop-filter: blur(5px);
@@ -216,11 +234,12 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
   border-radius: 10px;
   -webkit-backdrop-filter: blur(5px);
   text-align-last: center;
+  font-size: 0.79rem;
 }
 
 .rules-content {
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.79rem;
   color: #fff;
+  margin-top: 30px;
 }
 </style>

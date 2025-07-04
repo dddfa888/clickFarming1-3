@@ -10,7 +10,9 @@
         <div class="transaction-amount">
           {{ t("金钱数额") }}:+{{ formatAmount(transaction.amount) }}
         </div>
-        <div class="transaction-time">描述：{{ transaction.description }}</div>
+        <div class="transaction-time">
+          {{ t("描述") }}：{{ t(transaction.description) }}
+        </div>
         <div class="transaction-balance">
           {{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}
         </div>

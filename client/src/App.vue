@@ -44,4 +44,10 @@ body,
   height: 100vh;
   width: 100vw;
 }
+
+body,
+html,
+* {
+  cursor: default;
+}
 </style>

@@ -97,15 +97,16 @@ const onCenterClick = () => {
   bottom: 0;
   left: 0;
   right: 0;
+  max-width: 100%;
   height: 60px;
-  background: url("../assets/img/backgroundnavigate-WyoR1lk0.png") no-repeat
-    center center;
-  background-size: 110% 100%;
+  background: url("../assets/img/backgroundnavigate-WyoR1lk0.png") no-repeat center center;
+  background-size: cover;
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 999;
   padding: 0 10px;
+  margin: 0 auto;
 }
 
 .tabbar-item {
@@ -115,6 +116,7 @@ const onCenterClick = () => {
   flex-direction: column;
   align-items: center;
   color: #fff;
+  cursor: pointer;
 }
 
 .tabbar-item.active {
@@ -138,6 +140,7 @@ const onCenterClick = () => {
   justify-content: center;
   align-items: center;
   border: 1px solid #fff;
+  cursor: pointer;
 }
 
 .center-icon {
@@ -145,9 +148,37 @@ const onCenterClick = () => {
   height: 40px;
 }
 
+/* PC端适配 */
 @media (min-width: 768px) {
   .tabbar {
-    background-size: 105% 100%;
+    width: 600px;         /* PC端宽度加大 */
+    height: 70px;         /* 高度稍大 */
+    background-size: 100% 100%;
+    border-radius: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .tabbar-item {
+    font-size: 14px;      /* 字体加大 */
+  }
+
+  .tabbar-icon {
+    width: 28px;          /* 图标大一点 */
+    height: 28px;
+    margin-bottom: 6px;
+  }
+
+  .tabbar-middle {
+    width: 80px;          /* 中间按钮大一点 */
+    height: 80px;
+    margin-top: -90px;
+  }
+
+  .center-icon {
+    width: 48px;
+    height: 48px;
   }
 }
 </style>
+
