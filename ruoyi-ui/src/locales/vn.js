@@ -4,18 +4,66 @@ export default {
     hello: "Hello, World!",
     logout: "Đăng xuất",
     language: "ngôn ngữ",
-    english: "Anh",
-    chinese: "Trung Quốc",
+    english: "Tiếng Anh",
+    chinese: "Tiếng Trung",
+    vietnamese: "Tiếng Việt",
   },
   languages: {
     language: 'ngôn ngữ',
-    vn: 'Việt Nam',
-    cn: 'Trung Quốc',
+    vn: 'Tiếng Việt',
+    cn: 'Tiếng Trung',
     en: 'Tiếng Anh',
-    kr: 'Hàn Quốc',
-    jp: 'Nhật Bản',
-    rs: 'Nga',
-    fr: 'Pháp'
-  }
+    kr: 'Tiếng Hàn',
+    jp: 'Tiếng Nhật',
+    rs: 'Tiếng Nga',
+    fr: 'Tiếng Pháp'
+  },
+  loginPage: {
+    register: 'Đăng ký',
+    login: 'Đăng nhập',
+    account: 'Số tài khoản',
+    password: 'Mật khẩu',
+    verificationCode: 'Mã xác nhận',
+    enterAccount: 'Vui lòng nhập số tài khoản của bạn',
+    enterPassword: 'Vui lòng nhập mật khẩu',
+    rememberMe : 'Ghi nhớ mật khẩu',
+  },
 
+  pageCommon: {
+    search: 'Tìm kiếm',
+    reset: 'Đặt lại',
+    add: 'Thêm',
+    update: 'Cập nhật',
+    delete: 'Xoá',
+  },
+
+  muser: {
+    userManage: 'Quản lý người dùng',
+
+    userList: 'Danh sách người xem',
+    userGrade: 'Quản lý cấp độ',
+    withdrawCustomer: 'Rút tiền khách',
+    withdrawEmployee: 'Rút tiền nhân viên',
+
+    userListPage: {
+      account: 'tài khoản',
+      withdrawCustomerBtn: 'Rút tiền khách',
+      withdrawEmployeeBtn: 'Rút tiền nhân viên',
+      column: {
+        invitationCode: 'MÃ MỜI',
+        loginAccount: 'TÊN',
+        SETTING_ORDER: 'CÀI ĐẶT ĐƠN HÀNG',
+        settingOrder: 'Cài đặt đơn hàng',
+        action: 'HÀNH ĐỘNG',
+        inviterCode: 'MÃ NGƯỜI GIỚI THIỆU',
+        regsterTime: 'THỜI GIAN ĐĂNG KÝ',
+        lastLoginIp: 'IP ĐĂNG NHẬP LẦN CUỐI',
+        phoneNumber: 'SỐ ĐIỆN THOẠI',
+        accountBalance: 'SỐ DƯ',
+        userStatus: 'TRẠNG THÁI',
+        userLevel: 'CẤP ĐỘ',
+        brushNumber: 'SỐ LƯỢNG ĐẶT HÀNG'
+      }
+    }
+  }
 };

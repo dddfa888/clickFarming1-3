@@ -31,6 +31,9 @@
             <el-dropdown-item>
               <span @click="changeLang('zh')">{{ $t("message.chinese") }}</span>
             </el-dropdown-item>
+            <el-dropdown-item>
+              <span @click="changeLang('vn')">{{ $t("message.vietnamese") }}</span>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <!-- <search id="header-search" class="right-menu-item" /> -->

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="账号" prop="loginAccount">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+      <el-form-item :label="$t('muser.userListPage.account')" prop="loginAccount">
         <el-input
           v-model="queryParams.loginAccount"
           placeholder="请输入账号"
@@ -10,8 +10,8 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t("pageCommon.search") }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t("pageCommon.reset") }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -24,7 +24,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:user:add']"
-        >新增</el-button>
+        >{{ $t("pageCommon.add") }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -35,7 +35,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:user:edit']"
-        >修改</el-button>
+        >{{ $t("pageCommon.update") }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -46,7 +46,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:user:remove']"
-        >删除</el-button>
+        >{{ $t("pageCommon.delete") }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -56,7 +56,7 @@
           size="mini"
           @click="handleGotoWithdraw('staff')"
           v-hasPermi="['system:user:remove']"
-        >从客户那里提取资金</el-button>
+        >{{ $t('muser.userListPage.withdrawCustomerBtn') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -66,15 +66,15 @@
           size="mini"
            @click="handleGotoWithdraw('customer')"
           v-hasPermi="['system:user:remove']"
-        >员工充值</el-button>
+        >{{ $t('muser.userListPage.withdrawEmployeeBtn') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="邀请码" align="center" prop="invitationCode" />
-      <el-table-column label="账号" align="center" prop="loginAccount">
+      <el-table-column :label="$t('muser.userListPage.column.invitationCode')" align="center" prop="invitationCode" />
+      <el-table-column :label="$t('muser.userListPage.column.loginAccount')" align="center" prop="loginAccount">
         <template slot-scope="scope">
           {{ scope.row.loginAccount }}<br />
           <span :style="{ color: scope.row.registerType === '0' ? 'red' : 'green' }">
@@ -82,12 +82,12 @@
           </span>
         </template>
       </el-table-column>
-       <el-table-column label="订单设置" align="center" >
+       <el-table-column :label="$t('muser.userListPage.column.SETTING_ORDER')" align="center" >
         <template slot-scope="scope">
        <el-button @click="handleOpenOrederSet(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">订单设置</el-button>
           </template>
       </el-table-column>
-      <el-table-column label="行为" width="360" align="center">
+      <el-table-column :label="$t('muser.userListPage.column.action')" width="360" align="center">
         <template slot-scope="scope">
           <div class="action-buttons">
             <el-button
@@ -208,7 +208,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="推荐人代码" align="center" >
+      <el-table-column :label="$t('muser.userListPage.column.inviterCode')" align="center" >
         <template slot-scope="scope">
           <div v-if="scope.row.inviterName">
             <div>{{ scope.row.inviterCode }}</div>
@@ -217,12 +217,11 @@
           <div v-else>/</div>
         </template>
       </el-table-column>
-      <el-table-column label="登记时间" align="center" prop="createTime" width="150" />
-      <el-table-column label="最后登录IP" align="center" prop="lastLoginIp" />
-      <el-table-column label="电话号码" align="center" prop="phoneNumber" />
-      <el-table-column label="账户余额" align="center" prop="accountBalance" />
-      <el-table-column label="等级" align="center" prop="levelName" width="60" />
-      <el-table-column label="状态" align="center" prop="status" width="80">
+      <el-table-column :label="$t('muser.userListPage.column.regsterTime')" align="center" prop="createTime" width="160" />
+      <el-table-column :label="$t('muser.userListPage.column.lastLoginIp')" align="center" prop="lastLoginIp" />
+      <el-table-column :label="$t('muser.userListPage.column.phoneNumber')" align="center" prop="phoneNumber" />
+      <el-table-column :label="$t('muser.userListPage.column.accountBalance')" align="center" prop="accountBalance" />
+      <el-table-column :label="$t('muser.userListPage.column.userStatus')" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-tag
             :type="scope.row.status === 1 ? 'success' : 'danger'"
@@ -231,6 +230,7 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('muser.userListPage.column.userLevel')" align="center" prop="levelName" width="70" />
 
 
 
@@ -258,7 +258,7 @@
 <!--        </template>-->
 <!--      </el-table-column>-->
 
-      <el-table-column label="当天刷单数量" align="center" prop="brushNumber" />
+      <el-table-column :label="$t('muser.userListPage.column.brushNumber')" align="center" prop="brushNumber" />
     </el-table>
 
     <pagination

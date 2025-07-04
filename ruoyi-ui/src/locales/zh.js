@@ -6,6 +6,7 @@ export default {
     language: "语言",
     english: "英语",
     chinese: "中文",
+    vietnamese: "越南语",
   },
   languages: {
     language: '语言',
@@ -16,5 +17,53 @@ export default {
     jp: '日语',
     rs: '俄语',
     fr: '法语'
+  },
+  loginPage: {
+    register: '注册',
+    login: '登录',
+    account: '账号',
+    password: '密码',
+    verificationCode: '验证码',
+    enterAccount: '请输入您的账号',
+    enterPassword: '请输入您的密码',
+    rememberMe : '记住密码'
+  },
+
+  pageCommon: {
+    search: '搜索',
+    reset: '重置',
+    add: '新增',
+    update: '修改',
+    delete: '删除',
+  },
+
+  muser: {
+    userManage: '用户管理',
+
+    userList: '用户列表',
+    userGrade: '会员等级',
+    withdrawCustomer: '客户提现管理',
+    withdrawEmployee: '员工提现管理',
+
+    userListPage: {
+      account: '账号',
+      withdrawCustomerBtn: '从客户那里提取资金',
+      withdrawEmployeeBtn: '员工充值',
+      column: {
+        invitationCode: '邀请代码',
+        loginAccount: '账号',
+        SETTING_ORDER: '订单设置',
+        settingOrder: '订单设置',
+        action: '行为',
+        inviterCode: '推荐人代码',
+        regsterTime: '登记时间',
+        lastLoginIp: '最后登录IP',
+        phoneNumber: '电话号码',
+        accountBalance: '账户余额',
+        userStatus: '状态',
+        userLevel: '等级',
+        brushNumber: '当天刷单数量'
+      }
+    }
   }
 };
