@@ -3,7 +3,7 @@
     <!-- 用户信息头部 -->
     <div class="user-header">
       <div class="avatar">
-        <img src="../../assets/img/smc5jpzklmkircocfkq1.png" alt="" />
+        <img src="../../../public/favicon.png" alt="" />
       </div>
       <div class="user-info">
         <p class="user-id">ID:{{ userInfo.loginAccount }}</p>
@@ -255,14 +255,12 @@ const handleLogout = () => {
   transition: background-color 0.2s;
 }
 
-@media (max-width: 480px) {
-  .action-buttons {
-    grid-template-columns: 1fr;
-  }
+.action-buttons {
+  grid-template-columns: 1fr;
+}
 
-  .language-btn {
-    grid-column: span 1;
-  }
+.language-btn {
+  grid-column: span 1;
 }
 .user-level-info {
   width: 200px;
@@ -300,5 +298,163 @@ const handleLogout = () => {
 .language-dropdown li:hover,
 .language-dropdown li.active {
   background-color: gray;
+}
+
+@media screen and (min-width: 768px) {
+  .user-center {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: url("../../assets/img/BG-canhan-B0_5I1_l.png") no-repeat center
+      center fixed;
+    background-size: 100% 100%;
+    padding-bottom: 120px;
+    min-height: 100vh;
+  }
+
+  .user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+  }
+
+  .user-info {
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .balance-label {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .balance-amount {
+    font-size: 18px;
+    margin: 5px 0 0;
+    /* font-weight: bold; */
+    color: #fff;
+  }
+
+  .section-label {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .avatar > img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .level-name {
+    margin: 0;
+    color: #fff;
+  }
+
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .action-btn {
+    padding: 8px;
+    font-size: 16px;
+    color: #fff;
+    text-align: left;
+    border: none;
+    box-sizing: border-box;
+    border-top: 1px solid #616272;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: transparent;
+  }
+
+  .language-btn {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: span 2;
+    background-color: #0d324f;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+  }
+
+  .language-arrow {
+    margin-left: 5px;
+    font-size: 16px;
+  }
+
+  .logout-btn {
+    /* width: 20%; */
+    margin-left: 40%;
+    padding: 10px 19px;
+    background-color: #5b0606;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .language-btn {
+    grid-column: span 1;
+  }
+
+  .user-level-info {
+    width: 8.66667vw;
+    height: 0.26667vw;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 15px;
+  }
+
+  .level-name {
+    font-size: 1.2vw;
+  }
+
+  .language-dropdown {
+    list-style: none;
+    padding: 0;
+    margin-top: 19.6vw;
+    background: #0b1e34;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    position: absolute;
+    width: 10.66667vw;
+    z-index: 100;
+    font-size: 14px;
+  }
+
+  .language-dropdown li {
+    padding: 1.13333vw;
+    cursor: pointer;
+    font-size: 0.9333vw;
+  }
+
+  .language-dropdown li:hover,
+  .language-dropdown li.active {
+    background-color: gray;
+  }
 }
 </style>

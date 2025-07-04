@@ -550,4 +550,260 @@ onMounted(async () => {
   margin-left: 5px;
   font-size: 12px;
 }
+
+@media screen and (min-width: 768px) {
+  .home {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 100px;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .user-info-avatar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-details {
+    line-height: 1.4;
+  }
+
+  .username {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .user-info-balance img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+
+  .balance-price {
+    display: flex;
+    max-width: 100%;
+    margin: 10px auto;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .balance-display {
+    width: 110px;
+    height: 90%;
+    text-align: center;
+    border: 1px solid #fff;
+    border-radius: 20px;
+  }
+
+  .reward {
+    padding: 20px;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 20px;
+    font-size: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #7a797d;
+  }
+
+  .reward-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .reward-item {
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px;
+    display: flex;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+    font-size: 14px;
+    color: #fff;
+    padding: 5px;
+  }
+
+  .reward-date {
+    color: #fff;
+  }
+
+  .reward-message {
+    color: #fff;
+    white-space: nowrap; /* 不换行 */
+    overflow: hidden; /* 超出隐藏 */
+    text-overflow: ellipsis; /* 超出显示省略号 */
+    max-width: 220px; /* 根据布局调整宽度 */
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .balance-label {
+    font-size: 14px;
+  }
+
+  .balance-amount {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .action-btn {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .withdraw {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .deposit {
+    background-color: #2196f3;
+    color: white;
+  }
+
+  .action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .action-btn:active {
+    transform: translateY(0);
+  }
+
+  .videos {
+    width: 100%;
+    border-radius: 8px;
+    margin: 15px 0;
+    z-index: 1;
+    position: relative;
+  }
+
+  .info-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+    padding: 10px;
+    font-size: 14px;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid #7a797d;
+  }
+
+  .btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 8px;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .icon-img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+  }
+
+  .member-level {
+    font-size: 15px;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid #7a797d;
+    margin-bottom: 15px;
+    padding: 15px;
+  }
+
+  .title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .level-info {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+  }
+
+  .col {
+    text-align: center;
+    flex: 1;
+  }
+
+  .badge {
+    display: inline-block;
+    width: 20%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: #b13330;
+    color: #ccc;
+    border-radius: 5px;
+    padding: 2px 5px;
+    margin-left: 5px;
+    font-size: 12px;
+  }
+
+  .lock-icon {
+    display: inline-block;
+    width: 20%;
+    position: fixed;
+    top: 0;
+    right: 22%;
+    color: #000;
+    background: #ffe747;
+    border-radius: 5px;
+    padding: 2px 5px;
+    margin-left: 5px;
+    font-size: 12px;
+  }
+}
 </style>

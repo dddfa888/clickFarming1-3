@@ -242,4 +242,111 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
   color: #fff;
   margin-top: 30px;
 }
+
+@media screen and (min-width: 768px) {
+  .order-detail-container {
+    font-family: Arial, sans-serif;
+    width: 520px;
+    margin: 0 auto;
+    color: #fff;
+    padding: 10px;
+    height: 100vh;
+    background: url("../../assets/img/BG-nhandon-B-V7rk8F.png") no-repeat center
+      center fixed;
+    background-size: 100% 100%;
+  }
+
+  .order-header {
+    width: 100%;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+
+  .data-provider {
+    font-size: 0.9rem;
+    color: #fff;
+    margin-top: 5px;
+  }
+
+  .order-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 5px;
+    border-radius: 6px;
+  }
+  .order-summary > img {
+    width: 100%;
+  }
+
+  .amount-section {
+    text-align: center;
+  }
+
+  .amount-display {
+    color: #fff;
+  }
+
+  .amount-label {
+    font-size: 0.9rem;
+    color: #fff;
+  }
+
+  .status-badge {
+    padding: 6px 59px;
+    background-color: #0262b0;
+    color: white;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 30px;
+  }
+
+  .order-details-grid {
+    padding: 10px;
+    border: 1px solid #7a797d;
+    border-radius: 10px;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .detail-label {
+    font-size: 0.85rem;
+    color: #fff;
+    margin-bottom: 5px;
+  }
+
+  .detail-value {
+    font-size: 1.1rem;
+  }
+
+  .foundation-rules {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    border: 1px solid #7a797d;
+    border-radius: 10px;
+    -webkit-backdrop-filter: blur(5px);
+    text-align-last: center;
+    font-size: 0.79rem;
+  }
+
+  .rules-content {
+    font-size: 0.79rem;
+    color: #fff;
+    margin-top: 30px;
+  }
+}
 </style>

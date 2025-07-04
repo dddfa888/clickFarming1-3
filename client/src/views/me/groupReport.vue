@@ -114,4 +114,60 @@ const filteredList = computed(() => {
   height: 50px;
   border-radius: 50%;
 }
+
+@media screen and (min-width: 768px) {
+  .company-intro {
+    background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
+      center;
+    background-size: cover;
+    width: 540px;
+    margin: 0 auto;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .tab-header {
+    display: flex;
+    border: 1px solid #fff;
+  }
+
+  .tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #fff;
+    color: #fff;
+    transition: 0.3s;
+  }
+
+  .tab-item.active {
+    color: #3b82f6;
+  }
+
+  .tab-content {
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+
+  .group-report {
+    padding: 10px;
+    display: flex;
+    color: #fff;
+    font-size: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .group-member-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .group-member-item > img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+}
 </style>

@@ -197,4 +197,131 @@ getOrderHistory().then((res) => {
     font-size: 12px;
   }
 }
+
+@media screen and (min-width: 768px) {
+  .distribution-history {
+    background-image: url("../../assets/img/background-D7o_xTde.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+    color: #fff;
+    width: 540px;
+    margin: 0 auto;
+    background-attachment: scroll; /* 移除 fixed，避免 iOS bug */
+    padding-bottom: 90px;
+  }
+  .history-list {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    overflow: auto;
+    height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .history-item {
+    width: 85%;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .item-header {
+    margin-bottom: 15px;
+  }
+
+  .time-code {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .time {
+    margin-bottom: 3px;
+  }
+
+  .code {
+    font-family: monospace;
+    color: #fff;
+  }
+
+  .product-info {
+    margin-bottom: 15px;
+  }
+
+  .product-name {
+    font-weight: 500;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+  }
+
+  .product-name > img {
+    width: 30%;
+    margin-right: 10px;
+  }
+
+  .product-price {
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .quantity {
+    font-weight: normal;
+    color: #fff;
+  }
+
+  .calculation {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 6px;
+  }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .calc-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .amount {
+    font-weight: bold;
+  }
+
+  .highlight {
+    color: #e74c3c;
+  }
+
+  .send-button {
+    width: 30%;
+    padding: 5px;
+    font-size: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .send-button:hover {
+    background-color: #2980b9;
+  }
+}
 </style>

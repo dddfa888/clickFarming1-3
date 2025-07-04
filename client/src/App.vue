@@ -45,6 +45,27 @@ body,
   width: 100vw;
 }
 
+@media screen and (min-width: 768px) {
+  app {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 540px;
+  }
+}
+
+/* 仅隐藏滚动条但仍能滚动 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  -ms-overflow-style: none; /* IE和Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 body,
 html,
 * {

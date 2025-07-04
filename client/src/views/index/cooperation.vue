@@ -46,4 +46,30 @@ getPartnership(langStore.locale).then((res) => {
 .content-box > p {
   margin: 5px;
 }
+
+@media screen and (min-width: 768px) {
+  .company-intro {
+    background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
+      center;
+    height: 100vh;
+    width: 540px;
+    margin: 0 auto;
+    overflow-y: auto;
+  }
+
+  .content-box {
+    background-color: transparent !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    backdrop-filter: blur(6px) !important;
+    margin: 12px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #7a797d;
+    color: white;
+    font-size: 15px;
+  }
+  .content-box > p {
+    margin: 5px;
+  }
+}
 </style>

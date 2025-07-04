@@ -68,7 +68,7 @@ defineExpose({ show });
   display: block;
   width: 100%;
   height: auto;
-  max-height: 70vh;
+  max-height: 75vh;
   object-fit: contain;
   z-index: 99;
   border-radius: 10px;
@@ -96,6 +96,72 @@ defineExpose({ show });
   .modal-close {
     bottom: 12vh;
     font-size: 5vw;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 540px;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  @keyframes fadeIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .modal-content {
+    position: relative;
+    max-width: 90%;
+    border-radius: 10px;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-in-out;
+    top: -79px;
+  }
+
+  .modal-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    z-index: 99;
+    border-radius: 10px;
+  }
+
+  .modal-close {
+    position: absolute;
+    bottom: 10vh; /* 相对于视口高度 */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 3rem;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

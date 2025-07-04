@@ -82,4 +82,51 @@ getRewardHistory().then((res) => {
   text-align: right;
   color: #2ecc71;
 }
+
+@media screen and (min-width: 768px) {
+  .company-intro {
+    background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
+      center;
+    height: 100vh;
+    width: 540px;
+    overflow-y: auto;
+    margin: 0 auto;
+  }
+
+  .transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .transaction-item {
+    padding: 10px;
+    display: flex;
+    color: #fff;
+    font-size: 13px;
+    gap: 5px;
+    flex-direction: column;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .transaction-amount {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .transaction-balance {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .transaction-status {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+    color: #2ecc71;
+  }
+}
 </style>

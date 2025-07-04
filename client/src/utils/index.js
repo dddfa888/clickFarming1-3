@@ -7,10 +7,10 @@ let isTokenExpired = false;
 // const baseURL = "http://192.168.0.198:8089/"
 const baseURL = "http://192.168.1.149:8089/"
 const request = axios.create({
-    // baseURL: import.meta.env.MODE === 'development'
-    //     ? '/api'
-    //     : 'https://cfapi.khkjhkh.top/',
-    baseURL: baseURL,
+    baseURL: import.meta.env.MODE === 'development'
+        ? '/api'
+        : 'https://cfapi.khkjhkh.top/',
+    // baseURL: baseURL,
     timeout: 10000
 })
 

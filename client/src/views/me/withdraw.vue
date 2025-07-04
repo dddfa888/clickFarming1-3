@@ -203,4 +203,95 @@ input[disabled] {
   color: #fff;
   cursor: pointer;
 }
+@media screen and (min-width: 768px) {
+  .withdraw-page {
+    background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
+      center;
+    height: 100vh;
+    padding: 20px;
+    width: 500px;
+    margin: 0 auto;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+
+  .withdraw-container {
+    max-width: 400px;
+    margin: auto;
+    padding-top: 40px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  .form {
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    position: relative;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input {
+    width: 100%;
+    background-color: transparent !important;
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+  }
+
+  input[disabled] {
+    background-color: none;
+    border: 1px solid #e5e7eb;
+    color: #fff;
+  }
+
+  .amount-group button,
+  .password-group button {
+    position: absolute;
+    right: 10px;
+    top: 32px;
+    background: none;
+    border: none;
+    color: #00f;
+    cursor: pointer;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #3b4d63;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .password-group {
+    position: relative;
+  }
+
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 34px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+  }
+}
 </style>

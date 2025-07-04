@@ -114,4 +114,69 @@ getDepositRecord().then((res) => {
   color: #fff;
   font-size: 14px;
 }
+
+@media screen and (min-width: 768px) {
+  .company-intro {
+    background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
+      center;
+    height: 100vh;
+    width: 540px;
+    overflow-y: auto;
+    margin: 0 auto;
+  }
+
+  .transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .transaction-item {
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  .transaction-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .transaction-time {
+    grid-column: 1;
+    grid-row: 1;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .transaction-amount {
+    grid-column: 2;
+    grid-row: 1;
+    color: #fff;
+    text-align: right;
+    font-size: 14px;
+  }
+
+  .transaction-amount.negative {
+    color: #e74c3c;
+  }
+  .transaction-balance {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .transaction-status {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+    color: #fff;
+    font-size: 14px;
+  }
+}
 </style>

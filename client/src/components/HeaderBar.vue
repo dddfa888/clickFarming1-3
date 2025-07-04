@@ -28,4 +28,17 @@ function toback() {
   padding: 0 16px;
   font-size: 16px;
 }
+
+@media screen and (min-width: 768px) {
+  .header-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    background-color: #0b1e34;
+    color: white;
+    padding: 0 16px;
+    font-size: 16px;
+  }
+}
 </style>
