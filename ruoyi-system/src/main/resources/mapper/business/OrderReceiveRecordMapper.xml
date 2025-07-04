@@ -17,6 +17,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="profit"    column="profit"    />
         <result property="refundAmount"    column="refund_amount"    />
         <result property="processStatus"    column="process_status"    />
+        <result property="numTarget"    column="num_target"    />
+        <result property="numSeq"    column="num_seq"    />
         <result property="multiType"    column="multi_type"    />
         <result property="multiId"    column="multi_id"    />
         <result property="freezeStatus"    column="freeze_status"    />
@@ -27,7 +29,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectOrderReceiveRecordVo">
-        select id, user_id, user_name, product_id, product_name, product_image_url, unit_price, number, total_amount, profit, refund_amount, process_status, multi_type, multi_id, freeze_status, create_by, create_time, update_by, update_time from m_order_receive_record
+        select
+            id, user_id, user_name, product_id, product_name, product_image_url, unit_price, number, total_amount, profit,
+            refund_amount, process_status, num_target,num_seq, multi_type, multi_id, freeze_status,
+            create_by, create_time, update_by, update_time
+        from m_order_receive_record
     </sql>
 
     <select id="selectOrderReceiveRecordList" parameterType="OrderReceiveRecord" resultMap="OrderReceiveRecordResult">
@@ -44,6 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="profit != null "> and profit = #{profit}</if>
             <if test="refundAmount != null "> and refund_amount = #{refundAmount}</if>
             <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+            <if test="numTarget != null  and numTarget != ''"> and num_target = #{numTarget}</if>
+            <if test="numSeq != null  and numSeq != ''"> and num_seq = #{numSeq}</if>
             <if test="multiType != null  and multiType != ''"> and multi_type = #{multiType}</if>
             <if test="multiId != null "> and multi_id = #{multiId}</if>
             <if test="freezeStatus != null  and freezeStatus != ''"> and freeze_status = #{freezeStatus}</if>
@@ -64,6 +72,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="profit != null "> and profit = #{profit}</if>
             <if test="refundAmount != null "> and refund_amount = #{refundAmount}</if>
             <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+            <if test="numTarget != null  and numTarget != ''"> and num_target = #{numTarget}</if>
+            <if test="numSeq != null  and numSeq != ''"> and num_seq = #{numSeq}</if>
             <if test="multiType != null  and multiType != ''"> and multi_type = #{multiType}</if>
             <if test="multiId != null "> and multi_id = #{multiId}</if>
             <if test="freezeStatus != null  and freezeStatus != ''"> and freeze_status = #{freezeStatus}</if>
@@ -86,6 +96,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="profit != null "> and profit = #{profit}</if>
             <if test="refundAmount != null "> and refund_amount = #{refundAmount}</if>
             <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+            <if test="numTarget != null  and numTarget != ''"> and num_target = #{numTarget}</if>
+            <if test="numSeq != null  and numSeq != ''"> and num_seq = #{numSeq}</if>
             <if test="multiType != null  and multiType != ''"> and multi_type = #{multiType}</if>
             <if test="multiId != null "> and multi_id = #{multiId}</if>
             <if test="freezeStatus != null  and freezeStatus != ''"> and freeze_status = #{freezeStatus}</if>
@@ -112,6 +124,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="profit != null">profit,</if>
             <if test="refundAmount != null">refund_amount,</if>
             <if test="processStatus != null">process_status,</if>
+            <if test="numTarget != null">num_target,</if>
+            <if test="numSeq != null">num_seq,</if>
             <if test="multiType != null">multi_type,</if>
             <if test="multiId != null">multi_id,</if>
             <if test="freezeStatus != null">freeze_status,</if>
@@ -132,6 +146,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="profit != null">#{profit},</if>
             <if test="refundAmount != null">#{refundAmount},</if>
             <if test="processStatus != null">#{processStatus},</if>
+            <if test="numTarget != null">#{numTarget},</if>
+            <if test="numSeq != null">#{numSeq},</if>
             <if test="multiType != null">#{multiType},</if>
             <if test="multiId != null">#{multiId},</if>
             <if test="freezeStatus != null">#{freezeStatus},</if>
@@ -156,6 +172,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="profit != null">profit = #{profit},</if>
             <if test="refundAmount != null">refund_amount = #{refundAmount},</if>
             <if test="processStatus != null">process_status = #{processStatus},</if>
+            <if test="numTarget != null">num_target = #{numTarget},</if>
+            <if test="numSeq != null">num_seq = #{numSeq},</if>
             <if test="multiType != null">multi_type = #{multiType},</if>
             <if test="multiId != null">multi_id = #{multiId},</if>
             <if test="freezeStatus != null">freeze_status = #{freezeStatus},</if>
@@ -193,6 +211,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="profit != null "> and profit = #{profit}</if>
             <if test="refundAmount != null "> and refund_amount = #{refundAmount}</if>
             <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+            <if test="numTarget != null  and numTarget != ''"> and num_target = #{numTarget}</if>
+            <if test="numSeq != null  and numSeq != ''"> and num_seq = #{numSeq}</if>
             <if test="multiType != null  and multiType != ''"> and multi_type = #{multiType}</if>
             <if test="multiId != null "> and multi_id = #{multiId}</if>
             <if test="freezeStatus != null  and freezeStatus != ''"> and freeze_status = #{freezeStatus}</if>
@@ -200,7 +220,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!-- 统计一个用户当日的订单数量 -->
-    <select id="countNumByUserDate" parameterType="java.util.Map" resultType="java.lang.Long">
+    <select id="countNumByUserDate" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) n from m_order_receive_record
         where user_id = #{userId}
         and create_time <![CDATA[ >= ]]> #{date1} and create_time  <![CDATA[ < ]]> #{date2}

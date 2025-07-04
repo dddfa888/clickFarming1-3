@@ -92,7 +92,7 @@ public interface OrderReceiveRecordMapper
      * @param param
      * @return 统计数量结果
      */
-    long countNumByUserDate(Map<String,Object> param);
+    int countNumByUserDate(Map<String,Object> param);
 
     /**
      * 一个用户一天内的利润总计

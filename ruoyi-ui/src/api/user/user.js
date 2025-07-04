@@ -78,6 +78,16 @@ export function updateUser(data) {
   })
 }
 
+// 修改用户信息
+export function updateMUserSimple(data) {
+  return request({
+    url: '/api/user/updateMUserSimple',
+    method: 'post',
+    params: data
+  })
+}
+
+
 // 修改用户连单数量
 export function updateMultiOrderNum(data) {
   return request({

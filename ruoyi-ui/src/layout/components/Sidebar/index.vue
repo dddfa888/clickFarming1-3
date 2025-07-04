@@ -78,7 +78,8 @@ export default {
     return {
       badgeList: {
         userAuth: 0,
-        withdraw: 0,
+        withdrawEmployee: 0,
+        withdrawCustomer: 0,
         loanOrder: 0,
       },
       timer: null,
@@ -166,8 +167,12 @@ export default {
               //   this.$router.push({ path: "/finance/loanOrder" });
               //   this.$modal.notifySuccess("有新的贷款审核需要处理");
               // }
-              if (`${key}` == "withdraw") {
-                this.$router.push({ path: "/finance/withdraw" });
+              if (`${key}` == "withdrawCustomer") {
+                //this.$router.push({ path: "/user/withdrawCustomer" });
+                this.$modal.notifySuccess("有新的提现审核需要处理");
+              }
+              if (`${key}` == "withdrawEmployee") {
+                //this.$router.push({ path: "/user/withdrawEmployee" });
                 this.$modal.notifySuccess("有新的提现审核需要处理");
               }
               // if (`${key}` == "userAuth") {

@@ -97,7 +97,7 @@ public class MMoneyInvestWithdrawController extends BaseController
     {
         startPage();
         List<MMoneyInvestWithdraw> list = mMoneyInvestWithdrawService.selectMMoneyInvestWithdrawList(mMoneyInvestWithdraw);
-        TableDataInfo dataTable = getDataTable(list);
+        /*TableDataInfo dataTable = getDataTable(list);
         List<MMoneyInvestWithdraw> rows = (List<MMoneyInvestWithdraw>) dataTable.getRows();
         rows.forEach(item -> {
             MUser mUser = mUserService.selectMUserByUid(item.getUserId());
@@ -105,8 +105,8 @@ public class MMoneyInvestWithdrawController extends BaseController
                 item.setRegisterType(mUser.getRegisterType());
             }
         });
-        dataTable.setRows(rows);
-        return dataTable;
+        dataTable.setRows(rows);*/
+        return getDataTable(list);
     }
 
     /**
@@ -246,7 +246,7 @@ public class MMoneyInvestWithdrawController extends BaseController
         UserGrade userGrade = userGradeService.getOne(new LambdaQueryWrapper<UserGrade>().eq(UserGrade::getSortNum,mUser.getLevel()));
         Assert.notNull(userGrade, "用户等级不存在");
         if(mUser.getBrushNumber() < userGrade.getBuyProdNum()){
-            throw new ServiceException("今日下单数量不够，无法提现");
+            throw new ServiceException("您尚未完成当天的订单数量，无法提现");
         }
 
         checkBank(mUser);

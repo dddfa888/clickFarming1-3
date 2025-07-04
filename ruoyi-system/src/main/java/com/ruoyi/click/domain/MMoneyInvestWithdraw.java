@@ -80,6 +80,6 @@ public class MMoneyInvestWithdraw
     //账变后
     private BigDecimal accountBack;
 
-    @TableField(exist = false)
-    private String registerType;
+   /* @TableField(exist = false)
+    private String registerType;*/
 }

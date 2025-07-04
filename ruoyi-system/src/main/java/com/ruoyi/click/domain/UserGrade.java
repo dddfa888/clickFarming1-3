@@ -41,7 +41,7 @@ public class UserGrade
 
     /** 每天购买的产品数量 */
     @Excel(name = "每天购买的产品数量")
-    private Long buyProdNum;
+    private Integer buyProdNum;
 
     /** 利润（%） */
     @Excel(name = "最小奖金", readConverterExp = "%=")

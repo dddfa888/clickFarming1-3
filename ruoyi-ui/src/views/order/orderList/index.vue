@@ -150,7 +150,12 @@
       <el-table-column label="总金额" align="center" prop="totalAmount" />
       <el-table-column label="利润" align="center" prop="profit" />
       <el-table-column label="退款金额" align="center" prop="refundAmount" />
-      <el-table-column label="过程状态" align="center" prop="processStatus" :formatter="formatStatus" />
+      <el-table-column label="过程状态" align="center" >
+        <template slot-scope="scope">
+          <div>{{ formatStatus(scope.row) }}</div>
+          <div>{{ scope.row.numSeq }} / {{ scope.row.numTarget }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180" />
       <!--<el-table-column label="是否连单" align="center" prop="multiType" />
       <el-table-column label="连单id" align="center" prop="multiId" />
@@ -282,8 +287,10 @@ export default {
       },
       baseUrl: process.env.VUE_APP_BASE_API,
       processStatusMap: {
-	    'Waiting': '待支付',
-	    'Success': '支付完成'
+	    'Waiting': '未付',
+	    'Success': '成功'
+	    //'Waiting': '待支付',
+	    //'Success': '支付完成'
       }
     }
   },

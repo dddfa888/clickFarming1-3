@@ -70,6 +70,12 @@ public class OrderReceiveRecord extends BaseEntity
     @Excel(name = "过程状态")
     private String processStatus;
 
+    @Excel(name = "订单目标数量")
+    private Integer numTarget;
+
+    @Excel(name = "订单序号")
+    private Integer numSeq;
+
     /** 是否连单 */
     @Excel(name = "是否连单")
     private String multiType;
@@ -200,6 +206,26 @@ public class OrderReceiveRecord extends BaseEntity
     public String getProcessStatus()
     {
         return processStatus;
+    }
+
+    public void setNumTarget(Integer numTarget)
+    {
+        this.numTarget = numTarget;
+    }
+
+    public Integer getNumTarget()
+    {
+        return numTarget;
+    }
+
+    public void setNumSeq(Integer numSeq)
+    {
+        this.numSeq = numSeq;
+    }
+
+    public Integer getNumSeq()
+    {
+        return numSeq;
     }
 
     public void setMultiType(String multiType)
