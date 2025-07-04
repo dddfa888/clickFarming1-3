@@ -82,12 +82,12 @@
           </span>
         </template>
       </el-table-column>
-       <el-table-column label="订单设置" align="center" prop="loginAccount">
+       <el-table-column label="订单设置" align="center" >
         <template slot-scope="scope">
        <el-button @click="handleOpenOrederSet(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">订单设置</el-button>
           </template>
       </el-table-column>
-      <el-table-column label="行为" width="360" align="center" prop="withdrawalAddress">
+      <el-table-column label="行为" width="360" align="center">
         <template slot-scope="scope">
           <div class="action-buttons">
             <el-button
@@ -208,16 +208,21 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="等级" align="center" prop="levelName" />
-      <el-table-column label="电话号码" align="center" prop="phoneNumber" />
-      <el-table-column label="账户余额" align="center" prop="accountBalance" />
-
-      <el-table-column label="邀请人姓名" align="center" prop="inviterName">
+      <el-table-column label="推荐人代码" align="center" >
         <template slot-scope="scope">
-          {{ scope.row.inviterName || '/' }}
+          <div v-if="scope.row.inviterName">
+            <div>{{ scope.row.inviterCode }}</div>
+            <div>{{ scope.row.inviterName }}</div>
+          </div>
+          <div v-else>/</div>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="withdrawalAddress">
+      <el-table-column label="登记时间" align="center" prop="createTime" width="150" />
+      <el-table-column label="最后登录IP" align="center" prop="lastLoginIp" />
+      <el-table-column label="电话号码" align="center" prop="phoneNumber" />
+      <el-table-column label="账户余额" align="center" prop="accountBalance" />
+      <el-table-column label="等级" align="center" prop="levelName" width="60" />
+      <el-table-column label="状态" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-tag
             :type="scope.row.status === 1 ? 'success' : 'danger'"
@@ -735,9 +740,6 @@ export default {
         ],
         status: [
           { required: true, message: "状态 1:启用 0:禁用不能为空", trigger: "change" }
-        ],
-        createTime: [
-          { required: true, message: "创建时间不能为空", trigger: "blur" }
         ],
       },
       queryParamsOrder: {
