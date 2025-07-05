@@ -63,6 +63,20 @@ export default {
         userStatus: 'STATUS',
         userLevel: 'LEVEL',
         brushNumber: 'ORDER NUM'
+      },
+      colAct: {
+        width: '480',
+        changeBalence: 'Change account balance',
+        changeBank: 'Change bank',
+        switchEmp: 'Switch to employee',
+        switchGuest: 'Switch to guest',
+        orderHistory: 'Order history',
+        lockAccount: 'Lock account',
+        unlockAccount: 'Unlock account',
+        deleteAccount: 'Delete account',
+        info: 'Group information',
+        changeInfo: 'Change account information',
+        sendMsg: 'Send message'
       }
     }
   }

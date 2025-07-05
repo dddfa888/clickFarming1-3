@@ -63,6 +63,20 @@ export default {
         userStatus: '状态',
         userLevel: '等级',
         brushNumber: '当天刷单数量'
+      },
+      colAct: {
+        width: '360',
+        changeBalence: '更改账户余额',
+        changeBank: '银行修改',
+        switchEmp: '转为员工',
+        switchGuest: '成为客人',
+        orderHistory: '订单接收历史记录',
+        lockAccount: '账户锁定',
+        unlockAccount: '开帐户',
+        deleteAccount: '删除帐户',
+        info: '集团信息',
+        changeInfo: '帐户信息',
+        sendMsg: '发信息'
       }
     }
   }

@@ -63,6 +63,20 @@ export default {
         userStatus: 'TRẠNG THÁI',
         userLevel: 'CẤP ĐỘ',
         brushNumber: 'SỐ LƯỢNG ĐẶT HÀNG'
+      },
+      colAct: {
+        width: '510',
+        changeBalence: 'Thay đổi số dư tài khoản',
+        changeBank: 'Sửa đổi ngân hàng',
+        switchEmp: 'Chuyển sang nhân viên',
+        switchGuest: 'Chuyển sang khách',
+        orderHistory: 'Lịch sử nhận đơn',
+        lockAccount: 'Khóa tài khoản',
+        unlockAccount: 'Mở tài khoản',
+        deleteAccount: 'Xóa tài khoản',
+        info: 'Thông tin nhóm',
+        changeInfo: 'Sửa đổi thông tin tài khoản',
+        sendMsg: 'Gửi tin nhắn'
       }
     }
   }

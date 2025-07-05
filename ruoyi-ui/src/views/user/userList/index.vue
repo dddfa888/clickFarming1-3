@@ -82,12 +82,14 @@
           </span>
         </template>
       </el-table-column>
-       <el-table-column :label="$t('muser.userListPage.column.SETTING_ORDER')" align="center" >
+       <el-table-column :label="$t('muser.userListPage.column.SETTING_ORDER')" align="center" width="150px" >
         <template slot-scope="scope">
-       <el-button @click="handleOpenOrederSet(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">订单设置</el-button>
-          </template>
+          <el-button @click="handleOpenOrederSet(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">
+            {{ $t("muser.userListPage.column.settingOrder") }}
+          </el-button>
+        </template>
       </el-table-column>
-      <el-table-column :label="$t('muser.userListPage.column.action')" width="360" align="center">
+      <el-table-column :label="$t('muser.userListPage.column.action')" :width="$t('muser.userListPage.colAct.width')" align="center">
         <template slot-scope="scope">
           <div class="action-buttons">
             <el-button
@@ -99,7 +101,8 @@
               }"
               size="small"
             >
-              更改账户余额
+              <!--更改账户余额-->
+              {{ $t('muser.userListPage.colAct.changeBalence') }}
             </el-button>
 
             <el-button
@@ -111,7 +114,8 @@
                 color: '#fff'
               }"
             >
-              银行修改
+              <!--银行修改-->
+              {{ $t('muser.userListPage.colAct.changeBank') }}
             </el-button>
 
             <el-button
@@ -123,9 +127,12 @@
                 borderColor: scope.row.registerType === '0' ? 'red' : 'green'
               }"
             >
-              {{ scope.row.registerType === '0' ? '成为客人' : '成为员工' }}
+              <!--{{ scope.row.registerType === '0' ? '成为客人' : '成为员工' }}-->
+              {{ scope.row.registerType === '0' ? $t('muser.userListPage.colAct.switchGuest') : $t('muser.userListPage.colAct.switchEmp') }}
             </el-button>
+          </div>
 
+          <div class="action-buttons">
             <el-button
               @click="handleOpenUserOrderList(scope.row)"
               size="small"
@@ -135,7 +142,8 @@
                 color: '#fff'
               }"
             >
-              订单接收历史记录
+              <!--订单接收历史记录-->
+              {{ $t('muser.userListPage.colAct.orderHistory') }}
             </el-button>
 
 
@@ -148,7 +156,8 @@
                 borderColor: scope.row.status === 1 ? 'red' : 'green'
               }"
             >
-              {{ scope.row.status === 1 ? '账户锁定' : '解锁账户' }}
+              <!--{{ scope.row.status === 1 ? '账户锁定' : '解锁账户' }}-->
+              {{ scope.row.status === 1 ? $t('muser.userListPage.colAct.lockAccount') : $t('muser.userListPage.colAct.unlockAccount') }}
             </el-button>
 
             <el-button
@@ -160,9 +169,12 @@
                 borderColor: 'red'
               }"
             >
-              删除账户
+              <!--删除账户-->
+              {{ $t('muser.userListPage.colAct.deleteAccount') }}
             </el-button>
+          </div>
 
+          <div class="action-buttons">
             <el-button
               @click="handleListGroupInformation(scope.row)"
               :style="{
@@ -172,7 +184,8 @@
               }"
               size="small"
             >
-              集团信息
+              <!--集团信息-->
+              {{ $t('muser.userListPage.colAct.info') }}
             </el-button>
 
             <el-button
@@ -184,7 +197,8 @@
                 color: '#fff'
               }"
             >
-              账户信息
+              <!--账户信息-->
+              {{ $t('muser.userListPage.colAct.changeInfo') }}
             </el-button>
 
             <!--<el-button
@@ -202,7 +216,9 @@
                 borderColor: '#00CFE8',
                 color: '#fff'
               }"
-              size="small">发信息
+              size="small">
+              <!--发信息-->
+              {{ $t('muser.userListPage.colAct.sendMsg') }}
             </el-button>
 
           </div>
@@ -218,7 +234,15 @@
         </template>
       </el-table-column>
       <el-table-column :label="$t('muser.userListPage.column.regsterTime')" align="center" prop="createTime" width="160" />
-      <el-table-column :label="$t('muser.userListPage.column.lastLoginIp')" align="center" prop="lastLoginIp" />
+      <el-table-column :label="$t('muser.userListPage.column.lastLoginIp')" align="center" >
+        <template slot-scope="scope">
+          <div v-if="scope.row.lastLoginIp">
+            <div>{{ scope.row.lastLoginIp }}</div>
+            <div>{{ scope.row.lastLoginIpAddress }}</div>
+          </div>
+          <div v-else>没有数据</div>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('muser.userListPage.column.phoneNumber')" align="center" prop="phoneNumber" />
       <el-table-column :label="$t('muser.userListPage.column.accountBalance')" align="center" prop="accountBalance" />
       <el-table-column :label="$t('muser.userListPage.column.userStatus')" align="center" prop="status" width="80">
@@ -1197,6 +1221,7 @@ export default {
   flex-wrap: wrap;
   gap: 2px;
   justify-content: flex-start; /* 左对齐 */
+  margin: 5px 0;
 }
 
 
