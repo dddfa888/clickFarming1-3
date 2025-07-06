@@ -6,7 +6,7 @@
         <span class="total-amount">{{ totalAmount }} €</span>
       </h2>
       <div class="provider">
-        {{ t("数据提供者 Mercado Libre") }}
+        {{ t("数据提供者 Mercado Asia") }}
         <span class="remaining">{{ t("剩余") }}(€)</span>
       </div>
     </div>
