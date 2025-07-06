@@ -1,10 +1,8 @@
 package com.ruoyi.web.controller.click;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -208,36 +206,42 @@ public class MUserController extends BaseController
     }
 
     /**
-     * 获取前4级用户上级
+     * 获取前4级用户下级
      */
     @GetMapping("/getUpToFourLevelInviters")
     public AjaxResult getUpToFourLevelInviters(HttpServletRequest request) {
         Long uid = tokenService.getLoginUser(request).getmUser().getUid();
-        MUser mUser = mUserService.selectMUserByUid(uid);
-        String inviterCode = mUser.getInviterCode();
-        List<MUser> inviterList = new ArrayList<>();
+        MUser currentUser = mUserService.selectMUserByUid(uid);
+        String invitationCode = currentUser.getInvitationCode();
 
-        String currentCode = inviterCode;
-        int level = 0;
+        List<MUser> result = new ArrayList<>();
+        List<String> currentLevelCodes = Collections.singletonList(invitationCode);
 
-        while (currentCode != null && level < 4) {
-            MUser inviter = mUserService.getOne(
+        int hierarchy = 0;
+        while (!currentLevelCodes.isEmpty() && hierarchy < 4) {
+            hierarchy++;
+
+            List<MUser> nextLevelUsers = mUserService.list(
                     new LambdaQueryWrapper<MUser>()
-                            .eq(MUser::getInvitationCode, currentCode)
+                            .in(MUser::getInviterCode, currentLevelCodes)
             );
 
-            if (inviter == null) {
-                break; // 上级不存在，退出循环
-            }
+            if (nextLevelUsers.isEmpty()) break;
 
-            inviterList.add(inviter);
+            final int currentHierarchy = hierarchy; // 用 final 变量供 lambda 使用
+            nextLevelUsers.forEach(user -> user.setHierarchy(currentHierarchy));
 
-            // 准备下一轮：用当前上级的 inviter_code 再查上一层
-            currentCode = inviter.getInviterCode();
-            level++;
+            result.addAll(nextLevelUsers);
+
+            currentLevelCodes = nextLevelUsers.stream()
+                    .map(MUser::getInvitationCode)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
         }
-        return success(inviterList);
+
+        return AjaxResult.success(result);
     }
+
 
     /**
      * 获取所有上级

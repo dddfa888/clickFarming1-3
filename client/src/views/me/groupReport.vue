@@ -4,22 +4,22 @@
     <!-- Tab 导航栏 -->
     <div class="tab-header">
       <div
-        v-for="(tab, index) in tabs"
-        :key="index"
-        :class="['tab-item', { active: activeTab === index }]"
-        @click="activeTab = index"
+          v-for="(tab, index) in tabs"
+          :key="index"
+          :class="['tab-item', { active: activeTab === index }]"
+          @click="activeTab = index"
       >
         {{ tab }}
       </div>
     </div>
 
-    <!-- 内容区域（不同布局） -->
+    <!-- 内容区域 -->
     <div class="tab-content">
       <div v-show="true">
         <div
-          v-if="filteredList.length === 0"
-          class="group-report"
-          style="color: #fff; padding: 10px"
+            v-if="filteredList.length === 0"
+            class="group-report"
+            style="color: #fff; padding: 10px"
         >
           {{ t("暂无数据") }}
         </div>
@@ -50,15 +50,19 @@ const { t } = useI18n();
 
 // 定义 tab 数据
 const tabs = ref([t("第1级"), t("第2级"), t("第3级"), t("第4级")]);
-const activeTab = ref(0); // 当前激活的 tab 下标
+const activeTab = ref(0); // 当前选中的 tab
+
 const grouplist = ref([]);
 
 getGroupReport().then((res) => {
   grouplist.value = res.data || [];
 });
 
+// 计算当前层级要展示的数据
 const filteredList = computed(() => {
-  return grouplist.value.filter((item) => item.level === activeTab.value + 1);
+  return grouplist.value.filter(
+      (item) => item.hierarchy === activeTab.value + 1
+  );
 });
 </script>
 
