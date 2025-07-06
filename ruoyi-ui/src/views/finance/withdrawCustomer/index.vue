@@ -40,7 +40,7 @@
     </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain size="mini" @click="oneClick()"
+        <el-button type="primary" plain size="mini" @click="oneClick('1')"
           >一键同意客户提现</el-button
         >
       </el-col>
@@ -205,7 +205,7 @@ export default {
     this.getList();
   },
   methods: {
-    oneClick() {
+    oneClick(e) {
       // 弹出确认框
       this.$confirm("是否确认一键通过？", "提示", {
         confirmButtonText: "确定",
@@ -214,7 +214,7 @@ export default {
       })
         .then(() => {
           // 用户点击 "确定" 后执行请求
-          oneClickAgree()
+          oneClickAgree(e)
             .then((res) => {
               console.log(res);
               // 判断状态码是否为 200

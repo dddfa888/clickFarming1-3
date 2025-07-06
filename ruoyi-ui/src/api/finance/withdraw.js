@@ -17,6 +17,18 @@ export function getWithdraw(id) {
   })
 }
 
+/**
+ * 一键员工提现
+ * @returns {*}
+ */
+export function oneClickAgree(type) {
+  return request({
+    url: '/api/withdraw/oneClickAgree',
+    method: 'get',
+    params: { type } // GET请求自动拼接为 ?type=xxx
+  });
+}
+
 // 新增存款取款记录
 export function addWithdraw(data) {
   return request({
