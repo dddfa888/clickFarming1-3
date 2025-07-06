@@ -5,7 +5,7 @@ import { showDialog } from 'vant';
 
 let isTokenExpired = false;
 // const baseURL = "http://192.168.0.198:8089/"
-const baseURL = "http://192.168.1.149:8089/"
+const baseURL = "https://cfapi.khkjhkh.top/"
 const request = axios.create({
     // baseURL: import.meta.env.MODE === 'development'
     //     ? '/api'

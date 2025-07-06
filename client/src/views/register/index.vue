@@ -13,7 +13,7 @@
             :label="$t('账号')"
             :placeholder="$t('请输入账号')"
             left-icon="user-o"
-            :rules="[{ required: true, message: '$t(请填写用户名)' }]"
+            :rules="[{ required: true, message: t('请填写用户名') }]"
           />
           <van-field
             v-model="form.phone"
@@ -21,7 +21,7 @@
             :label="$t('电话号码')"
             :placeholder="$t('请输入电话号码')"
             left-icon="phone-o"
-            :rules="[{ required: true, message: '$t(请填写电话号码)' }]"
+            :rules="[{ required: true, message: t('请填写电话号码') }]"
           />
           <van-field
             v-model="form.loginPassword"
@@ -30,7 +30,7 @@
             :label="$t('登陆密码')"
             :placeholder="$t('请输入密码')"
             left-icon="lock"
-            :rules="[{ required: true, message: '$t(请填写密码)' }]"
+            :rules="[{ required: true, message: t('请填写密码') }]"
           />
           <van-field
             v-model="form.fundPassword"
@@ -39,14 +39,14 @@
             :label="$t('交易密码')"
             :placeholder="$t('请输入交易密码')"
             left-icon="lock"
-            :rules="[{ required: true, message: '$t(请填写交易密码)' }]"
+            :rules="[{ required: true, message: t('请填写交易密码') }]"
           />
           <van-field
             v-model="form.invitationCode"
             name="invitationCode"
             :label="$t('邀请码')"
             :placeholder="$t('请输入邀请码')"
-            :rules="[{ required: true, message: '$t(请填写邀请码)' }]"
+            :rules="[{ required: true, message: t('请填写邀请码') }]"
             left-icon="friends-o"
           />
         </van-cell-group>
@@ -78,7 +78,9 @@ import { reactive } from "vue";
 import { register } from "../../api/index.js";
 import { useRouter } from "vue-router";
 import { showToast } from "vant";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const form = reactive({
   loginAccount: "",
   phone: "",
@@ -99,10 +101,8 @@ function onSubmit(values) {
       });
       router.push("/login");
     } else {
-      showToast({
-        message: t(res.msg),
-        type: "fail",
-      });
+      showToast({ message: t(res.msg), type: "fail" });
+
     }
   });
   // 这里可以调用注册接口

@@ -18,7 +18,7 @@ export default {
     "请填写密码": "Veuillez entrer votre mot de passe",
     "平台代理模式": "Plateforme d'agencement du marché",
     "Mercado Asia会员可以成为电商平台的代理商": "Mercado Asia membres peuvent devenir des agents commerciaux sur les plateformes de commerce électronique",
-    "通过推荐新会员成为 Mercado Asia 会员和代理商，可以获得价值 00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。": "Obtenez un bonus supplémentaire d'une valeur de 00,01% en recommandant de nouveaux membres pour devenir membres et agents Mercado libre. Promotion directe des récompenses de Commission de niveau membre à partir de 0,25% et investissement de capital pour calculer les bénéfices réalisés avec les codes de produits.",
+    "通过推荐新会员成为 Mercado Asia 会员和代理商，可以获得价值 00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。": "Obtenez un bonus supplémentaire d'une valeur de 00,01% en recommandant de nouveaux membres pour devenir membres et agents Mercado Asia. Promotion directe des récompenses de Commission de niveau membre à partir de 0,25% et investissement de capital pour calculer les bénéfices réalisés avec les codes de produits.",
     "账号": "Compte",
     "电话号码": "Numéro de téléphone",
     "请输入电话号码": "Veuillez entrer votre numéro de téléphone",
@@ -143,5 +143,10 @@ export default {
     "订单已支付，不可重复支付": "La commande a déjà été payée, paiement répété interdit",
     "操作失败": "Échec de l'opération",
     "资金密码不能为空": "Le mot de passe des fonds ne peut pas être vide",
-    "取款数额不能为空": "Le montant du retrait ne peut pas être vide"
+    "取款数额不能为空": "Le montant du retrait ne peut pas être vide",
+    "原因": "reason",
+    "全部": "tout ",
+    "请填写电话号码": "Veuillez saisir votre numéro de téléphone",
+    "请填写交易密码": "Veuillez saisir le mot de passe de transaction",
+    "请填写邀请码": "Veuillez saisir le code d'invitation"
 };

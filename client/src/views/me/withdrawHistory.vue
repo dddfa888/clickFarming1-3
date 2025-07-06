@@ -24,7 +24,7 @@
             {{
               transaction.reasonForRejection === null
                 ? transaction.reasonForRejection
-                : "原因:" + transaction.reasonForRejection
+                : t("原因")+":" + transaction.reasonForRejection
             }}
           </div>
         </div>

@@ -146,4 +146,10 @@ export default {
     "您尚未完成当天的订单数量，无法提现": "You have not completed the number of orders for today, withdrawal not allowed",
     "团体": "Group",
     "订单奖励": "Order reward",
+    "原因": "reason",
+    "全部": "all",
+    "请填写电话号码": "Please enter your phone number",
+    "请填写交易密码": "Please enter your transaction password",
+    "请填写邀请码": "Please enter the invitation code"
+
 };
