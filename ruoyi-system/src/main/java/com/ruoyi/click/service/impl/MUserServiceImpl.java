@@ -203,7 +203,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         mUser.setAccountBalance(DecimalUtil.toBigDecimal(0));
         mUser.setLoginPassword(EncoderUtil.encoder(model.getLoginPassword()));
         mUser.setFundPassword(EncoderUtil.encoder(model.getFundPassword()));
-        mUser.setInvitationCode(getRandomNumber());
+        mUser.setInvitationCode(generateCode());
         mUser.setCreateTime(DateUtils.getNowDate());
         mUser.setRegisterType("1");
         mUser.setPhoneNumber(model.getPhone());
