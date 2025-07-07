@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -97,19 +98,25 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         mUser.setAccountBalance(DecimalUtil.toBigDecimal(0));
         mUser.setLoginPassword(EncoderUtil.encoder(mUser.getLoginPassword()));
         mUser.setFundPassword(EncoderUtil.encoder(mUser.getFundPassword()));
-        mUser.setInvitationCode(getRandomNumber());
+        mUser.setInvitationCode(generateCode());
         mUser.setCreateTime(DateUtils.getNowDate());
         mUser.setStatus(1);
         return mUserMapper.insertMUser(mUser);
     }
 
-    public String getRandomNumber(){
-        String randomNumber = RandomUtil.generateRandomNumber(6);
-        long count = this.count(new LambdaQueryWrapper<MUser>().eq(MUser::getInvitationCode, randomNumber));
-        if(count>0){
-            getRandomNumber();
+
+    public  String generateCode() {
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            char letter = (char) ('A' + random.nextInt(26));
+            sb.append(letter);
         }
-        return randomNumber;
+        long count = this.count(new LambdaQueryWrapper<MUser>().eq(MUser::getInvitationCode, sb.toString()));
+        if(count>0){
+            generateCode();
+        }
+        return sb.toString();
     }
 
     /**
