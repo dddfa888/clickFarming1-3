@@ -148,7 +148,7 @@ export default {
     "订单奖励": "Order reward",
     "通知": "notice",
     "全部": "all",
-    "提款密码": "Withdrawal password"
+    "提款密码": "Withdrawal password",
     "原因": "reason",
     "全部": "all",
     "请填写电话号码": "Please enter your phone number",

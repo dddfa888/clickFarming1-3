@@ -154,7 +154,7 @@ export default {
 
     "通知": "Thông báo",
     "全部": "tất cả",
-    "提款密码": "Mật khẩu rút tiền"
+    "提款密码": "Mật khẩu rút tiền",
 
     "原因": "lý do",
     "全部": "toàn bộ",

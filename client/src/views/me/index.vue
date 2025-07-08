@@ -3,11 +3,7 @@
     <!-- 用户信息头部 -->
     <div class="user-header">
       <div class="avatar">
-<<<<<<< HEAD
-        <img src="../../../public/favicon.png" alt="" />
-=======
         <img src="../../assets/img/mylogo-asia.png" alt="" />
->>>>>>> 24bca94d6eea9f70f60bcbb21a3eccedca56d5ce
       </div>
       <div class="user-info">
         <p class="user-id">{{ userInfo.loginAccount }}</p>

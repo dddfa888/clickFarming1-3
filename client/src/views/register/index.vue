@@ -1,7 +1,7 @@
 <template>
   <div class="register-container">
     <!-- 多语言选择器 -->
-    <div class="language-selector">
+    <!-- <div class="language-selector">
       <span class="label">{{ t("语言") }}</span>
       <div class="dropdown-wrapper" @click="toggleLangList">
         {{ t(selectedLanguage) }}
@@ -10,7 +10,7 @@
             v-for="(lang, index) in languageList"
             :key="index"
             @click.stop="selectLanguage(lang)"
-            :class="{ active: lang === selectedLanguage }"
+            :class="{ active: lang === selectedLanguage }" -->
     <div class="register-footer">
       <span @click="$router.push('/login')">{{ $t("登录") }}</span>
       <span @click="$router.push('/register')">{{ $t("注册") }}</span>
@@ -78,13 +78,8 @@
             {{ t(lang) }}
           />
         </ul> -->
-      </div>
-    </div>
-
-    <!-- 页脚切换 -->
-    <div class="register-footer">
-      <span @click="$router.push('/login')">{{ t("登录") }}</span>
-      <span @click="router.push('/register')">{{ t("注册") }}</span>
+        </div>
+      </van-form>
     </div>
 
     <!-- 表单 -->
