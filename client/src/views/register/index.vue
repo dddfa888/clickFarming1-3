@@ -1,85 +1,27 @@
 <template>
   <div class="register-container">
     <!-- 多语言选择器 -->
-    <!-- <div class="language-selector">
-      <span class="label">{{ t("语言") }}</span>
+    <div class="language-selector">
+      <span class="label">{{ $t("语言") }}</span>
       <div class="dropdown-wrapper" @click="toggleLangList">
         {{ t(selectedLanguage) }}
+
         <ul v-if="showLangList" class="lang-dropdown">
           <li
             v-for="(lang, index) in languageList"
             :key="index"
             @click.stop="selectLanguage(lang)"
-            :class="{ active: lang === selectedLanguage }" -->
+            :class="{ active: lang === selectedLanguage }"
+          >
+            {{ t(lang) }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div class="register-footer">
       <span @click="$router.push('/login')">{{ $t("登录") }}</span>
       <span @click="$router.push('/register')">{{ $t("注册") }}</span>
-    </div>
-    <div class="register-form">
-      <van-form @submit="onSubmit">
-        <van-cell-group inset>
-          <van-field
-            v-model="form.loginAccount"
-            name="loginAccount"
-            :label="$t('账号')"
-            :placeholder="$t('请输入账号')"
-            left-icon="user-o"
-            :rules="[{ required: true, message: t('请填写用户名') }]"
-          />
-          <van-field
-            v-model="form.phone"
-            name="phone"
-            :label="$t('电话号码')"
-            :placeholder="$t('请输入电话号码')"
-            left-icon="phone-o"
-            :rules="[{ required: true, message: t('请填写电话号码') }]"
-          />
-          <van-field
-            v-model="form.loginPassword"
-            type="password"
-            name="loginPassword"
-            :label="$t('登陆密码')"
-            :placeholder="$t('请输入密码')"
-            left-icon="lock"
-            :rules="[{ required: true, message: t('请填写密码') }]"
-          />
-          <van-field
-            v-model="form.fundPassword"
-            type="password"
-            name="fundPassword"
-            :label="$t('交易密码')"
-            :placeholder="$t('请输入交易密码')"
-            left-icon="lock"
-            :rules="[{ required: true, message: t('请填写交易密码') }]"
-          />
-          <van-field
-            v-model="form.invitationCode"
-            name="invitationCode"
-            :label="$t('邀请码')"
-            :placeholder="$t('请输入邀请码')"
-            :rules="[{ required: true, message: t('请填写邀请码') }]"
-            left-icon="friends-o"
-          />
-        </van-cell-group>
-        <div
-          style="
-            margin: 16px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-          "
-        >
-          <!-- <van-button
-            class="register-btn"
-            round
-            block
-            type="primary"
-            native-type="submit"
-            {{ t(lang) }}
-          />
-        </ul> -->
-        </div>
-      </van-form>
     </div>
 
     <!-- 表单 -->
@@ -170,12 +112,6 @@ import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const router = useRouter();
 const langStore = useLangStore();
-
-// 表单数据
-import { showToast } from "vant";
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n();
 const form = reactive({
   loginAccount: "",
   areaCode: "+86",
@@ -234,21 +170,32 @@ function onSubmit() {
 
 // 语言切换逻辑
 const showLangList = ref(false);
-const langMap = { 越南语: "vi", 中国: "zh", 英语: "en" };
+const langMap = {
+  越南语: "vi",
+  中国: "zh",
+  英语: "en",
+  // 日本: "ja",
+  // 法国: "fr",
+  // 俄罗斯: "ru",
+  // 韩国: "ko",
+};
 const languageList = Object.keys(langMap);
 const reverseLangMap = Object.fromEntries(
   Object.entries(langMap).map(([k, v]) => [v, k])
 );
+
+// 初始化选中语言
 const selectedLanguage = ref(reverseLangMap[langStore.locale]);
 locale.value = langStore.locale;
 
 function selectLanguage(lang) {
   selectedLanguage.value = lang;
-  const langCode = langMap[lang] || "zh";
+  const langCode = langMap[lang] || "vi";
   langStore.setLocale(langCode);
   locale.value = langCode;
-  showLangList.value = false;
+  showLangList.value = !showLangList.value;
 }
+
 function toggleLangList() {
   showLangList.value = !showLangList.value;
 }
