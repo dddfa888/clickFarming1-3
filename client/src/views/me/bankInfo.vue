@@ -1,68 +1,176 @@
 <template>
   <div class="company-intro">
     <HeaderBar :title="t('银行信息')" />
-    <div class="form-group">
-      <label :class="{ floated: inputValue }">{{ t("选择银行") }}</label>
-      <input
-        v-model="accountName"
-        type="text"
-        placeholder=""
-        class="input"
-        disabled="true"
-      />
+    <!-- 选择银行：支持输入 + 下拉 -->
+    <div class="form-group select-wrapper">
+      <label :class="{ floated: accountName }">{{ t("选择银行") }}</label>
+      <div class="input-select-combo">
+        <!-- <input v-model="accountName" type="text" class="input" placeholder="" /> -->
+        <BankSelect
+          v-model="accountName"
+          :options="bankOptions"
+          placeholder="请输入或选择银行"
+          :show="showinput"
+        />
+      </div>
     </div>
+
     <div class="form-group">
-      <label :class="{ floated: inputValue }">{{ t("账号名称") }}</label>
+      <label :class="{ floated: accountNumber }">{{ t("账号名称") }}</label>
       <input
         v-model="accountNumber"
         type="text"
-        placeholder=" "
         class="input"
-        disabled="true"
+        :disabled="showinput"
       />
     </div>
     <div class="form-group">
-      <label :class="{ floated: inputValue }">{{ t("账号") }}</label>
+      <label :class="{ floated: bankName }">{{ t("账号") }}</label>
       <input
         v-model="bankName"
         type="text"
-        placeholder=" "
         class="input"
-        disabled="true"
+        :disabled="showinput"
       />
     </div>
+    <div class="form-group" v-if="showBank">
+      <label :class="{ floated: fundPassword }">{{ t("提款密码") }}</label>
+      <input
+        v-model="fundPassword"
+        type="text"
+        class="input"
+        :disabled="showinput"
+      />
+    </div>
+
+    <button class="submit-btn" @click="submit" v-if="showBank">
+      {{ t("确定") }}
+    </button>
+
+    <!--银行选择弹窗 -->
+    <van-popup v-model="showBankPicker" position="bottom">
+      <van-picker
+        :columns="bankOptions"
+        @confirm="onBankConfirm"
+        @cancel="showBankPicker = false"
+        show-toolbar
+        :title="t('请选择银行')"
+      />
+    </van-popup>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
-import { getUserInfo } from "../../api/index";
-const inputValue = ref("");
+import BankSelect from "../../components/BankSelect.vue"; // 组件路径按实际改
+import { getUserInfo, updateUserInfo } from "../../api/index";
 import { useI18n } from "vue-i18n";
+import { notify } from "../../utils/notify.js";
+
+// onMounted(() => {
+
+// });
+
 const { t } = useI18n();
+
 const accountName = ref("");
 const accountNumber = ref("");
 const bankName = ref("");
+const fundPassword = ref("");
+const showinput = ref(false);
+const showBank = ref(true);
 
+const bankOptions = [
+  "中国银行",
+  "工商银行",
+  "建设银行",
+  "农业银行",
+  "招商银行",
+  "交通银行",
+  "邮政储蓄银行",
+  "民生银行",
+];
+
+function querySearch(queryString, cb) {
+  const results = bankOptions
+    .filter((bank) => bank.includes(queryString))
+    .map((item) => ({ value: item }));
+  cb(results);
+}
+
+function onSelectBank(event) {
+  accountName.value = event.target.value;
+}
+
+function onBankConfirm(value) {
+  accountName.value = value;
+  showBankPicker.value = false;
+}
+
+// 获取用户信息
 getUserInfo().then((res) => {
-  console.log(res.data);
-  accountName.value = res.data.bankAccountName;
+  accountName.value = res.data.bankAccountName || "";
   accountNumber.value = formatBankCard(res.data.bankAccountNumber);
-  bankName.value = res.data.bankName;
+  bankName.value = res.data.bankName || "";
+  if (
+    !res.data.bankAccountName &&
+    !res.data.bankAccountNumber &&
+    !res.data.bankName
+  ) {
+    showBank.value = true;
+    showinput.value = false;
+  } else {
+    showBank.value = false;
+    showinput.value = true;
+  }
 });
 
 function formatBankCard(cardNo) {
   if (!cardNo) return "";
-  // 去掉空格
   const clean = cardNo.replace(/\s+/g, "");
-  // 如果卡号太短，直接返回
   if (clean.length <= 8) return clean;
-  // 截取前4位和后4位
   const start = clean.slice(0, 4);
   const end = clean.slice(-4);
-  // 中间用 **** ****
   return `${start} **** **** ${end}`;
+}
+
+function submit() {
+  updateUserInfo({
+    bankAccountName: accountName.value,
+    bankAccountNumber: accountNumber.value,
+    bankName: bankName.value,
+    fundPassword: fundPassword.value,
+  }).then((res) => {
+    console.log(res);
+    if (res.code == 200) {
+      notify({
+        title: t("通知"),
+        message: t("操作成功"),
+        type: "success",
+        duration: 2000,
+      });
+      // 刷新页面
+      location.reload();
+    } else {
+      notify({
+        title: t("通知"),
+        message: t(res.msg),
+        type: "error",
+        duration: 2000,
+      });
+    }
+  });
+  // 示例提交逻辑
+  if (
+    !accountName.value ||
+    !accountNumber.value ||
+    !bankName.value ||
+    !fundPassword.value
+  ) {
+    // notify(t("请填写所有字段"));
+    return;
+  }
 }
 </script>
 
@@ -82,6 +190,18 @@ function formatBankCard(cardNo) {
   background-color: transparent;
   font-family: sans-serif;
   overflow: visible; /* 避免 label 超出边框被裁剪 */
+}
+
+.submit-btn {
+  width: 80%;
+  color: #fff;
+  margin-left: 10%;
+  border: 1px solid #6b6f6f;
+  border-radius: 4px;
+  text-align: center;
+  min-height: 12vw;
+  background-image: linear-gradient(to bottom, #3a405c, #365354);
+  box-shadow: 5px 8px 10px #272c3e, 0 0 10px #272c3e;
 }
 
 .input {
@@ -133,6 +253,18 @@ label {
     background-color: transparent;
     font-family: sans-serif;
     overflow: visible; /* 避免 label 超出边框被裁剪 */
+  }
+
+  .submit-btn {
+    width: 80%;
+    color: #fff;
+    margin-left: 10%;
+    border: 1px solid #6b6f6f;
+    border-radius: 4px;
+    text-align: center;
+    min-height: 46px;
+    background-image: linear-gradient(to bottom, #3a405c, #365354);
+    box-shadow: 5px 8px 10px #272c3e, 0 0 10px #272c3e;
   }
 
   .input {

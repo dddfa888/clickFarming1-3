@@ -9,7 +9,7 @@
         <span class="balance">{{ balance }} €</span>
       </div>
 
-      <div class="form">
+      <div class="form" v-if="accountName && accountNumber && balance">
         <div class="form-group">
           <label>{{ t("账户名称") }}</label>
           <input type="text" v-model="accountName" disabled />
@@ -48,6 +48,20 @@
 
         <button class="submit-btn" @click="submit">{{ t("取款") }}</button>
       </div>
+      <div v-else>
+        Bạn chưa điền thông tin ngân hàng vui lòng click vào tin.
+        <span
+          @click="
+            () => {
+              router.push('/bankInfo');
+            }
+          "
+          style="color: #20a53a"
+        >
+          Tại đây</span
+        >
+        để đi điền thông
+      </div>
     </div>
   </div>
 </template>
@@ -56,8 +70,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { withdraw, getUserInfo } from "../../api/index.js";
-import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
+import { notify } from "../../utils/notify.js";
+
 const { t } = useI18n();
 
 const balance = ref("");
@@ -83,9 +98,11 @@ function submit() {
   withdraw({ amount: amount.value, fundPassword: password.value }).then(
     (res) => {
       if (res.code === 200) {
-        showToast({
+        notify({
+          title: t("通知"),
           message: t("操作成功"),
           type: "success",
+          duration: 2000,
         });
 
         // 清空输入
@@ -97,9 +114,11 @@ function submit() {
           balance.value = res.data.accountBalance;
         });
       } else {
-        showToast({
+        notify({
+          title: t("通知"),
           message: t(res.msg),
-          type: "fail",
+          type: "error",
+          duration: 2000,
         });
         amount.value = "";
         password.value = "";

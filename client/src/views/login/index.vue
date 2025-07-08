@@ -26,38 +26,31 @@
 
     <!-- 登录表单 -->
     <div class="login-form">
-      <van-form>
-        <van-cell-group inset>
-          <van-field
+      <form @submit.prevent="onSubmit">
+        <div class="form-group">
+          <i class="icon user-icon"></i>
+          <input
+            type="text"
             v-model="form.loginAccount"
-            name="loginAccount"
-            :label="t('用户名')"
             :placeholder="t('请填写用户名')"
-            left-icon="user-o"
-            :rules="[{ required: true, message: t('请填写用户名') }]"
           />
-          <van-field
-            v-model="form.loginPassword"
-            type="password"
-            name="loginPassword"
-            :label="t('密码')"
-            :placeholder="t('请填写密码')"
-            left-icon="lock"
-            :rules="[{ required: true, message: t('请填写密码') }]"
-          />
-        </van-cell-group>
-        <div class="login-btn" style="margin: 16px">
-          <van-button
-            round
-            block
-            type="primary"
-            native-type="submit"
-            @click="onSubmit"
-          >
-            {{ t("现在登录") }}
-          </van-button>
         </div>
-      </van-form>
+
+        <div class="form-group">
+          <i class="icon lock-icon"></i>
+          <input
+            type="password"
+            v-model="form.loginPassword"
+            :placeholder="t('请填写密码')"
+          />
+        </div>
+
+        <div class="login-btn" style="margin: 16px">
+          <button type="submit">
+            {{ t("现在登录") }}
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -66,9 +59,9 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { login } from "../../api/index.js";
-import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
 import { useLangStore } from "../../store/useLangStore.js";
+import { notify } from "../../utils/notify.js";
 
 const router = useRouter();
 const form = reactive({
@@ -113,11 +106,21 @@ function toggleLangList() {
 function onSubmit(values) {
   login(form).then((res) => {
     if (res.code === 200) {
-      showToast({ message: t("操作成功"), type: "success" });
+      notify({
+        title: t("通知"),
+        message: t("操作成功"),
+        type: "success",
+        duration: 2000,
+      });
       localStorage.setItem("token", res.data.token);
       router.push("/");
     } else {
-      showToast({ message: t(res.msg), type: "fail" });
+      notify({
+        title: t("通知"),
+        message: t(res.msg),
+        type: "error",
+        duration: 2000,
+      });
     }
   });
 }
@@ -148,30 +151,56 @@ function onSubmit(values) {
   box-sizing: border-box;
 }
 
-/* 表单内容透明 */
-.login-form :deep(.van-cell-group) {
-  background: transparent;
-}
-
-/* 表单项留白 */
-.login-form :deep(.van-cell) {
-  padding: 12px 0;
-  align-items: center;
-}
-
-/* 注册按钮 */
-.login-footer {
-  width: 100%;
+.form-group {
   display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  border-radius: 30px;
+  width: 100%;
+  border: 1px solid #181818;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group input {
+  padding: 12px 16px;
+  border-radius: 999px; /* 完全圆形输入框 */
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: #c5c5c5;
+}
+
+.login-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.login-btn button {
+  width: 70%;
+  padding: 10px;
+  border: none;
+  border-radius: 25px;
+  background-color: #1989fa;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #171717;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.login-btn button:hover {
+  background-color: #147dd1;
+}
+
+.login-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
   align-items: center;
-  justify-content: space-around;
   color: #fff;
 }
-
-.login-form :deep(.van-field__label) {
-  font-size: 13px;
-}
-
 /* 语言选择器 */
 .language-selector {
   position: absolute;
@@ -185,6 +214,7 @@ function onSubmit(values) {
 }
 .language-selector .label {
   margin-right: 6px;
+  color: #000;
 }
 .dropdown-wrapper {
   position: relative;
@@ -192,6 +222,7 @@ function onSubmit(values) {
   padding: 5px 10px;
   border-radius: 6px;
   cursor: pointer;
+  color: #000;
   user-select: none;
 }
 .lang-dropdown {
@@ -224,11 +255,12 @@ function onSubmit(values) {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     min-height: 100vh;
-    width: 100%;
-    padding: 40px;
+    width: 540px;
+    margin: 0 auto;
+    padding: 20px;
     box-sizing: border-box;
     background: url("../../assets/img/login-bg.png") no-repeat center center /
       cover;
@@ -237,103 +269,62 @@ function onSubmit(values) {
   /* 登录表单 */
   .login-form {
     width: 100%;
-    max-width: 800px;
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
-    padding: 20px;
+    max-width: 430px;
+    /* background: rgba(255, 255, 255, 0.08); */
+    border-radius: 10px;
+    padding: 10px;
     box-sizing: border-box;
   }
 
-  /* 表单内容透明 */
-  .login-form :deep(.van-cell-group) {
-    background: transparent;
-  }
-
-  .login-form :deep(.van-field__left-icon) {
+  .form-group {
     display: flex;
-    align-items: center; /* 垂直居中 */
-    justify-content: center;
-    font-size: 20px; /* 图标大小 */
-    width: 24px; /* 给一点宽度保证不挤 */
-    height: 24px;
+    flex-direction: column;
+    margin-bottom: 16px;
+    border-radius: 30px;
+    width: 100%;
+    border: 1px solid #181818;
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
   }
 
-  /* 如果想让icon和输入内容间距更大，可以加这个 */
-  .login-form :deep(.van-field__body) {
-    display: flex;
-    align-items: center; /* 整个输入部分垂直居中 */
-  }
-
-  /* 输入文本字体 */
-  .login-form :deep(.van-field__control) {
-    font-size: 18px;
-  }
-
-  /* 标签字体 */
-  .login-form :deep(.van-field__label) {
-    font-size: 16px;
-  }
-
-  /* 占位符字体 */
-  .login-form :deep(.van-field__control::placeholder) {
-    font-size: 16px;
-  }
-
-  /* 表单项留白 */
-  .login-form :deep(.van-cell) {
-    padding: 20px 0;
-    height: 100px;
-    align-items: center;
-    align-content: center;
-  }
-
-  /* 输入文本字体 */
-  .login-form :deep(.van-field__control) {
-    font-size: 18px;
-  }
-
-  /* 标签字体 */
-  .login-form :deep(.van-field__label) {
-    font-size: 13px;
-    width: 15%;
-    height: 50%;
-    display: flex;
-    align-self: start;
-  }
-
-  /* 占位符字体 */
-  .login-form :deep(.van-field__control::placeholder) {
-    font-size: 16px;
-  }
-
-  /* 输入图标 */
-  .login-form :deep(.van-field__left-icon) > i {
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    line-height: 1;
+  .form-group input {
+    padding: 12px 16px;
+    border-radius: 999px; /* 完全圆形输入框 */
+    border: 1px solid #ccc;
+    font-size: 14px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background: #c5c5c5;
   }
 
   .login-btn {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
   }
 
-  /* 按钮 */
-  .login-btn .van-button {
-    font-size: 18px;
-    height: 48px;
+  .login-btn button {
     width: 50%;
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #1989fa;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #171717;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
   }
 
-  /* 注册按钮 */
+  .login-btn button:hover {
+    background-color: #147dd1;
+  }
+
   .login-footer {
-    width: 100%;
     display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
     align-items: center;
-    justify-content: space-around;
     color: #fff;
-    margin-bottom: 20px;
   }
 
   /* 语言选择器 */
@@ -343,24 +334,26 @@ function onSubmit(values) {
     right: 20px;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 14px;
     color: #fff;
     z-index: 20;
   }
   .language-selector .label {
-    margin-right: 8px;
+    margin-right: 6px;
+    color: #000;
   }
   .dropdown-wrapper {
     position: relative;
     background: rgba(255, 255, 255, 0.15);
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 6px;
     cursor: pointer;
+    color: #000;
     user-select: none;
   }
   .lang-dropdown {
     position: absolute;
-    top: 38px;
+    top: 35px;
     right: 0;
     background: #e5e5e5;
     color: #000;
@@ -368,12 +361,12 @@ function onSubmit(values) {
     padding: 5px 0;
     margin: 0;
     border-radius: 4px;
-    width: 120px;
+    width: 100px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     z-index: 999;
   }
   .lang-dropdown li {
-    padding: 10px 14px;
+    padding: 8px 12px;
     cursor: pointer;
     transition: background-color 0.3s;
   }

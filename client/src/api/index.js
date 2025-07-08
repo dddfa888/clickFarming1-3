@@ -156,3 +156,12 @@ export function getPartnership(lang) {
     })
 }
 
+
+// 修改用户信息
+export function updateUserInfo(data) {
+    return request({
+        url: '/api/user/updateUserBank',
+        method: 'post',
+        data
+    })
+}

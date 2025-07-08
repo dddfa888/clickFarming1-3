@@ -1,6 +1,6 @@
 <template>
   <div class="distribution-history">
-    <HeaderBar :title="t('订单历史')" />
+    <HeaderBar :title="t('订单历史')" style="width: 500px" />
     <div class="history-list">
       <div
         v-for="(item, index) in historyItems"

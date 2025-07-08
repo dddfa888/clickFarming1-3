@@ -46,7 +46,9 @@ body,
 }
 
 @media screen and (min-width: 768px) {
-  app {
+  html,
+  body,
+  #app {
     margin: 0;
     padding: 0;
     overflow: hidden;

@@ -78,11 +78,11 @@ import {
   getUserGradeAndBalanceAndDiscount,
   sendDistribution,
 } from "../../api";
-import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
 import ProductModal from "../../components/ProductModal.vue";
 import { useLangStore } from "../../store/useLangStore";
 import { storeToRefs } from "pinia";
+import { notify } from "../../utils/notify.js";
 
 const { t } = useI18n();
 const order = ref({});
@@ -103,9 +103,11 @@ const Sendbutton = () => {
       showModal.value = true;
       id.value = res.orderId;
     } else {
-      showToast({
+      notify({
+        title: t("通知"),
         message: t(res.msg),
-        type: "fail",
+        type: "error",
+        duration: 2000,
       });
     }
   });
@@ -116,18 +118,22 @@ const handlePay = () => {
   sendDistribution(id.value).then((res) => {
     console.log(res);
     if (res.code === 200) {
-      showToast({
+      notify({
+        title: t("通知"),
         message: t(res.msg),
         type: "success",
+        duration: 2000,
       });
       // 支付成功后刷新余额
       getUserGradeAndBalanceAndDiscount().then((refreshRes) => {
         order.value = refreshRes.data;
       });
     } else {
-      showToast({
+      notify({
+        title: t("通知"),
         message: t(res.msg),
-        type: "fail",
+        type: "error",
+        duration: 2000,
       });
     }
   });

@@ -1,5 +1,22 @@
 <template>
   <div class="container">
+    <div class="language-selector">
+      <span class="label">{{ $t("语言") }}</span>
+      <div class="dropdown-wrapper" @click="toggleLangList">
+        {{ t(selectedLanguage) }}
+
+        <ul v-if="showLangList" class="lang-dropdown">
+          <li
+            v-for="(lang, index) in languageList"
+            :key="index"
+            @click.stop="selectLanguage(lang)"
+            :class="{ active: lang === selectedLanguage }"
+          >
+            {{ t(lang) }}
+          </li>
+        </ul>
+      </div>
+    </div>
     <div class="overlay"></div>
     <div class="content">
       <h1>MERCADO LIBRE</h1>
@@ -10,21 +27,59 @@
         long way, but we are convinced that the best is yet to come.
       </p>
       <div class="buttons">
-        <button @click="toLogin">LOGIN</button>
-        <button @click="toRegister">REGISTER</button>
+        <button @click="toLogin">{{ t("登录") }}</button>
+        <button @click="toRegister">{{ t("注册") }}</button>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { useLangStore } from "../store/useLangStore.js";
+import { reactive, ref } from "vue";
+
 const router = useRouter();
+const langStore = useLangStore();
+const { locale } = useI18n();
 const toLogin = () => {
   router.push({ name: "login" });
 };
 const toRegister = () => {
   router.push({ name: "register" });
 };
+
+const { t } = useI18n();
+const showLangList = ref(false);
+const langMap = {
+  越南语: "vi",
+  中国: "zh",
+  英语: "en",
+  // 日本: "ja",
+  // 法国: "fr",
+  // 俄罗斯: "ru",
+  // 韩国: "ko",
+};
+const languageList = Object.keys(langMap);
+const reverseLangMap = Object.fromEntries(
+  Object.entries(langMap).map(([k, v]) => [v, k])
+);
+
+// 初始化选中语言
+const selectedLanguage = ref(reverseLangMap[langStore.locale]);
+locale.value = langStore.locale;
+
+function selectLanguage(lang) {
+  selectedLanguage.value = lang;
+  const langCode = langMap[lang] || "vi";
+  langStore.setLocale(langCode);
+  locale.value = langCode;
+  showLangList.value = !showLangList.value;
+}
+
+function toggleLangList() {
+  showLangList.value = !showLangList.value;
+}
 </script>
 
 <style scoped>
@@ -41,6 +96,55 @@ const toRegister = () => {
   text-align: center;
   color: white;
   font-family: "Segoe UI", sans-serif;
+}
+
+/* 语言选择器 */
+.language-selector {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #fff;
+  z-index: 20;
+}
+.language-selector .label {
+  margin-right: 6px;
+  color: #fff;
+}
+.dropdown-wrapper {
+  position: relative;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+
+  user-select: none;
+}
+.lang-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: #e5e5e5;
+  color: #000;
+  list-style: none;
+  padding: 5px 0;
+  margin: 0;
+  border-radius: 4px;
+  width: 100px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+.lang-dropdown li {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.lang-dropdown li:hover,
+.lang-dropdown li.active {
+  background-color: #d3d3d3;
 }
 
 .overlay {
@@ -113,6 +217,57 @@ button:hover {
 
   p {
     font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  /* 语言选择器 */
+  .language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #fff;
+    z-index: 20;
+  }
+  .language-selector .label {
+    margin-right: 6px;
+    color: #fff;
+  }
+  .dropdown-wrapper {
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+
+    user-select: none;
+  }
+  .lang-dropdown {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background: #e5e5e5;
+    color: #000;
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    border-radius: 4px;
+    width: 100px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+  }
+  .lang-dropdown li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .lang-dropdown li:hover,
+  .lang-dropdown li.active {
+    background-color: #d3d3d3;
   }
 }
 </style>

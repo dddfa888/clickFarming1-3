@@ -150,5 +150,8 @@ export default {
     "资金密码不能为空": "Mật khẩu quỹ không được để trống",
     "取款数额不能为空": "Số tiền rút không được để trống",
     "您尚未完成当天的订单数量，无法提现": "Bạn chưa hoàn thành số đơn trong ngày",
-    "团体": "Nhóm"
+    "团体": "Nhóm",
+    "通知": "Thông báo",
+    "全部": "tất cả",
+    "提款密码": "Mật khẩu rút tiền"
 };

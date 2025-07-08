@@ -78,8 +78,8 @@ import {
   sendDistribution,
   getUserGradeAndBalanceAndDiscount,
 } from "../../api/index.js";
-import { showToast } from "vant";
 import { useI18n } from "vue-i18n";
+import { notify } from "../../utils/notify.js";
 
 const { t } = useI18n();
 const totalAmount = ref(null);
@@ -98,16 +98,20 @@ const handlePay = () => {
   sendDistribution(id.value).then((res) => {
     console.log(res);
     if (res.code === 200) {
-      showToast({
+      notify({
+        title: t("通知"),
         message: t(res.msg),
         type: "success",
+        duration: 2000,
       });
       // 刷新页面
       location.reload();
     } else {
-      showToast({
+      notify({
+        title: t("通知"),
         message: t(res.msg),
         type: "error",
+        duration: 2000,
       });
     }
   });
