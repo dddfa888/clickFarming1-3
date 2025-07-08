@@ -151,13 +151,10 @@ export default {
     "取款数额不能为空": "Số tiền rút không được để trống",
     "您尚未完成当天的订单数量，无法提现": "Bạn chưa hoàn thành số đơn trong ngày",
     "团体": "Nhóm",
-
     "通知": "Thông báo",
     "全部": "tất cả",
     "提款密码": "Mật khẩu rút tiền",
-
     "原因": "lý do",
-    "全部": "toàn bộ",
     "请填写电话号码": "Vui lòng nhập số điện thoại",
     "请填写交易密码": "Vui lòng nhập mật khẩu giao dịch",
     "请填写邀请码": "Vui lòng nhập mã mời",

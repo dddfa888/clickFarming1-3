@@ -9,7 +9,7 @@
         <span class="balance">{{ balance }} €</span>
       </div>
 
-      <div class="form" v-if="accountName && accountNumber && balance">
+      <div class="form" v-if="accountName && accountNumber">
         <div class="form-group">
           <label>{{ t("账户名称") }}</label>
           <input type="text" v-model="accountName" disabled />
