@@ -155,5 +155,8 @@ export default {
     "全部": "toàn bộ",
     "请填写电话号码": "Vui lòng nhập số điện thoại",
     "请填写交易密码": "Vui lòng nhập mật khẩu giao dịch",
-    "请填写邀请码": "Vui lòng nhập mã mời"
+    "请填写邀请码": "Vui lòng nhập mã mời",
+    "您尚未完成当天的申请数量": "Bạn chưa hoàn thành số đơn trong ngày",
+    "您已完成今天的申请": "Bạn đã hoàn thành hết đơn hôm nay",
+    "确认": "Xác nhận",
 };

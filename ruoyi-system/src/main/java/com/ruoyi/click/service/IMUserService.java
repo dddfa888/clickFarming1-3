@@ -48,6 +48,14 @@ public interface IMUserService extends IService<MUser> {
     public int updateMUser(MUser mUser);
 
     /**
+     * 修改用户，用于前端修改银行信息
+     *
+     * @param mUser 用户
+     * @return 结果
+     */
+    public int updateUserBank(MUser mUser);
+
+    /**
      * 批量删除用户
      *
      * @param uids 需要删除的用户主键集合

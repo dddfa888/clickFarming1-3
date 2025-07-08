@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
-      <el-form-item :label="$t('muser.userListPage.account')" prop="loginAccount">
+      <el-form-item :label="$t('userPage.account')" prop="loginAccount">
         <el-input
           v-model="queryParams.loginAccount"
           placeholder="请输入账号"
@@ -56,7 +56,7 @@
           size="mini"
           @click="handleGotoWithdraw('staff')"
           v-hasPermi="['system:user:remove']"
-        >{{ $t('muser.userListPage.withdrawCustomerBtn') }}</el-button>
+        >{{ $t('userPage.withdrawCustomerBtn') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -66,30 +66,31 @@
           size="mini"
            @click="handleGotoWithdraw('customer')"
           v-hasPermi="['system:user:remove']"
-        >{{ $t('muser.userListPage.withdrawEmployeeBtn') }}</el-button>
+        >{{ $t('userPage.withdrawEmployeeBtn') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column :label="$t('muser.userListPage.column.invitationCode')" align="center" prop="invitationCode" />
-      <el-table-column :label="$t('muser.userListPage.column.loginAccount')" align="center" prop="loginAccount">
+      <el-table-column :label="$t('userPage.column.invitationCode')" align="center" prop="invitationCode" />
+      <el-table-column :label="$t('userPage.column.loginAccount')" align="center" prop="loginAccount">
         <template slot-scope="scope">
           {{ scope.row.loginAccount }}<br />
           <span :style="{ color: scope.row.registerType === '0' ? 'red' : 'green' }">
-          {{ scope.row.registerType == '0' ? '虚拟的' : scope.row.registerType == '1' ? '真实的' : '未知' }}
+          <!--{{ scope.row.registerType == '0' ? '虚拟的' : scope.row.registerType == '1' ? '真实的' : '未知' }}-->
+          {{ scope.row.registerType == '0' ? $t('userPage.typeEmployee') : scope.row.registerType == '1' ? $t('userPage.typeGuest') : $t('userPage.typeUnknown') }}
           </span>
         </template>
       </el-table-column>
-       <el-table-column :label="$t('muser.userListPage.column.SETTING_ORDER')" align="center" width="150px" >
+       <el-table-column :label="$t('userPage.column.SETTING_ORDER')" align="center" width="150px" >
         <template slot-scope="scope">
           <el-button @click="handleOpenOrederSet(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">
-            {{ $t("muser.userListPage.column.settingOrder") }}
+            {{ $t("userPage.column.settingOrder") }}
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('muser.userListPage.column.action')" :width="$t('muser.userListPage.colAct.width')" align="center">
+      <el-table-column :label="$t('userPage.column.action')" :width="$t('userPage.colAct.width')" align="center">
         <template slot-scope="scope">
           <div class="action-buttons">
             <el-button
@@ -102,7 +103,7 @@
               size="small"
             >
               <!--更改账户余额-->
-              {{ $t('muser.userListPage.colAct.changeBalence') }}
+              {{ $t('userPage.colAct.changeBalence') }}
             </el-button>
 
             <el-button
@@ -115,7 +116,7 @@
               }"
             >
               <!--银行修改-->
-              {{ $t('muser.userListPage.colAct.changeBank') }}
+              {{ $t('userPage.colAct.changeBank') }}
             </el-button>
 
             <el-button
@@ -128,7 +129,7 @@
               }"
             >
               <!--{{ scope.row.registerType === '0' ? '成为客人' : '成为员工' }}-->
-              {{ scope.row.registerType === '0' ? $t('muser.userListPage.colAct.switchGuest') : $t('muser.userListPage.colAct.switchEmp') }}
+              {{ scope.row.registerType === '0' ? $t('userPage.colAct.switchGuest') : $t('userPage.colAct.switchEmp') }}
             </el-button>
           </div>
 
@@ -143,7 +144,7 @@
               }"
             >
               <!--订单接收历史记录-->
-              {{ $t('muser.userListPage.colAct.orderHistory') }}
+              {{ $t('userPage.colAct.orderHistory') }}
             </el-button>
 
 
@@ -157,7 +158,7 @@
               }"
             >
               <!--{{ scope.row.status === 1 ? '账户锁定' : '解锁账户' }}-->
-              {{ scope.row.status === 1 ? $t('muser.userListPage.colAct.lockAccount') : $t('muser.userListPage.colAct.unlockAccount') }}
+              {{ scope.row.status === 1 ? $t('userPage.colAct.lockAccount') : $t('userPage.colAct.unlockAccount') }}
             </el-button>
 
             <el-button
@@ -170,7 +171,7 @@
               }"
             >
               <!--删除账户-->
-              {{ $t('muser.userListPage.colAct.deleteAccount') }}
+              {{ $t('userPage.colAct.deleteAccount') }}
             </el-button>
           </div>
 
@@ -185,7 +186,7 @@
               size="small"
             >
               <!--集团信息-->
-              {{ $t('muser.userListPage.colAct.info') }}
+              {{ $t('userPage.colAct.info') }}
             </el-button>
 
             <el-button
@@ -198,7 +199,7 @@
               }"
             >
               <!--账户信息-->
-              {{ $t('muser.userListPage.colAct.changeInfo') }}
+              {{ $t('userPage.colAct.changeInfo') }}
             </el-button>
 
             <!--<el-button
@@ -218,13 +219,13 @@
               }"
               size="small">
               <!--发信息-->
-              {{ $t('muser.userListPage.colAct.sendMsg') }}
+              {{ $t('userPage.colAct.sendMsg') }}
             </el-button>
 
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('muser.userListPage.column.inviterCode')" align="center" >
+      <el-table-column :label="$t('userPage.column.inviterCode')" align="center" >
         <template slot-scope="scope">
           <div v-if="scope.row.inviterName">
             <div>{{ scope.row.inviterCode }}</div>
@@ -233,8 +234,8 @@
           <div v-else>/</div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('muser.userListPage.column.regsterTime')" align="center" prop="createTime" width="160" />
-      <el-table-column :label="$t('muser.userListPage.column.lastLoginIp')" align="center" >
+      <el-table-column :label="$t('userPage.column.regsterTime')" align="center" prop="createTime" width="160" />
+      <el-table-column :label="$t('userPage.column.lastLoginIp')" align="center" >
         <template slot-scope="scope">
           <div v-if="scope.row.lastLoginIp">
             <div>{{ scope.row.lastLoginIp }}</div>
@@ -243,18 +244,19 @@
           <div v-else>没有数据</div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('muser.userListPage.column.phoneNumber')" align="center" prop="phoneNumber" />
-      <el-table-column :label="$t('muser.userListPage.column.accountBalance')" align="center" prop="accountBalance" />
-      <el-table-column :label="$t('muser.userListPage.column.userStatus')" align="center" prop="status" width="80">
+      <el-table-column :label="$t('userPage.column.phoneNumber')" align="center" prop="phoneNumber" />
+      <el-table-column :label="$t('userPage.column.accountBalance')" align="center" prop="accountBalance" />
+      <el-table-column :label="$t('userPage.column.userStatus')" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-tag
             :type="scope.row.status === 1 ? 'success' : 'danger'"
           >
-            {{ scope.row.status === 1 ? '正常' : '已锁定' }}
+            <!--{{ scope.row.status === 1 ? '正常' : '已锁定' }}-->
+            {{ scope.row.status === 1 ? $t('userPage.statusUnlock') : $t('userPage.statusLock') }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('muser.userListPage.column.userLevel')" align="center" prop="levelName" width="70" />
+      <el-table-column :label="$t('userPage.column.userLevel')" align="center" prop="levelName" width="70" />
 
 
 
@@ -282,7 +284,7 @@
 <!--        </template>-->
 <!--      </el-table-column>-->
 
-      <el-table-column :label="$t('muser.userListPage.column.brushNumber')" align="center" prop="brushNumber" />
+      <el-table-column :label="$t('userPage.column.brushNumber')" align="center" prop="brushNumber" />
     </el-table>
 
     <pagination

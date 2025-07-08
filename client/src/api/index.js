@@ -59,6 +59,25 @@ export function getUserInfo() {
     })
 }
 
+// 修改用户个人信息
+export function updateUserFront(data) {
+    return request({
+        url: '/api/user/updateUserFront',
+        method: 'post',
+        data
+    })
+}
+
+
+// 修改用户个人信息，不含校验密码
+export function updateUserSimpleFront(data) {
+    return request({
+        url: '/api/user/updateUserSimpleFront',
+        method: 'post',
+        data
+    })
+}
+
 // 创建订单
 export function createOrder(data) {
     return request({

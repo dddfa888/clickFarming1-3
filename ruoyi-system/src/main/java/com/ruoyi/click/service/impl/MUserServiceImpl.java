@@ -153,6 +153,25 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     }
 
     /**
+     * 修改用户，用于前端修改银行信息
+     *
+     * @param mUser 用户
+     * @return 结果
+     */
+    @Override
+    public int updateUserBank(MUser mUser)
+    {
+        mUser.setUpdateTime(DateUtils.getNowDate());
+        MUser user = mUserMapper.selectMUserByUid(mUser.getUid());
+
+        if(!user.getFundPassword().equals(mUser.getFundPassword())){
+            mUser.setFundPassword(EncoderUtil.encoder(mUser.getFundPassword()));
+        }
+
+        return mUserMapper.updateMUser(mUser);
+    }
+
+    /**
      * 批量删除用户
      *
      * @param uids 需要删除的用户主键

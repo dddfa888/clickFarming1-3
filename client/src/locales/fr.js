@@ -148,5 +148,6 @@ export default {
     "全部": "tout ",
     "请填写电话号码": "Veuillez saisir votre numéro de téléphone",
     "请填写交易密码": "Veuillez saisir le mot de passe de transaction",
-    "请填写邀请码": "Veuillez saisir le code d'invitation"
+    "请填写邀请码": "Veuillez saisir le code d'invitation",
+    "确认": "Confirmer",
 };

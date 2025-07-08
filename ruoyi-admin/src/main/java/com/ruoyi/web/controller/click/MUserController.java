@@ -351,6 +351,30 @@ public class MUserController extends BaseController
 
 
     /**
+     * 前端修改用户信息，不传id
+     */
+    @Log(title = "用户", businessType = BusinessType.UPDATE)
+    @PostMapping("updateUserBank")
+    public AjaxResult updateUserFront(HttpServletRequest request, @RequestBody MUser mUser)
+    {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        mUser.setUid(userId);
+        return toAjax(mUserService.updateUserBank(mUser));
+    }
+
+    /**
+     * 前端修改用户信息，不传id，不检查其他信息，直接保存
+     */
+    @Log(title = "用户", businessType = BusinessType.UPDATE)
+    @PostMapping("updateUserSimpleFront")
+    public AjaxResult updateUserSimpleFront(HttpServletRequest request, @RequestBody MUser mUser)
+    {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        mUser.setUid(userId);
+        return toAjax(mUserService.updateMUserSimple(mUser));
+    }
+
+    /**
      * 修改用户连单数量
      */
     @Log(title = "用户", businessType = BusinessType.UPDATE)
