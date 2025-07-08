@@ -121,4 +121,7 @@ public class MUser
     @TableField(exist = false)
     private String levelName;
 
+    @TableField(exist = false)
+    private Integer hierarchy;
+
 }

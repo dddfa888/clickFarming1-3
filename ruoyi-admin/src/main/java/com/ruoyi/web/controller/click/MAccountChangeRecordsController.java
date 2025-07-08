@@ -62,6 +62,8 @@ public class MAccountChangeRecordsController extends BaseController
         MAccountChangeRecords mAccountChangeRecords = new MAccountChangeRecords();
 
         mAccountChangeRecords.setUid(String.valueOf(userId));
+        mAccountChangeRecords.setTransactionType(1);
+        mAccountChangeRecords.setType(0);
         List<MAccountChangeRecords> list = mAccountChangeRecordsService.selectMAccountChangeRecordsList(mAccountChangeRecords);
 
         return getDataTable(list);

@@ -1,15 +1,20 @@
 <template>
   <div class="company-intro">
     <HeaderBar :title="t('地址')" />
-    <div class="form-group">
-      <label :class="{ floated: inputValue }">{{ t("地址") }}</label>
-      <input
-        v-model="withdrawalAddress"
-        type="text"
-        placeholder=" "
-        class="input"
-        disabled="true"
-      />
+    <div class="form">
+      <div class="form-group">
+        <label :class="{ floated: inputValue }">{{ t("地址") }}</label>
+        <input
+          v-model="withdrawalAddress"
+          type="text"
+          placeholder=" "
+          class="input"
+          :disabled="hasData"
+        />
+      </div>
+      <button v-if="!hasData" class="submit-btn" @click="submit">
+        {{ t("确认") }}
+      </button>
     </div>
   </div>
 </template>
@@ -17,16 +22,38 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
-import { getUserInfo } from "../../api/index";
+import { getUserInfo, updateUserSimpleFront } from "../../api/index";
+import { showToast } from "vant";
 const inputValue = ref("");
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const withdrawalAddress = ref("");
+const hasData = ref(true);
 
 getUserInfo().then((res) => {
-  console.log(res.data.withdrawalAddress);
-  withdrawalAddress.value = res.data.withdrawalAddress;
+  //console.log(res.data.withdrawalAddress);
+  let data = res.data.withdrawalAddress;
+  withdrawalAddress.value = data;
+  hasData.value = data != null && data != "";
 });
+
+function submit() {
+  updateUserSimpleFront({ withdrawalAddress: withdrawalAddress.value }).then(
+    (res) => {
+      if (res.code === 200) {
+        showToast({
+          message: t("操作成功"),
+          type: "success",
+        });
+      } else {
+        showToast({
+          message: t(res.msg),
+          type: "fail",
+        });
+      }
+    }
+  );
+}
 </script>
 
 <style scoped>
@@ -36,6 +63,10 @@ getUserInfo().then((res) => {
   background-size: cover;
   height: 100vh;
   overflow-y: auto;
+}
+.form {
+  text-align: center;
+  border-radius: 8px;
 }
 .form-group {
   position: relative;
@@ -129,6 +160,17 @@ label {
     font-size: 12px;
     color: #42b983;
     background-color: white; /* 💡 或改成页面背景色 */
+  }
+  .submit-btn {
+    width: 90%;
+    padding: 12px;
+    background-color: #3b4d63;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
   }
 }
 </style>

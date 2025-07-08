@@ -185,6 +185,10 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         int numTarget = userGrade.getBuyProdNum();
         if(todayCount >= numTarget)
             throw new ServiceException("今天下单次数已达到上限，无法继续下单");
+        //原系统中当日下单次数达到设置值时提示如下：
+        //  您已完成今天的申请
+        //  You have completed your order today
+        //  Bạn đã hoàn thành hết đơn hôm nay
 
         orderReceiveRecord.setUserId(mUser.getUid());
         orderReceiveRecord.setUserName(mUser.getLoginAccount());
