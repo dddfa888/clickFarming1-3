@@ -44,7 +44,7 @@
     </div>
 
     <button class="submit-btn" @click="submit" v-if="showBank">
-      {{ t("确定") }}
+      {{ t("确认") }}
     </button>
 
     <!--银行选择弹窗 -->
