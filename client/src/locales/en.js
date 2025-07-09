@@ -152,9 +152,10 @@ export default {
     "原因": "reason",
     "全部": "all",
     "请填写电话号码": "Please enter your phone number",
-    "请填写交易密码": "Please enter your transaction password",
+    "请输入确认密码": "Please enter your confirmation password",
     "请填写邀请码": "Please enter the invitation code",
     "您尚未完成当天的申请数量": "You haven't completed the number of applications for the day.",
     "您已完成今天的申请": "You have completed your order today",
-    "确认": "Confirm"
+    "确认": "Confirm",
+    "登录已过期，请重新登录": "Login has expired, please log in again"
 };

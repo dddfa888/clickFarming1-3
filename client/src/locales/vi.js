@@ -156,9 +156,10 @@ export default {
     "提款密码": "Mật khẩu rút tiền",
     "原因": "lý do",
     "请填写电话号码": "Vui lòng nhập số điện thoại",
-    "请填写交易密码": "Vui lòng nhập mật khẩu giao dịch",
+    "请输入确认密码": "Vui lòng nhập mật khẩu xác nhận",
     "请填写邀请码": "Vui lòng nhập mã mời",
     "您尚未完成当天的申请数量": "Bạn chưa hoàn thành số đơn trong ngày",
     "您已完成今天的申请": "Bạn đã hoàn thành hết đơn hôm nay",
     "确认": "Xác nhận",
+    "登录已过期，请重新登录": "Đăng nhập đã hết hạn, vui lòng đăng nhập lại"
 };

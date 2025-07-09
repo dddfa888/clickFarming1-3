@@ -129,7 +129,7 @@ const fields = {
     icon: "iconfont icon-lock",
   },
   fundPassword: {
-    placeholder: "请输入交易密码",
+    placeholder: "请输入确认密码",
     type: "password",
     icon: "iconfont icon-lock",
   },

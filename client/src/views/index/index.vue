@@ -158,7 +158,7 @@ getUserInfo().then((res) => {
 });
 getMemberRecord().then((res) => {
   if (res.code === 200) {
-    Recordlist.value = res.data.userGrade;
+    Recordlist.value = res.data.userGrade || "";
     level.value = res.data.level;
     console.log(res.data.level, "等级");
   }
