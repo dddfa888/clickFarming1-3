@@ -2,7 +2,7 @@
 import axios from 'axios';
 import router from '../router/index';
 import { showDialog } from 'vant';
-import { useI18n } from "vue-i18n";
+import i18n from '../i18n'
 import { notify } from './notify';
 
 let isTokenExpired = false;
@@ -35,15 +35,15 @@ request.interceptors.response.use(
         if ((res.code === 401 || res.message === 'token失效') && !isTokenExpired) {
             isTokenExpired = true;
             notify({
-                title: useI18n.t("通知"),
-                message: useI18n.t("登录已过期，请重新登录"),
-                type: "warning",
-                duration: 2000,
+                title: i18n.global.t('通知'),
+                message: i18n.global.t('登录已过期，请重新登录'),
+                type: 'warning',
+                duration: 2000
             }).then(() => {
-                localStorage.removeItem('token');
-                router.replace({ path: '/login' });
-                isTokenExpired = false;
-            });
+                localStorage.removeItem('token')
+                router.replace({ path: '/login' })
+                isTokenExpired = false
+            })
         }
         return res;
     },
@@ -51,15 +51,15 @@ request.interceptors.response.use(
         if (error.response && error.response.status === 401 && !isTokenExpired) {
             isTokenExpired = true;
             notify({
-                title: useI18n.t("通知"),
-                message: useI18n.t("登录已过期，请重新登录"),
-                type: "warning",
-                duration: 2000,
+                title: i18n.global.t('通知'),
+                message: i18n.global.t('登录已过期，请重新登录'),
+                type: 'warning',
+                duration: 2000
             }).then(() => {
-                localStorage.removeItem('token');
-                router.replace({ path: '/login' });
-                isTokenExpired = false;
-            });
+                localStorage.removeItem('token')
+                router.replace({ path: '/login' })
+                isTokenExpired = false
+            })
         }
         return Promise.reject(error);
     }
