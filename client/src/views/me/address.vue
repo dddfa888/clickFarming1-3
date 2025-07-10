@@ -45,6 +45,7 @@ function submit() {
           message: t("操作成功"),
           type: "success",
         });
+        hasData.value = true;
       } else {
         showToast({
           message: t(res.msg),
@@ -78,6 +79,18 @@ function submit() {
   font-family: sans-serif;
   overflow: visible; /* 避免 label 超出边框被裁剪 */
 }
+
+.submit-btn {
+  width: 80%;
+  color: #fff;
+  border: 1px solid #6b6f6f;
+  border-radius: 4px;
+  text-align: center;
+  min-height: 12vw;
+  background-image: linear-gradient(to bottom, #3a405c, #365354);
+  box-shadow: 5px 8px 10px #272c3e, 0 0 10px #272c3e;
+}
+
 
 .input {
   width: 100%;
@@ -162,15 +175,14 @@ label {
     background-color: white; /* 💡 或改成页面背景色 */
   }
   .submit-btn {
-    width: 90%;
-    padding: 12px;
-    background-color: #3b4d63;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
+    width: 80%;
+    color: #fff;
+    border: 1px solid #6b6f6f;
+    border-radius: 4px;
+    text-align: center;
+    min-height: 46px;
+    background-image: linear-gradient(to bottom, #3a405c, #365354);
+    box-shadow: 5px 8px 10px #272c3e, 0 0 10px #272c3e;
   }
 }
 </style>
