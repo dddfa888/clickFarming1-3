@@ -4,7 +4,7 @@
       type="text"
       class="input"
       v-model="inputValue"
-      @focus="showDropdown = true"
+      @focus="onFocus"
       @input="filterList"
       @blur="onBlur"
       :placeholder="placeholder"
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 const props = defineProps({
   modelValue: String,
@@ -31,9 +31,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  show: {
-    type: Boolean,
-  },
+  show: Boolean,
   placeholder: {
     type: String,
     default: "请选择银行",
@@ -46,18 +44,43 @@ const inputValue = ref(props.modelValue || "");
 const showDropdown = ref(false);
 const filteredOptions = ref([...props.options]);
 
+onMounted(() => {
+  // 只在首次初始化同步父组件（避免重复触发）
+  if (inputValue.value && inputValue.value !== props.modelValue) {
+    emit("update:modelValue", inputValue.value);
+  }
+});
+
 watch(
   () => props.modelValue,
   (val) => {
-    inputValue.value = val;
+    if (val !== inputValue.value) {
+      inputValue.value = val || "";
+
+      if (
+        val &&
+        !props.options.includes(val) &&
+        !filteredOptions.value.includes(val)
+      ) {
+        filteredOptions.value = [val, ...props.options];
+      }
+    }
   }
 );
 
 function filterList() {
-  const keyword = inputValue.value.toLowerCase();
+  // 这里调用 emit 同步父组件 inputValue
+  emit("update:modelValue", inputValue.value);
+
+  const keyword = inputValue.value?.toLowerCase() || "";
   filteredOptions.value = props.options.filter((item) =>
     item.toLowerCase().includes(keyword)
   );
+}
+
+function onFocus() {
+  showDropdown.value = true;
+  filterList();
 }
 
 function selectItem(item) {
@@ -67,7 +90,7 @@ function selectItem(item) {
 }
 
 function onBlur() {
-  // 延迟关闭确保 click 事件生效
+  // 延迟关闭以允许点击 li 元素
   setTimeout(() => {
     showDropdown.value = false;
   }, 100);

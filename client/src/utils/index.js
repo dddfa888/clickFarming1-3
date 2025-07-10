@@ -10,12 +10,11 @@ import { showToast } from 'vant';
 let isTokenExpired = false;
 // const router = useRouter();
 const baseURL = "http://192.168.1.149:8089/"
-// const baseURL = "https://cfapi.ceshias.cc/"
 const request = axios.create({
     baseURL: import.meta.env.MODE === 'development'
         ? '/api'
         : 'https://cfapi.ceshias.cc/',
-    baseURL: baseURL,
+    // baseURL: baseURL,
     timeout: 10000
 })
 

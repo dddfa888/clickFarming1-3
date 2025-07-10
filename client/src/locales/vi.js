@@ -165,4 +165,5 @@ export default {
     "请求失败，请稍后重试": "Yêu cầu không thành công, vui lòng thử lại sau",
     "请输入或选择银行": "Vui lòng nhập hoặc chọn ngân hàng",
     "确定": "Đồng ý",
+    "请填写所有字段": ""
 };

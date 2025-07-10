@@ -160,5 +160,6 @@ export default {
     "登录已过期，请重新登录": "Login has expired, please log in again",
     "请求失败，请稍后重试": "Request failed, please try again later",
     "请输入或选择银行": "Please enter or select the bank",
-    "确定": "确定"
+    "确定": "Confirm",
+    "请填写所有字段": "Please fill in all fields"
 };

@@ -5,8 +5,8 @@
       <h3 class="modal-title">{{ t("产品信息") }}</h3>
 
       <div class="info">
-        <p>时间: {{ data.createTime }}</p>
-        <p>代码: {{ data.productId }}</p>
+        <p>{{ t("时间") }}: {{ data.createTime }}</p>
+        <p>{{ t("代码") }}: {{ data.productId }}</p>
         <div class="product">
           <img :src="data.productImageUrl" class="product-img" />
           <div class="product-desc">

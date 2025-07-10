@@ -214,8 +214,13 @@ function onBankConfirm(value) {
 // 获取用户信息
 getUserInfo().then((res) => {
   accountName.value = res.data.bankAccountName || "";
-  accountNumber.value = formatBankCard(res.data.bankAccountNumber);
-  bankName.value = res.data.bankName || "";
+  accountNumber.value = res.data.bankAccountNumber || "";
+  bankName.value = formatBankCard(res.data.bankName);
+  console.log(
+    res.data.bankAccountName,
+    res.data.bankAccountNumber,
+    res.data.bankName
+  );
   if (
     !res.data.bankAccountName &&
     !res.data.bankAccountNumber &&
@@ -239,6 +244,12 @@ function formatBankCard(cardNo) {
 }
 
 function submit() {
+  console.log(
+    accountName.value,
+    accountNumber.value,
+    bankName.value,
+    fundPassword.value
+  );
   updateUserInfo({
     bankAccountName: accountName.value,
     bankAccountNumber: accountNumber.value,
@@ -254,7 +265,7 @@ function submit() {
         duration: 2000,
       });
       // 刷新页面
-      location.reload();
+      window.location.reload();
     } else {
       notify({
         title: t("通知"),
