@@ -15,7 +15,7 @@ export default {
     "用户名": "Tên đăng nhập",
     "请填写用户名": "Vui lòng nhập tên đăng nhập",
     "请填写密码": "Vui lòng nhập mật khẩu",
-    "账号": "Tài khoản",
+    "账号": " Số tài khoản",
     "电话号码": "Số điện thoại",
     "请输入电话号码": "Vui lòng nhập số điện thoại",
     "登陆密码": "Mật khẩu đăng nhập",
@@ -27,7 +27,7 @@ export default {
     "请输入密码": "Vui lòng nhập mật khẩu",
     "请输入账号": "Vui lòng nhập tài khoản",
     "你好": "Xin chào",
-    "可用余额": "Số dư hiện có",
+    "可用余额": "Số dư khả dụng",
     "取款": "Rút tiền",
     "概述 Mercado Asia": "Giới thiệu Mercado Asia",
     "会员级别": "Cấp thành viên",
@@ -161,5 +161,8 @@ export default {
     "您尚未完成当天的申请数量": "Bạn chưa hoàn thành số đơn trong ngày",
     "您已完成今天的申请": "Bạn đã hoàn thành hết đơn hôm nay",
     "确认": "Xác nhận",
-    "登录已过期，请重新登录": "Đăng nhập đã hết hạn, vui lòng đăng nhập lại"
+    "登录已过期，请重新登录": "Đăng nhập đã hết hạn, vui lòng đăng nhập lại",
+    "请求失败，请稍后重试": "Yêu cầu không thành công, vui lòng thử lại sau",
+    "请输入或选择银行": "Vui lòng nhập hoặc chọn ngân hàng",
+    "确定": "Đồng ý",
 };

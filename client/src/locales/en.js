@@ -157,5 +157,8 @@ export default {
     "您尚未完成当天的申请数量": "You haven't completed the number of applications for the day.",
     "您已完成今天的申请": "You have completed your order today",
     "确认": "Confirm",
-    "登录已过期，请重新登录": "Login has expired, please log in again"
+    "登录已过期，请重新登录": "Login has expired, please log in again",
+    "请求失败，请稍后重试": "Request failed, please try again later",
+    "请输入或选择银行": "Please enter or select the bank",
+    "确定": "确定"
 };

@@ -9,7 +9,7 @@
         <BankSelect
           v-model="accountName"
           :options="bankOptions"
-          placeholder="请输入或选择银行"
+          :placeholder="t('请输入或选择银行')"
           :show="showinput"
         />
       </div>

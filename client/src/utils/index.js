@@ -4,14 +4,17 @@ import router from '../router/index';
 import { showDialog } from 'vant';
 import i18n from '../i18n'
 import { notify } from './notify';
+// import { useRouter } from 'vue-router';
+import { showToast } from 'vant';
 
 let isTokenExpired = false;
+// const router = useRouter();
 const baseURL = "http://192.168.1.149:8089/"
 // const baseURL = "https://cfapi.khkjhkh.top/"
 const request = axios.create({
-    // baseURL: import.meta.env.MODE === 'development'
-    //     ? '/api'
-    //     : 'https://cfapi.ceshias.cc/',
+    baseURL: import.meta.env.MODE === 'development'
+        ? '/api'
+        : 'https://cfapi.ceshias.cc/',
     baseURL: baseURL,
     timeout: 10000
 })
@@ -39,11 +42,14 @@ request.interceptors.response.use(
                 message: i18n.global.t('登录已过期，请重新登录'),
                 type: 'warning',
                 duration: 2000
-            }).then(() => {
-                localStorage.removeItem('token')
-                router.replace({ path: '/login' })
-                isTokenExpired = false
             })
+            setTimeout(() => {
+                localStorage.removeItem('token')
+                router.push({ path: '/login' })
+                isTokenExpired = false
+                // 刷新页面
+
+            }, 1000);
         }
         return res;
     },
@@ -55,11 +61,14 @@ request.interceptors.response.use(
                 message: i18n.global.t('登录已过期，请重新登录'),
                 type: 'warning',
                 duration: 2000
-            }).then(() => {
-                localStorage.removeItem('token')
-                router.replace({ path: '/login' })
-                isTokenExpired = false
             })
+            // 立马跳转
+            setTimeout(() => {
+                localStorage.removeItem('token')
+                router.push({ path: '/login' })
+                isTokenExpired = false
+            }, 1000);
+
         }
         return Promise.reject(error);
     }

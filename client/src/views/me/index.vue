@@ -5,8 +5,10 @@
       <div class="avatar">
         <img src="../../assets/img/mylogo-asia.png" alt="" />
       </div>
+
       <div class="user-info">
-        <p class="user-id">ID:{{ userInfo.loginAccount }}</p>
+        <p>{{ userInfo.loginAccount }}</p>
+        <p class="user-id">ID:{{ userInfo.invitationCode }}</p>
       </div>
     </div>
 
