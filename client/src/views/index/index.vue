@@ -27,7 +27,7 @@
           <img src="../../assets/img/可用余额.png" alt="" />
           <p class="balance-label">{{ t("可用余额") }}</p>
         </div>
-        <p class="balance-amount">{{ userInfo.accountBalance }}€</p>
+        <p class="balance-amount">{{ userInfo.accountBalance || 0 }}€</p>
       </div>
       <div class="action-buttons">
         <!-- <div
