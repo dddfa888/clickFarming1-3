@@ -98,10 +98,10 @@ const formatCurrency = (value) => {
 };
 
 const Sendbutton = () => {
-  if (!order.withdrawalAddress) {
+  if (!order.value.withdrawalAddress) {
     notify({
       title: t("通知"),
-      message: t("地址为填写,请填写完整"),
+      message: t("地址未填写,请填写完整"),
       type: "warning",
       duration: 2000,
     });
