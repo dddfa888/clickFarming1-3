@@ -83,6 +83,7 @@ import ProductModal from "../../components/ProductModal.vue";
 import { useLangStore } from "../../store/useLangStore";
 import { storeToRefs } from "pinia";
 import { notify } from "../../utils/notify.js";
+import router from "../../router/index.js";
 
 const { t } = useI18n();
 const order = ref({});
@@ -97,6 +98,16 @@ const formatCurrency = (value) => {
 };
 
 const Sendbutton = () => {
+  if (!order.withdrawalAddress) {
+    notify({
+      title: t("通知"),
+      message: t("地址为填写,请填写完整"),
+      type: "warning",
+      duration: 2000,
+    });
+    router.push({ path: "/address" });
+    return;
+  }
   createOrder().then((res) => {
     console.log(res.orderId);
     if (res.code === 200) {

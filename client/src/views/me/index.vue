@@ -268,7 +268,7 @@ const handleLogout = () => {
   width: 200px;
   font-size: 12px;
   display: flex;
-  padding: 17px;
+  padding: 29px;
   align-items: center;
   justify-content: space-around;
   border: 1px solid #ccc;
@@ -418,15 +418,16 @@ const handleLogout = () => {
 
   .user-level-info {
     width: 8.66667vw;
-    height: 0.26667vw;
+    height: 2.19667vw;
     font-size: 15px;
     display: flex;
     align-items: center;
     justify-content: space-around;
     border: 1px solid #ccc;
-    border-radius: 20px;
+    border-radius: 40px;
     text-align: center;
     margin: 0 auto;
+    padding: 47px;
     margin-bottom: 15px;
   }
 
