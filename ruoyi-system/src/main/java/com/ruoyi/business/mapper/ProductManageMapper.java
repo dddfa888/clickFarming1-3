@@ -85,4 +85,12 @@ public interface ProductManageMapper
      * @return 结果
      */
     ProductManage selectProductManageByRandom();
+
+    /**
+     * 根据条件查询符合条件的数据id
+     *
+     * @param
+     * @return 结果
+     */
+    List<Long> getIdList(Map<String,Object> param);
 }

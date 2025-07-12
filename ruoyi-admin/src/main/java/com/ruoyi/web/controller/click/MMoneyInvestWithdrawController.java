@@ -27,6 +27,8 @@ import com.ruoyi.common.utils.EncoderUtil;
 import com.ruoyi.common.utils.RandomUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.service.TokenService;
+import com.ruoyi.system.domain.SysConfig;
+import com.ruoyi.system.mapper.SysConfigMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +67,8 @@ public class MMoneyInvestWithdrawController extends BaseController
     private OrderReceiveRecordMapper orderReceiveRecordMapper;
     @Autowired
     private IUserGradeService userGradeService;
-
+    @Autowired
+    private SysConfigMapper configMapper;
 
     /**
      * 获取个人的提现记录
@@ -207,6 +210,18 @@ public class MMoneyInvestWithdrawController extends BaseController
     @Log(title = "提现", businessType = BusinessType.INSERT)
     @PostMapping("add")
     public AjaxResult add(HttpServletRequest request,@Validated @RequestBody WithdrawVo withdrawVo) {
+        String amountStr = withdrawVo.getAmount();
+        Assert.notEmpty(amountStr, "请填写提现数额");
+        BigDecimal withdrawAmount = null;
+        try{
+            withdrawAmount = DecimalUtil.parseNumberBothCommaPoint(amountStr);
+        }catch (Exception e){
+            throw new ServiceException("取款数额格式错误，无法解析");
+        }
+        SysConfig minWithdrawConfig = configMapper.checkConfigKeyUnique("minWithdrawAmount");
+        if(withdrawAmount.doubleValue() < Double.parseDouble(minWithdrawConfig.getConfigValue())){
+            throw new ServiceException("最低提款额为50美元");
+        }
         Long userId = tokenService.getLoginUser(request).getmUser().getUid();
 
         MUser mUser = mUserService.selectMUserByUid(userId);
@@ -218,13 +233,6 @@ public class MMoneyInvestWithdrawController extends BaseController
             throw new ServiceException("资金密码错误");
         }
         BigDecimal accountForward = mUser.getAccountBalance();
-        Assert.notEmpty(withdrawVo.getAmount(), "请填写提现数额");
-        BigDecimal withdrawAmount = null;
-        try{
-            withdrawAmount = DecimalUtil.parseNumberBothCommaPoint(withdrawVo.getAmount());
-        }catch (Exception e){
-            throw new ServiceException("取款数额格式错误，无法解析");
-        }
         if (accountForward.compareTo(withdrawAmount) < 0) {
             return AjaxResult.error("余额不足");
         }
@@ -239,7 +247,7 @@ public class MMoneyInvestWithdrawController extends BaseController
         UserGrade userGrade = userGradeService.getOne(new LambdaQueryWrapper<UserGrade>().eq(UserGrade::getSortNum,mUser.getLevel()));
         Assert.notNull(userGrade, "用户等级不存在");
         if(mUser.getBrushNumber() < userGrade.getBuyProdNum()){
-            throw new ServiceException("您尚未完成当天的订单数量，无法提现");
+            throw new ServiceException("您尚未完成当天的申请数量");
         }
 
         checkBank(mUser);

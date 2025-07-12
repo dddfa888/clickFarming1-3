@@ -103,7 +103,9 @@ export default {
       adjust: '平衡调整',
       or: '或者',
       cancel: '取消',
-      save: '创建新的'
+      save: '创建新的',
+      requireNum: '请输入金钱数额',
+      requireReason: '请输入理由',
     }
   }
 

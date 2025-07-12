@@ -179,12 +179,12 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
             throw new ServiceException("用户等级不存在");
         //若余额小于等级内设置的最低余额，则给出提示，下单失败
         if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0)
-            throw new ServiceException("账户余额不足");
+            throw new ServiceException("您的帐户尚未达到最低余额");
 
         int todayCount = countNumByUserDate();
         int numTarget = userGrade.getBuyProdNum();
         if(todayCount >= numTarget)
-            throw new ServiceException("今天下单次数已达到上限，无法继续下单");
+            throw new ServiceException("您已完成今天的申请");
         //原系统中当日下单次数达到设置值时提示如下：
         //  您已完成今天的申请
         //  You have completed your order today
@@ -217,15 +217,20 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
      */
     public void setValueSaveProdList(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade, int numTarget, int todayCount){
         // 数据库中随机选产品
-        ProductManage product = getProductRand();
+        ProductManage product = getProductRand(mUser);
         orderReceiveRecord.setProductId(product.getId());
         orderReceiveRecord.setProductName(product.getProductName());
         orderReceiveRecord.setProductImageUrl(product.getImageUrl());
         orderReceiveRecord.setUnitPrice(product.getPrice());
 
-        // 计算产品数量，用户余额整除产品价格的商，即为用户可支付范围内的最大值（最大产品数量）
-        BigDecimal prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN);
-        orderReceiveRecord.setNumber(prodNum.intValue());
+        // 计算产品数量，先计算用户余额整除产品价格的商，即用户可支付范围内的最大值（最大产品数量）
+        int prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN).intValue();
+        // 如果上面计算的prodNum是1，产品数量直接设为1。否则，假设prodNum（用户可支付范围内的最大数量）是10，生成随机数取5-10之间的整数作为本次订单实际产品数量。
+        if(prodNum>1){
+            int half = prodNum>>1;
+            prodNum = (int)Math.floor(Math.random() * half) + (prodNum-half);
+        }
+        orderReceiveRecord.setNumber(prodNum);
         orderReceiveRecord.setTotalAmount(DecimalUtil.multiple(product.getPrice(), orderReceiveRecord.getNumber()));
         orderReceiveRecord.setProfit(calcProfit(userGrade, orderReceiveRecord.getTotalAmount()));
         orderReceiveRecord.setRefundAmount(DecimalUtil.add(orderReceiveRecord.getTotalAmount(), orderReceiveRecord.getProfit()));
@@ -239,26 +244,18 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     }
 
     /**
-     * 从数据库中随机查询一个产品
+     * 从数据库中随机查询一个产品，只查询价格小于或等于用户余额的
      * @return
      */
-    public ProductManage getProductRand(){
-        ProductManage paramCount = new ProductManage();
-        long count = productManageMapper.countNum(paramCount);
-        long beginIndex = Math.round(Math.floor(count * Math.random()));
-        Map<String,Object> paramSelect = new HashMap<>();
-        paramSelect.put("beginIndex", beginIndex);
-        paramSelect.put("num", 1L);
-        List<ProductManage> productList = productManageMapper.selectProductManageByLimit(paramSelect);
-        if(productList!=null && !productList.isEmpty()){
-            return productList.get(0);
-        }else{
-            //如果以上方法在统计数量后、查询列表前恰好人为删除了部分数据导致List为空，则调用以下方法随机查询一条数据。以下方法更容易查到id较大的数据。
-            ProductManage product = productManageMapper.selectProductManageByRandom();
-            if(product==null)
-                throw new ServiceException("未查到产品信息");
-            return product;
-        }
+    public ProductManage getProductRand(MUser mUser){
+        Map<String,Object> paramIds = new HashMap<>();
+        paramIds.put("price_Le", mUser.getAccountBalance());
+        List<Long> idList = productManageMapper.getIdList(paramIds);
+        if(idList==null || idList.isEmpty())
+            throw new ServiceException("未查到产品信息");
+
+        int prodIndex = (int) Math.floor(Math.random() * idList.size());
+        return productManageMapper.selectProductManageById(idList.get(prodIndex));
     }
 
     /**

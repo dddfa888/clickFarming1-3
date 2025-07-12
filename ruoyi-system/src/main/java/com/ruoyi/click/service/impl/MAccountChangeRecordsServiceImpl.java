@@ -138,6 +138,7 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
         res.put("orderNum", finishNum + "/" + userGrade.getBuyProdNum()); //已付款订单数量
         res.put("numYesterday", profitYesterday.setScale(2, RoundingMode.HALF_UP).toString()); //昨天折扣
         res.put("numToday", profitToday.setScale(2, RoundingMode.HALF_UP).toString()); //今天折扣
+        res.put("withdrawalAddress", mUser.getWithdrawalAddress()); //提现地址  用于判断，页面不显示
         return res;
     }
 

@@ -295,41 +295,38 @@
       @pagination="getList"
     />
 
+    <!-- 弹出窗口《更改账户余额》 -->
     <el-dialog
-        title="更改账户余额"
+        :title="$t('userPage.balForm.title')"
         :visible.sync="dialogBalance"
         width="30%"
         :before-close="handleCloseBalance"
     >
-    <el-form ref="balanceForm" :model="balanceForm" :rules="balanceRules" label-width="80px">
-      <el-form-item label="账户">
+    <el-form ref="balanceForm" :model="balanceForm" :rules="balanceRules" label-width="120px">
+      <el-form-item :label="$t('userPage.balForm.account')">
         <el-input readonly v-model="balanceForm.loginAccount"></el-input>
       </el-form-item>
-      <el-form-item label="电话号码">
+      <el-form-item :label="$t('userPage.balForm.phone')">
         <el-input readonly v-model="balanceForm.phoneNumber"></el-input>
       </el-form-item>
-      <el-form-item label="剩余">
+      <el-form-item :label="$t('userPage.balForm.origin')">
         <el-input readonly v-model="balanceForm.originalBalance"></el-input>
       </el-form-item>
-      <el-form-item label="金钱数额" prop="balance">
+      <el-form-item :label="$t('userPage.balForm.newNum')" prop="balance">
         <el-input-number v-model="balanceForm.balance"></el-input-number>
       </el-form-item>
-       <el-form-item label="选择一个理由">
-      <el-select v-model="selectedReason" placeholder="请选择一个理由" @change="changeReason">
-        <el-option
-          v-for="item in reasonOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
+       <el-form-item :label="$t('userPage.balForm.selectReason')">
+      <el-select v-model="selectedReason" placeholder="" @change="changeReason">
+        <el-option :label="$t('userPage.balForm.noReason')" :value="$t('userPage.balForm.noReason')"></el-option>
+        <el-option :label="$t('userPage.balForm.adjust')" :value="$t('userPage.balForm.adjust')"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="或者" prop="reason">
+    <el-form-item :label="$t('userPage.balForm.or')" prop="reason">
       <el-input v-model="balanceForm.reason"></el-input>
     </el-form-item>
       <el-form-item style="display: flex;align-items: center;justify-content: center;">
-        <el-button @click="handleCloseBalance">取消</el-button>
-         <el-button type="primary" @click="submitBalanceForm">创建新的</el-button>
+        <el-button @click="handleCloseBalance">{{ $t('userPage.balForm.cancel') }}</el-button>
+         <el-button type="primary" @click="submitBalanceForm">{{ $t('userPage.balForm.save') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -654,10 +651,6 @@ export default {
       dialogGroupInformation: false,
       dialogUserOrder: false,
       dialogOrderNum: false,
-       reasonOptions: [
-        { value: '没有理由', label: '没有理由' },
-        { value: '平衡调整', label: '平衡调整' }
-      ],
       balanceForm:{
         uid:  "",
         loginAccount:"",

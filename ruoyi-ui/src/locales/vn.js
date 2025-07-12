@@ -103,7 +103,9 @@ export default {
       adjust: ' Điều chỉnh số dư',
       or: 'Hoặc',
       cancel: 'Hủy',
-      save: 'Tạo mới'
+      save: 'Tạo mới',
+      requireNum: 'Trường số tiền là bắt buộc.',
+      requireReason: 'Lý do nhập',
     }
   }
 

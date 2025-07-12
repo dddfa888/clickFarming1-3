@@ -103,7 +103,9 @@ export default {
       adjust: 'Balance adjustment',
       or: 'Or',
       cancel: 'Cancel',
-      save: 'Create'
+      save: 'Create',
+      requireNum: 'Enter balance',
+      requireReason: 'Enter reason',
     }
 
   }
