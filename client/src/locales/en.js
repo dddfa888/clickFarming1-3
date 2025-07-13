@@ -162,5 +162,7 @@ export default {
     "请输入或选择银行": "Please enter or select the bank",
     "确定": "Confirm",
     "请填写所有字段": "Please fill in all fields",
-    "地址为填写,请填写完整": "Address is required, please fill in the full address"
+    "地址为填写,请填写完整": "Address is required, please fill in the full address",
+    "您的帐户尚未达到最低余额": "Your account has not reached the minimum balance",
+    "最低提款额为50美元": "Minimum withdrawal amount is $50"
 };

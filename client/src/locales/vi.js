@@ -167,4 +167,6 @@ export default {
     "确定": "Đồng ý",
     "请填写所有字段": "Vui lòng điền vào tất cả các lĩnh vực",
     "地址为填写,请填写完整": "Địa chỉ đã điền, vui lòng điền đầy đủ",
+    "您的帐户尚未达到最低余额": "Minimum withdrawal amount is $50",
+    "最低提款额为50美元": "Số tiền rút tổi thiểu là 50$"
 };
