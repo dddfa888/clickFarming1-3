@@ -7,10 +7,11 @@
         class="modal-image"
       />
       <img
-        v-else
+        v-else-if="locale === 'vi'"
         src="../assets/img/edqpdm4z34c737vtlhg8.jpg"
         class="modal-image"
       />
+      <img v-else src="../assets/img/1-英.jpg" class="modal-image" />
     </div>
     <button class="modal-close" @click="close">×</button>
   </div>
@@ -68,15 +69,16 @@ defineExpose({ show });
   display: block;
   width: 100%;
   height: auto;
-  max-height: 75vh;
+  max-height: 70vh;
   object-fit: contain;
   z-index: 99;
   border-radius: 10px;
+  margin-bottom: 15vh;
 }
 
 .modal-close {
   position: absolute;
-  bottom: 7vh; /* 相对于视口高度 */
+  bottom: 14vh; /* 相对于视口高度 */
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.7);
@@ -89,6 +91,7 @@ defineExpose({ show });
   cursor: pointer;
   display: flex;
   align-items: center;
+  border: 1px solid #fff;
   justify-content: center;
 }
 
@@ -144,24 +147,26 @@ defineExpose({ show });
     object-fit: contain;
     z-index: 99;
     border-radius: 10px;
+    margin-top: 13vh;
   }
 
   .modal-close {
     position: absolute;
-    bottom: 10vh; /* 相对于视口高度 */
+    bottom: 12vh; /* 相对于视口高度 */
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.7);
     color: #fff;
     font-size: 3rem;
     border-radius: 50%;
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid #fff;
   }
 }
 </style>
