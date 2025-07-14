@@ -28,6 +28,7 @@ export default {
     "请输入账号": "Vui lòng nhập tài khoản",
     "你好": "Xin chào",
     "可用余额": "Số dư khả dụng",
+    "提款": "Nạp tiền",
     "取款": "Rút tiền",
     "概述 Mercado Asia": "Giới thiệu Mercado Asia",
     "会员级别": "Cấp thành viên",
@@ -166,7 +167,7 @@ export default {
     "请输入或选择银行": "Vui lòng nhập hoặc chọn ngân hàng",
     "确定": "Đồng ý",
     "请填写所有字段": "Vui lòng điền vào tất cả các lĩnh vực",
-    "地址为填写,请填写完整": "Địa chỉ đã điền, vui lòng điền đầy đủ",
+    "地址未填写,请填写完整": "Địa chỉ chưa điền, vui lòng điền đầy đủ",
     "您的帐户尚未达到最低余额": "Minimum withdrawal amount is $50",
     "最低提款额为50美元": "Số tiền rút tổi thiểu là 50$"
 };

@@ -26,7 +26,7 @@
 
     <!-- 功能按钮区域 -->
     <div class="action-buttons">
-      <!-- <button class="action-btn" @click="handleAction('withdraw')">提款</button> -->
+      <button class="action-btn" @click="handleAction('deposit')">{{ t("提款") }}</button>
       <button class="action-btn" @click="handleAction('withdraw')">
         {{ t("取款") }}
       </button>
@@ -126,7 +126,9 @@ getUserInfo().then((res) => {
 });
 
 const handleAction = (row) => {
-  if (row === "withdraw") {
+  if (row === "deposit") {
+    window.location.href='https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi';
+  } else if (row === "withdraw") {
     router.push("/withdraw");
   } else if (row === "withdrawHistory") {
     router.push("/withdrawHistory");

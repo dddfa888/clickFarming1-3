@@ -151,6 +151,15 @@ export function getUserNotification() {
     })
 }
 
+
+// 获取用户通知数量
+export function getUserNotifyNum() {
+    return request({
+        url: '/api/notify/countNumByUser',
+        method: 'get',
+    })
+}
+
 //公司简介
 export function getcompanyProfile(lang) {
     return request({

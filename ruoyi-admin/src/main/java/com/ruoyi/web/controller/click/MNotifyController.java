@@ -126,4 +126,21 @@ public class MNotifyController extends BaseController
     {
         return toAjax(mNotifyService.deleteMNotifyByUids(uids));
     }
+
+
+    @PostMapping("/countNum")
+    public AjaxResult countNum(@RequestBody MNotify mNotify) {
+        long num = mNotifyService.countNum(mNotify);
+        return success(num);
+    }
+
+    @GetMapping("/countNumByUser")
+    public AjaxResult countNumByUser(HttpServletRequest request) {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        MNotify mNotify = new MNotify();
+        mNotify.setUserId(userId);
+        long num = mNotifyService.countNum(mNotify);
+        return success(num);
+    }
+
 }

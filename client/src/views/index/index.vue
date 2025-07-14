@@ -11,6 +11,7 @@
       </div>
       <div class="user-info-balance" @click="router.push('/notice')">
         <img src="../../assets/img/tongzhi.png" alt="通知图标" />
+        <span class="notifyNum">{{ notifyNum || 0 }}</span>
       </div>
     </div>
 
@@ -30,8 +31,8 @@
         <p class="balance-amount">{{ userInfo.accountBalance || 0 }}€</p>
       </div>
       <div class="action-buttons">
-        <!-- <div
-          @click="onWithdraw"
+        <div
+          @click="onDeposit"
           style="
             display: flex;
             flex-direction: column;
@@ -40,10 +41,10 @@
           "
         >
           <img src="../../assets/img/提款.png" alt="" />
-          <p>提款</p>
-        </div> -->
+          <p>{{ t("提款") }}</p>
+        </div>
         <div
-          @click="onDeposit"
+          @click="onWithdraw"
           style="
             display: flex;
             flex-direction: column;
@@ -138,7 +139,7 @@ import company from "../../assets/img/company.png";
 import rule from "../../assets/img/rule.png";
 import cooperation from "../../assets/img/cooperation.png";
 import notice from "../../assets/img/notice.png";
-import { getUserInfo, getMemberRecord } from "../../api/index.js";
+import { getUserInfo, getMemberRecord, getUserNotifyNum } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
 
 const promoRef = ref();
@@ -147,6 +148,7 @@ const Recordlist = ref([]);
 const level = ref(null);
 const userInfo = ref({});
 const { t } = useI18n();
+const notifyNum = ref(0);
 
 const getImageUrl = (path) => {
   return new URL(`../../assets/{path}`, import.meta.url).href;
@@ -163,6 +165,10 @@ getMemberRecord().then((res) => {
     console.log(res.data.level, "等级");
   }
 });
+getUserNotifyNum().then((res) => {
+  notifyNum.value = res.data;
+});
+
 // 生成随机用户名
 const generateUsername = () => {
   const prefix = [
@@ -251,11 +257,12 @@ const handleButtonClick = (icon) => {
   }
 };
 
-const onWithdraw = () => {
-  console.log("执行提款操作");
+const onDeposit = () => {
+  //console.log("执行提款操作");
+  window.location.href='https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi';
 };
 
-const onDeposit = () => {
+const onWithdraw = () => {
   console.log("执行取款操作");
   router.push({ path: "/withdraw" });
 };
@@ -274,9 +281,10 @@ onMounted(async () => {
   updateRewards();
 
   try {
-    const [userRes, memberRes] = await Promise.all([
+    const [userRes, memberRes, notifyRes] = await Promise.all([
       withTimeout(getUserInfo(), 5000),
       withTimeout(getMemberRecord(), 5000),
+      withTimeout(getUserNotifyNum(), 5000),
     ]);
 
     // 设置用户信息
@@ -287,6 +295,7 @@ onMounted(async () => {
       Recordlist.value = memberRes.data.userGrade;
       level.value = memberRes.data.level;
     }
+    notifyNum.value = notifyRes.data;
   } catch (error) {
     console.error("加载数据失败：", error);
   }
@@ -337,6 +346,18 @@ onMounted(async () => {
   width: 25px;
   height: 25px;
   cursor: pointer;
+}
+.notifyNum {
+    position: relative;
+    top: -20px;
+    left: -12px;
+    display: inline-block;
+    background-color: rgb(244, 67, 54);
+    height: 20px;
+    text-align: center;
+    border-radius: 10px;
+    line-height: 21px;
+    padding: 0px 5px;
 }
 
 .balance-price {
@@ -593,7 +614,18 @@ onMounted(async () => {
     height: 25px;
     cursor: pointer;
   }
-
+  .notifyNum{
+    position: relative;
+    top: -20px;
+    left: -12px;
+    display: inline-block;
+    background-color: rgb(244, 67, 54);
+    height: 20px;
+    text-align: center;
+    border-radius: 10px;
+    line-height: 21px;
+    padding: 0px 5px;
+  }
   .balance-price {
     display: flex;
     max-width: 100%;

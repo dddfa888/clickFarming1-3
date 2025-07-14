@@ -61,4 +61,13 @@ public interface MNotifyMapper
      * @return 结果
      */
     public int deleteMNotifyByUids(Long[] uids);
+
+
+    /**
+     * 统计数量
+     *
+     * @param mNotify
+     * @return 通知集合
+     */
+    long countNum(MNotify mNotify);
 }

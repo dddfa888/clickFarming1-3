@@ -59,4 +59,13 @@ public interface IMNotifyService
      * @return 结果
      */
     public int deleteMNotifyByUid(Long uid);
+
+    /**
+     * 统计数量
+     *
+     * @param mNotify
+     * @return 结果
+     */
+    long countNum(MNotify mNotify);
+
 }

@@ -78,4 +78,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{uid}
         </foreach>
     </delete>
+
+    <!-- 统计数量 -->
+    <select id="countNum" parameterType="MNotify" resultType="java.lang.Long">
+        select count(1) n from m_notify
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+        </where>
+    </select>
+
 </mapper>

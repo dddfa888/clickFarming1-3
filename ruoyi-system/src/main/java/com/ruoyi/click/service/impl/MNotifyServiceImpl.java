@@ -93,4 +93,16 @@ public class MNotifyServiceImpl implements IMNotifyService
     {
         return mNotifyMapper.deleteMNotifyByUid(uid);
     }
+
+    /**
+     * 统计数量
+     *
+     * @param mNotify
+     * @return 结果
+     */
+    @Override
+    public long countNum(MNotify mNotify)
+    {
+        return mNotifyMapper.countNum(mNotify);
+    }
 }
