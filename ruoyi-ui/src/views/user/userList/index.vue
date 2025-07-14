@@ -375,13 +375,13 @@
 
     <el-dialog :title="orderSetTitle" :visible.sync="showOrderSet" width="750px" append-to-body>
       <el-form ref="orderSetForm" :model="orderSetForm" >
-        <el-form-item v-for="item in orderSetList" :key="index">
+        <el-form-item v-for="(item, index) in orderSetList" :key="index">
           配置 命令
-          <el-input-number class="orderListInput" type="number" step="1" v-model="item.num" :min="0" :max="1000000" :precision="0"></el-input-number>
+          <el-input-number class="orderListInput" placeholder="0" type="number" step="1" v-model="item.num" :min="0" :max="1000000" :precision="0"></el-input-number>
           命令 (0 表示禁用)
-          <el-input-number class="orderListInput" type="number" step="1" v-model="item.min" :min="0" :controls="false"></el-input-number>
+          <el-input-number class="orderListInput" placeholder="0" type="number" step="1" v-model="item.min" :min="0" :controls="false"></el-input-number>
           <span>-</span>
-          <el-input-number class="orderListInput" type="number" step="1" v-model="item.max" :min="0" :controls="false"></el-input-number>
+          <el-input-number class="orderListInput" placeholder="0" type="number" step="1" v-model="item.max" :min="0" :controls="false"></el-input-number>
         </el-form-item>
         </el-form>
       <div slot="footer" class="dialog-footer" style="display: flex;justify-content: space-evenly;align-items: center;">
@@ -616,16 +616,16 @@ export default {
         orderSetData: ''
       },
       orderSetList: [
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' },
-          { num:'0', min:'0', max:'0' }
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined },
+          { num:undefined, min:undefined, max:undefined }
       ],
       showUpdateBank: false,
       updateBankForm: {
@@ -793,17 +793,18 @@ export default {
       that.orderSetForm.userId = row.uid;
       that.orderSetForm.orderSetData = '';
       that.orderSetList.forEach(r => {
-        r.num = '0';
-        r.min = '0';
-        r.max = '0';
+        r.num = undefined;
+        r.min = undefined;
+        r.max = undefined;
       })
+
       selectByUserId(row.uid).then(response => {
         //查询结果在 this.orderSetList 中回显
         let data = response.data;
         let diff = data.length-that.orderSetList.length;
         if(diff > 0){
           while(diff > 0){
-            that.orderSetList.push({num:'0', min:'0', max:'0' });
+            that.orderSetList.push({num:undefined, min:undefined, max:undefined });
             diff--;
           }
         }
@@ -824,7 +825,7 @@ export default {
       let str = '';
       for(let i in that.orderSetList){
         let row = that.orderSetList[i];
-        if(row.num=='0'){
+        if(row.num==undefined || row.num==null || row.num=='' || row.num=='0'){
 	        continue ;
         }
         str = str + '#' + row.num + '_' + row.min + '_' + row.max;

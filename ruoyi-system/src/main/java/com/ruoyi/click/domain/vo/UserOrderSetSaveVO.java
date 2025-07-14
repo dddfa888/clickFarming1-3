@@ -11,6 +11,6 @@ public class UserOrderSetSaveVO {
     @NotNull(message = "用户主键不能为空")
     private Long userId;
 
-    @NotBlank(message = "配置不能为空")
+    //@NotBlank(message = "配置不能为空")
     private String orderSetData;
 }
