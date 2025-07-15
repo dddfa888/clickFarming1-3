@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.ruoyi.click.domain.vo.UserOrderSetSaveVO;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,7 +125,9 @@ public class MUserOrderSetServiceImpl implements IMUserOrderSetService
         mUserOrderSetMapper.deleteByUserId(vo.getUserId());
 
         String dataStr = vo.getOrderSetData();
-        Assert.notNull(dataStr, "设置数据为空");
+        //Assert.notNull(dataStr, "设置数据为空");
+        if(StringUtils.isEmpty(dataStr))
+            return 1; //1表示成功，没有报错，返回0表示操作失败
 
         Date date = DateUtils.getNowDate();
         String[] dataArray = dataStr.split("#");

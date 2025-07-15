@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import com.ruoyi.common.annotation.Excel;
@@ -20,6 +21,7 @@ public class MUser
     private static final long serialVersionUID = 1L;
 
     /** uid */
+    @TableId
     private Long uid;
 
 
