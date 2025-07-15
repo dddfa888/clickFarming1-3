@@ -8,9 +8,6 @@
         class="transaction-item"
       >
         <div class="transaction-info">
-          <div class="transaction-time">
-            {{ t("时间") }}:{{ transaction.createTime }}
-          </div>
           <div
             class="transaction-amount"
             :class="{ negative: transaction.amount < 0 }"

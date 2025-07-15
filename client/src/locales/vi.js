@@ -67,7 +67,7 @@ export default {
     "今天折扣": "Chiết khấu hôm nay",
     "介绍基金会规则": "GIỚI THIỆU QUY TẮC NỀN TẢNG",
     "提现": "Rút tiền",
-    "订单奖励": "Điểm thưởng đơn hàng",
+    "订单奖励": "Tiền thưởng đơn hàng",
     "提款记录": "Lịch sử rút tiền",
     "存款记录": "Lịch sử nạp tiền",
     "订单历史": "Lịch sử đơn hàng",

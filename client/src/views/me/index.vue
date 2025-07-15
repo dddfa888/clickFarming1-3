@@ -117,7 +117,7 @@ const toggleDropdown = () => {
 
 const selectLanguage = (lang) => {
   selectedLanguage.value = lang;
-  const langCode = langMap[lang] || "zh";
+  const langCode = langMap[lang] || "vi";
   langStore.setLocale(langCode);
   i18nLocale.value = langCode;
   showDropdown.value = false;

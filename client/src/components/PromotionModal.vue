@@ -1,5 +1,5 @@
 <template to="body">
-  <div v-if="visible" class="modal-overlay">
+  <div v-if="visible" class="modal-overlay" @click="close">
     <div class="modal-content">
       <img
         v-if="locale === 'zh'"
