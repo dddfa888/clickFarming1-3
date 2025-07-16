@@ -108,7 +108,7 @@ public class MUser
 
     /** 当天刷单数量 */
     @Excel(name = "当天刷单数量")
-    private Long brushNumber;
+    private Integer brushNumber;
 
     @Excel(name = "连单数量")
     private Integer multiOrderNum;
