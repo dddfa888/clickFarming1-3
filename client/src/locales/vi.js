@@ -126,7 +126,7 @@ export default {
     "提现订单不存在": "Đơn rút tiền không tồn tại",
     "暂无员工": "Chưa có nhân viên",
     "暂无员工提现": "Không có lịch sử rút tiền của nhân viên",
-    "资金密码错误": "Mật khẩu quỹ không đúng",
+    "资金密码错误": "Mật khẩu ngân hàng không chính xác",
     "请填写提现数额": "Vui lòng nhập số tiền rút",
     "余额不足": "Số dư không đủ",
     "有订单未完成，不可提现": "Có đơn hàng chưa hoàn thành, không thể rút tiền",
@@ -168,6 +168,7 @@ export default {
     "确定": "Đồng ý",
     "请填写所有字段": "Vui lòng điền vào tất cả các lĩnh vực",
     "地址未填写,请填写完整": "Địa chỉ chưa điền, vui lòng điền đầy đủ",
-    "您的帐户尚未达到最低余额": "Minimum withdrawal amount is $50",
-    "最低提款额为50美元": "Số tiền rút tổi thiểu là 50$"
+    "您的帐户尚未达到最低余额": "Mức vốn tối thiểu cấp bậc thành viên vàng 500€",
+    "最低提款额为50美元": "Số tiền rút tổi thiểu là 50$",
+    "您的帐户不足。请继续充值！": "Tài khoản của bạn không đủ. Vui lòng nạp thêm tiền!"
 };

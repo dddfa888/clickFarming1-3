@@ -259,7 +259,6 @@ function submit() {
     console.log(res);
     if (res.code == 200) {
       notify({
-        title: t("通知"),
         message: t("操作成功"),
         type: "success",
         duration: 2000,
@@ -268,7 +267,6 @@ function submit() {
       window.location.reload();
     } else {
       notify({
-        title: t("通知"),
         message: t(res.msg),
         type: "error",
         duration: 2000,

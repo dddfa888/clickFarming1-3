@@ -99,7 +99,6 @@ const handlePay = () => {
     console.log(res);
     if (res.code === 200) {
       notify({
-        title: t("通知"),
         message: t(res.msg),
         type: "success",
         duration: 2000,
@@ -108,7 +107,6 @@ const handlePay = () => {
       location.reload();
     } else {
       notify({
-        title: t("通知"),
         message: t(res.msg),
         type: "error",
         duration: 2000,

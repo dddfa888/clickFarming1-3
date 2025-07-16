@@ -100,7 +100,6 @@ const formatCurrency = (value) => {
 const Sendbutton = () => {
   if (!order.value.withdrawalAddress) {
     notify({
-      title: t("通知"),
       message: t("地址未填写,请填写完整"),
       type: "warning",
       duration: 2000,
@@ -115,7 +114,6 @@ const Sendbutton = () => {
       id.value = res.orderId;
     } else {
       notify({
-        title: t("通知"),
         message: t(res.msg),
         type: "error",
         duration: 2000,
@@ -130,7 +128,7 @@ const handlePay = () => {
     console.log(res);
     if (res.code === 200) {
       notify({
-        title: t("通知"),
+
         message: t(res.msg),
         type: "success",
         duration: 2000,
@@ -141,7 +139,7 @@ const handlePay = () => {
       });
     } else {
       notify({
-        title: t("通知"),
+
         message: t(res.msg),
         type: "error",
         duration: 2000,

@@ -37,7 +37,6 @@ request.interceptors.response.use(
         if ((res.code === 401 || res.message === 'token失效') && !isTokenExpired) {
             isTokenExpired = true;
             notify({
-                title: i18n.global.t('通知'),
                 message: i18n.global.t('登录已过期，请重新登录'),
                 type: 'warning',
                 duration: 2000
@@ -56,7 +55,6 @@ request.interceptors.response.use(
         if (error.response && error.response.status === 401 && !isTokenExpired) {
             isTokenExpired = true;
             notify({
-                title: i18n.global.t('通知'),
                 message: i18n.global.t('登录已过期，请重新登录'),
                 type: 'warning',
                 duration: 2000

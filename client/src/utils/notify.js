@@ -1,7 +1,7 @@
 import { createVNode, render } from 'vue'
 import Notify from '../components/Notify.vue'
 
-export function notify({ title = '提示', message = '', type = 'info', duration = 3000 }) {
+export function notify({ title = '', message = '', type = 'info', duration = 3000 }) {
     const container = document.createElement('div')
     document.body.appendChild(container)
 

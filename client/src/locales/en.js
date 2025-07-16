@@ -165,5 +165,6 @@ export default {
     "请填写所有字段": "Please fill in all fields",
     "地址未填写,请填写完整": "Address is not filled in, please fill in completely",
     "您的帐户尚未达到最低余额": "Your account has not reached the minimum balance",
-    "最低提款额为50美元": "Minimum withdrawal amount is $50"
+    "最低提款额为50美元": "Minimum withdrawal amount is $50",
+    "您的帐户不足。请继续充值！": "Your account is insufficient. Please deposit more!"
 };

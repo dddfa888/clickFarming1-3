@@ -17,7 +17,7 @@
 import { ref, onMounted, onUnmounted, watchEffect } from "vue";
 
 const props = defineProps({
-  title: { type: String, default: "提示" },
+  title: { type: String, default: "" },
   message: { type: String, default: "" },
   duration: { type: Number, default: 3000 },
   type: {

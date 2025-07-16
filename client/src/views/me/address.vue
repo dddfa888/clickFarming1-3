@@ -42,7 +42,6 @@ function submit() {
     (res) => {
       if (res.code === 200) {
         notify({
-          title: t("通知"),
           message: t("操作成功"),
           type: "success",
           duration: 2000,
@@ -50,7 +49,6 @@ function submit() {
         hasData.value = true;
       } else {
         notify({
-          title: t("通知"),
           message: t(res.msg),
           type: "error",
           duration: 2000,

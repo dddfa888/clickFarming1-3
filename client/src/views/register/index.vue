@@ -145,7 +145,6 @@ function onSubmit() {
   for (const key in form) {
     if (!form[key]) {
       notify({
-        title: t("提示"),
         message: t(`请填写${key}`),
         type: "error",
       });
@@ -160,10 +159,10 @@ function onSubmit() {
 
   register(payload).then((res) => {
     if (res.code === 200) {
-      notify({ title: t("通知"), message: t("操作成功"), type: "success" });
+      notify({ message: t("操作成功"), type: "success" });
       router.push("/login");
     } else {
-      notify({ title: t("通知"), message: t(res.msg), type: "error" });
+      notify({ message: t(res.msg), type: "error" });
     }
   });
 }
