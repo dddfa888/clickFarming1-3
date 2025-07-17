@@ -140,7 +140,7 @@ public class MUserOrderSetServiceImpl implements IMUserOrderSetService
             }
             orderSetset = new MUserOrderSet();
             orderSetset.setUserId(vo.getUserId());
-            orderSetset.setOrderNum(Long.valueOf(rowArray[0]));
+            orderSetset.setOrderNum(Integer.valueOf(rowArray[0]));
             orderSetset.setMinNum(new BigDecimal(rowArray[1]));
             orderSetset.setMaxNum(new BigDecimal(rowArray[2]));
             orderSetset.setCreateTime(date);

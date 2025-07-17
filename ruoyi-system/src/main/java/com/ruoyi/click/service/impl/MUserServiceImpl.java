@@ -94,7 +94,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
             throw new ServiceException("账号已存在");
         }
 
-        mUser.setBrushNumber(0L);
+        mUser.setBrushNumber(0);
         mUser.setAccountBalance(DecimalUtil.toBigDecimal(0));
         mUser.setLoginPassword(EncoderUtil.encoder(mUser.getLoginPassword()));
         mUser.setFundPassword(EncoderUtil.encoder(mUser.getFundPassword()));
@@ -218,7 +218,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
             throw new ServiceException("账号已存在");
         }
         mUser.setLoginAccount(loginAccount);
-        mUser.setBrushNumber(0L);
+        mUser.setBrushNumber(0);
         mUser.setAccountBalance(DecimalUtil.toBigDecimal(0));
         mUser.setLoginPassword(EncoderUtil.encoder(model.getLoginPassword()));
         mUser.setFundPassword(EncoderUtil.encoder(model.getFundPassword()));

@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.business.domain.MRewardRecord;
+import com.ruoyi.business.domain.MUserOrderSet;
 import com.ruoyi.business.domain.ProductManage;
 import com.ruoyi.business.mapper.MRewardRecordMapper;
+import com.ruoyi.business.mapper.MUserOrderSetMapper;
 import com.ruoyi.business.mapper.ProductManageMapper;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
@@ -51,6 +53,8 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     private MAccountChangeRecordsMapper mAccountChangeRecordsMapper;
     @Autowired
     private MRewardRecordMapper mRewardRecordMapper;
+    @Autowired
+    private MUserOrderSetMapper mUserOrderSetMapper;
 
     /**
      * 查询订单接收记录
@@ -181,7 +185,8 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0)
             throw new ServiceException("您的帐户尚未达到最低余额");
 
-        int todayCount = countNumByUserDate();
+        //int todayCount = countNumByUserDate();
+        int todayCount = mUser.getBrushNumber();
         int numTarget = userGrade.getBuyProdNum();
         if(todayCount >= numTarget)
             throw new ServiceException("您已完成今天的申请");
@@ -287,6 +292,18 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
             throw new ServiceException("订单已支付，不可重复支付");
 
         MUser mUser = mUserMapper.selectMUserByUid(orderReceiveRecord.getUserId());
+
+        //查《订单设置》表，如果提前设置了第几单的限制，到这一单时如果用户余额低于下限时会被卡住，充值达到规定下限才能继续操作
+        int todayCount = mUser.getBrushNumber();
+        MUserOrderSet paramOrderSet = new MUserOrderSet();
+        paramOrderSet.setUserId(mUser.getUid());
+        paramOrderSet.setOrderNum(todayCount);
+        List<MUserOrderSet> orderSetList = mUserOrderSetMapper.selectMUserOrderSetList(paramOrderSet);
+        if(orderSetList!=null && orderSetList.size()>0){
+            MUserOrderSet orderSet = orderSetList.get(0);
+            if(mUser.getAccountBalance().compareTo(orderSet.getMinNum()) < 0)
+                throw new ServiceException("您的帐户不足。请继续充值！");
+        }
 
         BigDecimal balanceBefore = mUser.getAccountBalance(); //记录变化前余额
         BigDecimal balanceChange = orderReceiveRecord.getProfit(); //新增余额

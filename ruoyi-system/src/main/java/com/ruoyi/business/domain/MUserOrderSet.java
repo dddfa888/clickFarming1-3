@@ -25,7 +25,7 @@ public class MUserOrderSet extends BaseEntity
 
     /** 订单序号 */
     @Excel(name = "订单序号")
-    private Long orderNum;
+    private Integer orderNum;
 
     /** 最小值 */
     @Excel(name = "最小值")
@@ -55,12 +55,12 @@ public class MUserOrderSet extends BaseEntity
         return userId;
     }
 
-    public void setOrderNum(Long orderNum) 
+    public void setOrderNum(Integer orderNum)
     {
         this.orderNum = orderNum;
     }
 
-    public Long getOrderNum() 
+    public Integer getOrderNum()
     {
         return orderNum;
     }
