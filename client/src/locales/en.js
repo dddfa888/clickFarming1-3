@@ -166,5 +166,9 @@ export default {
     "地址未填写,请填写完整": "Address is not filled in, please fill in completely",
     "您的帐户尚未达到最低余额": "Your account has not reached the minimum balance",
     "最低提款额为50美元": "Minimum withdrawal amount is $50",
-    "您的帐户不足。请继续充值！": "Your account is insufficient. Please deposit more!"
+    "您的帐户不足。请继续充值！": "Your account is insufficient. Please deposit more!",
+    "白银会员最低资本为200€": "The minimum capital for Silver members is 200 EUR",
+    "黄金会员最低资本为500€": "The minimum capital for Gold members is 500 EUR",
+    "白金会员最低资本为2000€": "The minimum capital for Platinum members is 2000 EUR",
+    "钻石会员最低资本为3000€": "The minimum capital for Diamond members is 3000 EUR"
 };

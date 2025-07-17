@@ -170,5 +170,9 @@ export default {
     "地址未填写,请填写完整": "Địa chỉ chưa điền, vui lòng điền đầy đủ",
     "您的帐户尚未达到最低余额": "Mức vốn tối thiểu cấp bậc thành viên vàng 500€",
     "最低提款额为50美元": "Số tiền rút tổi thiểu là 50$",
-    "您的帐户不足。请继续充值！": "Tài khoản của bạn không đủ. Vui lòng nạp thêm tiền!"
+    "您的帐户不足。请继续充值！": "Tài khoản của bạn không đủ. Vui lòng nạp thêm tiền!",
+    "白银会员最低资本为200€": "Mức vốn tối thiểu cấp bậc thành viên bạc 200€",
+    "黄金会员最低资本为500€": "Mức vốn tối thiểu cấp bậc thành viên vàng 500€",
+    "白金会员最低资本为2000€": "Mức vốn tối thiểu cấp bậc thành viên bạch kim 2000€",
+    "钻石会员最低资本为3000€": "Mức vốn tối thiểu cấp bậc thành viên kim cương 3000€"
 };
