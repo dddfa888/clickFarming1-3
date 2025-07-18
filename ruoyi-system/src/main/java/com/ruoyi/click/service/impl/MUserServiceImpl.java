@@ -8,6 +8,7 @@ import java.util.Random;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.click.mapper.UserGradeMapper;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.*;
 import com.ruoyi.common.core.domain.entity.MUser;
@@ -35,7 +36,8 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
 
     @Autowired
     private IUserGradeService userGradeService;
-
+    @Autowired
+    private UserGradeMapper userGradeMapper;
     @Autowired
     private IMAccountChangeRecordsService  accountChangeRecordsService;
 
@@ -361,6 +363,30 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     {
         mUser.setUpdateTime(DateUtils.getNowDate());
         return mUserMapper.updateMUser(mUser);
+    }
+
+
+    /**
+     * 修改当前用户的等级
+     *
+     * @param gradeId 用户等级id
+     * @param userId 用户id
+     * @return 结果
+     */
+    @Override
+    public int updateGrade(Long gradeId, Long userId)
+    {
+        UserGrade userGrade = userGradeMapper.selectUserGradeById(gradeId);
+        BigDecimal minBalance = userGrade.getMinBalance();
+        MUser user = mUserMapper.selectMUserByUid(userId);
+        if(userGrade.getSortNum() < user.getLevel())
+            throw new ServiceException("您无法升级到低于当前级别的级别");
+        if(user.getAccountBalance().compareTo(minBalance) < 0)
+            throw new ServiceException("余额不足无法升级");
+
+        user.setLevel(userGrade.getSortNum());
+        user.setUpdateTime(DateUtils.getNowDate());
+        return mUserMapper.updateMUser(user);
     }
 
 }

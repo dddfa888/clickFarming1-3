@@ -108,4 +108,15 @@ public interface IMUserService extends IService<MUser> {
      * @return 结果
      */
     int updateMultiOrderNum(MUser mUser);
+
+
+    /**
+     * 修改当前用户的等级
+     *
+     * @param gradeId 用户等级id
+     * @param userId 用户id
+     * @return 结果
+     */
+    int updateGrade(Long gradeId, Long userId);
+
 }

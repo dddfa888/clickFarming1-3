@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.business.domain.MRewardRecord;
@@ -22,14 +23,7 @@ import com.ruoyi.click.service.IMUserService;
 import com.ruoyi.click.service.IUserGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -117,7 +111,7 @@ public class MUserController extends BaseController
         }
 
         // 升级等级
-        mUserService.upgrade(mUser.getUid());
+        //mUserService.upgrade(mUser.getUid());
         return success();
     }
 
@@ -156,7 +150,7 @@ public class MUserController extends BaseController
         changeRecords.setTransactionType(1);
         accountChangeRecordsService.insertMAccountChangeRecords(changeRecords);
         // 升级等级
-        mUserService.upgrade(mUser.getUid());
+        //mUserService.upgrade(mUser.getUid());
         return success();
     }
 
@@ -382,6 +376,17 @@ public class MUserController extends BaseController
     public AjaxResult updateMultiOrderNum(@RequestBody MUser mUser)
     {
         return toAjax(mUserService.updateMultiOrderNum(mUser));
+    }
+
+    /**
+     * 修改当前用户的等级
+     */
+    @Log(title = "修改当前用户的等级", businessType = BusinessType.UPDATE)
+    @PostMapping("updateGrade")
+    public AjaxResult updateGradeByUser(HttpServletRequest request, @RequestParam @NotNull Long gradeId)
+    {
+        Long userId = tokenService.getLoginUser(request).getmUser().getUid();
+        return toAjax(mUserService.updateGrade(gradeId, userId));
     }
 
 }

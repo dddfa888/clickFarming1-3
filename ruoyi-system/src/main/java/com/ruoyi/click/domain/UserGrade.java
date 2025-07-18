@@ -25,7 +25,7 @@ public class UserGrade
 
     /** 序号 */
     @Excel(name = "序号")
-    private Long sortNum;
+    private Integer sortNum;
 
     /*  白银  Bạc
         黄金  Vàng
