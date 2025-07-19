@@ -90,7 +90,13 @@
     <!-- 会员等级 -->
     <div class="title">{{ t("会员级别") }}</div>
     <div v-for="item in Recordlist" :key="item.id" class="member-level">
-      <div v-if="level != item.id">{{ t("开锁") }}</div>
+      <div
+        v-if="level != item.id"
+        @click="handleUpgrade(item.id)"
+        class="level-title"
+      >
+        {{ t("开锁") }}
+      </div>
       <div class="level-info">
         <div class="col">{{ t("升级费") }}<br />{{ item.joinCost }}</div>
         <div class="col">
@@ -128,6 +134,17 @@
       </div>
     </div>
     <PromotionModal ref="promoRef" />
+
+    <BaseModal
+      v-model="showModal"
+      :title="t('确认升级')"
+      @confirm="handleConfirm"
+      @cancel="handleCancel"
+    >
+      <template #body>
+        <p>{{ t("您想升级到这个级别吗?") }}</p>
+      </template>
+    </BaseModal>
   </div>
 </template>
 
@@ -135,12 +152,19 @@
 import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import PromotionModal from "../../components/PromotionModal.vue";
+import BaseModal from "../../components/BaseModal.vue";
 import company from "../../assets/img/company.png";
 import rule from "../../assets/img/rule.png";
 import cooperation from "../../assets/img/cooperation.png";
 import notice from "../../assets/img/notice.png";
-import { getUserInfo, getMemberRecord, getUserNotifyNum } from "../../api/index.js";
+import {
+  getUserInfo,
+  getMemberRecord,
+  getUserNotifyNum,
+  updateGrade,
+} from "../../api/index.js";
 import { useI18n } from "vue-i18n";
+import { notify } from "../../utils/notify.js";
 
 const promoRef = ref();
 const router = useRouter();
@@ -149,9 +173,16 @@ const level = ref(null);
 const userInfo = ref({});
 const { t } = useI18n();
 const notifyNum = ref(0);
+const showModal = ref(false);
+const uid = ref(null);
 
 const getImageUrl = (path) => {
   return new URL(`../../assets/{path}`, import.meta.url).href;
+};
+
+const handleUpgrade = (id) => {
+  uid.value = id;
+  showModal.value = true;
 };
 
 getUserInfo().then((res) => {
@@ -162,12 +193,35 @@ getMemberRecord().then((res) => {
   if (res.code === 200) {
     Recordlist.value = res.data.userGrade || "";
     level.value = res.data.level;
-    console.log(res.data.level, "等级");
   }
 });
 getUserNotifyNum().then((res) => {
   notifyNum.value = res.data;
 });
+
+const handleConfirm = () => {
+  let gradeId = uid.value;
+  updateGrade(uid.value).then((res) => {
+    console.log(res);
+    if (res.code === 200) {
+      notify({
+        message: t(res.msg),
+        type: "success",
+        duration: 2000,
+      });
+    } else {
+      notify({
+        message: t(res.msg),
+        type: "warning",
+        duration: 2000,
+      });
+    }
+  });
+};
+
+const handleCancel = () => {
+  console.log("取消了");
+};
 
 // 生成随机用户名
 const generateUsername = () => {
@@ -259,7 +313,8 @@ const handleButtonClick = (icon) => {
 
 const onDeposit = () => {
   //console.log("执行提款操作");
-  window.location.href='https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi';
+  window.location.href =
+    "https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi";
 };
 
 const onWithdraw = () => {
@@ -348,16 +403,16 @@ onMounted(async () => {
   cursor: pointer;
 }
 .notifyNum {
-    position: relative;
-    top: -20px;
-    left: -12px;
-    display: inline-block;
-    background-color: rgb(244, 67, 54);
-    height: 20px;
-    text-align: center;
-    border-radius: 10px;
-    line-height: 21px;
-    padding: 0px 5px;
+  position: relative;
+  top: -20px;
+  left: -12px;
+  display: inline-block;
+  background-color: rgb(244, 67, 54);
+  height: 20px;
+  text-align: center;
+  border-radius: 10px;
+  line-height: 21px;
+  padding: 0px 5px;
 }
 
 .balance-price {
@@ -614,7 +669,7 @@ onMounted(async () => {
     height: 25px;
     cursor: pointer;
   }
-  .notifyNum{
+  .notifyNum {
     position: relative;
     top: -20px;
     left: -12px;

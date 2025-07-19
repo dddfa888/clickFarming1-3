@@ -193,3 +193,13 @@ export function updateUserInfo(data) {
         data
     })
 }
+
+
+// 更改会员等级 接口：
+
+export function updateGrade(params) {
+    return request({
+        url: `/api/user/updateGrade?gradeId=${params}`,
+        method: 'post'
+    })
+}

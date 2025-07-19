@@ -174,5 +174,9 @@ export default {
     "白银会员最低资本为200€": "Mức vốn tối thiểu cấp bậc thành viên bạc 200€",
     "黄金会员最低资本为500€": "Mức vốn tối thiểu cấp bậc thành viên vàng 500€",
     "白金会员最低资本为2000€": "Mức vốn tối thiểu cấp bậc thành viên bạch kim 2000€",
-    "钻石会员最低资本为3000€": "Mức vốn tối thiểu cấp bậc thành viên kim cương 3000€"
+    "钻石会员最低资本为3000€": "Mức vốn tối thiểu cấp bậc thành viên kim cương 3000€",
+    "确认升级": "Xác nhận nâng cấp",
+    "您想升级到这个级别吗?": "Bạn có muốn nâng cấp lên cấp độ này không?",
+    "您无法升级到低于当前级别的级别": "Bạn không thể nâng cấp xuống cấp độ thấp hơn cấp độ hiện tại",
+    "余额不足无法升级": "Số dư không đủ để nâng cấp"
 };

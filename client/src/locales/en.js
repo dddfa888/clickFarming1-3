@@ -170,5 +170,9 @@ export default {
     "白银会员最低资本为200€": "The minimum capital for Silver members is 200 EUR",
     "黄金会员最低资本为500€": "The minimum capital for Gold members is 500 EUR",
     "白金会员最低资本为2000€": "The minimum capital for Platinum members is 2000 EUR",
-    "钻石会员最低资本为3000€": "The minimum capital for Diamond members is 3000 EUR"
+    "钻石会员最低资本为3000€": "The minimum capital for Diamond members is 3000 EUR",
+    "确认升级": "Confirm Upgrade",
+    "您想升级到这个级别吗?": "Do you want to upgrade to this level?",
+    "您无法升级到低于当前级别的级别": "You cannot upgrade to a level lower than your current one",
+    "余额不足无法升级": "Insufficient balance to upgrade"
 };
