@@ -25,8 +25,12 @@ public class UserGrade
 
     /** 序号 */
     @Excel(name = "序号")
-    private Long sortNum;
+    private Integer sortNum;
 
+    /*  白银  Bạc
+        黄金  Vàng
+        白金  Bạch Kim
+        钻石  Kim Cương  */
     /** 等级名称 */
     @Excel(name = "等级名称")
     private String gradeName;

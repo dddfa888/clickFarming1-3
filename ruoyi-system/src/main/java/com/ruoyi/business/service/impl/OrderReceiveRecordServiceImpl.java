@@ -182,8 +182,20 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         if(userGrade==null)
             throw new ServiceException("用户等级不存在");
         //若余额小于等级内设置的最低余额，则给出提示，下单失败
-        if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0)
-            throw new ServiceException("您的帐户尚未达到最低余额");
+        if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0) {
+            String nameCn = "";
+            //会员等级名称越南语转为中文
+            String gradeName = userGrade.getGradeName();
+            switch (gradeName){
+                case "Bạc"      : nameCn = "白银"; break;
+                case "Vàng"     : nameCn = "黄金"; break;
+                case "Bạch Kim" : nameCn = "白金"; break;
+                case "Kim Cương": nameCn = "钻石"; break;
+                default: nameCn = gradeName;
+            }
+            String msg = nameCn+"会员最低资本为"+userGrade.getMinBalance()+"€";
+            throw new ServiceException(msg);
+        }
 
         //int todayCount = countNumByUserDate();
         int todayCount = mUser.getBrushNumber();
@@ -221,21 +233,24 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
      * 设置一个订单的数据并保存入数据库
      */
     public void setValueSaveProdList(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade, int numTarget, int todayCount){
-        // 数据库中随机选产品
-        ProductManage product = getProductRand(mUser);
+        //查《订单设置》表，如果提前设置了某一单的限制，就根据限制条件查询产品，没设置就按默认情况查询
+        MUserOrderSet paramOrderSet = new MUserOrderSet();
+        paramOrderSet.setUserId(mUser.getUid());
+        paramOrderSet.setOrderNum(todayCount);
+        List<MUserOrderSet> orderSetList = mUserOrderSetMapper.selectMUserOrderSetList(paramOrderSet);
+
+        ProductManage product = null;
+        if(orderSetList!=null && orderSetList.size()>0){
+            product = setOrderProdLimit(orderReceiveRecord, orderSetList.get(0));
+        }else{
+            product = setOrderProdNormal(orderReceiveRecord, mUser);
+        }
+
         orderReceiveRecord.setProductId(product.getId());
         orderReceiveRecord.setProductName(product.getProductName());
         orderReceiveRecord.setProductImageUrl(product.getImageUrl());
         orderReceiveRecord.setUnitPrice(product.getPrice());
 
-        // 计算产品数量，先计算用户余额整除产品价格的商，即用户可支付范围内的最大值（最大产品数量）
-        int prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN).intValue();
-        // 如果上面计算的prodNum是1，产品数量直接设为1。否则，假设prodNum（用户可支付范围内的最大数量）是10，生成随机数取5-10之间的整数作为本次订单实际产品数量。
-        if(prodNum>1){
-            int half = prodNum>>1;
-            prodNum = (int)Math.floor(Math.random() * half) + (prodNum-half);
-        }
-        orderReceiveRecord.setNumber(prodNum);
         orderReceiveRecord.setTotalAmount(DecimalUtil.multiple(product.getPrice(), orderReceiveRecord.getNumber()));
         orderReceiveRecord.setProfit(calcProfit(userGrade, orderReceiveRecord.getTotalAmount()));
         orderReceiveRecord.setRefundAmount(DecimalUtil.add(orderReceiveRecord.getTotalAmount(), orderReceiveRecord.getProfit()));
@@ -249,9 +264,64 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     }
 
     /**
+     * 从数据库中随机查询一个产品，默认只查询价格小于或等于用户余额的，并计算用户可支付范围内的产品数量
+     */
+    public ProductManage setOrderProdNormal(OrderReceiveRecord orderReceiveRecord, MUser mUser){
+        Map<String,Object> paramIds = new HashMap<>();
+        paramIds.put("price_Le", mUser.getAccountBalance());
+        List<Long> idList = productManageMapper.getIdList(paramIds);
+        if(idList==null || idList.isEmpty())
+            throw new ServiceException("未查到产品信息");
+        //前面查出符合条件的产品id，然后随机挑选一个产品id，查出产品
+        int prodIndex = (int) Math.floor(Math.random() * idList.size());
+        ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
+
+        // 计算产品数量，先计算用户余额整除产品价格的商，即用户可支付范围内的最大值（最大产品数量）
+        int prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN).intValue();
+        // 如果上面计算的prodNum是1，产品数量直接设为1。否则，假设prodNum（用户可支付范围内的最大数量）是10，生成随机数取5-10之间的整数作为本次订单实际产品数量。
+        if(prodNum>1){
+            int half = prodNum>>1;
+            prodNum = (int)Math.floor(Math.random() * half) + (prodNum-half);
+        }
+        orderReceiveRecord.setNumber(prodNum);
+        return product;
+    }
+
+    /**
+     * 从数据库中随机查询一个产品，默认只查询价格小于或等于用户余额的，并计算用户可支付范围内的产品数量
+     */
+    public ProductManage setOrderProdLimit(OrderReceiveRecord orderReceiveRecord, MUserOrderSet orderSet){
+        BigDecimal minNum = orderSet.getMinNum();
+        BigDecimal maxNum = orderSet.getMaxNum();
+        BigDecimal maxHalf = maxNum.divide(new BigDecimal(2));
+        Map<String,Object> paramIds = new HashMap<>();
+        paramIds.put("min", minNum);
+        paramIds.put("max", maxNum);
+        paramIds.put("max_half", maxHalf);
+        List<Long> idList = productManageMapper.getIdListByOrderSet(paramIds);
+        if(idList==null || idList.isEmpty())
+            throw new ServiceException("未查到产品信息");
+
+        int prodIndex = (int) Math.floor(Math.random() * idList.size());
+        ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
+        BigDecimal price = product.getPrice();
+
+        // 计算合适的产品数量，使总额在min到max之间
+        int prodNum = 1; //默认数量1，适合产品单价 > half的情况
+
+        if(price.compareTo(maxHalf) <=0 ){
+            long min = Math.round(Math.ceil(minNum.divide(price, 2, RoundingMode.HALF_UP).doubleValue()));
+            long max = Math.round(Math.floor(maxNum.divide(price, 2, RoundingMode.HALF_UP).doubleValue()));
+            prodNum = (int) (Math.round(Math.floor(Math.random()*(max-min))) + min);
+        }
+        orderReceiveRecord.setNumber(prodNum);
+        return product;
+    }
+
+    /**
      * 从数据库中随机查询一个产品，只查询价格小于或等于用户余额的
      * @return
-     */
+     *//*
     public ProductManage getProductRand(MUser mUser){
         Map<String,Object> paramIds = new HashMap<>();
         paramIds.put("price_Le", mUser.getAccountBalance());
@@ -261,7 +331,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
         int prodIndex = (int) Math.floor(Math.random() * idList.size());
         return productManageMapper.selectProductManageById(idList.get(prodIndex));
-    }
+    }*/
 
     /**
      * 计算利润
@@ -293,17 +363,9 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
         MUser mUser = mUserMapper.selectMUserByUid(orderReceiveRecord.getUserId());
 
-        //查《订单设置》表，如果提前设置了第几单的限制，到这一单时如果用户余额低于下限时会被卡住，充值达到规定下限才能继续操作
-        int todayCount = mUser.getBrushNumber();
-        MUserOrderSet paramOrderSet = new MUserOrderSet();
-        paramOrderSet.setUserId(mUser.getUid());
-        paramOrderSet.setOrderNum(todayCount);
-        List<MUserOrderSet> orderSetList = mUserOrderSetMapper.selectMUserOrderSetList(paramOrderSet);
-        if(orderSetList!=null && orderSetList.size()>0){
-            MUserOrderSet orderSet = orderSetList.get(0);
-            if(mUser.getAccountBalance().compareTo(orderSet.getMinNum()) < 0)
-                throw new ServiceException("您的帐户不足。请继续充值！");
-        }
+        //用户余额小于订单总金额时，不可支付，需要先充值。
+        if(mUser.getAccountBalance().compareTo(orderReceiveRecord.getTotalAmount()) < 0)
+            throw new ServiceException("您的帐户不足。请继续充值！");
 
         BigDecimal balanceBefore = mUser.getAccountBalance(); //记录变化前余额
         BigDecimal balanceChange = orderReceiveRecord.getProfit(); //新增余额
