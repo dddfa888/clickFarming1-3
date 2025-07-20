@@ -69,7 +69,7 @@
       src="../../assets/videos/mcd-DJnKgbK7.mp4"
     ></video>
 
-    <h5>{{ t("概述 Mercado Asia") }}</h5>
+    <h5>{{ t("概述:") }} Mercado Asia</h5>
     <!-- 功能按钮 -->
     <div class="info-buttons">
       <div

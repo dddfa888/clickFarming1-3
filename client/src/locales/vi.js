@@ -178,5 +178,8 @@ export default {
     "确认升级": "Xác nhận nâng cấp",
     "您想升级到这个级别吗?": "Bạn có muốn nâng cấp lên cấp độ này không?",
     "您无法升级到低于当前级别的级别": "Bạn không thể nâng cấp xuống cấp độ thấp hơn cấp độ hiện tại",
-    "余额不足无法升级": "Số dư không đủ để nâng cấp"
+    "余额不足无法升级": "Số dư không đủ để nâng cấp",
+    "概述:": "Tổng quan:",
+    "没有理由": "Không có lý do",
+    "平衡调整": "Điều chỉnh cân bằng"
 };

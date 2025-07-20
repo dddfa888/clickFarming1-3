@@ -174,5 +174,8 @@ export default {
     "确认升级": "Confirm Upgrade",
     "您想升级到这个级别吗?": "Do you want to upgrade to this level?",
     "您无法升级到低于当前级别的级别": "You cannot upgrade to a level lower than your current one",
-    "余额不足无法升级": "Insufficient balance to upgrade"
+    "余额不足无法升级": "Insufficient balance to upgrade",
+    "概述:": "Overview:",
+    "没有理由": "No reason",
+    "平衡调整": "Balance adjustment"
 };
