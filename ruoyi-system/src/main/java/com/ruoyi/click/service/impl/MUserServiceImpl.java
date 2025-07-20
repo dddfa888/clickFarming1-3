@@ -8,6 +8,7 @@ import java.util.Random;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.click.mapper.MAccountChangeRecordsMapper;
 import com.ruoyi.click.mapper.UserGradeMapper;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.*;
@@ -40,6 +41,8 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     private UserGradeMapper userGradeMapper;
     @Autowired
     private IMAccountChangeRecordsService  accountChangeRecordsService;
+    @Autowired
+    private MAccountChangeRecordsMapper mAccountChangeRecordsMapper;
 
     /**
      * 查询用户
@@ -378,12 +381,27 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     {
         UserGrade userGrade = userGradeMapper.selectUserGradeById(gradeId);
         BigDecimal minBalance = userGrade.getMinBalance();
+        BigDecimal joinCost = new BigDecimal(userGrade.getJoinCost());
         MUser user = mUserMapper.selectMUserByUid(userId);
         if(userGrade.getSortNum() < user.getLevel())
             throw new ServiceException("您无法升级到低于当前级别的级别");
-        if(user.getAccountBalance().compareTo(minBalance) < 0)
+        if(user.getAccountBalance().compareTo(minBalance) < 0||user.getAccountBalance().compareTo(joinCost) < 0)
             throw new ServiceException("余额不足无法升级");
-
+        //扣除金额
+        BigDecimal accountBalance = user.getAccountBalance();
+        user.setAccountBalance(user.getAccountBalance().subtract(joinCost).setScale(2, BigDecimal.ROUND_HALF_UP));
+        //记录账变
+        MAccountChangeRecords changeRecords = new MAccountChangeRecords();
+        changeRecords.setAmount(joinCost);
+        changeRecords.setType(1); //0收入 1支出
+        changeRecords.setAccountForward(accountBalance);
+        changeRecords.setAccountBack(user.getAccountBalance());
+        changeRecords.setUid(String.valueOf(user.getUid()));
+        changeRecords.setDescription(user.getLoginAccount()+"升级扣除 等级名称"+userGrade.getGradeName());
+        changeRecords.setTransactionType(1); // 3:专用于标记订单利润
+        changeRecords.setCreateTime(DateUtils.getNowDate());
+        changeRecords.setRelatedId("-");
+        mAccountChangeRecordsMapper.insertMAccountChangeRecords(changeRecords);
         user.setLevel(userGrade.getSortNum());
         user.setUpdateTime(DateUtils.getNowDate());
         return mUserMapper.updateMUser(user);
