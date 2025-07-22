@@ -35,8 +35,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/api/notify")
-public class MNotifyController extends BaseController
-{
+public class MNotifyController extends BaseController {
     @Autowired
     private IMNotifyService mNotifyService;
 
@@ -53,14 +52,20 @@ public class MNotifyController extends BaseController
         MNotify mNotify = new MNotify();
         mNotify.setUserId(userId);
         List<MNotify> mNotifies = mNotifyService.selectMNotifyList(mNotify);
+        //批量修改通知状态为已读
+        for (MNotify notify : mNotifies) {
+            notify.setRead(true);
+            mNotifyService.updateMNotify(notify);
+        }
+
         return success(mNotifies);
     }
+
     /**
      * 查询通知列表
      */
     @GetMapping("/list")
-    public TableDataInfo list(MNotify mNotify)
-    {
+    public TableDataInfo list(MNotify mNotify) {
         startPage();
         List<MNotify> list = mNotifyService.selectMNotifyList(mNotify);
         return getDataTable(list);
@@ -71,8 +76,7 @@ public class MNotifyController extends BaseController
      */
     @Log(title = "通知", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, MNotify mNotify)
-    {
+    public void export(HttpServletResponse response, MNotify mNotify) {
         List<MNotify> list = mNotifyService.selectMNotifyList(mNotify);
         ExcelUtil<MNotify> util = new ExcelUtil<MNotify>(MNotify.class);
         util.exportExcel(response, list, "通知数据");
@@ -82,8 +86,7 @@ public class MNotifyController extends BaseController
      * 获取通知详细信息
      */
     @GetMapping(value = "/{uid}")
-    public AjaxResult getInfo(@PathVariable("uid") Long uid)
-    {
+    public AjaxResult getInfo(@PathVariable("uid") Long uid) {
         return success(mNotifyService.selectMNotifyByUid(uid));
     }
 
@@ -92,10 +95,9 @@ public class MNotifyController extends BaseController
      */
     @Log(title = "通知", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody MNotify mNotify)
-    {
+    public AjaxResult add(@RequestBody MNotify mNotify) {
         MUser mUser = mUserService.selectMUserByUid(mNotify.getUserId());
-        if(mUser!=null){
+        if (mUser != null) {
             mNotify.setUserName(mUser.getLoginAccount());
         }
         return toAjax(mNotifyService.insertMNotify(mNotify));
@@ -108,9 +110,9 @@ public class MNotifyController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody MNotify mNotify) {
         MNotify notifyByUid = mNotifyService.selectMNotifyByUid(mNotify.getUid());
-        if(!Objects.equals(notifyByUid.getUserId(), mNotify.getUserId())){
+        if (!Objects.equals(notifyByUid.getUserId(), mNotify.getUserId())) {
             MUser mUser = mUserService.selectMUserByUid(mNotify.getUserId());
-            if(mUser!=null){
+            if (mUser != null) {
                 mNotify.setUserName(mUser.getLoginAccount());
             }
         }
@@ -121,9 +123,8 @@ public class MNotifyController extends BaseController
      * 删除通知
      */
     @Log(title = "通知", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{uids}")
-    public AjaxResult remove(@PathVariable Long[] uids)
-    {
+    @DeleteMapping("/{uids}")
+    public AjaxResult remove(@PathVariable Long[] uids) {
         return toAjax(mNotifyService.deleteMNotifyByUids(uids));
     }
 

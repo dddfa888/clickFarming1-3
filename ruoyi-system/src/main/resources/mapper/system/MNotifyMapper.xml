@@ -62,6 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userName != null">user_name = #{userName},</if>
             <if test="title != null">title = #{title},</if>
             <if test="content != null">content = #{content},</if>
+            <if test="isRead != null">is_read = #{isRead},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
@@ -81,12 +82,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 统计数量 -->
     <select id="countNum" parameterType="MNotify" resultType="java.lang.Long">
-        select count(1) n from m_notify
+        select count(1) as n
+        from m_notify
         <where>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="content != null  and content != ''"> and content = #{content}</if>
+            is_read = false
+            <if test="userId != null">and user_id = #{userId}</if>
+            <if test="userName != null and userName != ''">and user_name like concat('%', #{userName}, '%')</if>
+            <if test="title != null and title != ''">and title = #{title}</if>
+            <if test="content != null and content != ''">and content = #{content}</if>
         </where>
     </select>
 

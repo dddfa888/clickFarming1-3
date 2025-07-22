@@ -12,8 +12,7 @@ import java.util.List;
  * @date 2025-06-18
  */
 @Mapper
-public interface MNotifyMapper
-{
+public interface MNotifyMapper {
     /**
      * 查询通知
      *
