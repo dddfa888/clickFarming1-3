@@ -181,5 +181,7 @@ export default {
     "余额不足无法升级": "Số dư không đủ để nâng cấp",
     "概述:": "Tổng quan:",
     "没有理由": "Không có lý do",
-    "平衡调整": "Điều chỉnh cân bằng"
+    "平衡调整": "Điều chỉnh cân bằng",
+    "订单支付成功！":"thanh toán đơn hàng thành công !",
+    "正在分发":"đang phân phối "
 };

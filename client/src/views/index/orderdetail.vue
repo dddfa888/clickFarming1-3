@@ -3,7 +3,7 @@
     <div class="order-header">
       <div>
         <p style="font-size: 15px">{{ t("订单详细信息") }}</p>
-        <div class="data-provider">{{ t("数据提供者 Mercado Asia") }}</div>
+        <div class="data-provider">{{ t("数据提供者 Ingka Centres") }}</div>
       </div>
       <div class="amount-section">
         <div class="amount-display">
@@ -48,16 +48,16 @@
       <div class="rules-content" v-if="locale === 'vi'">
         <!-- 这里可以添加基金会规则的具体内容 -->
         <p>
-          Khi bạn trở thành thành viên Mercado Asia, bạn sẽ nhận được các mã sản
-          phẩm có liên quan về đơn đặt hàng , bao gồm thông tin sản phẩm chi
+          Khi bạn trở thành thành viên Ingka Centres, bạn sẽ nhận được các mã
+          sản phẩm có liên quan về đơn đặt hàng , bao gồm thông tin sản phẩm chi
           tiết đơn hàng , giá trị sản phẩm , số lượng ...vv..
         </p>
         <p>
-          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
+          Thành viên của Ingka Centres sẽ là nhà trung gian giúp xác nhận đơn
           hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
         </p>
         <p>
-          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
+          Thành viên của Ingka Centres sẽ là nhà trung gian giúp xác nhận đơn
           hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
         </p>
       </div>
@@ -102,22 +102,23 @@ const Sendbutton = () => {
     notify({
       message: t("地址未填写,请填写完整"),
       type: "warning",
-      duration: 2000,
+      duration: 4000,
     });
     router.push({ path: "/address" });
     return;
   }
   createOrder().then((res) => {
-    console.log(res.orderId);
+    console.log(res,"ghjgj");
     if (res.code === 200) {
       showModal.value = true;
       id.value = res.orderId;
     } else {
-      notify({
-        message: t(res.msg),
-        type: "error",
-        duration: 2000,
-      });
+        notify({
+    message: t(res.msg),
+    type: "error",
+    duration: 4000,
+  });
+     
     }
   });
 };
@@ -125,24 +126,32 @@ const Sendbutton = () => {
 const handlePay = () => {
   showModal.value = false;
   sendDistribution(id.value).then((res) => {
-    console.log(res);
+    console.log(res,ghgh);
     if (res.code === 200) {
-      notify({
+       notify({
+  title: "",
+  message: t("正在分发"),
+  type: "warning",
+  duration: 3000
+})
 
-        message: t(res.msg),
+setTimeout(() => {
+  notify({
+        message: t("订单支付成功！"),
         type: "success",
-        duration: 2000,
+        duration: 4000,
       });
+}, 1000);
+    
       // 支付成功后刷新余额
       getUserGradeAndBalanceAndDiscount().then((refreshRes) => {
         order.value = refreshRes.data;
       });
     } else {
       notify({
-
         message: t(res.msg),
         type: "error",
-        duration: 2000,
+        duration: 4000,
       });
     }
   });

@@ -177,5 +177,7 @@ export default {
     "余额不足无法升级": "Insufficient balance to upgrade",
     "概述:": "Overview:",
     "没有理由": "No reason",
-    "平衡调整": "Balance adjustment"
+    "平衡调整": "Balance adjustment",
+     "订单支付成功！":"Order payment successful!",
+    "正在分发":"is distributing"
 };
