@@ -155,10 +155,9 @@ const handlePay = debounce(() => {
             type: "success",
             duration: 5000
           });
-
           // ✅ 延迟解锁，确保通知出现后才能继续下单
           isProcessing.value = false;
-        }, 1000);
+        }, 5000);
 
         // 更新数据
         return getUserGradeAndBalanceAndDiscount().then(refreshRes => {
@@ -181,7 +180,7 @@ const handlePay = debounce(() => {
       });
       isProcessing.value = false;
     });
-}, 2000);
+}, 5000);
 
 getUserGradeAndBalanceAndDiscount().then(res => {
   console.log(res.data);

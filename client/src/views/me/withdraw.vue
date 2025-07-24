@@ -9,15 +9,15 @@
         <span class="balance">{{ balance }} €</span>
       </div>
 
-      <div class="form" v-if="accountName && accountNumber">
+      <div class="form" v-if="bankAccountNumber && bankName">
         <div class="form-group">
           <label>{{ t("账户名称") }}</label>
-          <input type="text" v-model="accountName" disabled />
+          <input type="text" v-model="bankAccountNumber" disabled />
         </div>
 
         <div class="form-group">
           <label>{{ t("账号") }}</label>
-          <input type="text" v-model="accountNumber" disabled />
+          <input type="text" v-model="bankName" disabled />
         </div>
 
         <div class="form-group amount-group">
@@ -57,9 +57,7 @@
             }
           "
           style="color: #20a53a"
-        >
-          Tại đây</span
-        >
+        >Tại đây</span>
         để đi điền thông
       </div>
     </div>
@@ -76,8 +74,8 @@ import { notify } from "../../utils/notify.js";
 const { t } = useI18n();
 
 const balance = ref("");
-const accountName = ref("");
-const accountNumber = ref("");
+const bankAccountNumber = ref("");
+const bankName = ref("");
 const amount = ref("");
 const password = ref("");
 const showPassword = ref(false);
@@ -95,41 +93,48 @@ function toback() {
   router.go(-1);
 }
 function submit() {
-  withdraw({ amount: amount.value, fundPassword: password.value }).then(
-    (res) => {
-      if (res.code === 200) {
-        notify({
-          message: t("操作成功"),
-          type: "success",
-          duration: 2000,
-        });
+  withdraw({ amount: amount.value, fundPassword: password.value }).then(res => {
+    if (res.code === 200) {
+      notify({
+        message: t("操作成功"),
+        type: "success",
+        duration: 2000
+      });
 
-        // 清空输入
-        amount.value = "";
-        password.value = "";
+      // 清空输入
+      amount.value = "";
+      password.value = "";
 
-        // 重新获取用户信息更新余额
-        getUserInfo().then((res) => {
-          balance.value = res.data.accountBalance;
-        });
-      } else {
-        notify({
-          message: t(res.msg),
-          type: "error",
-          duration: 2000,
-        });
-        amount.value = "";
-        password.value = "";
-      }
+      // 重新获取用户信息更新余额
+      getUserInfo().then(res => {
+        balance.value = res.data.accountBalance;
+      });
+    } else {
+      notify({
+        message: t(res.msg),
+        type: "error",
+        duration: 2000
+      });
+      amount.value = "";
+      password.value = "";
     }
-  );
+  });
 }
 
-getUserInfo().then((res) => {
-  accountName.value = res.data.bankAccountName;
-  accountNumber.value = res.data.bankAccountNumber;
+getUserInfo().then(res => {
+  bankAccountNumber.value = res.data.bankAccountNumber;
+  bankName.value = formatBankCard(res.data.bankName);
   balance.value = res.data.accountBalance;
 });
+
+function formatBankCard(cardNo) {
+  if (!cardNo) return "";
+  const clean = cardNo.replace(/\s+/g, "");
+  if (clean.length <= 6) return clean;
+  const start = clean.slice(0, 4);
+  const end = clean.slice(-4);
+  return `${start} **** **** ${end}`;
+}
 </script>
 
 <style scoped>
