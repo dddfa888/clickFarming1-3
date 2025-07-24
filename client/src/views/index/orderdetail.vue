@@ -3,21 +3,17 @@
     <div class="order-header">
       <div>
         <p style="font-size: 15px">{{ t("订单详细信息") }}</p>
-        <div class="data-provider">{{ t("数据提供者 Ingka Centres") }}</div>
+        <div class="data-provider">{{ t("数据提供者 Mercado Asia") }}</div>
       </div>
       <div class="amount-section">
-        <div class="amount-display">
-          {{ formatCurrency(order.userBalance) }}
-        </div>
+        <div class="amount-display">{{ formatCurrency(order.userBalance) }}</div>
         <div class="amount-label">{{ t("剩余") }}(€)</div>
       </div>
     </div>
 
     <div class="order-summary">
-      <img src="../../assets/img/banner1-8QRSYmQj.png" alt="" />
-      <div class="status-badge" @click="Sendbutton">
-        {{ t("收到") }}
-      </div>
+      <img src="../../assets/img/banner1-8QRSYmQj.png" alt />
+      <div class="status-badge" @click="Sendbutton">{{ t("收到") }}</div>
     </div>
 
     <div class="order-details-grid">
@@ -48,26 +44,21 @@
       <div class="rules-content" v-if="locale === 'vi'">
         <!-- 这里可以添加基金会规则的具体内容 -->
         <p>
-          Khi bạn trở thành thành viên Ingka Centres, bạn sẽ nhận được các mã
+          Khi bạn trở thành thành viên Mercado Asia, bạn sẽ nhận được các mã
           sản phẩm có liên quan về đơn đặt hàng , bao gồm thông tin sản phẩm chi
           tiết đơn hàng , giá trị sản phẩm , số lượng ...vv..
         </p>
         <p>
-          Thành viên của Ingka Centres sẽ là nhà trung gian giúp xác nhận đơn
+          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
           hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
         </p>
         <p>
-          Thành viên của Ingka Centres sẽ là nhà trung gian giúp xác nhận đơn
+          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
           hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
         </p>
       </div>
     </div>
-    <ProductModal
-      v-if="showModal"
-      :id="id"
-      @close="showModal = false"
-      @pay="handlePay"
-    />
+    <ProductModal v-if="showModal" :id="id" @close="showModal = false" @pay="handlePay" />
   </div>
 </template>
 
@@ -76,7 +67,7 @@ import { ref } from "vue";
 import {
   createOrder,
   getUserGradeAndBalanceAndDiscount,
-  sendDistribution,
+  sendDistribution
 } from "../../api";
 import { useI18n } from "vue-i18n";
 import ProductModal from "../../components/ProductModal.vue";
@@ -91,73 +82,108 @@ const showModal = ref(false);
 const id = ref(null);
 const langStore = useLangStore();
 const { locale } = storeToRefs(langStore);
+const isProcessing = ref(false);
 
-const formatCurrency = (value) => {
+const formatCurrency = value => {
   if (typeof value !== "number") return "0 €";
   return value.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 };
 
-const Sendbutton = () => {
+const Sendbutton = debounce(() => {
+  if (isProcessing.value) return; // ✅ 禁止同时点击多个“收到”
+
   if (!order.value.withdrawalAddress) {
-    notify({
+    globalThis.$notify({
       message: t("地址未填写,请填写完整"),
       type: "warning",
-      duration: 4000,
+      duration: 4000
     });
     router.push({ path: "/address" });
     return;
   }
-  createOrder().then((res) => {
-    console.log(res,"ghjgj");
-    if (res.code === 200) {
-      showModal.value = true;
-      id.value = res.orderId;
-    } else {
-        notify({
-    message: t(res.msg),
-    type: "error",
-    duration: 4000,
-  });
-     
-    }
-  });
-};
 
-const handlePay = () => {
+  isProcessing.value = true; // ✅ 创建订单就上锁
+
+  createOrder()
+    .then(res => {
+      if (res.code === 200) {
+        showModal.value = true;
+        id.value = res.orderId;
+        // ❗不要解锁，等待支付成功后解锁
+      } else {
+        globalThis.$notify({
+          message: t(res.msg),
+          type: "error",
+          duration: 4000
+        });
+        isProcessing.value = false; // ❗失败立即解锁
+      }
+    })
+    .catch(() => {
+      isProcessing.value = false;
+    });
+}, 2000);
+
+function debounce(fn, delay) {
+  let timer = null;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+}
+
+const handlePay = debounce(() => {
+  if (!id.value || !isProcessing.value) return;
+
   showModal.value = false;
-  sendDistribution(id.value).then((res) => {
-    console.log(res,ghgh);
-    if (res.code === 200) {
-       notify({
-  title: "",
-  message: t("正在分发"),
-  type: "warning",
-  duration: 3000
-})
 
-setTimeout(() => {
-  notify({
-        message: t("订单支付成功！"),
-        type: "success",
-        duration: 4000,
-      });
-}, 1000);
-    
-      // 支付成功后刷新余额
-      getUserGradeAndBalanceAndDiscount().then((refreshRes) => {
-        order.value = refreshRes.data;
-      });
-    } else {
-      notify({
-        message: t(res.msg),
+  sendDistribution(id.value)
+    .then(res => {
+      if (res.code === 200) {
+        globalThis.$notify({
+          title: "",
+          message: t("正在分发"),
+          type: "warning",
+          duration: 5000
+        });
+
+        setTimeout(() => {
+          globalThis.$notify({
+            message: t("订单支付成功！"),
+            type: "success",
+            duration: 5000
+          });
+
+          // ✅ 延迟解锁，确保通知出现后才能继续下单
+          isProcessing.value = false;
+        }, 1000);
+
+        // 更新数据
+        return getUserGradeAndBalanceAndDiscount().then(refreshRes => {
+          order.value = refreshRes.data;
+        });
+      } else {
+        globalThis.$notify({
+          message: t(res.msg),
+          type: "error",
+          duration: 4000
+        });
+        isProcessing.value = false;
+      }
+    })
+    .catch(() => {
+      globalThis.$notify({
+        message: t("支付请求失败"),
         type: "error",
-        duration: 4000,
+        duration: 4000
       });
-    }
-  });
-};
+      isProcessing.value = false;
+    });
+}, 2000);
 
-getUserGradeAndBalanceAndDiscount().then((res) => {
+getUserGradeAndBalanceAndDiscount().then(res => {
   console.log(res.data);
   order.value = res.data;
 });

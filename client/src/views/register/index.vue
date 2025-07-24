@@ -5,16 +5,13 @@
       <span class="label">{{ $t("语言") }}</span>
       <div class="dropdown-wrapper" @click="toggleLangList">
         {{ t(selectedLanguage) }}
-
         <ul v-if="showLangList" class="lang-dropdown">
           <li
             v-for="(lang, index) in languageList"
             :key="index"
             @click.stop="selectLanguage(lang)"
             :class="{ active: lang === selectedLanguage }"
-          >
-            {{ t(lang) }}
-          </li>
+          >{{ t(lang) }}</li>
         </ul>
       </div>
     </div>
@@ -30,47 +27,42 @@
         <!-- 账号 -->
         <div class="form-group">
           <i class="iconfont icon-user input-icon"></i>
-          <input
-            v-model="form.loginAccount"
-            type="text"
-            :placeholder="t('请输入账号')"
-            required
-          />
+          <input v-model="form.loginAccount" type="text" :placeholder="t('请输入账号')" required />
         </div>
 
         <!-- 手机号带区号 -->
         <div class="form-group phone-group">
           <i class="iconfont icon-phone input-icon"></i>
           <select v-model="form.areaCode" class="area-select">
-            <option value="+86">+84</option>
-            <option value="+84">+65</option>
-            <option value="+1">+66</option>
-            <option value="+81">+62</option>
-            <option value="+33">+60</option>
-            <option value="+33">+63</option>
-            <option value="+33">+27</option>
-            <option value="+33">+20</option>
-            <option value="+33">+234</option>
-            <option value="+33">+1</option>
-            <option value="+33">+44</option>
-            <option value="+33">+61</option>
-            <option value="+33">+82</option>
-            <option value="+33">+55</option>
-            <option value="+33">+52</option>
-            <option value="+33">+7</option>
-            <option value="+33">+39</option>
-            <option value="+33">+34</option>
-            <option value="+33">+86</option>
-            <option value="+33">+91</option>
-            <option value="+33">+49</option>
+            <option value="+84">+84</option>
+            <option value="+65">+65</option>
+            <option value="+66">+66</option>
+            <option value="+62">+62</option>
+            <option value="+60">+60</option>
+            <option value="+63">+63</option>
+            <option value="+27">+27</option>
+            <option value="+20">+20</option>
+            <option value="+234">+234</option>
+            <option value="+1">+1</option>
+            <option value="+44">+44</option>
+            <option value="+61">+61</option>
+            <option value="+82">+82</option>
+            <option value="+55">+55</option>
+            <option value="+52">+52</option>
+            <option value="+7">+7</option>
+            <option value="+39">+39</option>
+            <option value="+34">+34</option>
+            <option value="+86">+86</option>
+            <option value="+91">+91</option>
+            <option value="+49">+49</option>
             <option value="+33">+33</option>
-            <option value="+33">+81</option>
-            <option value="+33">+886</option>
-            <option value="+33">+852</option>
-            <option value="+33">+64</option>
-            <option value="+33">+996</option>
-            <option value="+33">+971</option>
-            <option value="+33">+90</option>
+            <option value="+81">+81</option>
+            <option value="+886">+886</option>
+            <option value="+852">+852</option>
+            <option value="+64">+64</option>
+            <option value="+996">+996</option>
+            <option value="+971">+971</option>
+            <option value="+90">+90</option>
           </select>
           <input
             v-model="form.phone"
@@ -84,12 +76,7 @@
         <!-- 动态字段 -->
         <div class="form-group" v-for="(item, key) in fields" :key="key">
           <i :class="item.icon" class="input-icon"></i>
-          <input
-            v-model="form[key]"
-            :type="item.type"
-            :placeholder="t(item.placeholder)"
-            required
-          />
+          <input v-model="form[key]" :type="item.type" :placeholder="t(item.placeholder)" required />
         </div>
 
         <!-- 注册按钮 -->
@@ -114,11 +101,11 @@ const router = useRouter();
 const langStore = useLangStore();
 const form = reactive({
   loginAccount: "",
-  areaCode: "+86",
+  areaCode: "+84",
   phone: "",
   loginPassword: "",
   fundPassword: "",
-  invitationCode: "",
+  invitationCode: ""
 });
 
 // 动态渲染字段（不包含 loginAccount 和 phone）
@@ -126,18 +113,18 @@ const fields = {
   loginPassword: {
     placeholder: "请输入密码",
     type: "password",
-    icon: "iconfont icon-lock",
+    icon: "iconfont icon-lock"
   },
   fundPassword: {
     placeholder: "请输入确认密码",
     type: "password",
-    icon: "iconfont icon-lock",
+    icon: "iconfont icon-lock"
   },
   invitationCode: {
     placeholder: "请输入邀请码",
     type: "text",
-    icon: "iconfont icon-invite",
-  },
+    icon: "iconfont icon-invite"
+  }
 };
 
 // 表单提交
@@ -146,7 +133,7 @@ function onSubmit() {
     if (!form[key]) {
       notify({
         message: t(`请填写${key}`),
-        type: "error",
+        type: "error"
       });
       return;
     }
@@ -154,10 +141,10 @@ function onSubmit() {
 
   const payload = {
     ...form,
-    phone: form.areaCode + form.phone, // 拼接完整手机号
+    phone: form.areaCode + form.phone // 拼接完整手机号
   };
 
-  register(payload).then((res) => {
+  register(payload).then(res => {
     if (res.code === 200) {
       notify({ message: t("操作成功"), type: "success" });
       router.push("/login");
@@ -172,7 +159,7 @@ const showLangList = ref(false);
 const langMap = {
   越南语: "vi",
   中国: "zh",
-  英语: "en",
+  英语: "en"
   // 日本: "ja",
   // 法国: "fr",
   // 俄罗斯: "ru",
