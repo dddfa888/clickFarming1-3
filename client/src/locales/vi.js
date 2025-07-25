@@ -94,7 +94,7 @@ export default {
     "账号名称": "Tên tài khoản",
     "产品信息": "Thông tin sản phẩm",
     "取消": "Hủy",
-    "支付": "PHÂN PHổI",
+    "支付": "Phân Phối",
     "首页": "Trang chủ",
     "仓库": "Kho",
     "我": "Tôi",

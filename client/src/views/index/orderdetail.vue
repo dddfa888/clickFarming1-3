@@ -122,7 +122,7 @@ const Sendbutton = debounce(() => {
     .catch(() => {
       isProcessing.value = false;
     });
-}, 2000);
+}, 1000);
 
 function debounce(fn, delay) {
   let timer = null;
@@ -180,7 +180,7 @@ const handlePay = debounce(() => {
       });
       isProcessing.value = false;
     });
-}, 5000);
+}, 1000);
 
 getUserGradeAndBalanceAndDiscount().then(res => {
   console.log(res.data);
