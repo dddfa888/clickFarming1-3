@@ -75,7 +75,7 @@ const { t } = useI18n();
 const showLangList = ref(false);
 const langMap = {
   越南语: "vi",
-  中国: "zh",
+  // 中国: "zh",
   英语: "en",
   // 日本: "ja",
   // 法国: "fr",

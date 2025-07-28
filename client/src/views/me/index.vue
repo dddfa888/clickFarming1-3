@@ -96,7 +96,7 @@ i18nLocale.value = langStoreLocale.value; // 同步 i18n
 
 const langMap = {
   越南语: "vi",
-  中国: "zh",
+  // 中国: "zh",
   英语: "en",
   // 日本: "ja",
   // 法国: "fr",
@@ -286,7 +286,7 @@ const handleLogout = () => {
 .language-dropdown {
   list-style: none;
   padding: 0;
-  margin-top: 360px;
+  margin-top: 395px;
   background: #0b1e34;
   color: white;
   border: 1px solid #ccc;
@@ -443,7 +443,7 @@ const handleLogout = () => {
   .language-dropdown {
     list-style: none;
     padding: 0;
-    margin-top: 14.8vw;
+    margin-top: 18.4vw;
     background: #0b1e34;
     color: white;
     border: 1px solid #ccc;

@@ -158,7 +158,7 @@ function onSubmit() {
 const showLangList = ref(false);
 const langMap = {
   越南语: "vi",
-  中国: "zh",
+  // 中国: "zh",
   英语: "en"
   // 日本: "ja",
   // 法国: "fr",
@@ -257,7 +257,7 @@ function toggleLangList() {
   top: 20px;
   right: 20px;
   font-size: 14px;
-  color: #fff;
+  color: #000;
 }
 /* 语言选择器 */
 .language-selector {
@@ -267,12 +267,12 @@ function toggleLangList() {
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: #fff;
+  color: #000;
   z-index: 20;
 }
 .language-selector .label {
   margin-right: 6px;
-  color: #fff;
+  color: #000;
 }
 .dropdown-wrapper {
   position: relative;
@@ -280,7 +280,7 @@ function toggleLangList() {
   padding: 5px 10px;
   border-radius: 6px;
   cursor: pointer;
-  color: #fff;
+  color: #000;
 
   user-select: none;
 }

@@ -74,15 +74,22 @@
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column :label="$t('userPage.column.invitationCode')" align="center" prop="invitationCode" />
-      <el-table-column :label="$t('userPage.column.loginAccount')" align="center" prop="loginAccount">
-        <template slot-scope="scope">
-          {{ scope.row.loginAccount }}<br />
-          <span :style="{ color: scope.row.registerType === '0' ? 'red' : 'green' }">
-          <!--{{ scope.row.registerType == '0' ? '虚拟的' : scope.row.registerType == '1' ? '真实的' : '未知' }}-->
-          {{ scope.row.registerType == '0' ? $t('userPage.typeEmployee') : scope.row.registerType == '1' ? $t('userPage.typeGuest') : $t('userPage.typeUnknown') }}
-          </span>
-        </template>
-      </el-table-column>
+      <el-table-column
+  :label="$t('userPage.column.loginAccount')"
+  align="center"
+  prop="loginAccount"
+  :min-width="200"
+  :show-overflow-tooltip="false"
+>
+  <template slot-scope="scope">
+    <div style="white-space: nowrap;">
+      {{ scope.row.loginAccount }}
+      <span :style="{ color: scope.row.registerType === '0' ? 'red' : 'green', marginLeft: '4px' }">
+        {{ scope.row.registerType == '0' ? $t('userPage.typeEmployee') : scope.row.registerType == '1' ? $t('userPage.typeGuest') : $t('userPage.typeUnknown') }}
+      </span>
+    </div>
+  </template>
+</el-table-column>
        <el-table-column :label="$t('userPage.column.SETTING_ORDER')" align="center" width="150px" >
         <template slot-scope="scope">
           <el-button @click="handleOpenOrederSet(scope.row)" style="cursor: pointer;color: #1890ff;border:none;">
@@ -313,7 +320,7 @@
         <el-input readonly v-model="balanceForm.originalBalance"></el-input>
       </el-form-item>
       <el-form-item :label="$t('userPage.balForm.newNum')" prop="balance">
-        <el-input-number v-model="balanceForm.balance"></el-input-number>
+        <el-input v-model="balanceForm.balance"></el-input>
       </el-form-item>
        <el-form-item :label="$t('userPage.balForm.selectReason')">
       <el-select v-model="selectedReason" placeholder="" @change="changeReason">
@@ -785,6 +792,10 @@ export default {
     this.getList()
     this.getGradeList()
   },
+  mounted()
+  {
+ this.selectedReason = this.$t('userPage.balForm.noReason');
+  },
   methods: {
     //打开《订单设置》
     handleOpenOrederSet(row){
@@ -999,9 +1010,9 @@ export default {
       this.balanceForm.phoneNumber=row.phoneNumber
       this.balanceForm.originalBalance=row.accountBalance
       this.balanceForm.balance=''
-      this.balanceForm.reason=''
+      this.balanceForm.reason=this.$t('userPage.balForm.noReason')
       //this.balanceForm.bankAccountNumber=row.bankAccountNumber
-      this.selectedReason = ''
+      this.selectedReason = this.$t('userPage.balForm.noReason')
       this.dialogBalance = true
     },
     changeReason(value){
@@ -1230,5 +1241,21 @@ export default {
   width: 7rem;
   height: 2rem;
   margin: 0rem 0.5rem;
+}
+
+/* 覆盖 el-table 横向滚动条高度 */
+.el-table__body-wrapper::-webkit-scrollbar {
+  height: 26px; /* 设置滚动条高度 */
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 8px;
+  border: 4px solid transparent;
+  background-clip: content-box;
 }
 </style>

@@ -37,7 +37,7 @@ export default {
     delete: 'Delete',
   },
 
-  // Ò»¼¶²Ëµ¥¡¶ÓÃ»§¹ÜÀí¡·
+  // Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   muser: {
     userManage: 'User Management',
 
@@ -47,7 +47,7 @@ export default {
     withdrawEmployee: 'Withdraw Employee',
   },
 
-  // ÓÃ»§ÁĞ±í
+  // ï¿½Ã»ï¿½ï¿½Ğ±ï¿½
   userPage: {
     account: 'User Name',
     withdrawCustomerBtn: 'Withdraw Customer',
@@ -67,7 +67,7 @@ export default {
       userLevel: 'LEVEL',
       brushNumber: 'ORDER NUM'
     },
-    //ĞĞÄÚ×ª»»
+    //ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
     typeGuest: 'Guest',
     typeEmployee: 'Employee',
     typeUnknown: 'Unknown',
@@ -75,7 +75,7 @@ export default {
     statusUnlock: 'ACTIVE',
     statusLock: 'LOCKED',
 
-    //¡¶ĞĞÎª¡·ÄÚ°´Å¥
+    //ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ú°ï¿½Å¥
     colAct: {
       width: '480',
       changeBalence: 'Change account balance',
@@ -91,7 +91,7 @@ export default {
       sendMsg: 'Send message'
     },
 
-    //¡¶¸ü¸ÄÕË»§Óà¶î¡·µ¯³ö´°¿Ú
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½î¡·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     balForm: {
       title: 'Update',
       account: 'Account',
@@ -106,6 +106,8 @@ export default {
       save: 'Create',
       requireNum: 'Enter balance',
       requireReason: 'Enter reason',
+      "noReason": "æ²¡æœ‰ç†ç”±",
+      "adjust": "æ‰‹åŠ¨è°ƒæ•´"
     }
 
   }

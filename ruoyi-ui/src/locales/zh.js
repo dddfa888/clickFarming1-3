@@ -106,6 +106,8 @@ export default {
       save: '创建新的',
       requireNum: '请输入金钱数额',
       requireReason: '请输入理由',
+      "noReason": "没有理由",
+      "adjust": "手动调整"
     }
   }
 

@@ -11,7 +11,7 @@ import ja from "./locales/ja"
 const i18n = createI18n({
     legacy: false,
     globalInjection: true,
-    locale: localStorage.getItem('locale') || 'zh', // 默认中文
+    locale: localStorage.getItem('locale') || 'vi', // 默认中文
     messages: {
         vi,
         zh,
