@@ -6,7 +6,6 @@ import i18n from "../i18n";
 import { notify } from "./notify";
 // import { useRouter } from 'vue-router';
 import { showToast } from "vant";
-import Cookies from "js-cookie"
 
 let isTokenExpired = false;
 // const router = useRouter();

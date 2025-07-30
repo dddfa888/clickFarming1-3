@@ -49,7 +49,6 @@ import { login } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
 import { useLangStore } from "../../store/useLangStore.js";
 import { notify } from "../../utils/notify.js";
-import Cookies from "js-cookie";
 
 const router = useRouter();
 const form = reactive({

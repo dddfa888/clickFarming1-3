@@ -184,5 +184,7 @@ export default {
     "平衡调整": "Điều chỉnh cân bằng",
     "订单支付成功！":"thanh toán đơn hàng thành công !",
     "正在分发":"đang phân phối ",
-    "认证失败":"Xác minh thất bại"
+    "认证失败":"Xác minh thất bại",
+    "认证失败":"Xác minh thất bại",
+    "已有提现订单,请勿重复申请":"Bạn đã thực hiện lệnh rút tiền. Vui lòng không nộp đơn lại."
 };

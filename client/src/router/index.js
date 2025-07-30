@@ -1,5 +1,4 @@
 import { createWebHashHistory, createRouter } from 'vue-router'
-import Cookies from "js-cookie"
 
 
 // 路由表

@@ -180,5 +180,6 @@ export default {
     "平衡调整": "Balance adjustment",
      "订单支付成功！":"Order payment successful!",
     "正在分发":"is distributing",
-    "认证失败":"Authentication failed"
+   "认证失败":"Authentication failed",
+    "已有提现订单,请勿重复申请":"There is already a withdrawal order, please do not apply again"
 };
