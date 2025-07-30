@@ -1,6 +1,9 @@
 package com.ruoyi.click.service.impl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -119,4 +122,17 @@ public class MMoneyInvestWithdrawServiceImpl extends ServiceImpl<MMoneyInvestWit
         return mMoneyInvestWithdrawMapper.updateUserInfoByUserId(param);
     }
 
+    @Override
+    public MMoneyInvestWithdraw getTodayWithdraw(Long userId) {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
+
+        return lambdaQuery()
+                .eq(MMoneyInvestWithdraw::getUserId, userId)
+                .eq(MMoneyInvestWithdraw::getStatus, 1)
+                .eq(MMoneyInvestWithdraw::getType, 0)
+                .between(MMoneyInvestWithdraw::getCreateTime, startOfDay, endOfDay)
+                .last("LIMIT 1")
+                .one();
+    }
 }

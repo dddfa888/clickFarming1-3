@@ -78,4 +78,8 @@ public interface IMMoneyInvestWithdrawService extends IService<MMoneyInvestWithd
      */
     int updateUserInfoByUserId(Map<String,Object> param);
 
+    /**
+     * 获取今天的提现记录
+     */
+    MMoneyInvestWithdraw getTodayWithdraw(Long userId);
 }

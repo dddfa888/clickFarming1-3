@@ -30,6 +30,7 @@ import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.mapper.SysConfigMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
@@ -208,6 +209,7 @@ public class MMoneyInvestWithdrawController extends BaseController
      * 新增存款取款记录
      */
     @Log(title = "提现", businessType = BusinessType.INSERT)
+    @Transactional(rollbackFor = Exception.class)
     @PostMapping("add")
     public AjaxResult add(HttpServletRequest request,@Validated @RequestBody WithdrawVo withdrawVo) {
         String amountStr = withdrawVo.getAmount();
@@ -235,6 +237,23 @@ public class MMoneyInvestWithdrawController extends BaseController
         BigDecimal accountForward = mUser.getAccountBalance();
         if (accountForward.compareTo(withdrawAmount) < 0) {
             return AjaxResult.error("余额不足");
+        }
+        //未处理
+        MMoneyInvestWithdraw withdraw1 = mMoneyInvestWithdrawService
+                .lambdaQuery()
+                .eq(MMoneyInvestWithdraw::getUserId, userId)
+                .eq(MMoneyInvestWithdraw::getStatus, 0)
+                .eq(MMoneyInvestWithdraw::getType, 0)
+                .last("LIMIT 1")
+                .one();
+        if (withdraw1!=null){
+            throw new ServiceException("已有提现订单,请勿重复申请");
+        }
+
+        //今天的提现
+        MMoneyInvestWithdraw withdraw2=mMoneyInvestWithdrawService.getTodayWithdraw(userId);
+        if(withdraw2!=null){
+            throw new ServiceException("今日提现已达最大次数");
         }
         OrderReceiveRecord orderParam = new OrderReceiveRecord();
         orderParam.setUserId(mUser.getUid());
@@ -271,7 +290,6 @@ public class MMoneyInvestWithdrawController extends BaseController
         mMoneyInvestWithdraw.setAccountForward(accountForward);
         mMoneyInvestWithdraw.setAccountBack(accountBack);
         mMoneyInvestWithdrawService.insertMMoneyInvestWithdraw(mMoneyInvestWithdraw);
-
 
         MAccountChangeRecords mAccountChangeRecords = new MAccountChangeRecords();
         mAccountChangeRecords.setUid(String.valueOf(mUser.getUid()));
