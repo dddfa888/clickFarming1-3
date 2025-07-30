@@ -183,5 +183,6 @@ export default {
     "没有理由": "Không có lý do",
     "平衡调整": "Điều chỉnh cân bằng",
     "订单支付成功！":"thanh toán đơn hàng thành công !",
-    "正在分发":"đang phân phối "
+    "正在分发":"đang phân phối ",
+    "认证失败":"Xác minh thất bại"
 };

@@ -1,4 +1,6 @@
 import { createWebHashHistory, createRouter } from 'vue-router'
+import Cookies from "js-cookie"
+
 
 // 路由表
 const routes = [
@@ -35,6 +37,7 @@ const router = createRouter({
 
 // 路由守卫：未登录禁止访问其他页面
 router.beforeEach((to, from, next) => {
+  // const token = Cookies.get('token') // 假设你是用 token 存储登录状态
   const token = localStorage.getItem('token') // 假设你是用 token 存储登录状态
   const whiteList = ['/login', '/register', "/market"] // 白名单路由
 

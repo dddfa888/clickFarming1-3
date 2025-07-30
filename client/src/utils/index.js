@@ -6,16 +6,17 @@ import i18n from "../i18n";
 import { notify } from "./notify";
 // import { useRouter } from 'vue-router';
 import { showToast } from "vant";
+import Cookies from "js-cookie"
 
 let isTokenExpired = false;
 // const router = useRouter();
-const baseURL = "http://192.168.1.139:8089/";
+const baseURL = "http://192.168.0.150:8089/";
 const request = axios.create({
   baseURL:
     import.meta.env.MODE === "development"
       ? "/api"
       : "https://cfapi.ceshias.cc/",
-  // baseURL: "https://cfapi.ceshias.cc/",
+  baseURL: baseURL,
   timeout: 10000,
 });
 
