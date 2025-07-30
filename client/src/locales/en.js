@@ -181,5 +181,9 @@ export default {
      "订单支付成功！":"Order payment successful!",
     "正在分发":"is distributing",
    "认证失败":"Authentication failed",
-    "已有提现订单,请勿重复申请":"There is already a withdrawal order, please do not apply again"
+    "已有提现订单,请勿重复申请":"There is already a withdrawal order, please do not apply again",
+    "您尚未填写银行信息，请点击留言。":"You have not filled in your bank information, please click on the message board.",
+    "这里":"here",
+    "填写信息":"fill in the information",
+    "今日提现已达最大次数":"Today's withdrawal has reached the maximum number"
 };

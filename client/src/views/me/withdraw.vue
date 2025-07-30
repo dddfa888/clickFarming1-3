@@ -49,7 +49,7 @@
         <button class="submit-btn" @click="submit">{{ t("取款") }}</button>
       </div>
       <div v-else>
-        Bạn chưa điền thông tin ngân hàng vui lòng click vào tin.
+        {{ t("您尚未填写银行信息，请点击留言。") }}
         <span
           @click="
             () => {
@@ -57,8 +57,8 @@
             }
           "
           style="color: #20a53a"
-        >Tại đây</span>
-        để đi điền thông
+        >{{ t('这里') }}</span>
+        {{ t("填写信息") }}
       </div>
     </div>
   </div>
