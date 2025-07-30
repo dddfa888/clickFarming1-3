@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectMUserList" parameterType="MUser" resultMap="MUserResult">
         <include refid="selectMUserVo"/>
         <where>
-            <if test="level != null "> and level = #{level}</if>
+            <if test="level != null "> and `level` = #{level}</if>
             <if test="loginAccount != null  and loginAccount != ''"> and login_account = #{loginAccount}</if>
             <if test="loginPassword != null  and loginPassword != ''"> and login_password = #{loginPassword}</if>
             <if test="fundPassword != null  and fundPassword != ''"> and fund_password = #{fundPassword}</if>
@@ -73,7 +73,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into m_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="uid != null">uid,</if>
-            <if test="level != null">level,</if>
+            <if test="headImg != null">head_img,</if>
+            <if test="level != null">`level`,</if>
             <if test="loginAccount != null and loginAccount != ''">login_account,</if>
             <if test="loginPassword != null and loginPassword != ''">login_password,</if>
             <if test="fundPassword != null and fundPassword != ''">fund_password,</if>
@@ -100,6 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="uid != null">#{uid},</if>
+            <if test="headImg != null">#{headImg},</if>
             <if test="level != null">#{level},</if>
             <if test="loginAccount != null and loginAccount != ''">#{loginAccount},</if>
             <if test="loginPassword != null and loginPassword != ''">#{loginPassword},</if>
