@@ -135,11 +135,14 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     public int updateMUser(MUser mUser)
     {
         mUser.setUpdateTime(DateUtils.getNowDate());
-        MUser one1 = this.getByLoginAccount(mUser.getLoginAccount());
-        if(one1!=null){
-            throw new ServiceException("账号已存在");
-        }
         MUser user = mUserMapper.selectMUserByUid(mUser.getUid());
+        String loginAccount = mUser.getLoginAccount();
+        if(!user.getLoginAccount().equals(loginAccount)){
+            MUser one1 = this.getByLoginAccount(mUser.getLoginAccount());
+            if(one1!=null){
+                throw new ServiceException("账号已存在");
+            }
+        }
         if(!user.getLoginPassword().equals(mUser.getLoginPassword())){
             mUser.setLoginPassword(EncoderUtil.encoder(mUser.getLoginPassword()));
 
