@@ -119,4 +119,8 @@ public interface IMUserService extends IService<MUser> {
      */
     int updateGrade(Long gradeId, Long userId);
 
+    /**
+     * 根据登录账号获取
+     */
+    MUser getByLoginAccount(String loginAccount);
 }
