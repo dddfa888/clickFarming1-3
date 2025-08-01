@@ -17,35 +17,18 @@
 
     <div class="form-group">
       <label :class="{ floated: accountNumber }">{{ t("账号名称") }}</label>
-      <input
-        v-model="accountNumber"
-        type="text"
-        class="input"
-        :disabled="showinput"
-      />
+      <input v-model="accountNumber" type="text" class="input" :disabled="showinput" />
     </div>
     <div class="form-group">
       <label :class="{ floated: bankName }">{{ t("账号") }}</label>
-      <input
-        v-model="bankName"
-        type="text"
-        class="input"
-        :disabled="showinput"
-      />
+      <input v-model="bankName" type="text" class="input" :disabled="showinput" />
     </div>
     <div class="form-group" v-if="showBank">
       <label :class="{ floated: fundPassword }">{{ t("提款密码") }}</label>
-      <input
-        v-model="fundPassword"
-        type="text"
-        class="input"
-        :disabled="showinput"
-      />
+      <input v-model="fundPassword" type="text" class="input" :disabled="showinput" />
     </div>
 
-    <button class="submit-btn" @click="submit" v-if="showBank">
-      {{ t("确认") }}
-    </button>
+    <button class="submit-btn" @click="submit" v-if="showBank">{{ t("确认") }}</button>
 
     <!--银行选择弹窗 -->
     <van-popup v-model="showBankPicker" position="bottom">
@@ -192,13 +175,13 @@ const bankOptions = [
   "BAC A BANK",
   "LIOBANK (OCB)",
   "COOPBANK",
-  "LP Bank",
+  "LP Bank"
 ];
 
 function querySearch(queryString, cb) {
   const results = bankOptions
-    .filter((bank) => bank.includes(queryString))
-    .map((item) => ({ value: item }));
+    .filter(bank => bank.includes(queryString))
+    .map(item => ({ value: item }));
   cb(results);
 }
 
@@ -212,7 +195,7 @@ function onBankConfirm(value) {
 }
 
 // 获取用户信息
-getUserInfo().then((res) => {
+getUserInfo().then(res => {
   accountName.value = res.data.bankAccountName || "";
   accountNumber.value = res.data.bankAccountNumber || "";
   bankName.value = formatBankCard(res.data.bankName);
@@ -254,14 +237,14 @@ function submit() {
     bankAccountName: accountName.value,
     bankAccountNumber: accountNumber.value,
     bankName: bankName.value,
-    fundPassword: fundPassword.value,
-  }).then((res) => {
+    fundPassword: fundPassword.value
+  }).then(res => {
     console.log(res);
     if (res.code == 200) {
       notify({
         message: t("操作成功"),
         type: "success",
-        duration: 2000,
+        duration: 2000
       });
       // 刷新页面
       window.location.reload();
@@ -269,7 +252,7 @@ function submit() {
       notify({
         message: t(res.msg),
         type: "error",
-        duration: 2000,
+        duration: 2000
       });
     }
   });

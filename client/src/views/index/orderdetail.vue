@@ -151,7 +151,7 @@ const handlePay = debounce(() => {
 
         setTimeout(() => {
           globalThis.$notify({
-            message: t("订单支付成功！"),
+            message: t("订单支付成功"),
             type: "success",
             duration: 5000
           });

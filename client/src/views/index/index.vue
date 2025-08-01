@@ -235,7 +235,7 @@ const handleFileChange = async e => {
       });
     } else {
       notify({
-        message: t(res.msg || "上传失败"),
+        message: t(res.msg),
         type: "warning",
         duration: 2000
       });
