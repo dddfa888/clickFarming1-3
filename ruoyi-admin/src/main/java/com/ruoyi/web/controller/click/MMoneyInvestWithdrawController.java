@@ -213,30 +213,30 @@ public class MMoneyInvestWithdrawController extends BaseController
     @PostMapping("add")
     public AjaxResult add(HttpServletRequest request,@Validated @RequestBody WithdrawVo withdrawVo) {
         String amountStr = withdrawVo.getAmount();
-        Assert.notEmpty(amountStr, "请填写提现数额");
+        Assert.notEmpty(amountStr, "请填写提现数额");//user
         BigDecimal withdrawAmount = null;
         try{
             withdrawAmount = DecimalUtil.parseNumberBothCommaPoint(amountStr);
         }catch (Exception e){
-            throw new ServiceException("取款数额格式错误，无法解析");
+            throw new ServiceException("取款数额格式错误，无法解析");//user
         }
         SysConfig minWithdrawConfig = configMapper.checkConfigKeyUnique("minWithdrawAmount");
         if(withdrawAmount.doubleValue() < Double.parseDouble(minWithdrawConfig.getConfigValue())){
-            throw new ServiceException("最低提款额为50美元");
+            throw new ServiceException("最低提款额为50美元");//user
         }
         Long userId = tokenService.getLoginUser(request).getmUser().getUid();
 
         MUser mUser = mUserService.selectMUserByUid(userId);
         if(mUser.getStatus() != 1){
-            throw new ServiceException("用户被禁用");
+            throw new ServiceException("用户被禁用");//user
         }
         boolean matches = EncoderUtil.matches(withdrawVo.getFundPassword(), mUser.getFundPassword());
         if(!matches){
-            throw new ServiceException("资金密码错误");
+            throw new ServiceException("资金密码错误");//user
         }
         BigDecimal accountForward = mUser.getAccountBalance();
         if (accountForward.compareTo(withdrawAmount) < 0) {
-            return AjaxResult.error("余额不足");
+            return AjaxResult.error("余额不足");//user
         }
         //未处理
         MMoneyInvestWithdraw withdraw1 = mMoneyInvestWithdrawService
@@ -247,26 +247,26 @@ public class MMoneyInvestWithdrawController extends BaseController
                 .last("LIMIT 1")
                 .one();
         if (withdraw1!=null){
-            throw new ServiceException("已有提现订单,请勿重复申请");
+            throw new ServiceException("已有提现订单,请勿重复申请");//user
         }
 
         //今天的提现
         MMoneyInvestWithdraw withdraw2=mMoneyInvestWithdrawService.getTodayWithdraw(userId);
         if(withdraw2!=null){
-            throw new ServiceException("今日提现已达最大次数");
+            throw new ServiceException("今日提现已达最大次数");//user
         }
         OrderReceiveRecord orderParam = new OrderReceiveRecord();
         orderParam.setUserId(mUser.getUid());
         orderParam.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
         long unfinishedCount = orderReceiveRecordMapper.countNum(orderParam);
         if(unfinishedCount>0){
-            throw new ServiceException("有订单未完成，不可提现");
+            throw new ServiceException("有订单未完成，不可提现");//user
         }
         // 用户当日刷单数达到等级规定的“每天购买的产品数量”，才可以提现
         UserGrade userGrade = userGradeService.getOne(new LambdaQueryWrapper<UserGrade>().eq(UserGrade::getSortNum,mUser.getLevel()));
-        Assert.notNull(userGrade, "用户等级不存在");
+        Assert.notNull(userGrade, "用户等级不存在");//user
         if(mUser.getBrushNumber() < userGrade.getBuyProdNum()){
-            throw new ServiceException("您尚未完成当天的申请数量");
+            throw new ServiceException("您尚未完成当天的申请数量");//user
         }
 
         checkBank(mUser);
@@ -308,7 +308,7 @@ public class MMoneyInvestWithdrawController extends BaseController
                 mUser.getBankName(),
                 mUser.getBankAccountName(),
                 mUser.getBankAccountNumber())) {
-            throw new ServiceException("银行信息不完整，请填写银行名称、账户名称和账号");
+            throw new ServiceException("银行信息不完整，请填写银行名称、账户名称和账号");//user
         }
     }
 

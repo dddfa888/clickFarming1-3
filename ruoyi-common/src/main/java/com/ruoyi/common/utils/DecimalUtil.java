@@ -269,7 +269,7 @@ public class DecimalUtil {
      * @return
      */
     public static BigDecimal parseNumberBothCommaPoint(String str){
-        Assert.notEmpty(str, "数字为空，无法解析");
+        Assert.notEmpty(str, "数字为空，无法解析");//user
 
         String newStr = str.replace(" ", "");
         BigDecimal num = null;
@@ -282,7 +282,7 @@ public class DecimalUtil {
             try {
                 num = new BigDecimal(newStr);
             }catch (Exception e2){
-                throw new ServiceException("数字格式错误，无法解析");
+                throw new ServiceException("数字格式错误，无法解析");//user
             }
         }
         return num;

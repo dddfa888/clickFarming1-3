@@ -168,40 +168,42 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
      * @return 新增订单数量
      */
     @Override
-    public int insertOrderByUser(OrderReceiveRecord orderReceiveRecord){
-
+    public Map<String,Object> insertOrderByUser(OrderReceiveRecord orderReceiveRecord){
+        Map<String,Object> map=new HashMap<>();
         MUser mUser = mUserMapper.selectMUserByUid(getUserId());
         OrderReceiveRecord orderParam = new OrderReceiveRecord();
         orderParam.setUserId(mUser.getUid());
         orderParam.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
         long unfinishedCount = orderReceiveRecordMapper.countNum(orderParam);
         if(unfinishedCount>0)
-            throw new ServiceException("有订单未完成，请先付款");
+            throw new ServiceException("有订单未完成，请先付款");//user
 
         UserGrade userGrade = userGradeMapper.selectUserGradeBySortNum(mUser.getLevel());
         if(userGrade==null)
-            throw new ServiceException("用户等级不存在");
+            throw new ServiceException("用户等级不存在");//user
         //若余额小于等级内设置的最低余额，则给出提示，下单失败
         if(mUser.getAccountBalance().compareTo(userGrade.getMinBalance())<0) {
             String nameCn = "";
             //会员等级名称越南语转为中文
-            String gradeName = userGrade.getGradeName();
+            Integer gradeName = userGrade.getId().intValue();
             switch (gradeName){
-                case "Bạc"      : nameCn = "白银"; break;
-                case "Vàng"     : nameCn = "黄金"; break;
-                case "Bạch Kim" : nameCn = "白金"; break;
-                case "Kim Cương": nameCn = "钻石"; break;
-                default: nameCn = gradeName;
+                case 1: nameCn = "白银"; break;
+                case 2: nameCn = "黄金"; break;
+                case 3: nameCn = "白金"; break;
+                case 4: nameCn = "钻石"; break;
+                default: nameCn = "白银";
             }
-            String msg = nameCn+"会员最低资本为"+userGrade.getMinBalance()+"€";
-            throw new ServiceException(msg);
+            map.put("name","等级配置");
+            map.put("level",nameCn);
+            map.put("value",userGrade.getMinBalance());
+            return map;
         }
 
         //int todayCount = countNumByUserDate();
         int todayCount = mUser.getBrushNumber();
         int numTarget = userGrade.getBuyProdNum();
         if(todayCount >= numTarget)
-            throw new ServiceException("您已完成今天的申请");
+            throw new ServiceException("您已完成今天的申请");//user
         //原系统中当日下单次数达到设置值时提示如下：
         //  您已完成今天的申请
         //  You have completed your order today
@@ -216,8 +218,9 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
         //检查用户表设置的值，判断是否连单，若multiOrderNum，说明需要生成多个订单
         Integer multiOrderNum = mUser.getMultiOrderNum();
+        Long firstOrderId=null;
         if(multiOrderNum!=null && multiOrderNum>1){
-            Long firstOrderId = orderReceiveRecord.getId();
+            firstOrderId = orderReceiveRecord.getId();
             for(int i=1; i<multiOrderNum; i++){ //上面已经保存1单，所以此处i初始值为1，而不是0
                 setValueSaveProdList(orderReceiveRecord, mUser, userGrade, numTarget, ++todayCount);
             }
@@ -225,8 +228,9 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
             //第1个订单的id返回到前端
             orderReceiveRecord.setId(firstOrderId);
         }
+        map.put("orderId",firstOrderId);
         mUserMapper.increaseBrushNumber(mUser.getUid(), saveOrderNum);
-        return saveOrderNum;
+        return map;
     }
 
     /**
@@ -271,7 +275,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         paramIds.put("price_Le", mUser.getAccountBalance());
         List<Long> idList = productManageMapper.getIdList(paramIds);
         if(idList==null || idList.isEmpty())
-            throw new ServiceException("未查到产品信息");
+            throw new ServiceException("未查到产品信息");//user
         //前面查出符合条件的产品id，然后随机挑选一个产品id，查出产品
         int prodIndex = (int) Math.floor(Math.random() * idList.size());
         ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
@@ -300,7 +304,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         paramIds.put("max_half", maxHalf);
         List<Long> idList = productManageMapper.getIdListByOrderSet(paramIds);
         if(idList==null || idList.isEmpty())
-            throw new ServiceException("未查到产品信息");
+            throw new ServiceException("未查到产品信息");//user
 
         int prodIndex = (int) Math.floor(Math.random() * idList.size());
         ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
@@ -327,7 +331,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         paramIds.put("price_Le", mUser.getAccountBalance());
         List<Long> idList = productManageMapper.getIdList(paramIds);
         if(idList==null || idList.isEmpty())
-            throw new ServiceException("未查到产品信息");
+            throw new ServiceException("未查到产品信息");//user
 
         int prodIndex = (int) Math.floor(Math.random() * idList.size());
         return productManageMapper.selectProductManageById(idList.get(prodIndex));
@@ -357,15 +361,15 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     public int payOrder(Long orderId){
         OrderReceiveRecord orderReceiveRecord = orderReceiveRecordMapper.selectOrderReceiveRecordById(orderId);
         if(orderReceiveRecord==null)
-            throw new ServiceException("订单不存在");
+            throw new ServiceException("订单不存在");//user
         if(OrderReceiveRecord.PROCESS_STATUS_SUCCESS.equals(orderReceiveRecord.getProcessStatus()))
-            throw new ServiceException("订单已支付，不可重复支付");
+            throw new ServiceException("订单已支付，不可重复支付");//user
 
         MUser mUser = mUserMapper.selectMUserByUid(orderReceiveRecord.getUserId());
 
         //用户余额小于订单总金额时，不可支付，需要先充值。
         if(mUser.getAccountBalance().compareTo(orderReceiveRecord.getTotalAmount()) < 0)
-            throw new ServiceException("您的帐户不足。请继续充值！");
+            throw new ServiceException("您的帐户不足。请继续充值！");//user
 
         BigDecimal balanceBefore = mUser.getAccountBalance(); //记录变化前余额
         BigDecimal balanceChange = orderReceiveRecord.getProfit(); //新增余额

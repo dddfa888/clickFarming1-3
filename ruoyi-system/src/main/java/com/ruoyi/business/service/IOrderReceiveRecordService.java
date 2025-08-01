@@ -1,6 +1,7 @@
 package com.ruoyi.business.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.business.domain.OrderReceiveRecord;
 
@@ -80,7 +81,7 @@ public interface IOrderReceiveRecordService
      * 前台用户点击后添加订单
      * @return
      */
-    int insertOrderByUser(OrderReceiveRecord orderReceiveRecord);
+    Map<String,Object> insertOrderByUser(OrderReceiveRecord orderReceiveRecord);
 
 
     /**

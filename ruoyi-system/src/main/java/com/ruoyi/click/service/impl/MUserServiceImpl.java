@@ -83,7 +83,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
             );
 
             if (inviterUser == null) {
-                throw new ServiceException("邀请码无效");
+                throw new ServiceException("邀请码无效");//user
             }
 
             mUser.setInviter(String.valueOf(inviterUser.getUid()));
@@ -97,7 +97,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         String loginAccount = mUser.getLoginAccount();
         if (StringUtils.isNotBlank(loginAccount) &&
                 this.getOne(new LambdaQueryWrapper<MUser>().eq(MUser::getLoginAccount, loginAccount)) != null) {
-            throw new ServiceException("账号已存在");
+            throw new ServiceException("账号已存在");//user
         }
 
         mUser.setBrushNumber(0);
@@ -140,7 +140,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         if(!user.getLoginAccount().equals(loginAccount)){
             MUser one1 = this.getByLoginAccount(mUser.getLoginAccount());
             if(one1!=null){
-                throw new ServiceException("账号已存在");
+                throw new ServiceException("账号已存在");//user
             }
         }
         if(!user.getLoginPassword().equals(mUser.getLoginPassword())){
@@ -215,7 +215,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         );
 
         if (inviterUser == null) {
-            throw new ServiceException("邀请码无效");
+            throw new ServiceException("邀请码无效");//user
         }
 
         MUser mUser = new MUser();
@@ -227,7 +227,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         String loginAccount = model.getLoginAccount();
         if (StringUtils.isNotBlank(loginAccount) &&
                 this.getOne(new LambdaQueryWrapper<MUser>().eq(MUser::getLoginAccount, loginAccount)) != null) {
-            throw new ServiceException("账号已存在");
+            throw new ServiceException("账号已存在");//user
         }
         mUser.setLoginAccount(loginAccount);
         mUser.setBrushNumber(0);
@@ -255,12 +255,12 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         wrapper.eq(MUser::getLoginAccount, loginAccount);
         MUser user = this.getOne(wrapper);
         if (user == null) {
-            throw new ServiceException("没有该用户");
+            throw new ServiceException("没有该用户");//user
         }
 
         boolean matches = EncoderUtil.matches(loginPassword, user.getLoginPassword());
         if (!matches) {
-            throw new ServiceException("密码错误");
+            throw new ServiceException("密码错误");//user
         }
         return user;
     }
@@ -268,7 +268,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     @Override
     public HashMap<String, Object> updateBalance(MUser mUser, BalanceModel balanceModel) {
         if(mUser==null){
-            throw new ServiceException("用户已删除");
+            throw new ServiceException("用户已删除");//user
         }
         BigDecimal accountBalance = mUser.getAccountBalance();
         BigDecimal changeBalance = balanceModel.getBalance();
@@ -277,7 +277,7 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
             type = 0;
         }else {
             if (accountBalance.compareTo(changeBalance) < 0) {
-                throw new ServiceException("当前账户金额小于减少金额");
+                throw new ServiceException("当前账户金额小于减少金额");//user
             }
             type = 1;
         }
@@ -391,9 +391,9 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         BigDecimal joinCost = new BigDecimal(userGrade.getJoinCost());
         MUser user = mUserMapper.selectMUserByUid(userId);
         if(userGrade.getSortNum() < user.getLevel())
-            throw new ServiceException("您无法升级到低于当前级别的级别");
+            throw new ServiceException("您无法升级到低于当前级别的级别");//user
         if(user.getAccountBalance().compareTo(minBalance) < 0||user.getAccountBalance().compareTo(joinCost) < 0)
-            throw new ServiceException("余额不足无法升级");
+            throw new ServiceException("余额不足无法升级");//user
         //扣除金额
         BigDecimal accountBalance = user.getAccountBalance();
         user.setAccountBalance(user.getAccountBalance().subtract(joinCost).setScale(2, BigDecimal.ROUND_HALF_UP));
