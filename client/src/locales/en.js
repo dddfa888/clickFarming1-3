@@ -99,7 +99,6 @@ export default {
     },
     "404 页面不存在": "404 Page Not Found",
     "您访问的页面未找到": "The page you are looking for could not be found",
-    "用户被禁用": "User is disabled",
     "密码错误": "Password error",
     "资金密码错误": "The fund password is incorrect",
     "有订单未完成，不可提现": "There are unfinished orders. Withdrawal is not allowed.",
@@ -171,6 +170,11 @@ export default {
     "黄金会员最低资本为500€": "The minimum capital for Gold members is 500 EUR",
     "白金会员最低资本为2000€": "The minimum capital for Platinum members is 2000 EUR",
     "钻石会员最低资本为3000€": "The minimum capital for Diamond members is 3000 EUR",
+     "membership_requirement": "Minimum capital for {level} member is {value}€",
+     "白银": "Silver",
+     "黄金": "Gold",
+     "白金": "Platinum",
+     "钻石": "Diamond",
     "确认升级": "Confirm Upgrade",
     "您想升级到这个级别吗?": "Do you want to upgrade to this level?",
     "您无法升级到低于当前级别的级别": "You cannot upgrade to a level lower than your current one",
@@ -186,5 +190,10 @@ export default {
     "这里":"here",
     "填写信息":"fill in the information",
     "今日提现已达最大次数":"Today's withdrawal has reached the maximum number",
-    "支付请求失败":"Payment request failed"
+    "支付请求失败":"Payment request failed",
+    "数字为空，无法解析":"The number is empty and cannot be parsed",
+    "数字格式错误，无法解析":"The number format is incorrect and cannot be parsed",
+    "访问过于频繁，请稍候再试":"Access is too frequent, please try again later",
+    "服务器限流异常，请稍候再试":"Server throttling exception, please try again later",
+    "服务器繁忙，请稍后再试":"Server is busy, please try again later"
 };

@@ -105,9 +105,7 @@ export default {
     },
     "404 页面不存在": "404 Không tìm thấy trang",
     "您访问的页面未找到": "Không thể tìm thấy trang bạn đang tìm kiếm",
-    "用户被禁用": "Người dùng đã bị vô hiệu hóa",
     "密码错误": "Mật khẩu sai",
-    "资金密码错误": "Mật khẩu quỹ không chính xác",
     "有订单未完成，不可提现": "Có đơn hàng chưa hoàn thành. Không thể rút tiền.",
     "取款数额格式错误，无法解析": "Số có định dạng không hợp lệ, không thể phân tích",
     "设置公司简介数据": "Thiết lập dữ liệu hồ sơ công ty",
@@ -175,6 +173,11 @@ export default {
     "黄金会员最低资本为500€": "Mức vốn tối thiểu cấp bậc thành viên vàng 500€",
     "白金会员最低资本为2000€": "Mức vốn tối thiểu cấp bậc thành viên bạch kim 2000€",
     "钻石会员最低资本为3000€": "Mức vốn tối thiểu cấp bậc thành viên kim cương 3000€",
+     "membership_requirement": "Vốn tối thiểu cho thành viên {level} là {value}€",
+     "白银":" bạc",
+     "黄金":" vàng",
+     "白金":" bạch kim",
+     "钻石":" kim cương",
     "确认升级": "Xác nhận nâng cấp",
     "您想升级到这个级别吗?": "Bạn có muốn nâng cấp lên cấp độ này không?",
     "您无法升级到低于当前级别的级别": "Bạn không thể nâng cấp xuống cấp độ thấp hơn cấp độ hiện tại",
@@ -191,5 +194,10 @@ export default {
     "这里":"Tại đây",
     "填写信息":" để đi điền thông",
     "今日提现已达最大次数":"Số lần rút tiền hôm nay đã đạt giới hạn",
-    "支付请求失败":"Yêu cầu thanh toán không thành công"
+    "支付请求失败":"Yêu cầu thanh toán không thành công",
+    "数字为空，无法解析":"Số không tồn tại, không thể phân tích",
+    "数字格式错误，无法解析":"Sai định dạng số, không thể phân tích",
+    "访问过于频繁，请稍候再试":"Truy cập quá thường xuyên, vui lòng thử lại sau",
+    "服务器限流异常，请稍候再试":"Lỗi giới hạn lưu lượng của máy chủ, vui lòng thử lại sau",
+    "服务器繁忙，请稍后再试":"Máy chủ đang bận, vui lòng thử lại sau"
 };

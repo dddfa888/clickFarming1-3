@@ -106,10 +106,21 @@ const Sendbutton = debounce(() => {
 
   createOrder()
     .then(res => {
+      console.log(res);
       if (res.code === 200) {
         showModal.value = true;
         id.value = res.orderId;
         // ❗不要解锁，等待支付成功后解锁
+      } else if (res.code === 5001) {
+        globalThis.$notify({
+          message: t("membership_requirement", {
+            level: t(res.data.level),
+            value: res.data.value
+          }),
+          type: "error",
+          duration: 4000
+        });
+        isProcessing.value = false; // ❗失败立即解锁
       } else {
         globalThis.$notify({
           message: t(res.msg),
@@ -155,7 +166,7 @@ const handlePay = debounce(() => {
             type: "success",
             duration: 5000
           });
-          // ✅ 延迟解锁，确保通知出现后才能继续下单
+          //  延迟解锁，确保通知出现后才能继续下单
           isProcessing.value = false;
         }, 5000);
 
