@@ -59,7 +59,7 @@ public class RateLimiterAspect
             Long number = redisTemplate.execute(limitScript, keys, count, time);
             if (StringUtils.isNull(number) || number.intValue() > count)
             {
-                throw new ServiceException("访问过于频繁，请稍候再试");
+                throw new ServiceException("访问过于频繁，请稍候再试");//user
             }
             log.info("限制请求'{}',当前请求'{}',缓存key'{}'", count, number.intValue(), combineKey);
         }
@@ -69,7 +69,7 @@ public class RateLimiterAspect
         }
         catch (Exception e)
         {
-            throw new RuntimeException("服务器限流异常，请稍候再试");
+            throw new RuntimeException("服务器限流异常，请稍候再试");//user
         }
     }
 

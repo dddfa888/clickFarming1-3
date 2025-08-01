@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.business;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,8 +125,11 @@ public class OrderReceiveRecordController extends BaseController
     public AjaxResult insertOrderByUser()
     {
         OrderReceiveRecord orderReceiveRecord = new OrderReceiveRecord();
-        return toAjax(orderReceiveRecordService.insertOrderByUser(orderReceiveRecord))
-                .put("orderId", orderReceiveRecord.getId());
+        Map<String, Object> map = orderReceiveRecordService.insertOrderByUser(orderReceiveRecord);
+        if(map.get("name")!=null){
+            return new AjaxResult(5001,"service error",map);
+        }
+        return toAjax(1).put("orderId", orderReceiveRecord.getId());
     }
 
     /**
