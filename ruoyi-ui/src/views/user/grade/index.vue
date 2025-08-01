@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+      label-width="68px"
+    >
       <el-form-item label="等级名称" prop="gradeName">
         <el-input
           v-model="queryParams.gradeName"
@@ -55,11 +61,9 @@
 
     <el-table v-loading="loading" :data="gradeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-<!--      <el-table-column label="ID" align="center" prop="id" />-->
+      <!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="等级编号" align="center" prop="sortNum">
-        <template slot-scope="scope">
-          {{ scope.row.sortNum  }}级
-        </template>
+        <template slot-scope="scope">{{ scope.row.sortNum }}级</template>
       </el-table-column>
       <el-table-column label="等级名称" align="center" prop="gradeName" />
       <el-table-column label="参加费" align="center" prop="joinCost" />
@@ -99,10 +103,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="等级编号" prop="sortNum">
-          <el-input v-model="form.sortNum" placeholder="请输入等级编号" />
+          <el-input v-model="form.sortNum" placeholder="请输入等级编号" disabled />
         </el-form-item>
         <el-form-item label="等级名称" prop="gradeName">
-          <el-input v-model="form.gradeName" placeholder="请输入等级名称" />
+          <el-input v-model="form.gradeName" placeholder="请输入等级名称" disabled />
         </el-form-item>
         <el-form-item label="参加费" prop="joinCost">
           <el-input v-model="form.joinCost" placeholder="请输入参加费" />
@@ -113,10 +117,10 @@
         <el-form-item label="每天购买的产品数量" prop="buyProdNum">
           <el-input v-model="form.buyProdNum" placeholder="请输入每天购买的产品数量" />
         </el-form-item>
-        <el-form-item label="% 最小奖金" prop="minBonus">
+        <el-form-item label="最小奖金" prop="minBonus">
           <el-input v-model="form.minBonus" placeholder="请输入最小奖金" />
         </el-form-item>
-        <el-form-item label="% 最大奖金" prop="maxBonus">
+        <el-form-item label="最大奖金" prop="maxBonus">
           <el-input v-model="form.maxBonus" placeholder="请输入最大奖金" />
         </el-form-item>
       </el-form>
@@ -129,7 +133,13 @@
 </template>
 
 <script>
-import { listGrade, getGrade, delGrade, addGrade, updateGrade } from "@/api/user/grade"
+import {
+  listGrade,
+  getGrade,
+  delGrade,
+  addGrade,
+  updateGrade
+} from "@/api/user/grade";
 
 export default {
   name: "Grade",
@@ -163,7 +173,7 @@ export default {
         minBalance: null,
         buyProdNum: null,
         minBonus: null,
-        maxBonus: null,
+        maxBonus: null
       },
       // 表单参数
       form: {},
@@ -171,27 +181,27 @@ export default {
       rules: {
         gradeName: [
           { required: true, message: "等级名称不能为空", trigger: "blur" }
-        ],
+        ]
       }
-    }
+    };
   },
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     /** 查询用户等级列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listGrade(this.queryParams).then(response => {
-        this.gradeList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.gradeList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -208,40 +218,40 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null
-      }
-      this.resetForm("form")
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm")
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
+      this.ids = selection.map(item => item.id);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = "添加用户等级"
+      this.reset();
+      this.open = true;
+      this.title = "添加用户等级";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      const id = row.id || this.ids
+      this.reset();
+      const id = row.id || this.ids;
       getGrade(id).then(response => {
-        this.form = response.data
-        this.open = true
-        this.title = "修改用户等级"
-      })
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改用户等级";
+      });
     },
     /** 提交按钮 */
     submitForm() {
@@ -249,36 +259,44 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateGrade(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功")
-              this.open = false
-              this.getList()
-            })
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
           } else {
             addGrade(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功")
-              this.open = false
-              this.getList()
-            })
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids
-      this.$modal.confirm('是否确认删除用户等级编号为"' + ids + '"的数据项？').then(function() {
-        return delGrade(ids)
-      }).then(() => {
-        this.getList()
-        this.$modal.msgSuccess("删除成功")
-      }).catch(() => {})
+      const ids = row.id || this.ids;
+      this.$modal
+        .confirm('是否确认删除用户等级编号为"' + ids + '"的数据项？')
+        .then(function() {
+          return delGrade(ids);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/grade/export', {
-        ...this.queryParams
-      }, `grade_${new Date().getTime()}.xlsx`)
+      this.download(
+        "system/grade/export",
+        {
+          ...this.queryParams
+        },
+        `grade_${new Date().getTime()}.xlsx`
+      );
     }
   }
-}
+};
 </script>
