@@ -8,6 +8,7 @@ import java.util.Random;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.click.domain.MMoneyInvestWithdraw;
 import com.ruoyi.click.mapper.MAccountChangeRecordsMapper;
 import com.ruoyi.click.mapper.UserGradeMapper;
 import com.ruoyi.common.exception.ServiceException;
@@ -134,8 +135,14 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
     public int updateMUser(MUser mUser)
     {
         mUser.setUpdateTime(DateUtils.getNowDate());
-
         MUser user = mUserMapper.selectMUserByUid(mUser.getUid());
+        String loginAccount = mUser.getLoginAccount();
+        if(!user.getLoginAccount().equals(loginAccount)){
+            MUser one1 = this.getByLoginAccount(mUser.getLoginAccount());
+            if(one1!=null){
+                throw new ServiceException("账号已存在");
+            }
+        }
         if(!user.getLoginPassword().equals(mUser.getLoginPassword())){
             mUser.setLoginPassword(EncoderUtil.encoder(mUser.getLoginPassword()));
 
@@ -405,6 +412,14 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         user.setLevel(userGrade.getSortNum());
         user.setUpdateTime(DateUtils.getNowDate());
         return mUserMapper.updateMUser(user);
+    }
+
+    @Override
+    public MUser getByLoginAccount(String loginAccount) {
+        return this.lambdaQuery()
+                .eq(MUser::getLoginAccount, loginAccount)
+                .last("LIMIT 1")
+                .one();
     }
 
 }

@@ -56,7 +56,7 @@ public class MAccountChangeRecords {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Date createTime;
 
     @TableField(exist = false)
