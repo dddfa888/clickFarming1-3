@@ -4,10 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.ruoyi.business.domain.MRewardRecord;
 import com.ruoyi.business.domain.MUserOrderSet;
@@ -15,6 +12,7 @@ import com.ruoyi.business.domain.ProductManage;
 import com.ruoyi.business.mapper.MRewardRecordMapper;
 import com.ruoyi.business.mapper.MUserOrderSetMapper;
 import com.ruoyi.business.mapper.ProductManageMapper;
+import com.ruoyi.click.domain.vo.OrderReceiveRecordVo;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
@@ -87,10 +85,10 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
      * @return 订单接收记录
      */
     @Override
-    public List<OrderReceiveRecord> selectOrderListByUser(OrderReceiveRecord orderReceiveRecord)
+    public List<OrderReceiveRecordVo> selectOrderListByUser(OrderReceiveRecord orderReceiveRecord)
     {
         orderReceiveRecord.setUserId(getUserId());
-        return orderReceiveRecordMapper.selectListOrderDesc(orderReceiveRecord);
+        return orderReceiveRecordMapper.selectListOrderDescVo(orderReceiveRecord);
     }
 
     /**
