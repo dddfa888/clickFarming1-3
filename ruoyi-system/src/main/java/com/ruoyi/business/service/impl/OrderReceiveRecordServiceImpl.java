@@ -266,7 +266,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     }
 
     /**
-     * 从数据库中随机查询一个产品，默认只查询价格小于或等于用户余额的，并计算用户可支付范围内的产品数量
+     * 计算用户可支付范围内的产品数量
      */
     public ProductManage setOrderProdNormal(OrderReceiveRecord orderReceiveRecord, MUser mUser){
         Map<String,Object> paramIds = new HashMap<>();
@@ -282,15 +282,29 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         int prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN).intValue();
         // 如果上面计算的prodNum是1，产品数量直接设为1。否则，假设prodNum（用户可支付范围内的最大数量）是10，生成随机数取5-10之间的整数作为本次订单实际产品数量。
         if(prodNum>1){
-            int half = prodNum>>1;
-            prodNum = (int)Math.floor(Math.random() * half) + (prodNum-half);
+            Double min=prodNum*(0.8);
+            prodNum = randomMinMax(min.intValue(),prodNum);
         }
         orderReceiveRecord.setNumber(prodNum);
         return product;
     }
+    // 生成包含 min 和 max 的随机数
+    int randomMinMax(int min, int max) {
+        Random rand = new Random();
+        if (min < 1) {
+            min = 1;
+        }
+        if (max < 2) {
+            max = 2;
+        }
+        if (min > max) {
+            return 1;
+        }
+        return rand.nextInt(max - min + 1) + min;
+    }
 
     /**
-     * 从数据库中随机查询一个产品，默认只查询价格小于或等于用户余额的，并计算用户可支付范围内的产品数量
+     * 从数据库中随机查询一个产品，默认只查询价格小于或等于用户余额的
      */
     public ProductManage setOrderProdLimit(OrderReceiveRecord orderReceiveRecord, MUserOrderSet orderSet){
         BigDecimal minNum = orderSet.getMinNum();
