@@ -24,16 +24,57 @@
     <!-- 登录表单 -->
     <div class="login-form">
       <form @submit.prevent="onSubmit">
+        <!-- 用户名 -->
         <div class="form-group">
           <i class="icon user-icon"></i>
           <input type="text" v-model="form.loginAccount" :placeholder="t('请填写用户名')" />
         </div>
 
-        <div class="form-group">
+        <!-- 密码框（含明密文切换） -->
+        <div class="form-group password-group">
           <i class="icon lock-icon"></i>
-          <input type="password" v-model="form.loginPassword" :placeholder="t('请填写密码')" />
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            v-model="form.loginPassword"
+            :placeholder="t('请填写密码')"
+          />
+          <!-- 眼睛 SVG 图标 -->
+          <span class="eye-icon" @click="togglePasswordVisibility">
+            <svg
+              v-if="showPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon-eye"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 1l22 22" />
+              <path
+                d="M17.94 17.94A10.94 10.94 0 0112 20C7.03 20 2.73 16.11 1 12a18.84 18.84 0 014.21-5.69M9.88 9.88A3 3 0 0114.12 14.12"
+              />
+            </svg>
+
+            <svg
+              v-else
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon-eye"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </span>
         </div>
 
+        <!-- 登录按钮 -->
         <div class="login-btn" style="margin: 16px">
           <button type="submit">{{ t("现在登录") }}</button>
         </div>
@@ -56,18 +97,24 @@ const form = reactive({
   loginPassword: ""
 });
 
+const showPassword = ref(false);
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
+
 const langStore = useLangStore();
 const { locale } = useI18n();
 const { t } = useI18n();
 const showLangList = ref(false);
 const langMap = {
   越南语: "vi",
-  // 中国: "zh",
-  英语: "en"
-  // 日本: "ja",
-  // 法国: "fr",
-  // 俄罗斯: "ru",
-  // 韩国: "ko",
+  中国: "zh",
+  英语: "en",
+  日本: "ja",
+  法国: "fr",
+  俄罗斯: "ru",
+  韩国: "ko"
 };
 const languageList = Object.keys(langMap);
 const reverseLangMap = Object.fromEntries(
@@ -147,6 +194,8 @@ function onSubmit(values) {
   width: 100%;
   border: 1px solid #181818;
   box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin-bottom: 16px;
 }
 
 .form-group input {
@@ -237,6 +286,29 @@ function onSubmit(values) {
   background-color: #d3d3d3;
 }
 
+.icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-eye {
+  width: 24px;
+  height: 24px;
+  color: #999;
+}
+
 /* PC端适配 */
 @media (min-width: 768px) {
   .login-container {
@@ -272,6 +344,31 @@ function onSubmit(values) {
     width: 100%;
     border: 1px solid #181818;
     box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+
+  .icon-eye {
+    width: 24px;
+    height: 24px;
+    color: #999;
   }
 
   .form-group input {

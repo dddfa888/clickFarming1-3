@@ -2,32 +2,23 @@
   <div class="company-intro">
     <HeaderBar :title="t('存款记录')" />
     <div class="transaction-list">
-      <div
-        v-for="(transaction, index) in transactions"
-        :key="index"
-        class="transaction-item"
-      >
+      <div v-for="(transaction, index) in transactions" :key="index" class="transaction-item">
         <div class="transaction-info">
-          <div class="transaction-time">
-            {{ t("时间") }}:{{ transaction.createTime }}
-          </div>
-          <div
-            class="transaction-amount"
-            :class="{ negative: transaction.amount < 0 }"
-          >
+          <div class="transaction-time">{{ t("时间") }}:{{ transaction.createTime }}</div>
+          <div class="transaction-amount" :class="{ negative: transaction.amount < 0 }">
             {{ t("金钱数额") }}: {{ transaction.type === 0 ? "+" : "-" }}
             {{ formatAmount(transaction.amount) }}
           </div>
-          <div class="transaction-balance">
-            {{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}
-          </div>
+          <div
+            class="transaction-balance"
+          >{{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}</div>
         </div>
         <div class="transaction-status">
           <!-- {{
             transaction.status === 1
               ? t("transaction.success")
               : t("transaction.failed")
-          }} -->
+          }}-->
         </div>
       </div>
     </div>
@@ -42,11 +33,11 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const transactions = ref([]);
 
-const formatAmount = (amount) => {
-  return amount.toFixed(2).replace(".", ",") + " €";
+const formatAmount = amount => {
+  return amount.toFixed(2).replace(".", ",") + " $";
 };
 
-getDepositRecord().then((res) => {
+getDepositRecord().then(res => {
   console.log(res.rows);
   transactions.value = res.rows;
   console.log(transactions.value, 21);

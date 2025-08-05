@@ -6,7 +6,7 @@
           <van-icon name="arrow-left" />
           <span class="back">{{ t("取款") }}</span>
         </div>
-        <span class="balance">{{ balance }} €</span>
+        <span class="balance">{{ balance }} $</span>
       </div>
 
       <div class="form" v-if="bankAccountNumber && bankName">

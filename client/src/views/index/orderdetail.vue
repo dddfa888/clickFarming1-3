@@ -7,7 +7,7 @@
       </div>
       <div class="amount-section">
         <div class="amount-display">{{ formatCurrency(order.userBalance) }}</div>
-        <div class="amount-label">{{ t("剩余") }}(€)</div>
+        <div class="amount-label">{{ t("剩余") }}($)</div>
       </div>
     </div>
 
@@ -31,11 +31,11 @@
       </div>
       <div class="detail-item">
         <div class="detail-label">{{ t("昨天折扣") }}</div>
-        <div class="detail-value">{{ order.numYesterday }}€</div>
+        <div class="detail-value">{{ order.numYesterday }}$</div>
       </div>
       <div class="detail-item">
         <div class="detail-label">{{ t("今天折扣") }}</div>
-        <div class="detail-value">{{ order.numToday }}€</div>
+        <div class="detail-value">{{ order.numToday }}$</div>
       </div>
     </div>
 
@@ -85,7 +85,7 @@ const { locale } = storeToRefs(langStore);
 const isProcessing = ref(false);
 
 const formatCurrency = value => {
-  if (typeof value !== "number") return "0 €";
+  if (typeof value !== "number") return "0 $";
   return value.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
 };
 

@@ -3,7 +3,7 @@
     <!-- 用户信息头部 -->
     <div class="user-header">
       <div class="avatar">
-        <img src="../../assets/img/mylogo-asia.png" alt="" />
+        <img src="../../assets/img/mylogo-asia.png" alt />
       </div>
 
       <div class="user-info">
@@ -16,7 +16,7 @@
     <div class="user-level-info">
       <div class="balance-info">
         <p class="balance-label">{{ t("剩余") }}</p>
-        <p class="balance-amount">{{ userInfo.accountBalance }} €</p>
+        <p class="balance-amount">{{ userInfo.accountBalance }} $</p>
       </div>
       <div class="member-level">
         <p class="section-label">{{ t("会员级别") }}</p>
@@ -26,37 +26,17 @@
 
     <!-- 功能按钮区域 -->
     <div class="action-buttons">
-      <button class="action-btn" @click="handleAction('deposit')">
-        {{ t("提款") }}
-      </button>
-      <button class="action-btn" @click="handleAction('withdraw')">
-        {{ t("取款") }}
-      </button>
-      <button class="action-btn" @click="handleAction('withdrawHistory')">
-        {{ t("提款记录") }}
-      </button>
-      <button class="action-btn" @click="handleAction('depositHistory')">
-        {{ t("存款记录") }}
-      </button>
-      <button class="action-btn" @click="handleAction('orderHistory')">
-        {{ t("订单历史") }}
-      </button>
-      <button class="action-btn" @click="handleAction('rewardHistory')">
-        {{ t("奖励历史记录") }}
-      </button>
-      <button class="action-btn" @click="handleAction('groupReport')">
-        {{ t("小组报告") }}
-      </button>
-      <button class="action-btn" @click="handleAction('bankInfo')">
-        {{ t("银行信息") }}
-      </button>
-      <button class="action-btn" @click="handleAction('address')">
-        {{ t("地址") }}
-      </button>
+      <button class="action-btn" @click="handleAction('deposit')">{{ t("提款") }}</button>
+      <button class="action-btn" @click="handleAction('withdraw')">{{ t("取款") }}</button>
+      <button class="action-btn" @click="handleAction('withdrawHistory')">{{ t("提款记录") }}</button>
+      <button class="action-btn" @click="handleAction('depositHistory')">{{ t("存款记录") }}</button>
+      <button class="action-btn" @click="handleAction('orderHistory')">{{ t("订单历史") }}</button>
+      <button class="action-btn" @click="handleAction('rewardHistory')">{{ t("奖励历史记录") }}</button>
+      <button class="action-btn" @click="handleAction('groupReport')">{{ t("小组报告") }}</button>
+      <button class="action-btn" @click="handleAction('bankInfo')">{{ t("银行信息") }}</button>
+      <button class="action-btn" @click="handleAction('address')">{{ t("地址") }}</button>
       <button class="action-btn">{{ t("语言") }}</button>
-      <button class="language-btn" @click="toggleDropdown">
-        {{ t(selectedLanguage) }}
-      </button>
+      <button class="language-btn" @click="toggleDropdown">{{ t(selectedLanguage) }}</button>
 
       <!-- 语言选择下拉框 -->
       <ul v-if="showDropdown" class="language-dropdown">
@@ -65,9 +45,7 @@
           :key="lang"
           @click.stop="selectLanguage(lang)"
           :class="{ active: lang === selectedLanguage }"
-        >
-          {{ t(lang) }}
-        </li>
+        >{{ t(lang) }}</li>
       </ul>
     </div>
 
@@ -96,12 +74,12 @@ i18nLocale.value = langStoreLocale.value; // 同步 i18n
 
 const langMap = {
   越南语: "vi",
-  // 中国: "zh",
+  中国: "zh",
   英语: "en",
-  // 日本: "ja",
-  // 法国: "fr",
-  // 俄罗斯: "ru",
-  // 韩国: "ko",
+  日本: "ja",
+  法国: "fr",
+  俄罗斯: "ru",
+  韩国: "ko"
 };
 const reverseLangMap = Object.fromEntries(
   Object.entries(langMap).map(([k, v]) => [v, k])
@@ -115,7 +93,7 @@ const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
 };
 
-const selectLanguage = (lang) => {
+const selectLanguage = lang => {
   selectedLanguage.value = lang;
   const langCode = langMap[lang] || "vi";
   langStore.setLocale(langCode);
@@ -123,11 +101,11 @@ const selectLanguage = (lang) => {
   showDropdown.value = false;
 };
 
-getUserInfo().then((res) => {
+getUserInfo().then(res => {
   userInfo.value = res.data;
 });
 
-const handleAction = (row) => {
+const handleAction = row => {
   if (row === "deposit") {
     window.location.href =
       "https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi";
@@ -286,7 +264,7 @@ const handleLogout = () => {
 .language-dropdown {
   list-style: none;
   padding: 0;
-  margin-top: 395px;
+  margin-top: 215px;
   background: #0b1e34;
   color: white;
   border: 1px solid #ccc;
@@ -297,9 +275,10 @@ const handleLogout = () => {
 }
 
 .language-dropdown li {
-  padding: 8px;
+  padding: 8px 3px;
   cursor: pointer;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .language-dropdown li:hover,
@@ -443,7 +422,7 @@ const handleLogout = () => {
   .language-dropdown {
     list-style: none;
     padding: 0;
-    margin-top: 18.4vw;
+    margin-top: 10.4vw;
     background: #0b1e34;
     color: white;
     border: 1px solid #ccc;
@@ -455,7 +434,8 @@ const handleLogout = () => {
   }
 
   .language-dropdown li {
-    padding: 1.13333vw;
+    margin-top: 0;
+    padding: 8px 2px;
     cursor: pointer;
     font-size: 0.9333vw;
   }

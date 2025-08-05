@@ -4,16 +4,13 @@
       <span class="label">{{ $t("语言") }}</span>
       <div class="dropdown-wrapper" @click="toggleLangList">
         {{ t(selectedLanguage) }}
-
         <ul v-if="showLangList" class="lang-dropdown">
           <li
             v-for="(lang, index) in languageList"
             :key="index"
             @click.stop="selectLanguage(lang)"
             :class="{ active: lang === selectedLanguage }"
-          >
-            {{ t(lang) }}
-          </li>
+          >{{ t(lang) }}</li>
         </ul>
       </div>
     </div>
@@ -53,12 +50,12 @@ const { t } = useI18n();
 const showLangList = ref(false);
 const langMap = {
   越南语: "vi",
-  // 中国: "",
+  中国: "zh",
   英语: "en",
-  // 日本: "ja",
-  // 法国: "fr",
-  // 俄罗斯: "ru",
-  // 韩国: "ko",
+  日本: "ja",
+  法国: "fr",
+  俄罗斯: "ru",
+  韩国: "ko"
 };
 const languageList = Object.keys(langMap);
 const reverseLangMap = Object.fromEntries(

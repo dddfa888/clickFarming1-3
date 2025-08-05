@@ -11,13 +11,13 @@
           <img :src="data.productImageUrl" class="product-img" />
           <div class="product-desc">
             <p>{{ data.productName }}</p>
-            <p>{{ data.unitPrice }} € x {{ data.number }}</p>
+            <p>{{ data.unitPrice }} $ x {{ data.number }}</p>
           </div>
         </div>
 
-        <p>{{ t("分配总额") }}: {{ data.totalAmount }} €</p>
-        <p>{{ t("利润") }}: {{ data.profit }} €</p>
-        <p class="highlight">{{ t("退款金额") }}: {{ data.refundAmount }} €</p>
+        <p>{{ t("分配总额") }}: {{ data.totalAmount }} $</p>
+        <p>{{ t("利润") }}: {{ data.profit }} $</p>
+        <p class="highlight">{{ t("退款金额") }}: {{ data.refundAmount }} $</p>
       </div>
 
       <div class="actions">
@@ -35,14 +35,14 @@ import { useI18n } from "vue-i18n";
 const props = defineProps({
   id: {
     type: [String, Number],
-    required: true,
-  },
+    required: true
+  }
 });
 
 const { id } = toRefs(props);
 const { t } = useI18n();
 const data = ref({});
-getOrderById(id.value).then((res) => {
+getOrderById(id.value).then(res => {
   data.value = res.data;
 });
 

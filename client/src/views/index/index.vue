@@ -48,7 +48,7 @@
           <img src="../../assets/img/可用余额.png" alt />
           <p class="balance-label">{{ t("可用余额") }}</p>
         </div>
-        <p class="balance-amount">{{ userInfo.accountBalance || 0 }}€</p>
+        <p class="balance-amount">{{ userInfo.accountBalance || 0 }}$</p>
       </div>
       <div class="action-buttons">
         <div
@@ -370,7 +370,7 @@ onMounted(() => {
 
 const user = {
   name: "Linh198",
-  balance: "0.00 €"
+  balance: "0.00 $"
 };
 const infoBtns = computed(() => [
   { label: t("公司简介"), icon: notice },
