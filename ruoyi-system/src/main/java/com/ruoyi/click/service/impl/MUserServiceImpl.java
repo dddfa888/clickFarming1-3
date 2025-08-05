@@ -22,6 +22,7 @@ import com.ruoyi.click.mapper.MUserMapper;
 import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import com.ruoyi.click.service.IMUserService;
 import com.ruoyi.click.service.IUserGradeService;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -176,10 +177,23 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         mUser.setUpdateTime(DateUtils.getNowDate());
         MUser user = mUserMapper.selectMUserByUid(mUser.getUid());
 
+        //银行卡号唯一
+        String bank = mUser.getBankAccountNumber();
+        if(StringUtils.isEmpty(bank)){
+            throw new ServiceException("银行卡号不能为空");//user
+        }
+        if(StringUtils.isEmpty(mUser.getBankAccountName())){
+            throw new ServiceException("银行名不能为空");//user
+        }
+        if(StringUtils.isEmpty(mUser.getFundPassword())){
+            throw new ServiceException("资金密码不能为空");//user
+        }
+        if (this.getOne(new LambdaQueryWrapper<MUser>().eq(MUser::getBankAccountNumber, bank)) != null) {
+            throw new ServiceException("银行卡已被绑定");//user
+        }
         if(!user.getFundPassword().equals(mUser.getFundPassword())){
             mUser.setFundPassword(EncoderUtil.encoder(mUser.getFundPassword()));
         }
-
         return mUserMapper.updateMUser(mUser);
     }
 
@@ -227,7 +241,12 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
         String loginAccount = model.getLoginAccount();
         if (StringUtils.isNotBlank(loginAccount) &&
                 this.getOne(new LambdaQueryWrapper<MUser>().eq(MUser::getLoginAccount, loginAccount)) != null) {
-            throw new ServiceException("账号已存在");//user
+            throw new ServiceException("已存在的用户名或电话号码");//user
+        }
+        //手机唯一
+        String loginPhone = model.getPhone();
+        if (this.getOne(new LambdaQueryWrapper<MUser>().eq(MUser::getPhoneNumber, loginPhone)) != null) {
+            throw new ServiceException("已存在的用户名或电话号码");//user
         }
         mUser.setLoginAccount(loginAccount);
         mUser.setBrushNumber(0);
