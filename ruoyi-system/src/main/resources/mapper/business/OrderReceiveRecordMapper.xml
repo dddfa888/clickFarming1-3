@@ -27,6 +27,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
+    <resultMap type="OrderReceiveRecordVo" id="OrderReceiveRecordResultVo">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productImageUrl"    column="product_image_url"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="number"    column="number"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="profit"    column="profit"    />
+        <result property="refundAmount"    column="refund_amount"    />
+        <result property="processStatus"    column="process_status"    />
+        <result property="numTarget"    column="num_target"    />
+        <result property="numSeq"    column="num_seq"    />
+        <result property="multiType"    column="multi_type"    />
+        <result property="multiId"    column="multi_id"    />
+        <result property="freezeStatus"    column="freeze_status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
 
     <sql id="selectOrderReceiveRecordVo">
         select
@@ -83,6 +103,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 倒序查询 -->
     <select id="selectListOrderDesc" parameterType="java.util.Map" resultMap="OrderReceiveRecordResult">
+        <include refid="selectOrderReceiveRecordVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productImageUrl != null  and productImageUrl != ''"> and product_image_url = #{productImageUrl}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+            <if test="profit != null "> and profit = #{profit}</if>
+            <if test="refundAmount != null "> and refund_amount = #{refundAmount}</if>
+            <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+            <if test="numTarget != null  and numTarget != ''"> and num_target = #{numTarget}</if>
+            <if test="numSeq != null  and numSeq != ''"> and num_seq = #{numSeq}</if>
+            <if test="multiType != null  and multiType != ''"> and multi_type = #{multiType}</if>
+            <if test="multiId != null "> and multi_id = #{multiId}</if>
+            <if test="freezeStatus != null  and freezeStatus != ''"> and freeze_status = #{freezeStatus}</if>
+        </where>
+        order by create_time desc
+    </select>
+    <!-- 倒序查询 -->
+    <select id="selectListOrderDescVo" parameterType="java.util.Map" resultMap="OrderReceiveRecordResultVo">
         <include refid="selectOrderReceiveRecordVo"/>
         <where>
             <if test="userId != null "> and user_id = #{userId}</if>

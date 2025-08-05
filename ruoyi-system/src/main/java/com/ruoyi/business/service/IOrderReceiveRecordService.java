@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.business.domain.OrderReceiveRecord;
+import com.ruoyi.click.domain.vo.OrderReceiveRecordVo;
 
 /**
  * 订单接收记录Service接口
@@ -35,7 +36,7 @@ public interface IOrderReceiveRecordService
      * @param orderReceiveRecord 订单接收记录
      * @return 订单接收记录集合
      */
-    List<OrderReceiveRecord> selectOrderListByUser(OrderReceiveRecord orderReceiveRecord);
+    List<OrderReceiveRecordVo> selectOrderListByUser(OrderReceiveRecord orderReceiveRecord);
 
     /**
      * 新增订单接收记录

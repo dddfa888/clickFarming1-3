@@ -3,6 +3,8 @@ package com.ruoyi.web.controller.business;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.click.domain.vo.OrderReceiveRecordVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +55,7 @@ public class OrderReceiveRecordController extends BaseController
     public TableDataInfo selectOrderListByUser(OrderReceiveRecord orderReceiveRecord)
     {
         //startPage(); //暂时不分页
-        List<OrderReceiveRecord> list = orderReceiveRecordService.selectOrderListByUser(orderReceiveRecord);
+        List<OrderReceiveRecordVo> list = orderReceiveRecordService.selectOrderListByUser(orderReceiveRecord);
         return getDataTable(list);
     }
 
