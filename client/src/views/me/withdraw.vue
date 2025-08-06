@@ -11,7 +11,7 @@
 
       <div class="form" v-if="bankAccountNumber && bankName">
         <div class="form-group">
-          <label>{{ t("账户名称") }}</label>
+          <label>{{ t("银行名") }}</label>
           <input type="text" v-model="bankName" disabled />
         </div>
 

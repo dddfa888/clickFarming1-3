@@ -209,5 +209,6 @@ export default {
 "账号名":"Tên tài khoản",
 "当前等级":"Hiện tại cấp bậc",
     "充值":"Nạp tiền",
-    "充值记录":"Lịch sử nạp tiền"
+    "充值记录":"Lịch sử nạp tiền",
+    "银行名":"Tên ngân hàng"
 };

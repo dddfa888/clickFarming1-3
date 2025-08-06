@@ -207,4 +207,5 @@ export default {
     "充值":"Recharge",
     "充值成功":"Recharge successful",
     "充值记录":"Recharge record",
+    "银行名":"Bank name"
 };

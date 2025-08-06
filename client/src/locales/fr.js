@@ -207,6 +207,7 @@ export default {
 "充值记录":"Record de recharge",
 "语言":"Langue",
 "充值":"Recharger",
+"银行名":"Nom de la banque"
 };
 
    
