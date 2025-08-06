@@ -107,8 +107,11 @@ getUserInfo().then(res => {
 
 const handleAction = row => {
   if (row === "deposit") {
-    window.location.href =
-      "https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi";
+    if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
+      window.Tawk_API.maximize();
+    } else {
+      console.warn("Tawk API not ready yet.");
+    }
   } else if (row === "withdraw") {
     router.push("/withdraw");
   } else if (row === "withdrawHistory") {

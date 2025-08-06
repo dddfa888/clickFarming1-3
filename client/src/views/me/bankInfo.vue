@@ -16,12 +16,12 @@
     </div>
 
     <div class="form-group">
-      <label :class="{ floated: accountNumber }">{{ t("银行卡号") }}</label>
-      <input v-model="accountNumber" type="text" class="input" :disabled="showinput" />
+      <label :class="{ floated: accountName }">{{ t("账号名称") }}</label>
+      <input v-model="accountName" type="text" class="input" :disabled="showinput" />
     </div>
     <div class="form-group">
-      <label :class="{ floated: accountName }">{{ t("账号名") }}</label>
-      <input v-model="accountName" type="text" class="input" :disabled="showinput" />
+      <label :class="{ floated: accountNumber }">{{ t("账号") }}</label>
+      <input v-model="accountNumber" type="text" class="input" :disabled="showinput" />
     </div>
     <div class="form-group" v-if="showBank">
       <label :class="{ floated: fundPassword }">{{ t("提款密码") }}</label>
@@ -197,7 +197,7 @@ function onBankConfirm(value) {
 // 获取用户信息
 getUserInfo().then(res => {
   accountName.value = res.data.bankAccountName || "";
-  accountNumber.value = res.data.bankAccountNumber || "";
+  accountNumber.value = formatBankCard(res.data.bankAccountNumber) || "";
   bankName.value = formatBankCard(res.data.bankName);
   console.log(
     res.data.bankAccountName,
