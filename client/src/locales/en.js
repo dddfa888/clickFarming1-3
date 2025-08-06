@@ -201,4 +201,10 @@ export default {
     "用户名或密码错误":"Username or password error",
     "手机号已被注册":"Phone number has been registered",
     "注册成功":"Registration successful",  
+    "银行卡号":"Bank card number",
+    "账号名":"Account name",
+    "当前等级":"Current level",
+    "充值":"Recharge",
+    "充值成功":"Recharge successful",
+    "充值记录":"Recharge record",
 };

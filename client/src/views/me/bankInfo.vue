@@ -3,11 +3,11 @@
     <HeaderBar :title="t('银行信息')" />
     <!-- 选择银行：支持输入 + 下拉 -->
     <div class="form-group select-wrapper">
-      <label :class="{ floated: accountName }">{{ t("选择银行") }}</label>
+      <label :class="{ floated: bankName }">{{ t("选择银行") }}</label>
       <div class="input-select-combo">
         <!-- <input v-model="accountName" type="text" class="input" placeholder="" /> -->
         <BankSelect
-          v-model="accountName"
+          v-model="bankName"
           :options="bankOptions"
           :placeholder="t('请输入或选择银行')"
           :show="showinput"
@@ -16,12 +16,12 @@
     </div>
 
     <div class="form-group">
-      <label :class="{ floated: accountNumber }">{{ t("账号名称") }}</label>
+      <label :class="{ floated: accountNumber }">{{ t("银行卡号") }}</label>
       <input v-model="accountNumber" type="text" class="input" :disabled="showinput" />
     </div>
     <div class="form-group">
-      <label :class="{ floated: bankName }">{{ t("账号") }}</label>
-      <input v-model="bankName" type="text" class="input" :disabled="showinput" />
+      <label :class="{ floated: accountName }">{{ t("账号名") }}</label>
+      <input v-model="accountName" type="text" class="input" :disabled="showinput" />
     </div>
     <div class="form-group" v-if="showBank">
       <label :class="{ floated: fundPassword }">{{ t("提款密码") }}</label>

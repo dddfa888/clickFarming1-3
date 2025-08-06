@@ -86,7 +86,7 @@ const isProcessing = ref(false);
 
 const formatCurrency = value => {
   if (typeof value !== "number") return "0 $";
-  return value.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+  return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 };
 
 const Sendbutton = debounce(() => {
@@ -205,7 +205,7 @@ getUserGradeAndBalanceAndDiscount().then(res => {
   max-width: 800px;
   margin: 0 auto;
   color: #fff;
-  padding: 10px;
+  padding: 30px;
   height: 100vh;
   background: url("../../assets/img/BG-nhandon-B-V7rk8F.png") no-repeat center
     center fixed;
@@ -227,12 +227,14 @@ getUserGradeAndBalanceAndDiscount().then(res => {
 }
 
 .order-summary {
+  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 25px;
   padding: 5px;
   border-radius: 6px;
+  margin: 0 auto;
 }
 .order-summary > img {
   width: 100%;

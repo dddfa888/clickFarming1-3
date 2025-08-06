@@ -1,6 +1,6 @@
 <template>
   <div class="company-intro">
-    <HeaderBar :title="t('奖励历史记录')" />
+    <HeaderBar :title="t('充值记录')" />
     <div class="transaction-list">
       <div v-for="(transaction, index) in transactions" :key="index" class="transaction-item">
         <div class="transaction-amount">{{ t("金钱数额") }}:+{{ formatAmount(transaction.amount) }}</div>

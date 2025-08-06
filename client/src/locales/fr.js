@@ -200,7 +200,13 @@ export default {
         "failed": "Échec",
         "pending": "En cours d'examen"
     },
-    "注册成功":"Inscription réussie"
+    "注册成功":"Inscription réussie",
+    "银行卡号":"Numéro de carte bancaire",
+    "账号名":"Numéro de compte",
+"当前等级":"Niveau actuel",
+"充值记录":"Record de recharge",
+"语言":"Langue",
+"充值":"Recharger",
 };
 
    

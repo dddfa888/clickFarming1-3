@@ -9,15 +9,15 @@
         <span class="balance">{{ balance }} $</span>
       </div>
 
-      <div class="form" v-if="bankAccountNumber && bankName">
+      <div class="form" v-if="bankAccountName && bankName">
         <div class="form-group">
           <label>{{ t("账户名称") }}</label>
-          <input type="text" v-model="bankAccountNumber" disabled />
+          <input type="text" v-model="bankName" disabled />
         </div>
 
         <div class="form-group">
           <label>{{ t("账号") }}</label>
-          <input type="text" v-model="bankName" disabled />
+          <input type="text" v-model=" bankAccountName" disabled />
         </div>
 
         <div class="form-group amount-group">
@@ -74,7 +74,7 @@ import { notify } from "../../utils/notify.js";
 const { t } = useI18n();
 
 const balance = ref("");
-const bankAccountNumber = ref("");
+const bankAccountName = ref("");
 const bankName = ref("");
 const amount = ref("");
 const password = ref("");
@@ -122,7 +122,7 @@ function submit() {
 }
 
 getUserInfo().then(res => {
-  bankAccountNumber.value = res.data.bankAccountNumber;
+  bankAccountName.value = res.data.bankAccountName;
   bankName.value = formatBankCard(res.data.bankName);
   balance.value = res.data.accountBalance;
 });

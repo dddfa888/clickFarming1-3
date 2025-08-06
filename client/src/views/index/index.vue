@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" :style="{ backgroundImage: `url(${bgImage})` }">
     <!-- 顶部用户信息 -->
     <div class="user-info">
       <div class="user-info-avatar">
@@ -79,16 +79,7 @@
     </div>
 
     <!-- 视频 -->
-    <video
-      class="videos"
-      controls
-      muted
-      loop
-      width="100%"
-      height="200px"
-      src="../../assets/videos/mcd-DJnKgbK7.mp4"
-    ></video>
-
+    <video class="videos" controls muted loop width="100%" height="200px" :src="videoUrl"></video>
     <h5>{{ t("概述:") }} Mercado Asia</h5>
     <!-- 功能按钮 -->
     <div class="info-buttons">
@@ -118,16 +109,19 @@
           <br />
           {{ item.minBonus }}%-{{ item.maxBonus }}%
         </div>
-        <div class="col">
-          {{ t("分配数量") }}
-          <br />
-          {{ item.buyProdNum }}
-          <span v-if="level === item.id" class="lock-icon">
-            {{
-            t("当前水平")
-            }}
-          </span>
-          <span class="badge">{{ item.gradeName }}</span>
+        <div class="card">
+          <!-- 顶部右侧徽章区 -->
+          <div class="badge-box" v-if="level === item.id || item.gradeName">
+            <span class="badge">{{ item.gradeName }}</span>
+            <span v-if="level === item.id" class="lock-icon">{{ t("当前等级") }}</span>
+          </div>
+
+          <!-- 主体内容 -->
+          <div class="content">
+            {{ t("分配数量") }}
+            <br />
+            {{ item.buyProdNum }}
+          </div>
         </div>
       </div>
     </div>
@@ -183,6 +177,12 @@ import {
 } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
 import { notify } from "../../utils/notify.js";
+
+const bgImage = new URL("../../assets/img/bg.png", import.meta.url).href;
+const videoUrl = new URL(
+  "../../assets/videos/mcd-DJnKgbK7.mp4",
+  import.meta.url
+).href;
 
 const promoRef = ref();
 const router = useRouter();
@@ -442,7 +442,6 @@ onMounted(async () => {
 <style scoped>
 .home {
   padding: 10px;
-  background: url("../../assets/img/bg.png") no-repeat center center fixed;
   min-height: 100vh;
   color: white;
   padding-bottom: 120px;
@@ -660,7 +659,7 @@ onMounted(async () => {
   border-radius: 10px;
   border: 1px solid #7a797d;
   margin-bottom: 15px;
-  padding: 10px;
+  padding: 15px;
 }
 
 .title {
@@ -675,36 +674,43 @@ onMounted(async () => {
 }
 
 .col {
+  position: relative;
   text-align: center;
   flex: 1;
 }
 
+.card {
+  position: relative;
+  border-radius: 8px;
+  /* 其他样式 */
+}
+
+.badge-box {
+  position: absolute;
+  top: -6.86667vw;
+  right: -4.86667vw;
+  display: flex;
+  align-items: center;
+  gap: 1.6vw;
+  z-index: 1;
+}
+
 .badge {
-  display: inline-block;
-  width: 20%;
-  position: fixed;
-  top: 0;
-  right: 0;
-  background: #b13330;
-  color: #ccc;
-  border-radius: 5px;
-  padding: 2px 5px;
-  margin-left: 5px;
+  background-color: #b13330;
+  color: #fff;
   font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
 }
 
 .lock-icon {
-  display: inline-block;
-  width: 20%;
-  position: fixed;
-  top: 0;
-  right: 22%;
+  background-color: #ffe747;
   color: #000;
-  background: #ffe747;
-  border-radius: 5px;
-  padding: 2px 5px;
-  margin-left: 5px;
   font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
 }
 
 @media screen and (min-width: 768px) {

@@ -5,16 +5,12 @@
       v-for="(item, index) in tabs.slice(0, 2)"
       :key="index"
       :class="{ active: currentRoute === item.path }"
-      @click="navigate(item.path)"
+      @click="navigate(item.path, item.name)"
     >
-      <img
-        :src="currentRoute === item.path ? item.iconActive : item.icon"
-        class="tabbar-icon"
-      />
+      <img :src="currentRoute === item.path ? item.iconActive : item.icon" class="tabbar-icon" />
       <span>{{ item.name }}</span>
     </div>
 
-    <!-- 中间按钮 -->
     <div class="tabbar-middle" @click="onCenterClick">
       <img :src="centerIcon" class="center-icon" />
     </div>
@@ -24,61 +20,69 @@
       v-for="(item, index) in tabs.slice(2)"
       :key="index + 2"
       :class="{ active: currentRoute === item.path }"
-      @click="navigate(item.path)"
+      @click="navigate(item.path, item.name)"
     >
-      <img
-        :src="currentRoute === item.path ? item.iconActive : item.icon"
-        class="tabbar-icon"
-      />
+      <img :src="currentRoute === item.path ? item.iconActive : item.icon" class="tabbar-icon" />
       <span>{{ item.name }}</span>
     </div>
   </div>
+  <!-- 客服弹窗组件 -->
 </template>
 
+
 <script setup>
+import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const getImageUrl = (name) =>
+const getImageUrl = name =>
   new URL(`../assets/img/${name}`, import.meta.url).href;
 
 const router = useRouter();
 const route = useRoute();
+const showCustomerService = ref(false);
 
 const tabs = computed(() => [
   {
     name: t("首页"),
     path: "/",
     icon: getImageUrl("home.svg"),
-    iconActive: getImageUrl("home-active.svg"),
+    iconActive: getImageUrl("home-active.svg")
   },
   {
     name: t("仓库"),
     path: "/warehouse",
     icon: getImageUrl("warehouse.svg"),
-    iconActive: getImageUrl("warehouse-active.svg"),
+    iconActive: getImageUrl("warehouse-active.svg")
   },
   {
-    name: "CSKH", // 这个是固定外链名，你也可以用 t("客服") 自定义
-    path: "https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi",
+    name: "CSKH", // 客服，不跳转
+    path: "",
     icon: getImageUrl("service.svg"),
-    iconActive: getImageUrl("service-active.svg"),
+    iconActive: getImageUrl("service-active.svg")
   },
   {
     name: t("我"),
     path: "/me",
     icon: getImageUrl("user.svg"),
-    iconActive: getImageUrl("user-active.svg"),
-  },
+    iconActive: getImageUrl("user-active.svg")
+  }
 ]);
 
 const centerIcon = getImageUrl("center.svg");
-
 const currentRoute = computed(() => route.path);
 
-const navigate = (path) => {
+const navigate = (path, name = "") => {
+  if (name === "CSKH") {
+    if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
+      window.Tawk_API.maximize();
+    } else {
+      console.warn("Tawk API not ready yet.");
+    }
+    return;
+  }
+
   if (path.startsWith("http")) {
     window.open(path, "_blank");
   } else if (path !== currentRoute.value) {
@@ -90,6 +94,7 @@ const onCenterClick = () => {
   router.push("/orderdetail");
 };
 </script>
+
 
 <style scoped>
 .tabbar {

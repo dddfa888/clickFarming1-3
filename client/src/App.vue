@@ -45,6 +45,13 @@ body,
   width: 100vw;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 @media screen and (min-width: 768px) {
   html,
   body,
@@ -66,6 +73,13 @@ html,
 body {
   -ms-overflow-style: none; /* IE和Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body,
