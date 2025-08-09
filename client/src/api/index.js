@@ -35,9 +35,9 @@ export function withdraw(data) {
 }
 
 // 获取个人的提现记录
-export function getWithdrawRecord() {
+export function getWithdrawRecord(pageNum, pageSize) {
     return request({
-        url: '/api/withdraw/userList',
+        url: `/api/withdraw/userList?pageNum=${pageNum}&pageSize=${pageSize}`, // data
         method: 'get'
     })
 }

@@ -198,7 +198,7 @@ function onBankConfirm(value) {
 getUserInfo().then(res => {
   accountName.value = res.data.bankAccountName || "";
   accountNumber.value = formatBankCard(res.data.bankAccountNumber) || "";
-  bankName.value = formatBankCard(res.data.bankName);
+  bankName.value = res.data.bankName || "";
   console.log(
     res.data.bankAccountName,
     res.data.bankAccountNumber,
