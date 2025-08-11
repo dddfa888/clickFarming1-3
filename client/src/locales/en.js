@@ -63,7 +63,7 @@ export default {
     "介绍基金会规则": "Introduce foundation rules",
     "提现": "Withdraw",
     "提款记录": "Withdrawal record",
-    "存款记录": "Deposit record",
+    "充值记录": "Deposit record",
     "订单历史": "Order history",
     "奖励历史记录": "Reward history",
     "小组报告": "Group report",
@@ -206,6 +206,6 @@ export default {
     "当前等级":"Current level",
     "充值":"Recharge",
     "充值成功":"Recharge successful",
-    "充值记录":"Recharge record",
+    "奖励记录":"Recharge record",
     "银行名":"Bank name"
 };

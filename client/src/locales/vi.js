@@ -69,7 +69,7 @@ export default {
     "提现": "Rút tiền",
     "订单奖励": "Tiền thưởng đơn hàng",
     "提款记录": "Lịch sử rút tiền",
-    "存款记录": "Lịch sử nạp tiền",
+    "充值记录": "Lịch sử nạp tiền",
     "订单历史": "Lịch sử đơn hàng",
     "奖励历史记录": "Lịch sử nhận thưởng",
     "小组报告": "Báo cáo nhóm",
@@ -209,6 +209,6 @@ export default {
 "账号名":"Tên tài khoản",
 "当前等级":"Hiện tại cấp bậc",
     "充值":"Nạp tiền",
-    "充值记录":"Lịch sử nạp tiền",
+    "奖励记录":"Lịch sử nhận thưởng",
     "银行名":"Tên ngân hàng"
 };

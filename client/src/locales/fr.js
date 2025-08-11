@@ -63,7 +63,7 @@ export default {
 "介绍基金会规则":"Introduire les règles de fondation",
 "提现":"Retirer",
 "提款记录":"Record de retrait",
-"存款记录":"Registre de dépôt",
+"充值记录":"Registre de dépôt",
 "订单历史":"Historique des commandes",
 "奖励历史记录":"Histoire des récompenses",
 "小组报告":"Rapport de groupe",
@@ -204,7 +204,7 @@ export default {
     "银行卡号":"Numéro de carte bancaire",
     "账号名":"Numéro de compte",
 "当前等级":"Niveau actuel",
-"充值记录":"Record de recharge",
+"奖励记录":"Record de recharge",
 "语言":"Langue",
 "充值":"Recharger",
 "银行名":"Nom de la banque"
