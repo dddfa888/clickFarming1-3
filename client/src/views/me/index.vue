@@ -30,8 +30,8 @@
       <button class="action-btn" @click="handleAction('withdraw')">{{ t("取款") }}</button>
       <button class="action-btn" @click="handleAction('withdrawHistory')">{{ t("提款记录") }}</button>
       <button class="action-btn" @click="handleAction('depositHistory')">{{ t("存款记录") }}</button>
-      <button class="action-btn" @click="handleAction('orderHistory')">{{ t("订单历史") }}</button>
       <button class="action-btn" @click="handleAction('rewardHistory')">{{ t("充值记录") }}</button>
+      <button class="action-btn" @click="handleAction('orderHistory')">{{ t("订单历史") }}</button>
       <button class="action-btn" @click="handleAction('groupReport')">{{ t("小组报告") }}</button>
       <button class="action-btn" @click="handleAction('bankInfo')">{{ t("银行信息") }}</button>
       <button class="action-btn" @click="handleAction('address')">{{ t("地址") }}</button>
