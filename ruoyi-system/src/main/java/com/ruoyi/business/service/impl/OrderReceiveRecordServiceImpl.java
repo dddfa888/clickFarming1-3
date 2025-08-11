@@ -291,12 +291,27 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         int prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN).intValue();
         // 如果上面计算的prodNum是1，产品数量直接设为1。否则，假设prodNum（用户可支付范围内的最大数量）是10，生成随机数取5-10之间的整数作为本次订单实际产品数量。
         if(prodNum>1){
-            Double min=prodNum*(0.8);
+            Double min=prodNum*(0.7);
             prodNum = randomMinMax(min.intValue(),prodNum);
         }
         orderReceiveRecord.setNumber(prodNum);
         return product;
     }
+
+//    public static void setOrderProdNormal2(BigDecimal price, BigDecimal money){
+//
+//        int prodNum = money.divide(price, 0, RoundingMode.DOWN).intValue();
+//        // 如果上面计算的prodNum是1，产品数量直接设为1。否则，假设prodNum（用户可支付范围内的最大数量）是10，生成随机数取5-10之间的整数作为本次订单实际产品数量。
+//        if(prodNum>1){
+//            Double min=prodNum*(0.8);
+//            prodNum = randomMinMax(min.intValue(),prodNum);
+//        }
+//        System.out.println(prodNum*price.doubleValue());
+//    }
+//
+//    public static void main(String[] args) {
+//        setOrderProdNormal2(new BigDecimal(123),new BigDecimal(500));
+//    }
     // 生成包含 min 和 max 的随机数
     int randomMinMax(int min, int max) {
         Random rand = new Random();
