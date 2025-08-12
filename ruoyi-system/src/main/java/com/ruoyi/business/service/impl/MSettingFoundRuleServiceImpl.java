@@ -105,7 +105,11 @@ public class MSettingFoundRuleServiceImpl implements IMSettingFoundRuleService
     @Override
     public MSettingFoundRule selectByLang(String lang)
     {
-        Assert.notEmpty(lang, "请选择语种");
+        if (lang == null
+                || lang.trim().isEmpty()
+                || !(lang.equals("zh") || lang.equals("vi"))) {
+            lang = "en";
+        }
         return mSettingFoundRuleMapper.selectByLang(lang);
     }
 

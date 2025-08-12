@@ -12,87 +12,80 @@ import com.ruoyi.business.service.IMSettingDevCooperateService;
 
 /**
  * 设置发展合作Service业务层处理
- * 
+ *
  * @author ruoyi
  * @date 2025-06-22
  */
 @Service
-public class MSettingDevCooperateServiceImpl implements IMSettingDevCooperateService 
-{
+public class MSettingDevCooperateServiceImpl implements IMSettingDevCooperateService {
     @Autowired
     private MSettingDevCooperateMapper mSettingDevCooperateMapper;
 
     /**
      * 查询设置发展合作
-     * 
+     *
      * @param id 设置发展合作主键
      * @return 设置发展合作
      */
     @Override
-    public MSettingDevCooperate selectMSettingDevCooperateById(Long id)
-    {
+    public MSettingDevCooperate selectMSettingDevCooperateById(Long id) {
         return mSettingDevCooperateMapper.selectMSettingDevCooperateById(id);
     }
 
     /**
      * 查询设置发展合作列表
-     * 
+     *
      * @param mSettingDevCooperate 设置发展合作
      * @return 设置发展合作
      */
     @Override
-    public List<MSettingDevCooperate> selectMSettingDevCooperateList(MSettingDevCooperate mSettingDevCooperate)
-    {
+    public List<MSettingDevCooperate> selectMSettingDevCooperateList(MSettingDevCooperate mSettingDevCooperate) {
         return mSettingDevCooperateMapper.selectMSettingDevCooperateList(mSettingDevCooperate);
     }
 
     /**
      * 新增设置发展合作
-     * 
+     *
      * @param mSettingDevCooperate 设置发展合作
      * @return 结果
      */
     @Override
-    public int insertMSettingDevCooperate(MSettingDevCooperate mSettingDevCooperate)
-    {
+    public int insertMSettingDevCooperate(MSettingDevCooperate mSettingDevCooperate) {
         mSettingDevCooperate.setCreateTime(DateUtils.getNowDate());
         return mSettingDevCooperateMapper.insertMSettingDevCooperate(mSettingDevCooperate);
     }
 
     /**
      * 修改设置发展合作
-     * 
+     *
      * @param mSettingDevCooperate 设置发展合作
      * @return 结果
      */
     @Override
-    public int updateMSettingDevCooperate(MSettingDevCooperate mSettingDevCooperate)
-    {
+    public int updateMSettingDevCooperate(MSettingDevCooperate mSettingDevCooperate) {
         mSettingDevCooperate.setUpdateTime(DateUtils.getNowDate());
         return mSettingDevCooperateMapper.updateMSettingDevCooperate(mSettingDevCooperate);
     }
 
     /**
      * 批量删除设置发展合作
-     * 
+     *
      * @param ids 需要删除的设置发展合作主键
      * @return 结果
      */
     @Override
-    public int deleteMSettingDevCooperateByIds(Long[] ids)
-    {
+    public int deleteMSettingDevCooperateByIds(Long[] ids) {
         return mSettingDevCooperateMapper.deleteMSettingDevCooperateByIds(ids);
     }
 
     /**
      * 删除设置发展合作信息
-     * 
+     *
      * @param id 设置发展合作主键
      * @return 结果
      */
     @Override
-    public int deleteMSettingDevCooperateById(Long id)
-    {
+    public int deleteMSettingDevCooperateById(Long id) {
         return mSettingDevCooperateMapper.deleteMSettingDevCooperateById(id);
     }
 
@@ -103,9 +96,12 @@ public class MSettingDevCooperateServiceImpl implements IMSettingDevCooperateSer
      * @return 设置发展合作信息
      */
     @Override
-    public MSettingDevCooperate selectByLang(String lang)
-    {
-        Assert.notEmpty(lang, "请选择语种");
+    public MSettingDevCooperate selectByLang(String lang) {
+        if (lang == null
+                || lang.trim().isEmpty()
+                || !(lang.equals("zh") || lang.equals("vi"))) {
+            lang = "en";
+        }
         return mSettingDevCooperateMapper.selectByLang(lang);
     }
 
