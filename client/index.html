@@ -19,6 +19,15 @@
   Tawk_API.lang = 'en';
   Tawk_API.onLoad = function() {
     Tawk_API.hide(); // 默认隐藏悬浮按钮，自己控制显示
+    // 弹框默认不显示
+      Tawk_API.onLoad = function () {
+    // 确保默认是关闭状态（对话框不弹出）
+    Tawk_API.minimize();
+    
+    // 如果想完全隐藏按钮，就用 hide()，想显示按钮就不用这行
+    // Tawk_API.hide();
+  };
+
   };
   (function() {
     var s1 = document.createElement("script"),

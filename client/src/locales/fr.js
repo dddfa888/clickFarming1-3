@@ -44,7 +44,7 @@ export default {
 "基本原则":"Règles de la fondation",
 "开发合作":"Coopération au développement",
 "通知邮件":"Notification",
-"rewardMessage":"Félicitations {nom d'utilisateur} reçu {montant}$ bénéfice",
+"rewardMessage":"Félicitations {username} reçu {amount}$ bénéfice",
 "发行历史":"Histoire de la distribution",
 "数据提供者MercadoAsia":"Fournisseur de données Mercado Asia",
 "剩余":"équilibre",
@@ -207,7 +207,9 @@ export default {
 "奖励记录":"Record de recharge",
 "语言":"Langue",
 "充值":"Recharger",
-"银行名":"Nom de la banque"
+"银行名":"Nom de la banque",
+"数据提供者 Mercado Asia":"Fournisseur de données Mercado Asia"
+
 };
 
    

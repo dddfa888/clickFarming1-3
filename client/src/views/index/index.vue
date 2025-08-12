@@ -126,14 +126,14 @@
       </div>
     </div>
     <!-- 奖励获得者名单 -->
-    <div class="title">{{ t("奖励获得者名单") }}</div>
+    <div class="title">{{ $t("奖励获得者名单") }}</div>
     <div class="reward">
       <div class="reward-list">
         <div v-for="(reward, index) in rewards" :key="index" class="reward-item">
           <span class="reward-date">{{ reward.date }}</span>
           <span class="reward-message">
             {{
-            t("rewardMessage", {
+            $t("rewardMessage", {
             username: reward.username,
             amount: formatAmount(reward.amount),
             })
@@ -393,8 +393,11 @@ const handleButtonClick = icon => {
 
 const onDeposit = () => {
   //console.log("执行提款操作");
-  window.location.href =
-    "https://chat.ichatlink.net/widget/standalone.html?eid=f653fb3a48bd5da3b540819202afbd16&language=vi";
+  if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
+    window.Tawk_API.maximize();
+  } else {
+    console.warn("Tawk API not ready yet.");
+  }
 };
 
 const onWithdraw = () => {
@@ -621,7 +624,6 @@ onMounted(async () => {
 .info-buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
   margin: 20px 0;
   padding: 10px;
   font-size: 14px;
