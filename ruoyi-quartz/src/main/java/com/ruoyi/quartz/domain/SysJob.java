@@ -110,7 +110,7 @@ public class SysJob extends BaseEntity
         this.cronExpression = cronExpression;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getNextValidTime()
     {
         if (StringUtils.isNotEmpty(cronExpression))

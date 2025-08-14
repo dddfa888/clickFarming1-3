@@ -117,10 +117,10 @@ public class MUser
     @Excel(name = "连单数量")
     private Integer multiOrderNum;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
 

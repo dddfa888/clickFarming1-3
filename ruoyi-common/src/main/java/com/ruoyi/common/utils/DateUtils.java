@@ -41,8 +41,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
      */
     public static Date getNowDate()
     {
-//        return new Date();
-        return getNowDateMinusOneHour();
+        return new Date();
+//        return getNowDateMinusOneHour();
     }
     public static Date getNowDateMinusOneHour() {
         Calendar cal = Calendar.getInstance();
