@@ -53,10 +53,10 @@ public class MAccountChangeRecords {
     @Excel(name = "账变后")
     private BigDecimal accountBack;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "Asia/Shanghai")
     private Date updateTime;
 
-    @JsonFormat(pattern = "HH:mm:ss",timezone = "Asia/Ho_Chi_Minh")
+    @JsonFormat(pattern = "HH:mm:ss", timezone = "Asia/Shanghai")
     private Date createTime;
 
     @TableField(exist = false)

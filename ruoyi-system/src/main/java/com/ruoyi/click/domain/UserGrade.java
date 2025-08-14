@@ -55,9 +55,9 @@ public class UserGrade
     @Excel(name = "最大奖金", readConverterExp = "%=")
     private BigDecimal maxBonus;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "Asia/Shanghai")
     private Date updateTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",  timezone = "Asia/Shanghai")
     private Date createTime;
 }

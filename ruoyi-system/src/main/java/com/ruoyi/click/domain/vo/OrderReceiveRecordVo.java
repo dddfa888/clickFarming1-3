@@ -71,7 +71,7 @@ public class OrderReceiveRecordVo implements Serializable {
     /** 冻结状态 */
     private String freezeStatus;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Ho_Chi_Minh")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date createTime;
 
 }
