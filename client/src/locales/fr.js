@@ -49,6 +49,7 @@ export default {
 "数据提供者MercadoAsia":"Fournisseur de données Mercado Asia",
 "剩余":"équilibre",
 "时间":"Heure",
+"平衡":"Equilibre",
 "代码":"Code",
 "平台代理模式":"Mode agent de plateforme",
 "MercadoAsia会员可以成为电商平台的代理商":"Les membres de Mercado Asia peuvent devenir agents de plateformes de commerce électronique.",

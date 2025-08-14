@@ -48,6 +48,10 @@
           sản phẩm có liên quan về đơn đặt hàng , bao gồm thông tin sản phẩm chi
           tiết đơn hàng , giá trị sản phẩm , số lượng ...vv..
         </p>
+        <p>
+          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
+          hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
+        </p>
       </div>
     </div>
     <ProductModal v-if="showModal" :id="id" @close="showModal = false" @pay="handlePay" />

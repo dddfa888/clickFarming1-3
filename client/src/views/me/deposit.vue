@@ -13,13 +13,7 @@
             class="transaction-balance"
           >{{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}</div>
         </div>
-        <div class="transaction-status">
-          <!-- {{
-            transaction.status === 1
-              ? t("transaction.success")
-              : t("transaction.failed")
-          }}-->
-        </div>
+        <div class="transaction-status">{{ $t("transaction.success") }}</div>
       </div>
     </div>
   </div>

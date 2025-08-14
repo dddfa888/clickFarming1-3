@@ -6,7 +6,10 @@
           <van-icon name="arrow-left" />
           <span class="back">{{ t("取款") }}</span>
         </div>
-        <span class="balance">{{ balance }} $</span>
+        <span class="balance">
+          <span>{{ balance }} $</span>
+          <span>{{ t("剩余") }}($)</span>
+        </span>
       </div>
 
       <div class="form" v-if="bankAccountNumber && bankName">
@@ -225,6 +228,12 @@ input[disabled] {
   color: #fff;
   cursor: pointer;
 }
+
+.balance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 @media screen and (min-width: 768px) {
   .withdraw-page {
     background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
@@ -314,6 +323,12 @@ input[disabled] {
     font-size: 20px;
     color: #fff;
     cursor: pointer;
+  }
+
+  .balance {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 </style>

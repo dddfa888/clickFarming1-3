@@ -178,6 +178,7 @@ export default {
     "概述:": "Overview:",
     "没有理由": "No reason",
     "平衡调整": "Balance adjustment",
+    "平衡":"Balance",
      "订单支付成功":"Order payment successful!",
     "正在分发":"is distributing",
    "认证失败":"Authentication failed",
