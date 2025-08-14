@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.click;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,6 +42,8 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+
+import static com.ruoyi.common.utils.SecurityUtils.getUserId;
 
 /**
  * 存款取款记录Controller
@@ -265,7 +270,17 @@ public class MMoneyInvestWithdrawController extends BaseController
         // 用户当日刷单数达到等级规定的“每天购买的产品数量”，才可以提现
         UserGrade userGrade = userGradeService.getOne(new LambdaQueryWrapper<UserGrade>().eq(UserGrade::getSortNum,mUser.getLevel()));
         Assert.notNull(userGrade, "用户等级不存在");//user
-        if(mUser.getBrushNumber() < userGrade.getBuyProdNum()){
+        //获取今天完成的订单
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.now();
+        String strToday = formatter.format(localDate);
+        String strTomorrow = formatter.format(localDate.plusDays(1));
+        Map<String,Object> param = new HashMap<>();
+        param.put("userId", getUserId());
+        param.put("date1", strToday);
+        param.put("date2", strTomorrow);
+        long finishNum = orderReceiveRecordMapper.countNumByUserDate(param);
+        if( finishNum!= userGrade.getBuyProdNum()){
             throw new ServiceException("您尚未完成当天的申请数量");//user
         }
 
