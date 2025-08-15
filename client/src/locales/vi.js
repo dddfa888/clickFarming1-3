@@ -210,5 +210,6 @@ export default {
 "当前等级":"Hiện tại cấp bậc",
     "充值":"Nạp tiền",
     "奖励记录":"Lịch sử nhận thưởng",
-    "银行名":"Tên ngân hàng"
+    "银行名":"Tên ngân hàng",
+    "提款时间":"Thời gian"
 };

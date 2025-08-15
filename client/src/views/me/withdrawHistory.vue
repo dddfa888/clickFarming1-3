@@ -4,6 +4,7 @@
     <div class="transaction-list">
       <div v-for="(transaction, index) in transactions" :key="index" class="transaction-item">
         <div class="transaction-info">
+          <div class="transaction-time">{{ $t("提款时间") }}:{{ transaction.createTime }}</div>
           <div
             class="transaction-amount"
             :class="{ negative: transaction.amount < 0 }"
@@ -55,7 +56,6 @@ const formatAmount = amount => {
 getWithdrawRecord().then(res => {
   console.log(res.rows);
   transactions.value = res.rows;
-  console.log(transactions.value, 21);
 });
 
 const loadTransactions = async () => {
@@ -133,6 +133,14 @@ onMounted(() => {
   font-size: 14px;
 }
 
+.transaction-time {
+  grid-column: 2;
+  grid-row: 1;
+  color: #fff;
+  text-align: right;
+  font-size: 14px;
+}
+
 .transaction-amount.negative {
   color: #e74c3c;
 }
@@ -190,6 +198,14 @@ onMounted(() => {
   }
 
   .transaction-amount {
+    grid-column: 2;
+    grid-row: 1;
+    color: #fff;
+    text-align: right;
+    font-size: 14px;
+  }
+
+  .transaction-time {
     grid-column: 2;
     grid-row: 1;
     color: #fff;

@@ -209,7 +209,8 @@ export default {
 "奖励记录":"チャージ記録",
 "银行名":"銀行名",
 "账号":"アカウント",
-"数据提供者 Mercado Asia":"データ提供元 Mercado Asia"
+"数据提供者 Mercado Asia":"データ提供元 Mercado Asia",
+"提款时间":"出金時間"
 
 };
 

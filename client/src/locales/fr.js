@@ -209,7 +209,8 @@ export default {
 "语言":"Langue",
 "充值":"Recharger",
 "银行名":"Nom de la banque",
-"数据提供者 Mercado Asia":"Fournisseur de données Mercado Asia"
+"数据提供者 Mercado Asia":"Fournisseur de données Mercado Asia",
+"提款时间":"Délai de retrait"
 
 };
 

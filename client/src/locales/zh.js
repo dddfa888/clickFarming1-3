@@ -209,7 +209,8 @@ export default {
     "当前等级":"当前等级",
     "充值":"充值",
     "奖励记录":"奖励记录",
-    "数据提供者 Mercado Asia":"数据提供者 Mercado Asia"
+    "数据提供者 Mercado Asia":"数据提供者 Mercado Asia",
+    "提款时间":"提款时间"
 };
 
   

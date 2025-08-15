@@ -208,5 +208,6 @@ export default {
     "充值":"Recharge",
     "充值成功":"Recharge successful",
     "奖励记录":"Recharge record",
-    "银行名":"Bank name"
+    "银行名":"Bank name",
+    "提款时间":"Withdrawal time"
 };
