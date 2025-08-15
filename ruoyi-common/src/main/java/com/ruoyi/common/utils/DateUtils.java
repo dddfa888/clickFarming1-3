@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -41,6 +42,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static Date getNowDate()
     {
         return new Date();
+//        return getNowDateMinusOneHour();
+    }
+    public static Date getNowDateMinusOneHour() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.HOUR_OF_DAY, -1); // 减一小时
+        return cal.getTime();
     }
 
     /**

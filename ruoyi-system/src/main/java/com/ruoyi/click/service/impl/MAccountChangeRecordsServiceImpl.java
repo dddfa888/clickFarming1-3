@@ -2,8 +2,10 @@ package com.ruoyi.click.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +141,10 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
         res.put("numYesterday", profitYesterday.setScale(2, RoundingMode.HALF_UP).toString()); //昨天折扣
         res.put("numToday", profitToday.setScale(2, RoundingMode.HALF_UP).toString()); //今天折扣
         res.put("withdrawalAddress", mUser.getWithdrawalAddress()); //提现地址  用于判断，页面不显示
+        Date nowDate = DateUtils.getNowDate();  // 获取当前时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr = sdf.format(nowDate);
+        res.put("localTime", timeStr); //当前时间
         return res;
     }
 
