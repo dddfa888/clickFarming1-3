@@ -210,9 +210,18 @@ export default {
 "充值":"Recharger",
 "银行名":"Nom de la banque",
 "数据提供者 Mercado Asia":"Fournisseur de données Mercado Asia",
-"提款时间":"Délai de retrait"
+"提款时间":"Délai de retrait",
+	"取款数额不能为空":"Le montant du retrait ne peut être vide.",
+	"资金密码不能为空":"Les codes monétaires ne peuvent pas être vides.",
+	"密码不能为空":"Le mot de passe ne peut pas être vide",
+	"ID不能为空":"L'identité ne peut pas être vide.",
+	"邀请码不能为空":"Le numéro d'invitation ne peut pas être vide.",
+	"用户ID不能为空":"L'ID utilisateur ne peut pas être vide",
+	"操作成功":"Opération réussie",
+	"最低提款额为50美元":"La coupe minimale est de 50 $.",
+	"暂无数据":"Données non disponibles",
+	"已有提现订单,请勿重复申请":"Nous avons une commande en espèces. Ne répétez pas la demande.",
+	"账号不能为空":"Le compte ne peut pas être vide",
+	"手机号不能为空":"Le téléphone portable ne peut pas être vide.",
 
 };
-
-   
-   

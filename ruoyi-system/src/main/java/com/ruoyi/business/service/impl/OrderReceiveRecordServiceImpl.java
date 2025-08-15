@@ -200,7 +200,6 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         //int todayCount = countNumByUserDate();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.now();
-        int todayCount = mUser.getBrushNumber();
         int numTarget = userGrade.getBuyProdNum();
         String strToday = formatter.format(localDate);
         String strTomorrow = formatter.format(localDate.plusDays(1));
@@ -209,6 +208,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         param.put("date1", strToday);
         param.put("date2", strTomorrow);
         long finishNum = orderReceiveRecordMapper.countNumByUserDate(param);
+        int todayCount = (int)finishNum;
         if(finishNum >= numTarget)
             throw new ServiceException("您已完成今天的申请");//user
         //原系统中当日下单次数达到设置值时提示如下：

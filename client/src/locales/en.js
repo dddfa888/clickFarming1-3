@@ -209,5 +209,18 @@ export default {
     "充值成功":"Recharge successful",
     "奖励记录":"Recharge record",
     "银行名":"Bank name",
-    "提款时间":"Withdrawal time"
+    "提款时间":"Withdrawal time",
+	"取款数额不能为空":"The withdrawal amount cannot be empty",
+	"资金密码不能为空":"The fund password cannot be empty",
+	"密码不能为空":"Password cannot be empty",
+	"ID不能为空":"ID cannot be empty",
+	"邀请码不能为空":"The invitation code cannot be empty",
+	"用户ID不能为空":"User ID cannot be empty",
+	"操作成功":"Operation successful",
+	"最低提款额为50美元":"The minimum withdrawal amount is $50",
+	"暂无数据":"No data available at the moment",
+	"已有提现订单,请勿重复申请":"There are already withdrawal orders, please do not apply again",
+	"账号不能为空":"Account cannot be empty",
+	"手机号不能为空":"The phone number cannot be empty",
+
 };
