@@ -211,5 +211,18 @@ export default {
     "充值":"Nạp tiền",
     "奖励记录":"Lịch sử nhận thưởng",
     "银行名":"Tên ngân hàng",
-    "提款时间":"Thời gian"
+    "提款时间":"Thời gian",
+	"取款数额不能为空":"Số tiền rút không được để trống",
+	"资金密码不能为空":"Mật khẩu tiền không được để trống",
+	"密码不能为空":"Mật khẩu không được để trống",
+	"ID不能为空":"ID không thể để trống",
+	"邀请码不能为空":"Mã mời không được để trống",
+	"用户ID不能为空":"User ID không thể để trống",
+	"操作成功":"Hoạt động thành công",
+	"最低提款额为50美元":"Số tiền rút tối thiểu $50",
+	"暂无数据":"Không có dữ liệu.",
+	"已有提现订单,请勿重复申请":"Đã có lệnh rút tiền, xin vui lòng không lặp lại yêu cầu",
+	"账号不能为空":"Tài khoản không được để trống",
+	"手机号不能为空":"Số điện thoại không được để trống",
+
 };
