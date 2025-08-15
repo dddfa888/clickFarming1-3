@@ -103,11 +103,13 @@ function submit() {
         type: "success",
         duration: 2000
       });
-
       // 清空输入
       amount.value = "";
       password.value = "";
-
+      // 延迟跳转（等通知消失）
+      setTimeout(() => {
+        router.push("/withdrawHistory");
+      }, 2000); // 和 notify 的 duration 一致
       // 重新获取用户信息更新余额
       getUserInfo().then(res => {
         balance.value = res.data.accountBalance;
