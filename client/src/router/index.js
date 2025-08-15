@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token') // 假设你是用 token 存储登录状态
   const whiteList = ['/login', '/register', "/market"] // 白名单路由
 
-  if (whiteList.includes(to.path)) {
+  if (whiteList.some(path => to.path.startsWith(path))) {
     // 登录页、注册页无需验证
     return next()
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="company-intro" @scroll="handleScroll">
+  <div class="company-intro">
     <HeaderBar :title="t('提款记录')" />
     <div class="transaction-list">
       <div v-for="(transaction, index) in transactions" :key="index" class="transaction-item">
@@ -45,7 +45,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const transactions = ref([]);
 const pageNum = ref(1);
-const pageSize = ref(10);
+const pageSize = ref(999);
 const loading = ref(false);
 const finished = ref(false); // 数据加载完毕标记
 

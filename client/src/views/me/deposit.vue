@@ -31,10 +31,12 @@ const formatAmount = amount => {
   return amount.toFixed(2).replace(".", ",") + " $";
 };
 
-getDepositRecord().then(res => {
+const pageNum = ref(1);
+const pageSize = ref(999);
+
+getDepositRecord(pageNum.value, pageSize.value).then(res => {
   console.log(res.rows);
   transactions.value = res.rows;
-  console.log(transactions.value, 21);
 });
 </script>
 
