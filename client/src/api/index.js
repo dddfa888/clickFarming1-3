@@ -43,7 +43,7 @@ export function getWithdrawRecord(pageNum, pageSize) {
 }
 
 // 获取个人账变记录
-export function getDepositRecord() {
+export function getDepositRecord(pageNum, pageSize) {
     return request({
         url: `/api/records/userList?pageNum=${pageNum}&pageSize=${pageSize}`,
         method: 'get'

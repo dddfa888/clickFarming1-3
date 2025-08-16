@@ -22,7 +22,7 @@
 <script setup>
 import { ref } from "vue";
 import HeaderBar from "../../components/HeaderBar.vue";
-import { getDepositRecord } from "../../api/index.js";
+import { getDepositRecord, getWithdrawRecord } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const transactions = ref([]);
@@ -52,6 +52,7 @@ getDepositRecord(pageNum.value, pageSize.value).then(res => {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding-bottom: 90px;
 }
 
 .transaction-item {
@@ -116,6 +117,7 @@ getDepositRecord(pageNum.value, pageSize.value).then(res => {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding-bottom: 90px;
   }
 
   .transaction-item {
