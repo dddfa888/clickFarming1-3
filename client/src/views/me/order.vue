@@ -71,6 +71,7 @@ getOrderHistory().then(res => {
   background-position: center top;
   color: #fff;
   background-attachment: scroll; /* 移除 fixed，避免 iOS bug */
+  padding-bottom: 70px;
 }
 .history-list {
   display: flex;

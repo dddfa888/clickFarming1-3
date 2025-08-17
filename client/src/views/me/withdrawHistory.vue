@@ -53,10 +53,10 @@ const formatAmount = amount => {
   return amount.toFixed(2).replace(".", ",") + " $";
 };
 
-getWithdrawRecord().then(res => {
-  console.log(res.rows);
-  transactions.value = res.rows;
-});
+// getWithdrawRecord().then(res => {
+//   console.log(res.rows);
+//   transactions.value = res.rows;
+// });
 
 const loadTransactions = async () => {
   if (loading.value || finished.value) return;
