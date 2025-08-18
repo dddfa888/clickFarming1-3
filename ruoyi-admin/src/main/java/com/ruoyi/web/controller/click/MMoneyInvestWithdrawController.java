@@ -216,7 +216,7 @@ public class MMoneyInvestWithdrawController extends BaseController
     @Log(title = "提现", businessType = BusinessType.INSERT)
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("add")
-    public AjaxResult add(HttpServletRequest request,@Validated @RequestBody WithdrawVo withdrawVo) {
+    public synchronized AjaxResult add(HttpServletRequest request,@Validated @RequestBody WithdrawVo withdrawVo) {
         String amountStr = withdrawVo.getAmount();
         Assert.notEmpty(amountStr, "请填写提现数额");//user
         BigDecimal withdrawAmount = null;
