@@ -7,6 +7,7 @@ import java.util.Map;
 import com.ruoyi.business.domain.OrderReceiveRecord;
 import com.ruoyi.click.domain.vo.OrderReceiveRecordVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 订单接收记录Mapper接口
@@ -103,4 +104,10 @@ public interface OrderReceiveRecordMapper
     BigDecimal sumAmountByUserDate(Map<String,Object> param);
 
     List<OrderReceiveRecordVo> selectListOrderDescVo(OrderReceiveRecord orderReceiveRecord);
+
+    /**
+     * 查询最近的订单
+     */
+    @Select("select * FROM m_order_receive_record where user_id=#{uid} order by create_time desc limit 1")
+    OrderReceiveRecord selectLastOrder(Long uid);
 }
