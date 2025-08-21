@@ -101,7 +101,19 @@ function fillAll() {
 function toback() {
   router.go(-1);
 }
-function submit() {
+/ 防抖函数
+function debounce(fn, delay) {
+  let timer = null;
+  return function() {
+    const context = this;
+    const args = arguments;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(context, args);
+    }, delay);
+  };
+}
+const submit = debounce(function() {
   if (loading.value) return; // ✅ 防止重复提交
   loading.value = true;
 
@@ -114,7 +126,6 @@ function submit() {
           duration: 2000
         });
 
-        // 清空输入
         amount.value = "";
         password.value = "";
 
@@ -122,7 +133,6 @@ function submit() {
           router.push("/withdrawHistory");
         }, 2000);
 
-        // 重新获取用户信息更新余额
         getUserInfo().then(res => {
           balance.value = res.data.accountBalance;
         });
@@ -145,9 +155,9 @@ function submit() {
       console.error("withdraw error:", err);
     })
     .finally(() => {
-      loading.value = false; // ✅ 确保请求结束后恢复状态
+      loading.value = false;
     });
-}
+}, 2000);
 
 getUserInfo().then(res => {
   bankAccountNumber.value = formatBankCard(res.data.bankAccountNumber);
