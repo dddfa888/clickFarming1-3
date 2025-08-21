@@ -224,5 +224,7 @@ export default {
 	"已有提现订单,请勿重复申请":"Đã có lệnh rút tiền, xin vui lòng không lặp lại yêu cầu",
 	"账号不能为空":"Tài khoản không được để trống",
 	"手机号不能为空":"Số điện thoại không được để trống",
+     "处理中...":"Đang xử lý...",
+    "网络错误，请稍后重试":"Lỗi mạng, vui lòng thử lại sau"
 
 };
