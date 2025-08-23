@@ -49,7 +49,11 @@
           />
         </div>
 
-        <button class="submit-btn" @click="submit">{{ t("取款") }}</button>
+        <button
+          class="submit-btn"
+          :disabled="loading"
+          @click="submit"
+        >{{ loading ? t("处理中...") : t("取款") }}</button>
       </div>
       <div v-else>
         {{ t("您尚未填写银行信息，请点击留言。") }}
@@ -72,6 +76,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { withdraw, getUserInfo } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
+
 import { notify } from "../../utils/notify.js";
 
 const { t } = useI18n();
@@ -81,6 +86,7 @@ const bankAccountNumber = ref("");
 const bankName = ref("");
 const amount = ref("");
 const password = ref("");
+const loading = ref(false);
 const showPassword = ref(false);
 const router = useRouter();
 
@@ -95,36 +101,63 @@ function fillAll() {
 function toback() {
   router.go(-1);
 }
-function submit() {
-  withdraw({ amount: amount.value, fundPassword: password.value }).then(res => {
-    if (res.code === 200) {
-      notify({
-        message: t("操作成功"),
-        type: "success",
-        duration: 2000
-      });
-      // 清空输入
-      amount.value = "";
-      password.value = "";
-      // 延迟跳转（等通知消失）
-      setTimeout(() => {
-        router.push("/withdrawHistory");
-      }, 2000); // 和 notify 的 duration 一致
-      // 重新获取用户信息更新余额
-      getUserInfo().then(res => {
-        balance.value = res.data.accountBalance;
-      });
-    } else {
-      notify({
-        message: t(res.msg),
+// 防抖函数
+function debounce(fn, delay) {
+  let timer = null;
+  return function() {
+    const context = this;
+    const args = arguments;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(context, args);
+    }, delay);
+  };
+}
+const submit = debounce(function() {
+  if (loading.value) return; // ✅ 防止重复提交
+  loading.value = true;
+
+  withdraw({ amount: amount.value, fundPassword: password.value })
+    .then(res => {
+      if (res.code === 200) {
+        globalThis.$notify({
+          message: t("操作成功"),
+          type: "success",
+          duration: 2000
+        });
+
+        amount.value = "";
+        password.value = "";
+
+        setTimeout(() => {
+          router.push("/withdrawHistory");
+        }, 2000);
+
+        getUserInfo().then(res => {
+          balance.value = res.data.accountBalance;
+        });
+      } else {
+        globalThis.$notify({
+          message: t(res.msg),
+          type: "error",
+          duration: 2000
+        });
+        amount.value = "";
+        password.value = "";
+      }
+    })
+    .catch(err => {
+      globalThis.$notify({
+        message: t("网络错误，请稍后重试"),
         type: "error",
         duration: 2000
       });
-      amount.value = "";
-      password.value = "";
-    }
-  });
-}
+      console.error("withdraw error:", err);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+}, 2000);
 
 getUserInfo().then(res => {
   bankAccountNumber.value = formatBankCard(res.data.bankAccountNumber);
