@@ -27,7 +27,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'https://cfapi.ceshias.cc/api/', // 注意：这里 target 包含了 /api
+        target: 'http://127.0.0.1:8089', // 注意：这里 target 包含了 /api
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '') // 去掉本地请求的 /api，避免变成 /api/api
       }

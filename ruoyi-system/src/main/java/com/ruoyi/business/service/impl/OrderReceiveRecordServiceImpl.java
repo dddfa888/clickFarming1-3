@@ -470,5 +470,4 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setUpdateTime(nowDate);
         return orderReceiveRecordMapper.updateOrderReceiveRecord(orderReceiveRecord);
     }
-
 }
