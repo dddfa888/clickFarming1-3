@@ -12,9 +12,9 @@
           <div class="transaction-balance">{{ t("剩余") }}: {{ transaction.accountForward }}</div>
           <div class="transaction-balance">
             {{
-            transaction.reasonForRejection === null
-            ? ''
-            : t("原因")+":" + transaction.reasonForRejection
+              transaction.status === 2 && transaction.reasonForRejection
+                  ? t("原因") + ":" + transaction.reasonForRejection
+                  : ""
             }}
           </div>
         </div>
