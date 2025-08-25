@@ -224,6 +224,7 @@ export default {
 	"账号不能为空":"Le compte ne peut pas être vide",
 	"手机号不能为空":"Le téléphone portable ne peut pas être vide.",
 	 "处理中...":"En cours de traitement...",
-    "网络错误，请稍后重试":"Erreur de réseau, veuillez réessayer plus tard"
+    "网络错误，请稍后重试":"Erreur de réseau, veuillez réessayer plus tard",
+	"提款数额必须为整数，不能包含小数":"Le montant du retrait doit être un entier, il ne peut pas contenir de décimales"
 
 };

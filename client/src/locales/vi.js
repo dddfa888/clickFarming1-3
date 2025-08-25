@@ -225,6 +225,7 @@ export default {
 	"账号不能为空":"Tài khoản không được để trống",
 	"手机号不能为空":"Số điện thoại không được để trống",
      "处理中...":"Đang xử lý...",
-    "网络错误，请稍后重试":"Lỗi mạng, vui lòng thử lại sau"
+    "网络错误，请稍后重试":"Lỗi mạng, vui lòng thử lại sau",
+    "提款数额必须为整数，不能包含小数":"Số tiền rút phải là số nguyên, không thể chứa số thập phân"
 
 };

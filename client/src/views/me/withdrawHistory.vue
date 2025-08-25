@@ -8,17 +8,15 @@
           <div
             class="transaction-amount"
             :class="{ negative: transaction.amount < 0 }"
-          >{{ t("金钱数额") }}:- {{ formatAmount(transaction.amount) }}</div>
-          <div
-            class="transaction-balance"
-          >{{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}</div>
-          <!-- <div class="transaction-balance">
+          >{{ t("金钱数额") }}:- {{ transaction.accountBack }}</div>
+          <div class="transaction-balance">{{ t("剩余") }}: {{ transaction.accountForward }}</div>
+          <div class="transaction-balance">
             {{
-              transaction.reasonForRejection === null
-                ? transaction.reasonForRejection
-                : t("原因")+":" + transaction.reasonForRejection
+            transaction.reasonForRejection === null
+            ? ''
+            : t("原因")+":" + transaction.reasonForRejection
             }}
-          </div>-->
+          </div>
         </div>
         <div
           v-if="transaction.status === 0"
@@ -50,7 +48,7 @@ const loading = ref(false);
 const finished = ref(false); // 数据加载完毕标记
 
 const formatAmount = amount => {
-  return amount.toFixed(2).replace(".", ",") + " $";
+  // return amount.toFixed(2).replace(".", ",") + " $";
 };
 
 // getWithdrawRecord().then(res => {
@@ -101,6 +99,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding-bottom: 50px;
 }
 
 .transaction-item {
@@ -173,6 +172,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding-bottom: 50px;
   }
 
   .transaction-item {
