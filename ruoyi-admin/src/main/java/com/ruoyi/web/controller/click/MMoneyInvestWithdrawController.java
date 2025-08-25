@@ -225,6 +225,13 @@ public class MMoneyInvestWithdrawController extends BaseController
         }catch (Exception e){
             throw new ServiceException("取款数额格式错误，无法解析");//user
         }
+        // 验证金额是否为整数（新增逻辑）
+        if (withdrawAmount.scale() > 0) {
+            // 移除末尾可能的零后仍有小数位，说明不是整数
+            if (withdrawAmount.stripTrailingZeros().scale() > 0) {
+                throw new ServiceException("提款数额必须为整数，不能包含小数");
+            }
+        }
         SysConfig minWithdrawConfig = configMapper.checkConfigKeyUnique("minWithdrawAmount");
         if(withdrawAmount.doubleValue() < Double.parseDouble(minWithdrawConfig.getConfigValue())){
             throw new ServiceException("最低提款额为50美元");//user
