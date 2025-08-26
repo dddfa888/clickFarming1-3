@@ -107,7 +107,7 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
         //今日已付款订单数量
         Map<String,Object> param = new HashMap<>();
         param.put("userId", getUserId());
-        param.put("processStatus", OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
+//        param.put("processStatus", OrderReceiveRecord.PROCESS_STATUS_SUCCESS);
         param.put("date1", strToday);
         param.put("date2", strTomorrow);
         long finishNum = orderReceiveRecordMapper.countNumByUserDate(param);
@@ -145,6 +145,11 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timeStr = sdf.format(nowDate);
         res.put("localTime", timeStr); //当前时间
+
+        //查询最近一条订单
+        OrderReceiveRecord orderReceiveRecord = orderReceiveRecordMapper.selectLastOrder(getUserId());
+
+        res.put("lastOrderStatus", orderReceiveRecord.getProcessStatus());
         return res;
     }
 

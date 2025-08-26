@@ -218,11 +218,12 @@ public class MUserController extends BaseController
             List<MUser> nextLevelUsers = mUserService.list(
                     new LambdaQueryWrapper<MUser>()
                             .in(MUser::getInviterCode, currentLevelCodes)
+                            .orderByDesc(MUser::getCreateTime)   // 👈 按 create_time 倒序
             );
 
             if (nextLevelUsers.isEmpty()) break;
 
-            final int currentHierarchy = hierarchy; // 用 final 变量供 lambda 使用
+            final int currentHierarchy = hierarchy;
             nextLevelUsers.forEach(user -> user.setHierarchy(currentHierarchy));
 
             result.addAll(nextLevelUsers);
@@ -235,6 +236,7 @@ public class MUserController extends BaseController
 
         return AjaxResult.success(result);
     }
+
 
 
     /**
