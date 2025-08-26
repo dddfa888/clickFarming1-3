@@ -148,8 +148,9 @@ public class MAccountChangeRecordsServiceImpl implements IMAccountChangeRecordsS
 
         //查询最近一条订单
         OrderReceiveRecord orderReceiveRecord = orderReceiveRecordMapper.selectLastOrder(getUserId());
-
-        res.put("lastOrderStatus", orderReceiveRecord.getProcessStatus());
+        if(orderReceiveRecord != null) {
+            res.put("lastOrderStatus", orderReceiveRecord.getProcessStatus());
+        }
         return res;
     }
 
