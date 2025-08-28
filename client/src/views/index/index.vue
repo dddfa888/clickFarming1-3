@@ -165,7 +165,7 @@ import company from "../../assets/img/company.png";
 import rule from "../../assets/img/rule.png";
 import cooperation from "../../assets/img/cooperation.png";
 import notice from "../../assets/img/notice.png";
-import defaultAvatar from "../../assets/img/avatar.jpg";
+import defaultAvatar from "../../assets/img/mylogo.png";
 import {
   getUserInfo,
   getMemberRecord,

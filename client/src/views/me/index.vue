@@ -3,7 +3,19 @@
     <!-- 用户信息头部 -->
     <div class="user-header">
       <div class="avatar">
-        <img src="../../assets/img/mylogo-asia.png" alt />
+        <img
+          class="avatar"
+          :src="userInfo.headImg || defaultAvatar"
+          alt="头像"
+          @click="triggerUpload"
+        />
+        <input
+          ref="fileInput"
+          type="file"
+          accept="image/*"
+          style="display:none"
+          @change="handleFileChange"
+        />
       </div>
 
       <div class="user-info">
@@ -61,14 +73,60 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useLangStore } from "../../store/useLangStore";
 import { storeToRefs } from "pinia";
-import { getUserInfo } from "../../api/index";
+import {
+  getUserInfo,
+  updateUserSimpleFront,
+  updateAvatar
+} from "../../api/index";
+import defaultAvatar from "../../assets/img/mylogo.png";
+import { notify } from "../../utils/notify.js";
 
 const router = useRouter();
+const fileInput = ref(null);
 const { locale: i18nLocale } = useI18n();
 const { t } = useI18n();
 const userInfo = ref({});
 const langStore = useLangStore();
 const { locale: langStoreLocale } = storeToRefs(langStore);
+
+const triggerUpload = () => {
+  fileInput.value.click();
+};
+
+// 手动处理文件变化
+const handleFileChange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await updateAvatar(formData); // 你自己接口，返回格式根据接口调整
+    if (res.code === 200) {
+      notify({
+        message: t(res.msg),
+        type: "success",
+        duration: 2000
+      });
+      // 假设返回头像url为 res.data.avatarUrl，替换为你接口返回字段
+      userInfo.value.headImg = res.url;
+      updateUserSimpleFront({ headImg: res.url }).then(res => {
+        console.log(res);
+      });
+    } else {
+      notify({
+        message: t(res.msg),
+        type: "warning",
+        duration: 2000
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  // 清空选择框，避免同一文件无法触发change
+  e.target.value = "";
+};
 
 i18nLocale.value = langStoreLocale.value; // 同步 i18n
 
@@ -289,6 +347,13 @@ const handleLogout = () => {
   background-color: gray;
 }
 
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 @media screen and (min-width: 768px) {
   .user-center {
     max-width: 500px;
@@ -446,6 +511,13 @@ const handleLogout = () => {
   .language-dropdown li:hover,
   .language-dropdown li.active {
     background-color: gray;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 }
 </style>
