@@ -9,12 +9,12 @@ import { showToast } from "vant";
 
 let isTokenExpired = false;
 // const router = useRouter();
-const baseURL = "http://192.168.1.139:8089/";
+const baseURL = "http://192.168.1.203:8089/";
 const request = axios.create({
   baseURL:
     import.meta.env.MODE === "development"
       ? "/api"
-      : "https://cfapi.ceshias.cc/",
+      : "https://cf13api.dadwqwqee.shop/",
   // baseURL: baseURL,
   timeout: 10000,
 });
