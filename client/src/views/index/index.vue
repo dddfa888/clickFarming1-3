@@ -80,7 +80,8 @@
 
     <!-- 视频 -->
     <video class="videos" controls muted loop width="100%" height="200px" :src="videoUrl"></video>
-    <h5>{{ t("概述:") }} Mercado Asia</h5>
+
+    <h5>{{ t("概述:") }} INGKA CENTRES</h5>
     <!-- 功能按钮 -->
     <div class="info-buttons">
       <div
@@ -109,6 +110,15 @@
           <br />
           {{ item.minBonus }}%-{{ item.maxBonus }}%
         </div>
+        <!--<div class="col">
+          {{ t("分配数量") }}
+          <br />
+          {{ item.buyProdNum }}
+          <div class="badge-row">
+            <span class="badge">{{ item.gradeName }}</span>
+            <span v-if="level === item.id" class="lock-icon">{{ t("当前等级") }}</span>
+          </div>
+        </div>-->
         <div class="card">
           <!-- 顶部右侧徽章区 -->
           <div class="badge-box" v-if="level === item.id || item.gradeName">
@@ -125,14 +135,14 @@
       </div>
     </div>
     <!-- 奖励获得者名单 -->
-    <div class="title">{{ $t("奖励获得者名单") }}</div>
+    <div class="title">{{ t("奖励获得者名单") }}</div>
     <div class="reward">
       <div class="reward-list">
         <div v-for="(reward, index) in rewards" :key="index" class="reward-item">
           <span class="reward-date">{{ reward.date }}</span>
           <span class="reward-message">
             {{
-            $t("rewardMessage", {
+            t("rewardMessage", {
             username: reward.username,
             amount: formatAmount(reward.amount),
             })
@@ -165,23 +175,20 @@ import company from "../../assets/img/company.png";
 import rule from "../../assets/img/rule.png";
 import cooperation from "../../assets/img/cooperation.png";
 import notice from "../../assets/img/notice.png";
-import defaultAvatar from "../../assets/img/mylogo.png";
 import {
   getUserInfo,
   getMemberRecord,
   getUserNotifyNum,
   updateGrade,
   updateAvatar,
-  updateUserSimpleFront
+  updateUserSimpleFront,
+  getCustomerService
 } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
 import { notify } from "../../utils/notify.js";
-
+import defaultAvatar from "../../assets/img/mylogo.png";
 const bgImage = new URL("../../assets/img/bg.png", import.meta.url).href;
-const videoUrl = new URL(
-  "../../assets/videos/mcd-DJnKgbK7.mp4",
-  import.meta.url
-).href;
+const videoUrl = new URL("../../assets/videos/INGKA.mp4", import.meta.url).href;
 
 const promoRef = ref();
 const router = useRouter();
@@ -195,6 +202,14 @@ const uid = ref(null);
 const avatarUrl = ref(""); // 初始头像
 const fileInput = ref(null);
 const uploadFile = ref(null);
+
+const configValue = ref("");
+
+onMounted(async () => {
+  getCustomerService().then(res => {
+    configValue.value = res.data.configValue;
+  });
+});
 
 const triggerUpload = () => {
   fileInput.value.click();
@@ -222,7 +237,7 @@ const handleFileChange = async e => {
 
     const res = await updateAvatar(formData); // 你自己接口，返回格式根据接口调整
     if (res.code === 200) {
-      notify({
+      globalThis.$notify({
         message: t(res.msg),
         type: "success",
         duration: 2000
@@ -233,14 +248,14 @@ const handleFileChange = async e => {
         console.log(res);
       });
     } else {
-      notify({
+      globalThis.$notify({
         message: t(res.msg),
         type: "warning",
         duration: 2000
       });
     }
   } catch (error) {
-    notify({
+    globalThis.$notify({
       message: t(res.msg),
       type: "warning",
       duration: 2000
@@ -283,13 +298,13 @@ const handleConfirm = () => {
   updateGrade(uid.value).then(res => {
     console.log(res);
     if (res.code === 200) {
-      notify({
+      globalThis.$notify({
         message: t(res.msg),
         type: "success",
         duration: 2000
       });
     } else {
-      notify({
+      globalThis.$notify({
         message: t(res.msg),
         type: "warning",
         duration: 2000
@@ -392,11 +407,7 @@ const handleButtonClick = icon => {
 
 const onDeposit = () => {
   //console.log("执行提款操作");
-  if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
-    window.Tawk_API.maximize();
-  } else {
-    console.warn("Tawk API not ready yet.");
-  }
+  window.open(configValue.value, "_blank");
 };
 
 const onWithdraw = () => {

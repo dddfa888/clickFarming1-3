@@ -153,6 +153,7 @@ const filteredList = computed(() => {
   .tab-content {
     border-radius: 6px;
     margin-top: 10px;
+    margin-bottom: 70px;
   }
 
   .group-report {
