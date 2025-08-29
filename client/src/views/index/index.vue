@@ -3,27 +3,7 @@
     <!-- 顶部用户信息 -->
     <div class="user-info">
       <div class="user-info-avatar">
-        <!--<el-upload
-          class="upload-demo"
-          :show-file-list="false"
-          :before-upload="handleBeforeUpload"
-          :auto-upload="false"
-          accept="image/*"
-        >-->
-        <img
-          class="avatar"
-          :src="userInfo.headImg || defaultAvatar"
-          alt="头像"
-          @click="triggerUpload"
-        />
-        <input
-          ref="fileInput"
-          type="file"
-          accept="image/*"
-          style="display:none"
-          @change="handleFileChange"
-        />
-        <!--</el-upload> -->
+        <img class="avatar" :src="defaultAvatar" alt="头像" />
         <div class="user-details">
           <div>{{ t("你好") }}</div>
           <div class="username">{{ userInfo.loginAccount || "" }}</div>
@@ -210,65 +190,6 @@ onMounted(async () => {
     configValue.value = res.data.configValue;
   });
 });
-
-const triggerUpload = () => {
-  fileInput.value.click();
-};
-
-// 手动处理文件变化
-const handleFileChange = async e => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  // 简单校验
-  // if (!file.type.startsWith("image/")) {
-  //   ElMessage.error("只能上传图片格式");
-  //   return;
-  // }
-  // if (file.size / 1024 / 1024 > 2) {
-  //   ElMessage.error("图片大小不能超过 2MB");
-  //   return;
-  // }
-
-  // 调用接口上传
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await updateAvatar(formData); // 你自己接口，返回格式根据接口调整
-    if (res.code === 200) {
-      globalThis.$notify({
-        message: t(res.msg),
-        type: "success",
-        duration: 2000
-      });
-      // 假设返回头像url为 res.data.avatarUrl，替换为你接口返回字段
-      userInfo.value.headImg = res.url;
-      updateUserSimpleFront({ headImg: res.url }).then(res => {
-        console.log(res);
-      });
-    } else {
-      globalThis.$notify({
-        message: t(res.msg),
-        type: "warning",
-        duration: 2000
-      });
-    }
-  } catch (error) {
-    globalThis.$notify({
-      message: t(res.msg),
-      type: "warning",
-      duration: 2000
-    });
-    console.error(error);
-  }
-
-  // 清空选择框，避免同一文件无法触发change
-  e.target.value = "";
-};
-
-// 这里为了兼容 el-upload 的 before-upload，但真正不使用自动上传
-const handleBeforeUpload = () => false;
 
 const getImageUrl = path => {
   return new URL(`../../assets/{path}`, import.meta.url).href;
