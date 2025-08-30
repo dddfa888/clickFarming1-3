@@ -47,9 +47,9 @@
         </div>
 
         <button
-          v-if="item.processStatus === 'Waiting'"
-          class="send-button"
-          @click="Sendbutton(item.id)"
+            v-if="item.processStatus === 'Waiting'"
+            class="send-button"
+            @click="Sendbutton(item.id)"
         >{{ t("发送分发") }}</button>
       </div>
 
@@ -164,7 +164,7 @@ onMounted(async () => {
   color: #fff;
   padding: 30px;
   background: url("../../assets/img/BG-kho-B9q9tfZS.png") no-repeat center
-    center fixed;
+  center fixed;
 }
 .loading-text {
   text-align: center;
