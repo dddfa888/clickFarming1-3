@@ -31,9 +31,10 @@
 
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { getUserInfo, getCustomerService } from "../api/index";
 
 const { t } = useI18n();
 const getImageUrl = name =>
@@ -42,6 +43,13 @@ const getImageUrl = name =>
 const router = useRouter();
 const route = useRoute();
 const showCustomerService = ref(false);
+const configValue = ref("");
+
+onMounted(async () => {
+  getCustomerService().then(res => {
+    configValue.value = res.data.configValue;
+  });
+});
 
 const tabs = computed(() => [
   {
@@ -75,11 +83,7 @@ const currentRoute = computed(() => route.path);
 
 const navigate = (path, name = "") => {
   if (name === "CSKH") {
-    if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
-      window.Tawk_API.maximize();
-    } else {
-      console.warn("Tawk API not ready yet.");
-    }
+    window.open(configValue.value, "_blank");
     return;
   }
 

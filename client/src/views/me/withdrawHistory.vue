@@ -8,8 +8,10 @@
           <div
             class="transaction-amount"
             :class="{ negative: transaction.amount < 0 }"
-          >{{ t("金钱数额") }}:- {{ transaction.accountBack }}</div>
-          <div class="transaction-balance">{{ t("剩余") }}: {{ transaction.accountForward }}</div>
+          >{{ t("金钱数额") }}:- {{ formatAmount(transaction.amount) }}</div>
+          <div
+            class="transaction-balance"
+          >{{ t("剩余") }}: {{ formatAmount(transaction.accountBack) }}</div>
           <div class="transaction-balance">
             {{
               transaction.status === 2 && transaction.reasonForRejection
@@ -48,13 +50,8 @@ const loading = ref(false);
 const finished = ref(false); // 数据加载完毕标记
 
 const formatAmount = amount => {
-  // return amount.toFixed(2).replace(".", ",") + " $";
+  return amount.toFixed(2).replace(".", ",") + " $";
 };
-
-// getWithdrawRecord().then(res => {
-//   console.log(res.rows);
-//   transactions.value = res.rows;
-// });
 
 const loadTransactions = async () => {
   if (loading.value || finished.value) return;
@@ -92,14 +89,13 @@ onMounted(() => {
   background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
     center;
   height: 100vh;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .transaction-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding-bottom: 50px;
 }
 
 .transaction-item {
@@ -132,14 +128,6 @@ onMounted(() => {
   font-size: 14px;
 }
 
-.transaction-time {
-  grid-column: 2;
-  grid-row: 1;
-  color: #fff;
-  text-align: right;
-  font-size: 14px;
-}
-
 .transaction-amount.negative {
   color: #e74c3c;
 }
@@ -158,13 +146,21 @@ onMounted(() => {
   font-size: 14px;
 }
 
+.transaction-time {
+  grid-column: 2;
+  grid-row: 1;
+  color: #fff;
+  text-align: right;
+  font-size: 14px;
+}
+
 @media screen and (min-width: 768px) {
   .company-intro {
     background: url("../../assets/img/background-D7o_xTde.png") no-repeat center
       center;
     height: 100vh;
     width: 540px;
-    overflow-y: auto;
+    overflow: auto;
     margin: 0 auto;
   }
 
@@ -172,7 +168,6 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding-bottom: 50px;
   }
 
   .transaction-item {
@@ -205,14 +200,6 @@ onMounted(() => {
     font-size: 14px;
   }
 
-  .transaction-time {
-    grid-column: 2;
-    grid-row: 1;
-    color: #fff;
-    text-align: right;
-    font-size: 14px;
-  }
-
   .transaction-amount.negative {
     color: #e74c3c;
   }
@@ -220,6 +207,14 @@ onMounted(() => {
     grid-column: 1 / span 2;
     grid-row: 2;
     color: #fff;
+    font-size: 14px;
+  }
+
+  .transaction-time {
+    grid-column: 2;
+    grid-row: 1;
+    color: #fff;
+    text-align: right;
     font-size: 14px;
   }
 

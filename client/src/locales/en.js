@@ -29,7 +29,7 @@ export default {
   可用余额: "Available balance",
   提款: "Deposit",
   取款: "Withdraw",
-  "概述 Mercado Asia": "Overview Mercado Asia",
+  "概述 Ingka Centres": "Overview Ingka Centres",
   会员级别: "Membership level",
   开锁: "Unlock",
   升级费: "Upgrade fee",
@@ -46,14 +46,14 @@ export default {
   通知邮件: "Notification",
   rewardMessage: "Congratulations {username} received {amount}$ profit",
   发行历史: "Distribution history",
-  "数据提供者 Mercado Asia": "Data provider Mercado Asia",
+  "数据提供者 Ingka Centres": "Data provider Ingka Centres",
   剩余: "Balance",
   时间: "Time",
   代码: "Code",
   平台代理模式: "Platform agent mode",
-  "Mercado Asia会员可以成为电商平台的代理商":
-    "Members of Mercado Asia can become agents of e-commerce platforms.",
-  "通过推荐新会员成为 Mercado Asia 会员和代理商，可以获得价值 00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。":
+  "Ingka Centres会员可以成为电商平台的代理商":
+    "Members of Ingka Centres can become agents of e-commerce platforms.",
+  "通过推荐新会员成为 Ingka Centres 会员和代理商，可以获得价值 00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。":
     "Members can also become agents of e-commerce platforms by promoting new members and agents. They can earn a 0.01% bonus on referrals and invest capital to calculate the profit from product codes.",
   分配总额: "Total allocation",
   退款金额: "Refund amount",
@@ -102,7 +102,6 @@ export default {
   "404 页面不存在": "404 Page Not Found",
   您访问的页面未找到: "The page you are looking for could not be found",
   密码错误: "Password error",
-  资金密码错误: "The fund password is incorrect",
   "有订单未完成，不可提现":
     "There are unfinished orders. Withdrawal is not allowed.",
   "取款数额格式错误，无法解析": "Number [{value}] format error, cannot parse",
@@ -125,8 +124,6 @@ export default {
   资金密码错误: "Fund password is incorrect",
   请填写提现数额: "Please enter the withdrawal amount",
   余额不足: "Insufficient balance",
-  "有订单未完成，不可提现":
-    "There are unfinished orders, withdrawal not allowed",
   "银行信息不完整，请填写银行名称、账户名称和账号":
     "Bank information is incomplete. Please fill in bank name, account name, and account number.",
   下载文件失败: "File download failed",
@@ -180,6 +177,10 @@ export default {
   最低提款额为50美元: "Minimum withdrawal amount is $50",
   "您的帐户不足。请继续充值！":
     "Your account is insufficient. Please deposit more!",
+  白银会员最低资本为200$: "The minimum capital for Silver members is 200 $",
+  黄金会员最低资本为500$: "The minimum capital for Gold members is 500 $",
+  白金会员最低资本为2000$: "The minimum capital for Platinum members is 2000 $",
+  钻石会员最低资本为3000$: "The minimum capital for Diamond members is 3000 $",
   membership_requirement: "Minimum capital for {level} member is {value}$",
   白银: "Silver",
   黄金: "Gold",
@@ -193,8 +194,7 @@ export default {
   "概述:": "Overview:",
   没有理由: "No reason",
   平衡调整: "Balance adjustment",
-  平衡: "Balance",
-  订单支付成功: "Order payment successful!",
+  "订单支付成功！": "Order payment successful!",
   正在分发: "is distributing",
   认证失败: "Authentication failed",
   "已有提现订单,请勿重复申请":
@@ -210,8 +210,9 @@ export default {
     "The number format is incorrect and cannot be parsed",
   "访问过于频繁，请稍候再试": "Access is too frequent, please try again later",
   "服务器限流异常，请稍候再试":
-    "Server throttling exception, please try again later",
+    "Server rate limiting exception, please try again later",
   "服务器繁忙，请稍后再试": "Server is busy, please try again later",
+  当前等级: "Current level",
   提现成功: "Withdrawal successful",
   银行卡已被绑定: "Bank card has been bound",
   银行卡号不能为空: "Bank card number cannot be empty",
@@ -221,9 +222,6 @@ export default {
   用户名或密码错误: "Username or password error",
   手机号已被注册: "Phone number has been registered",
   注册成功: "Registration successful",
-  银行卡号: "Bank card number",
-  账号名: "Account name",
-  当前等级: "Current level",
   充值: "Recharge",
   充值成功: "Recharge successful",
   奖励记录: "Recharge record",
@@ -245,8 +243,5 @@ export default {
   "处理中...": "Processing...",
   "网络错误，请稍后重试": "Network error, please try again later",
   "提款数额必须为整数，不能包含小数":
-    "The withdrawal amount must be an integer and cannot contain decimals",
-  订单: "订单",
-  已支付: "已支付",
-  未支付: "未支付",
+    "The withdrawal amount must be an integer and cannot contain decimal places",
 };

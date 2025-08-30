@@ -3,27 +3,7 @@
     <!-- 顶部用户信息 -->
     <div class="user-info">
       <div class="user-info-avatar">
-        <!--<el-upload
-          class="upload-demo"
-          :show-file-list="false"
-          :before-upload="handleBeforeUpload"
-          :auto-upload="false"
-          accept="image/*"
-        >-->
-        <img
-          class="avatar"
-          :src="userInfo.headImg || defaultAvatar"
-          alt="头像"
-          @click="triggerUpload"
-        />
-        <input
-          ref="fileInput"
-          type="file"
-          accept="image/*"
-          style="display:none"
-          @change="handleFileChange"
-        />
-        <!--</el-upload> -->
+        <img class="avatar" :src="defaultAvatar" alt="头像" />
         <div class="user-details">
           <div>{{ t("你好") }}</div>
           <div class="username">{{ userInfo.loginAccount || "" }}</div>
@@ -80,7 +60,8 @@
 
     <!-- 视频 -->
     <video class="videos" controls muted loop width="100%" height="200px" :src="videoUrl"></video>
-    <h5>{{ t("概述:") }} Mercado Asia</h5>
+
+    <h5>{{ t("概述:") }} INGKA CENTRES</h5>
     <!-- 功能按钮 -->
     <div class="info-buttons">
       <div
@@ -109,6 +90,15 @@
           <br />
           {{ item.minBonus }}%-{{ item.maxBonus }}%
         </div>
+        <!--<div class="col">
+          {{ t("分配数量") }}
+          <br />
+          {{ item.buyProdNum }}
+          <div class="badge-row">
+            <span class="badge">{{ item.gradeName }}</span>
+            <span v-if="level === item.id" class="lock-icon">{{ t("当前等级") }}</span>
+          </div>
+        </div>-->
         <div class="card">
           <!-- 顶部右侧徽章区 -->
           <div class="badge-box" v-if="level === item.id || item.gradeName">
@@ -125,14 +115,14 @@
       </div>
     </div>
     <!-- 奖励获得者名单 -->
-    <div class="title">{{ $t("奖励获得者名单") }}</div>
+    <div class="title">{{ t("奖励获得者名单") }}</div>
     <div class="reward">
       <div class="reward-list">
         <div v-for="(reward, index) in rewards" :key="index" class="reward-item">
           <span class="reward-date">{{ reward.date }}</span>
           <span class="reward-message">
             {{
-            $t("rewardMessage", {
+            t("rewardMessage", {
             username: reward.username,
             amount: formatAmount(reward.amount),
             })
@@ -165,23 +155,20 @@ import company from "../../assets/img/company.png";
 import rule from "../../assets/img/rule.png";
 import cooperation from "../../assets/img/cooperation.png";
 import notice from "../../assets/img/notice.png";
-import defaultAvatar from "../../assets/img/mylogo.png";
 import {
   getUserInfo,
   getMemberRecord,
   getUserNotifyNum,
   updateGrade,
   updateAvatar,
-  updateUserSimpleFront
+  updateUserSimpleFront,
+  getCustomerService
 } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
 import { notify } from "../../utils/notify.js";
-
+import defaultAvatar from "../../assets/img/mylogo.png";
 const bgImage = new URL("../../assets/img/bg.png", import.meta.url).href;
-const videoUrl = new URL(
-  "../../assets/videos/mcd-DJnKgbK7.mp4",
-  import.meta.url
-).href;
+const videoUrl = new URL("../../assets/videos/INGKA.mp4", import.meta.url).href;
 
 const promoRef = ref();
 const router = useRouter();
@@ -196,64 +183,13 @@ const avatarUrl = ref(""); // 初始头像
 const fileInput = ref(null);
 const uploadFile = ref(null);
 
-const triggerUpload = () => {
-  fileInput.value.click();
-};
+const configValue = ref("");
 
-// 手动处理文件变化
-const handleFileChange = async e => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  // 简单校验
-  // if (!file.type.startsWith("image/")) {
-  //   ElMessage.error("只能上传图片格式");
-  //   return;
-  // }
-  // if (file.size / 1024 / 1024 > 2) {
-  //   ElMessage.error("图片大小不能超过 2MB");
-  //   return;
-  // }
-
-  // 调用接口上传
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await updateAvatar(formData); // 你自己接口，返回格式根据接口调整
-    if (res.code === 200) {
-      notify({
-        message: t(res.msg),
-        type: "success",
-        duration: 2000
-      });
-      // 假设返回头像url为 res.data.avatarUrl，替换为你接口返回字段
-      userInfo.value.headImg = res.url;
-      updateUserSimpleFront({ headImg: res.url }).then(res => {
-        console.log(res);
-      });
-    } else {
-      notify({
-        message: t(res.msg),
-        type: "warning",
-        duration: 2000
-      });
-    }
-  } catch (error) {
-    notify({
-      message: t(res.msg),
-      type: "warning",
-      duration: 2000
-    });
-    console.error(error);
-  }
-
-  // 清空选择框，避免同一文件无法触发change
-  e.target.value = "";
-};
-
-// 这里为了兼容 el-upload 的 before-upload，但真正不使用自动上传
-const handleBeforeUpload = () => false;
+onMounted(async () => {
+  getCustomerService().then(res => {
+    configValue.value = res.data.configValue;
+  });
+});
 
 const getImageUrl = path => {
   return new URL(`../../assets/{path}`, import.meta.url).href;
@@ -283,13 +219,13 @@ const handleConfirm = () => {
   updateGrade(uid.value).then(res => {
     console.log(res);
     if (res.code === 200) {
-      notify({
+      globalThis.$notify({
         message: t(res.msg),
         type: "success",
         duration: 2000
       });
     } else {
-      notify({
+      globalThis.$notify({
         message: t(res.msg),
         type: "warning",
         duration: 2000
@@ -392,11 +328,7 @@ const handleButtonClick = icon => {
 
 const onDeposit = () => {
   //console.log("执行提款操作");
-  if (window.Tawk_API && typeof window.Tawk_API.maximize === "function") {
-    window.Tawk_API.maximize();
-  } else {
-    console.warn("Tawk API not ready yet.");
-  }
+  window.open(configValue.value, "_blank");
 };
 
 const onWithdraw = () => {

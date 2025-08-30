@@ -29,7 +29,7 @@ export default {
   可用余额: "Solde disponible",
   提款: "Dépôt",
   取款: "Retirer",
-  概述MercadoAsia: "Vue d'ensemble Mercado Asia",
+  概述IngkaCentres: "Vue d'ensemble Ingka Centres",
   会员级别: "Niveau d'adhésion",
   开锁: "Déverrouiller",
   升级费: "Frais de mise à niveau",
@@ -46,15 +46,16 @@ export default {
   通知邮件: "Notification",
   rewardMessage: "Félicitations {username} reçu {amount}$ bénéfice",
   发行历史: "Histoire de la distribution",
-  数据提供者MercadoAsia: "Fournisseur de données Mercado Asia",
+  数据提供者IngkaCentres: "Fournisseur de données Ingka Centres",
+  "数据提供者 Ingka Centres": "数据提供者 Ingka Centres",
   剩余: "équilibre",
   时间: "Heure",
-  平衡: "Equilibre",
   代码: "Code",
+  当前等级: "Niveau actuel",
   平台代理模式: "Mode agent de plateforme",
-  MercadoAsia会员可以成为电商平台的代理商:
-    "Les membres de Mercado Asia peuvent devenir agents de plateformes de commerce électronique.",
-  "通过推荐新会员成为MercadoAsia会员和代理商，可以获得价值00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。":
+  IngkaCentres会员可以成为电商平台的代理商:
+    "Les membres des centres Ingka peuvent devenir agents de plateformes de commerce électronique.",
+  "通过推荐新会员成为IngkaCentres会员和代理商，可以获得价值00.01%的额外奖金。直接推广会员级别佣金奖励从0.25%起，并投资资本来计算产品代码赚取的利润。":
     "Les membres peuvent également devenir agents de plateformes de commerce électronique en faisant la promotion de nouveaux membres et agents. Ils peuvent gagner un bonus de 0,01% sur les renvois et investir du capital pour calculer le bénéfice des codes de produits.",
   分配总额: "Allocation totale",
   退款金额: "Montant du remboursement",
@@ -72,7 +73,9 @@ export default {
   小组报告: "Rapport de groupe",
   银行信息: "Informations bancaires",
   地址: "Adresse",
+  奖励记录: "Record de recharge",
   语言: "Langue",
+  充值: "Recharger",
   登出: "Se déconnecter",
   账户名称: "Nom du compte",
   金钱数额: "Montant",
@@ -98,7 +101,6 @@ export default {
   "404页面不存在": "404 Page non trouvée",
   您访问的页面未找到: "La page que vous recherchez n'a pas été trouvée.",
   密码错误: "Erreur de mot de passe",
-  资金密码错误: "Le mot de passe du fonds est incorrect",
   "有订单未完成，不可提现":
     "Il y a des ordres inachevés. Le retrait n'est pas autorisé.",
   "取款数额格式错误，无法解析":
@@ -122,8 +124,6 @@ export default {
   资金密码错误: "Le mot de passe du fonds est incorrect",
   请填写提现数额: "Veuillez saisir le montant de retrait",
   余额不足: "Equilibre insuffisant",
-  "有订单未完成，不可提现":
-    "Il y a des commandes inachevées, le retrait n'est pas autorisé",
   "银行信息不完整，请填写银行名称、账户名称和账号":
     "Les informations bancaires sont incomplètes. Veuillez remplir le nom de la banque, le nom du compte et le numéro de compte.",
   下载文件失败: "Téléchargement du fichier échoué",
@@ -178,6 +178,14 @@ export default {
   最低提款额为50美元: "Le montant minimum de retrait est de 50 $",
   "您的帐户不足。请继续充值！":
     "Votre compte est insuffisant. S'il vous plaît déposer plus!",
+  白银会员最低资本为200$:
+    "Le capital minimum pour les membres Silver est de 200 EUR",
+  黄金会员最低资本为500$:
+    "Le capital minimum pour les membres Gold est de 500 EUR",
+  白金会员最低资本为2000$:
+    "Le capital minimum pour les membres Platinum est de 2000 EUR",
+  钻石会员最低资本为3000$:
+    "Le capital minimum pour les membres Diamond est de 3000 EUR",
   membership_requirement:
     "Le capital minimum pour un membre de {niveau} est de {valeur}$",
   白银: "Argent",
@@ -192,7 +200,7 @@ export default {
   "概述:": "Vue d'ensemble :",
   没有理由: "Pas de raison",
   平衡调整: "Ajustement du solde",
-  订单支付成功: "Paiement de commande réussi!",
+  "订单支付成功！": "Paiement de commande réussi!",
   正在分发: "est distribué",
   认证失败: "L'authentification a échoué",
   "已有提现订单,请勿重复申请":
@@ -209,31 +217,22 @@ export default {
   "访问过于频繁，请稍候再试":
     "L'accès est trop fréquent, veuillez réessayer plus tard",
   "服务器限流异常，请稍候再试":
-    "Exception de throttling du serveur, veuillez réessayer plus tard",
-  "服务器繁忙，请稍后再试":
-    "Le serveur est occupé, veuillez réessayer plus tard",
-  提现成功: "Retrait réussi",
-  银行卡已被绑定: "La carte bancaire a été liée",
-  银行卡号不能为空: "Le numéro de carte bancaire ne peut pas être vide",
-  银行名不能为空: "Le nom de la banque ne peut pas être vide",
-  资金密码不能为空: "Le mot de passe maigrel ne peut pas être vide",
-  已存在的用户名或电话号码: "Nom d'utilisateur ou numéro de téléphone existant",
-  用户名或密码错误: "Erreur de nom d'utilisateur ou de mot de passe",
-  手机号已被注册: "Numéro de téléphone enregistré",
+    "Exception limitant le taux du serveur, veuillez réessayer plus tard",
   transaction: {
     success: "Succès",
     failed: "Échec",
     pending: "En cours d'examen",
   },
-  注册成功: "Inscription réussie",
-  银行卡号: "Numéro de carte bancaire",
-  账号名: "Numéro de compte",
-  当前等级: "Niveau actuel",
-  奖励记录: "Record de recharge",
-  语言: "Langue",
-  充值: "Recharger",
+  提现成功: "Retrait réussi",
+  银行卡已被绑定: "La carte bancaire a été liée",
+  银行卡号不能为空: "Le numéro de carte bancaire ne peut pas être vide",
+  银行名不能为空: "Le nom de la banque ne peut pas être vide",
+  资金密码不能为空: "Le mot de passe du fonds ne peut pas être vide",
+  已存在的用户名或电话号码: "Nom d'utilisateur ou numéro de téléphone existant",
+  用户名或密码错误: "Nom d'utilisateur ou mot de passe incorrect",
+  手机号已被注册: "Le numéro de téléphone a déjà été enregistré",
+  注册成功: "nscription réussie",
   银行名: "Nom de la banque",
-  "数据提供者 Mercado Asia": "Fournisseur de données Mercado Asia",
   提款时间: "Délai de retrait",
   取款数额不能为空: "Le montant du retrait ne peut être vide.",
   资金密码不能为空: "Les codes monétaires ne peuvent pas être vides.",
@@ -251,8 +250,5 @@ export default {
   "处理中...": "En cours de traitement...",
   "网络错误，请稍后重试": "Erreur de réseau, veuillez réessayer plus tard",
   "提款数额必须为整数，不能包含小数":
-    "Le montant du retrait doit être un entier, il ne peut pas contenir de décimales",
-  订单: "Commande",
-  已支付: "Payé",
-  未支付: "Non payé",
+    "Le montant du retrait doit être un nombre entier et ne peut pas contenir de décimales",
 };

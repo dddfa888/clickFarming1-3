@@ -3,12 +3,10 @@
     <div class="order-header">
       <div>
         <p style="font-size: 15px">{{ t("订单详细信息") }}</p>
-        <div class="data-provider">{{ t("数据提供者 Mercado Asia") }}</div>
+        <div class="data-provider">{{ t("数据提供者 Ingka Centres") }}</div>
       </div>
       <div class="amount-section">
-        <div class="amount-display">
-          {{ formatCurrency(order.userBalance) }}
-        </div>
+        <div class="amount-display">{{ formatCurrency(order.userBalance) }}</div>
         <div class="amount-label">{{ t("剩余") }}($)</div>
       </div>
     </div>
@@ -28,9 +26,7 @@
         <div class="detail-value">{{ order.userLevel }}</div>
       </div>
       <div class="detail-item">
-        <div class="detail-label">
-          {{ t("订单已付款") }}
-        </div>
+        <div class="detail-label">{{ t("订单已付款") }}</div>
         <div class="detail-value">{{ order.orderNum }}</div>
       </div>
       <div class="detail-item">
@@ -48,22 +44,17 @@
       <div class="rules-content" v-if="locale === 'vi'">
         <!-- 这里可以添加基金会规则的具体内容 -->
         <p>
-          Khi bạn trở thành thành viên Mercado Asia, bạn sẽ nhận được các mã sản
-          phẩm có liên quan về đơn đặt hàng , bao gồm thông tin sản phẩm chi
+          Khi bạn trở thành thành viên Ingka Centres, bạn sẽ nhận được các mã
+          sản phẩm có liên quan về đơn đặt hàng , bao gồm thông tin sản phẩm chi
           tiết đơn hàng , giá trị sản phẩm , số lượng ...vv..
         </p>
         <p>
-          Thành viên của Mercado Asia sẽ là nhà trung gian giúp xác nhận đơn
+          Thành viên của Ingka Centres sẽ là nhà trung gian giúp xác nhận đơn
           hàng giữa các NHÀ SẢN XUẤT & QUÝ ĐỐI TÁC ( người đặt mua ).
         </p>
       </div>
     </div>
-    <ProductModal
-      v-if="showModal"
-      :id="id"
-      @close="showModal = false"
-      @pay="handlePay"
-    />
+    <ProductModal v-if="showModal" :id="id" @close="showModal = false" @pay="handlePay" />
   </div>
 </template>
 
@@ -72,7 +63,7 @@ import { ref } from "vue";
 import {
   createOrder,
   getUserGradeAndBalanceAndDiscount,
-  sendDistribution,
+  sendDistribution
 } from "../../api";
 import { useI18n } from "vue-i18n";
 import ProductModal from "../../components/ProductModal.vue";
@@ -89,9 +80,9 @@ const langStore = useLangStore();
 const { locale } = storeToRefs(langStore);
 const isProcessing = ref(false);
 
-const formatCurrency = (value) => {
+const formatCurrency = value => {
   if (typeof value !== "number") return "0 $";
-  return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+  return value.toLocaleString("de-US", { style: "currency", currency: "USD" });
 };
 
 const Sendbutton = debounce(() => {
@@ -101,7 +92,7 @@ const Sendbutton = debounce(() => {
     globalThis.$notify({
       message: t("地址未填写,请填写完整"),
       type: "warning",
-      duration: 4000,
+      duration: 4000
     });
     router.push({ path: "/address" });
     return;
@@ -110,8 +101,7 @@ const Sendbutton = debounce(() => {
   isProcessing.value = true; // ✅ 创建订单就上锁
 
   createOrder()
-    .then((res) => {
-      console.log(res);
+    .then(res => {
       if (res.code === 200) {
         showModal.value = true;
         id.value = res.orderId;
@@ -120,17 +110,17 @@ const Sendbutton = debounce(() => {
         globalThis.$notify({
           message: t("membership_requirement", {
             level: t(res.data.level),
-            value: res.data.value,
+            value: res.data.value
           }),
           type: "error",
-          duration: 4000,
+          duration: 4000
         });
         isProcessing.value = false; // ❗失败立即解锁
       } else {
         globalThis.$notify({
           message: t(res.msg),
           type: "error",
-          duration: 4000,
+          duration: 4000
         });
         isProcessing.value = false; // ❗失败立即解锁
       }
@@ -142,7 +132,7 @@ const Sendbutton = debounce(() => {
 
 function debounce(fn, delay) {
   let timer = null;
-  return function (...args) {
+  return function(...args) {
     clearTimeout(timer);
     timer = setTimeout(() => {
       fn.apply(this, args);
@@ -156,34 +146,32 @@ const handlePay = debounce(() => {
   showModal.value = false;
 
   sendDistribution(id.value)
-    .then((res) => {
+    .then(res => {
       if (res.code === 200) {
         globalThis.$notify({
           title: "",
           message: t("正在分发"),
           type: "warning",
-          duration: 8000,
+          duration: 4000
         });
-
         setTimeout(() => {
           globalThis.$notify({
-            message: t("订单支付成功"),
+            message: t("订单支付成功！"),
             type: "success",
-            duration: 8000,
+            duration: 4000
           });
-          //  延迟解锁，确保通知出现后才能继续下单
           isProcessing.value = false;
-        }, 6000);
+        }, 4000);
 
         // 更新数据
-        return getUserGradeAndBalanceAndDiscount().then((refreshRes) => {
+        return getUserGradeAndBalanceAndDiscount().then(refreshRes => {
           order.value = refreshRes.data;
         });
       } else {
         globalThis.$notify({
           message: t(res.msg),
           type: "error",
-          duration: 6000,
+          duration: 3000
         });
         isProcessing.value = false;
       }
@@ -192,13 +180,13 @@ const handlePay = debounce(() => {
       globalThis.$notify({
         message: t("支付请求失败"),
         type: "error",
-        duration: 6000,
+        duration: 4000
       });
       isProcessing.value = false;
     });
 }, 2000);
 
-getUserGradeAndBalanceAndDiscount().then((res) => {
+getUserGradeAndBalanceAndDiscount().then(res => {
   console.log(res.data);
   order.value = res.data;
 });
@@ -232,14 +220,12 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
 }
 
 .order-summary {
-  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 25px;
   padding: 5px;
   border-radius: 6px;
-  margin: 0 auto;
 }
 .order-summary > img {
   width: 100%;
@@ -340,12 +326,14 @@ getUserGradeAndBalanceAndDiscount().then((res) => {
   }
 
   .order-summary {
+    width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 25px;
     padding: 5px;
     border-radius: 6px;
+    margin: 25px auto;
   }
   .order-summary > img {
     width: 100%;
