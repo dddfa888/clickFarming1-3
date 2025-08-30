@@ -113,3 +113,14 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+
+security:
+  white-list:
+    - /login
+    - /register
+    - /captchaImage
+    - /api/login
+    - /api/register
+    - /sse/connect
+    - /common/upload

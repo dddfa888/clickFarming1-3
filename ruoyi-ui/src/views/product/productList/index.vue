@@ -71,7 +71,7 @@
         <template slot-scope="scope">
           <img class="listProdImg" :src="scope.row.imageUrl" alt="图片无法显示"></img>
         </template>
-	  </el-table-column>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -113,9 +113,9 @@
         <el-form-item label="价格" prop="price">
           <el-input-number v-model="form.price" controls-position="right" :min="0" placeholder="请输入价格" />
         </el-form-item>
-<!--        <el-form-item label="图片附件url" prop="imageUrl" >
-          <el-input v-model="form.imageUrl" type="textarea" />
-        </el-form-item>-->
+        <!--        <el-form-item label="图片附件url" prop="imageUrl" >
+                  <el-input v-model="form.imageUrl" type="textarea" />
+                </el-form-item>-->
         <el-form-item label="图片附件" prop="field101">
           <ImageUpload ref="imageUpload" :limit="fileNumLimit" :fileSize="fileSizeMB" :value="fileListInit" @input="uploadSuccess"></ImageUpload>
         </el-form-item>
@@ -165,7 +165,7 @@ export default {
       // 表单参数
       form: {
         field101: null,
-	  },
+      },
       // 表单校验
       rules: {
         productName: [
@@ -175,7 +175,7 @@ export default {
           { required: true, message: "内容不能为空", trigger: "blur" }
         ],
       },
-      baseUrl: process.env.VUE_APP_BASE_API,
+      baseUrl: process.env.VUE_APP_BASE_URL,
       fileNumLimit: 1, //文件数量限制
       fileSizeMB: 1, //文件最大限制，1MB
       fileListInit: '' //初始化文件列表
@@ -253,6 +253,7 @@ export default {
     },
     // <ImageUpload> 上传图片成功后的回调函数，值是数组，内部元素是字符串（文件相对路径）
     uploadSuccess(fileListStr){
+      console.log(fileListStr)
       this.form.imageUrl = fileListStr;
     },
 
@@ -296,8 +297,8 @@ export default {
 }
 </script>
 <style>
-	.listProdImg {
-		width: 3rem;
-		height: 3rem;
-	}
+.listProdImg {
+  width: 3rem;
+  height: 3rem;
+}
 </style>

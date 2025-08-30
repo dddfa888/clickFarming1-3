@@ -3,6 +3,8 @@ package com.ruoyi.system.service.impl;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.annotation.DataSource;
@@ -16,6 +18,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.mapper.SysConfigMapper;
 import com.ruoyi.system.service.ISysConfigService;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * 参数配置 服务层实现
@@ -30,6 +33,9 @@ public class SysConfigServiceImpl implements ISysConfigService
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private SysConfigMapper sysConfigMapper;
 
     /**
      * 项目启动时，初始化参数到缓存
@@ -228,5 +234,10 @@ public class SysConfigServiceImpl implements ISysConfigService
     private String getCacheKey(String configKey)
     {
         return CacheConstants.SYS_CONFIG_KEY + configKey;
+    }
+
+    // 定义查询客服中心配置的方法
+    public SysConfig getCustomerServiceConfig() {
+        return sysConfigMapper.selectSysConfigByKey();
     }
 }
