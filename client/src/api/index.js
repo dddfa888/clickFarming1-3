@@ -104,17 +104,17 @@ export function getMemberRecord() {
 }
 
 // 订单历史
-export function getOrderHistory() {
+export function getOrderHistory(pageNum, pageSize) {
     return request({
-        url: '/api/order/listByUser',
+        url: `/api/order/listByUser?pageNum=${pageNum}&pageSize=${pageSize}`,
         method: 'get',
     })
 }
 
 // 奖励历史记录
-export function getRewardHistory() {
+export function getRewardHistory(pageNum, pageSize) {
     return request({
-        url: '/api/rewardRecord/selectSimpleByUserId',
+        url: `/api/rewardRecord/selectSimpleByUserId?pageNum=${pageNum}&pageSize=${pageSize}`,
         method: 'get',
     })
 }
