@@ -3,7 +3,20 @@
     <!-- 顶部用户信息 -->
     <div class="user-info">
       <div class="user-info-avatar">
-        <img class="avatar" :src="defaultAvatar" alt="头像" />
+        <img
+            class="avatar"
+            :src="userInfo.headImg || defaultAvatar"
+            alt="头像"
+            @click="triggerUpload"
+        />
+        <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            style="display:none"
+            @change="handleFileChange"
+        />
+        <!--</el-upload> -->
         <div class="user-details">
           <div>{{ t("你好") }}</div>
           <div class="username">{{ userInfo.loginAccount || "" }}</div>
@@ -19,7 +32,7 @@
     <div class="balance-price">
       <div class="balance-display">
         <div
-          style="
+            style="
             display: flex;
             align-items: center;
             justify-content: space-around;
@@ -32,8 +45,8 @@
       </div>
       <div class="action-buttons">
         <div
-          @click="onDeposit"
-          style="
+            @click="onDeposit"
+            style="
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -44,8 +57,8 @@
           <p>{{ t("提款") }}</p>
         </div>
         <div
-          @click="onWithdraw"
-          style="
+            @click="onWithdraw"
+            style="
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -65,10 +78,10 @@
     <!-- 功能按钮 -->
     <div class="info-buttons">
       <div
-        class="btn"
-        v-for="item in infoBtns"
-        :key="item.label"
-        @click="handleButtonClick(item.icon)"
+          class="btn"
+          v-for="item in infoBtns"
+          :key="item.label"
+          @click="handleButtonClick(item.icon)"
       >
         <img style="width: 35px; height: 35px" class="icon-img" :src="item.icon" />
         <div style="text-align: center; margin-top: 5px">{{ item.label }}</div>
@@ -122,10 +135,10 @@
           <span class="reward-date">{{ reward.date }}</span>
           <span class="reward-message">
             {{
-            t("rewardMessage", {
-            username: reward.username,
-            amount: formatAmount(reward.amount),
-            })
+              t("rewardMessage", {
+                username: reward.username,
+                amount: formatAmount(reward.amount),
+              })
             }}
           </span>
         </div>
@@ -134,10 +147,10 @@
     <PromotionModal ref="promoRef" />
 
     <BaseModal
-      v-model="showModal"
-      :title="t('确认升级')"
-      @confirm="handleConfirm"
-      @cancel="handleCancel"
+        v-model="showModal"
+        :title="t('确认升级')"
+        @confirm="handleConfirm"
+        @cancel="handleCancel"
     >
       <template #body>
         <p>{{ t("您想升级到这个级别吗?") }}</p>
@@ -190,6 +203,65 @@ onMounted(async () => {
     configValue.value = res.data.configValue;
   });
 });
+
+const triggerUpload = () => {
+  fileInput.value.click();
+};
+
+// 手动处理文件变化
+const handleFileChange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // 简单校验
+  // if (!file.type.startsWith("image/")) {
+  //   ElMessage.error("只能上传图片格式");
+  //   return;
+  // }
+  // if (file.size / 1024 / 1024 > 2) {
+  //   ElMessage.error("图片大小不能超过 2MB");
+  //   return;
+  // }
+
+  // 调用接口上传
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await updateAvatar(formData); // 你自己接口，返回格式根据接口调整
+    if (res.code === 200) {
+      globalThis.$notify({
+        message: t(res.msg),
+        type: "success",
+        duration: 2000
+      });
+      // 假设返回头像url为 res.data.avatarUrl，替换为你接口返回字段
+      userInfo.value.headImg = res.url;
+      updateUserSimpleFront({ headImg: res.url }).then(res => {
+        console.log(res);
+      });
+    } else {
+      globalThis.$notify({
+        message: t(res.msg),
+        type: "warning",
+        duration: 2000
+      });
+    }
+  } catch (error) {
+    globalThis.$notify({
+      message: t(res.msg),
+      type: "warning",
+      duration: 2000
+    });
+    console.error(error);
+  }
+
+  // 清空选择框，避免同一文件无法触发change
+  e.target.value = "";
+};
+
+// 这里为了兼容 el-upload 的 before-upload，但真正不使用自动上传
+const handleBeforeUpload = () => false;
 
 const getImageUrl = path => {
   return new URL(`../../assets/{path}`, import.meta.url).href;
@@ -265,8 +337,8 @@ const generateAmount = () => {
   const decimal = Math.floor(Math.random() * 100); // 0-99
 
   return `${whole.toLocaleString("de-DE")}.${decimal
-    .toString()
-    .padStart(2, "0")}`;
+      .toString()
+      .padStart(2, "0")}`;
 };
 
 // 格式化金额显示
@@ -276,24 +348,24 @@ const formatAmount = amount => {
 
 // 初始奖励数据
 const rewards = ref(
-  Array(6)
-    .fill()
-    .map(() => ({
-      date: new Date().toISOString().split("T")[0],
-      username: generateUsername(),
-      amount: generateAmount()
-    }))
+    Array(6)
+        .fill()
+        .map(() => ({
+          date: new Date().toISOString().split("T")[0],
+          username: generateUsername(),
+          amount: generateAmount()
+        }))
 );
 
 // 更新6条数据
 const updateRewards = () => {
   rewards.value = Array(6)
-    .fill()
-    .map(() => ({
-      date: new Date().toISOString().split("T")[0],
-      username: generateUsername(),
-      amount: generateAmount()
-    }));
+      .fill()
+      .map(() => ({
+        date: new Date().toISOString().split("T")[0],
+        username: generateUsername(),
+        amount: generateAmount()
+      }));
 };
 
 // 定时更新数据
@@ -340,7 +412,7 @@ function withTimeout(promise, timeout = 5000) {
   return Promise.race([
     promise,
     new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("请求超时")), timeout)
+        setTimeout(() => reject(new Error("请求超时")), timeout)
     )
   ]);
 }

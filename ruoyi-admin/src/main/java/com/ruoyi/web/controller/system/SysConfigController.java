@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.annotation.FrontAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -132,6 +134,7 @@ public class SysConfigController extends BaseController
     }
 
     // 获取客服中心配置数据的接口
+    @FrontAccess
     @GetMapping("/customerService")
     public AjaxResult getCustomerServiceConfig() {
         SysConfig config = configService.getCustomerServiceConfig();

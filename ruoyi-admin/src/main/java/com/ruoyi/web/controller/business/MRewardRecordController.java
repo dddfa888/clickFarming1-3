@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.annotation.FrontAccess;
 import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class MRewardRecordController extends BaseController
     /**
      * 查询当前用户的奖励记录
      */
+    @FrontAccess
     @GetMapping("/selectSimpleByUserId")
     public AjaxResult selectByCurrentUser(HttpServletRequest request)
     {
