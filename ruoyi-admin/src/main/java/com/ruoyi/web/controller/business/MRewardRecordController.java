@@ -59,6 +59,7 @@ public class MRewardRecordController extends BaseController
      * 查询当前用户的奖励记录
      */
     @GetMapping("/selectSimpleByUserId")
+    @FrontAccess
     public TableDataInfo selectByCurrentUser(
             HttpServletRequest request,
             // 接收前端传递的页码，默认第1页

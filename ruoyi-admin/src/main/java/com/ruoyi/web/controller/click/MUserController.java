@@ -368,6 +368,7 @@ public class MUserController extends BaseController
      */
     @Log(title = "用户", businessType = BusinessType.UPDATE)
     @PostMapping("updateUserSimpleFront")
+    @FrontAccess
     public AjaxResult updateUserSimpleFront(HttpServletRequest request, @RequestBody MUser mUser)
     {
         Long userId = tokenService.getLoginUser(request).getmUser().getUid();

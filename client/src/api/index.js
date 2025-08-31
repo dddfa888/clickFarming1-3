@@ -88,9 +88,9 @@ export function createOrder(data) {
 }
 
 // 订单列表
-export function getOrderList() {
+export function getOrderList(pageNum,pageSize) {
     return request({
-        url: '/api/order/listByUser',
+        url: `/api/order/listByUser?pageNum=${pageNum}&pageSize=${pageSize}`,
         method: 'get',
     })
 }
