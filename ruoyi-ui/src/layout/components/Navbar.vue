@@ -7,19 +7,12 @@
       @toggleClick="toggleSideBar"
     />
 
-    <breadcrumb
-      v-if="!topNav"
-      id="breadcrumb-container"
-      class="breadcrumb-container"
-    />
+    <breadcrumb v-if="!topNav" id="breadcrumb-container" class="breadcrumb-container" />
     <top-nav v-if="topNav" id="topmenu-container" class="topmenu-container" />
 
     <div class="right-menu">
-      <template v-if="device !== 'mobile'">
-        <el-dropdown
-          class="avatar-container right-menu-item hover-effect"
-          trigger="hover"
-        >
+      <template>
+        <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
           <div>
             <!-- <el-button type="primary" size="small" plain>语言</el-button> -->
             <el-tag>{{ $t("message.language") }}</el-tag>
@@ -40,26 +33,23 @@
 
         <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
-        </el-tooltip> -->
+        </el-tooltip>-->
 
         <!-- <el-tooltip content="文档地址" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-        </el-tooltip> -->
+        </el-tooltip>-->
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect"/>
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect"/>
+          <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
 
-      <el-dropdown
-        class="avatar-container right-menu-item hover-effect"
-        trigger="hover"
-      >
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar"/>
-          <span class="user-nickname"> {{ nickName }} </span>
+          <img :src="avatar" class="user-avatar" />
+          <span class="user-nickname">{{ nickName }}</span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/profile">
@@ -71,19 +61,15 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <div
-        class="right-menu-item hover-effect setting"
-        @click="setLayout"
-        v-if="setting"
-      >
-        <svg-icon icon-class="more-up"/>
+      <div class="right-menu-item hover-effect setting" @click="setLayout" v-if="setting">
+        <svg-icon icon-class="more-up" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import TopNav from "@/components/TopNav";
 import Hamburger from "@/components/Hamburger";
@@ -103,25 +89,25 @@ export default {
     SizeSelect,
     Search,
     RuoYiGit,
-    RuoYiDoc,
+    RuoYiDoc
   },
   computed: {
     ...mapGetters(["sidebar", "avatar", "device", "nickName"]),
     setting: {
       get() {
         return this.$store.state.settings.showSettings;
-      },
+      }
     },
     topNav: {
       get() {
         return this.$store.state.settings.topNav;
-      },
-    },
+      }
+    }
   },
   methods: {
     changeLang(lang) {
       this.$i18n.locale = lang;
-      localStorage.setItem("lang", lang)
+      localStorage.setItem("lang", lang);
     },
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
@@ -133,17 +119,16 @@ export default {
       this.$confirm("确定注销并退出系统吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           this.$store.dispatch("LogOut").then(() => {
             location.href = "/index";
           });
         })
-        .catch(() => {
-        });
-    },
-  },
+        .catch(() => {});
+    }
+  }
 };
 </script>
 
