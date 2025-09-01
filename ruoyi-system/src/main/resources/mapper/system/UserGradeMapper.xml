@@ -84,6 +84,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="buyProdNum != null">buy_prod_num = #{buyProdNum},</if>
             <if test="minBonus != null">min_bonus = #{minBonus},</if>
             <if test="maxBonus != null">max_bonus = #{maxBonus},</if>
+            <if test="minProfit != null">min_profit = #{minProfit},</if>
+            <if test="maxProfit != null">max_profit = #{maxProfit},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
