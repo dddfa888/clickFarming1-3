@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import com.ruoyi.business.domain.MRewardRecord;
@@ -278,7 +279,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
         ProductManage product = null;
         if (orderSetList != null && orderSetList.size() > 0) {
-            product = setOrderProdLimit(orderReceiveRecord, orderSetList.get(0),userGrade);
+//            product = setOrderProdLimit(orderReceiveRecord, orderSetList.get(0),userGrade);
         } else {
             product = setOrderProdNormal(orderReceiveRecord, mUser ,userGrade);
         }
@@ -289,7 +290,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setUnitPrice(product.getPrice());
 
         orderReceiveRecord.setTotalAmount(DecimalUtil.multiple(product.getPrice(), orderReceiveRecord.getNumber()));
-        orderReceiveRecord.setProfit(calcProfit(userGrade, orderReceiveRecord.getTotalAmount()));
+        orderReceiveRecord.setProfit(orderReceiveRecord.getProfit());
         orderReceiveRecord.setRefundAmount(DecimalUtil.add(orderReceiveRecord.getTotalAmount(), orderReceiveRecord.getProfit()));
         orderReceiveRecord.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
         orderReceiveRecord.setNumTarget(numTarget);
@@ -301,6 +302,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     }
 
     public ProductManage setOrderProdNormal(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade) {
+
         // 1. 按用户余额筛选可支付产品
         Map<String, Object> paramIds = new HashMap<>();
         paramIds.put("price_Le", mUser.getAccountBalance());
@@ -314,40 +316,44 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
 
         // 2. 计算用户等级对应的单价区间
-        BigDecimal minPrice = calculateMinPrice(userGrade);
-        BigDecimal maxPrice = calculateMaxPrice(userGrade);
+//        BigDecimal minPrice = calculateMinPrice(userGrade);
+//        BigDecimal maxPrice = calculateMaxPrice(userGrade);
+
+        // 计算用户等级对应的单价区间
+        BigDecimal minPrice = userGrade.getMinProfit().divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
+        BigDecimal maxPrice = userGrade.getMaxProfit().divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
 
         // 3. 计算满足总价区间的产品数量
         BigDecimal accountBalance = mUser.getAccountBalance();
-        BigDecimal productPrice = product.getPrice();
-
-        // 计算最大可购买数量（向下取整）
-        int maxNum = accountBalance.divide(productPrice, 0, RoundingMode.DOWN).intValue();
-
-        // 计算满足等级约束的最小数量
-        int minNum = (int) Math.ceil(minPrice.divide(productPrice, 2, RoundingMode.CEILING).doubleValue());
-
-        // 计算满足等级约束的最大数量
-        int maxValidNum = (int) Math.floor(maxPrice.divide(productPrice, 2, RoundingMode.FLOOR).doubleValue());
-
-        // 计算有效范围
-        int effectiveMin = Math.max(minNum, 1);
-        int effectiveMax = Math.min(maxValidNum, maxNum);
-
-        if (effectiveMin > effectiveMax) {
-            throw new ServiceException("无符合总价区间的购买方案");
+        //获取当产品价格等于用户余额时的利润比
+        BigDecimal balanceRatio = maxPrice.divide(accountBalance, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+        if (balanceRatio.compareTo(userGrade.getMinBonus())<0){
+            balanceRatio = userGrade.getMinBonus();
         }
+        //在获取到的利润与最大利润比中取随机利润比
+        double rnd = ThreadLocalRandom.current().nextDouble(
+                balanceRatio.doubleValue(), userGrade.getMaxBonus().doubleValue());
+        BigDecimal finalRatio = BigDecimal.valueOf(rnd).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal ratioDecimal = finalRatio.divide(new BigDecimal("100"), 8, RoundingMode.HALF_UP);
 
-        // 生成随机数量（确保总价在区间内）
-        int quantity = calculateValidQuantity(
-                productPrice,
-                minPrice,
-                maxPrice,
-                effectiveMin,
-                effectiveMax
-        );
+        // 反推价格区间
+        BigDecimal prodMinPrice = minPrice.divide(ratioDecimal, 2, RoundingMode.HALF_UP);
+        BigDecimal prodMaxPrice = maxPrice.divide(ratioDecimal, 2, RoundingMode.HALF_UP);
 
-        orderReceiveRecord.setNumber(quantity);
+        // 5. 随机生成单价
+        double priceRnd = ThreadLocalRandom.current().nextDouble(prodMinPrice.doubleValue(), prodMaxPrice.doubleValue());
+        BigDecimal finalPrice = BigDecimal.valueOf(priceRnd).setScale(2, RoundingMode.HALF_UP);
+        System.out.println(" 用户利润比= " + balanceRatio);
+        System.out.println(" 利润比= " + ratioDecimal);
+        // 6. 计算利润
+        BigDecimal profit = finalPrice.multiply(ratioDecimal).setScale(2, RoundingMode.HALF_UP);
+
+        BigDecimal productPrice = product.getPrice();
+        product.setPrice(finalPrice);
+
+        orderReceiveRecord.setNumber(1);
+        orderReceiveRecord.setProfit(profit);
+        orderReceiveRecord.setTotalAmount(finalPrice);
         return product;
     }
 
