@@ -11,11 +11,11 @@ let isTokenExpired = false;
 // const router = useRouter();
 const baseURL = "http://192.168.1.203:8089/";
 const request = axios.create({
-  baseURL:
+/*  baseURL:
     import.meta.env.MODE === "development"
       ? "/api"
-      : "https://cf13api.dadwqwqee.shop/",
-  // baseURL:baseURL,
+      : "https://cf13api.dadwqwqee.shop/",*/
+   baseURL:baseURL,
   timeout: 10000,
 });
 

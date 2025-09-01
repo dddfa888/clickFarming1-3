@@ -69,8 +69,8 @@
       <el-table-column label="参加费" align="center" prop="joinCost" />
       <el-table-column label="最低余额" align="center" prop="minBalance" />
       <el-table-column label="每天购买的产品数量" align="center" prop="buyProdNum" />
-      <el-table-column label="% 最小奖金" align="center" prop="minBonus" />
-      <el-table-column label="% 最大奖金" align="center" prop="maxBonus" />
+      <el-table-column label="最小奖金" align="center" prop="minBonus" />
+      <el-table-column label="最大奖金" align="center" prop="maxBonus" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

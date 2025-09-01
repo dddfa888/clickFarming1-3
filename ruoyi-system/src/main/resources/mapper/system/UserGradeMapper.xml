@@ -100,4 +100,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="getById" resultType="com.ruoyi.click.domain.UserGrade">
+        select id, sort_num, grade_name, join_cost, min_balance, buy_prod_num, min_bonus, max_bonus from m_user_grade where sort_num=#{level}
+    </select>
 </mapper>
