@@ -55,6 +55,14 @@ public class UserGrade
     @Excel(name = "最大奖金", readConverterExp = "%=")
     private BigDecimal maxBonus;
 
+    /** 最小利润 */
+    @Excel(name = "最小利润")
+    private BigDecimal minProfit;
+
+    /** 最大利润 */
+    @Excel(name = "最大利润")
+    private BigDecimal maxProfit;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
