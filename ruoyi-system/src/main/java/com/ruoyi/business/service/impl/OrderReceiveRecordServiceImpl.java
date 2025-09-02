@@ -15,6 +15,7 @@ import com.ruoyi.business.mapper.MRewardRecordMapper;
 import com.ruoyi.business.mapper.MUserOrderSetMapper;
 import com.ruoyi.business.mapper.ProductManageMapper;
 import com.ruoyi.click.domain.vo.OrderReceiveRecordVo;
+import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
@@ -55,7 +56,8 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     private MRewardRecordMapper mRewardRecordMapper;
     @Autowired
     private MUserOrderSetMapper mUserOrderSetMapper;
-
+    @Autowired
+    private IMAccountChangeRecordsService mAccountChangeRecordsService;
     // 声明为类的静态成员（在方法外）
     private static final Random RANDOM = new Random();
 
@@ -318,17 +320,27 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         // 2. 计算用户等级对应的单价区间
 //        BigDecimal minPrice = calculateMinPrice(userGrade);
 //        BigDecimal maxPrice = calculateMaxPrice(userGrade);
-
-        // 计算用户等级对应的单价区间
-        BigDecimal minPrice = userGrade.getMinProfit().divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
-        BigDecimal maxPrice = userGrade.getMaxProfit().divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
-
-        // 3. 计算满足总价区间的产品数量
+        BigDecimal  minProfit = userGrade.getMinProfit();
+        BigDecimal  maxProfit = userGrade.getMaxProfit();
         BigDecimal accountBalance = mUser.getAccountBalance();
+        if (userGrade.getSortNum() == 1){
+            if (accountBalance.compareTo(BigDecimal.valueOf(500))>=0){
+                minProfit = userGrade.getMinProfit2();
+                maxProfit = userGrade.getMaxProfit2();
+            }
+        }
+        // 计算用户等级对应的单价区间
+        BigDecimal minPrice = minProfit.divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
+        BigDecimal maxPrice = maxProfit.divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
+
+
         //获取当产品价格等于用户余额时的利润比
         BigDecimal balanceRatio = maxPrice.divide(accountBalance, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
         if (balanceRatio.compareTo(userGrade.getMinBonus())<0){
             balanceRatio = userGrade.getMinBonus();
+        }
+        if (balanceRatio.compareTo(userGrade.getMaxBonus())>=0){
+            userGrade.setMaxBonus(balanceRatio.add(BigDecimal.valueOf(0.1)));
         }
         //在获取到的利润与最大利润比中取随机利润比
         double rnd = ThreadLocalRandom.current().nextDouble(

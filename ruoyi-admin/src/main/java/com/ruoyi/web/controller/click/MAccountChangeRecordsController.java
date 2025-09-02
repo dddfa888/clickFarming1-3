@@ -47,6 +47,7 @@ public class MAccountChangeRecordsController extends BaseController
      * @param request
      * @return
      */
+    @FrontAccess
     @GetMapping("/userList")
     public TableDataInfo userList(
             HttpServletRequest request,
