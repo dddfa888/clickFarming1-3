@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import com.ruoyi.business.domain.MRewardRecord;
 import com.ruoyi.business.domain.MUserOrderSet;
@@ -13,6 +15,7 @@ import com.ruoyi.business.mapper.MRewardRecordMapper;
 import com.ruoyi.business.mapper.MUserOrderSetMapper;
 import com.ruoyi.business.mapper.ProductManageMapper;
 import com.ruoyi.click.domain.vo.OrderReceiveRecordVo;
+import com.ruoyi.click.service.IMAccountChangeRecordsService;
 import com.ruoyi.common.core.domain.entity.MUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
@@ -53,7 +56,8 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
     private MRewardRecordMapper mRewardRecordMapper;
     @Autowired
     private MUserOrderSetMapper mUserOrderSetMapper;
-
+    @Autowired
+    private IMAccountChangeRecordsService mAccountChangeRecordsService;
     // 声明为类的静态成员（在方法外）
     private static final Random RANDOM = new Random();
 
@@ -277,9 +281,9 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 
         ProductManage product = null;
         if (orderSetList != null && orderSetList.size() > 0) {
-            product = setOrderProdLimit(orderReceiveRecord, orderSetList.get(0));
+//            product = setOrderProdLimit(orderReceiveRecord, orderSetList.get(0),userGrade);
         } else {
-            product = setOrderProdNormal(orderReceiveRecord, mUser);
+            product = setOrderProdNormal(orderReceiveRecord, mUser ,userGrade);
         }
 
         orderReceiveRecord.setProductId(product.getId());
@@ -288,7 +292,7 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecord.setUnitPrice(product.getPrice());
 
         orderReceiveRecord.setTotalAmount(DecimalUtil.multiple(product.getPrice(), orderReceiveRecord.getNumber()));
-        orderReceiveRecord.setProfit(calcProfit(userGrade));
+        orderReceiveRecord.setProfit(orderReceiveRecord.getProfit());
         orderReceiveRecord.setRefundAmount(DecimalUtil.add(orderReceiveRecord.getTotalAmount(), orderReceiveRecord.getProfit()));
         orderReceiveRecord.setProcessStatus(OrderReceiveRecord.PROCESS_STATUS_WAIT);
         orderReceiveRecord.setNumTarget(numTarget);
@@ -299,53 +303,113 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         orderReceiveRecordMapper.insertOrderReceiveRecord(orderReceiveRecord);
     }
 
-    /**
-     * 计算用户可支付范围内的产品数量
-     */
-    public ProductManage setOrderProdNormal(OrderReceiveRecord orderReceiveRecord, MUser mUser) {
+    public ProductManage setOrderProdNormal(OrderReceiveRecord orderReceiveRecord, MUser mUser, UserGrade userGrade) {
+
+        // 1. 按用户余额筛选可支付产品
         Map<String, Object> paramIds = new HashMap<>();
         paramIds.put("price_Le", mUser.getAccountBalance());
         List<Long> idList = productManageMapper.getIdList(paramIds);
-        if (idList == null || idList.isEmpty())
-            throw new ServiceException("未查到产品信息");//user
-        //前面查出符合条件的产品id，然后随机挑选一个产品id，查出产品
-        int prodIndex = (int) Math.floor(Math.random() * idList.size());
-        ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
-
-        //查询用户信息
-        mUser = mUserMapper.selectMUserByUid(getUserId());
-        //根据等级查询账户等级信息
-        UserGrade userGrade = userGradeMapper.getById(mUser.getLevel());
-
-        int quantity;
-        if (userGrade.getId() == 1) {
-            // id=1：1-3之间的随机数（包含1和3）
-            quantity = RANDOM.nextInt(3) + 1; // 3-1+1=3，所以.nextInt(3)生成0-2，+1后为1-3
-        } else if (userGrade.getId() == 2) {
-            // id=2：5-10之间的随机数（包含5和10）
-            quantity = RANDOM.nextInt(6) + 5; // 10-5+1=6，所以.nextInt(6)生成0-5，+5后为5-10
-        } else if (userGrade.getId() == 3) {
-            // id=3：10-20之间的随机数（包含10和20）
-            quantity = RANDOM.nextInt(11) + 10; // 20-10+1=11，所以.nextInt(11)生成0-10，+10后为10-20
-        } else if (userGrade.getId() == 4) {
-            // id=4：20-40之间的随机数（包含20和40）
-            quantity = RANDOM.nextInt(21) + 20; // 40-20+1=21，所以.nextInt(21)生成0-20，+20后为20-40
-        } else {
-            // 处理未定义的等级，可设置默认值
-            quantity = 1;
+        if (idList == null || idList.isEmpty()) {
+            throw new ServiceException("未查到可支付产品");
         }
 
-/*        // 计算产品数量，先计算用户余额整除产品价格的商，即用户可支付范围内的最大值（最大产品数量）
-        int prodNum = mUser.getAccountBalance().divide(product.getPrice(), 0, RoundingMode.DOWN).intValue();
+        // 随机选择产品
+        int prodIndex = (int) (Math.random() * idList.size());
+        ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
+
+        // 2. 计算用户等级对应的单价区间
+//        BigDecimal minPrice = calculateMinPrice(userGrade);
+//        BigDecimal maxPrice = calculateMaxPrice(userGrade);
+        BigDecimal  minProfit = userGrade.getMinProfit();
+        BigDecimal  maxProfit = userGrade.getMaxProfit();
+        BigDecimal accountBalance = mUser.getAccountBalance();
+        if (userGrade.getSortNum() == 1){
+            if (accountBalance.compareTo(BigDecimal.valueOf(500))>=0){
+                minProfit = userGrade.getMinProfit2();
+                maxProfit = userGrade.getMaxProfit2();
+            }
+        }
+        // 计算用户等级对应的单价区间
+        BigDecimal minPrice = minProfit.divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
+        BigDecimal maxPrice = maxProfit.divide(BigDecimal.valueOf(userGrade.getBuyProdNum()), 4, RoundingMode.HALF_UP);
 
 
-        // 如果上面计算的prodNum是1，产品数量直接设为1。否则，假设prodNum（用户可支付范围内的最大数量）是10，生成随机数取5-10之间的整数作为本次订单实际产品数量。
-        if (prodNum > 1) {
-            Double min = prodNum * (0.7);
-            prodNum = randomMinMax(min.intValue(), prodNum);
-        }*/
-        orderReceiveRecord.setNumber(quantity);
+        //获取当产品价格等于用户余额时的利润比
+        BigDecimal balanceRatio = maxPrice.divide(accountBalance, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+        if (balanceRatio.compareTo(userGrade.getMinBonus())<0){
+            balanceRatio = userGrade.getMinBonus();
+        }
+        if (balanceRatio.compareTo(userGrade.getMaxBonus())>=0){
+            userGrade.setMaxBonus(balanceRatio.add(BigDecimal.valueOf(0.1)));
+        }
+        //在获取到的利润与最大利润比中取随机利润比
+        double rnd = ThreadLocalRandom.current().nextDouble(
+                balanceRatio.doubleValue(), userGrade.getMaxBonus().doubleValue());
+        BigDecimal finalRatio = BigDecimal.valueOf(rnd).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal ratioDecimal = finalRatio.divide(new BigDecimal("100"), 8, RoundingMode.HALF_UP);
+
+        // 反推价格区间
+        BigDecimal prodMinPrice = minPrice.divide(ratioDecimal, 2, RoundingMode.HALF_UP);
+        BigDecimal prodMaxPrice = maxPrice.divide(ratioDecimal, 2, RoundingMode.HALF_UP);
+
+        // 5. 随机生成单价
+        double priceRnd = ThreadLocalRandom.current().nextDouble(prodMinPrice.doubleValue(), prodMaxPrice.doubleValue());
+        BigDecimal finalPrice = BigDecimal.valueOf(priceRnd).setScale(2, RoundingMode.HALF_UP);
+        System.out.println(" 用户利润比= " + balanceRatio);
+        System.out.println(" 利润比= " + ratioDecimal);
+        // 6. 计算利润
+        BigDecimal profit = finalPrice.multiply(ratioDecimal).setScale(2, RoundingMode.HALF_UP);
+
+        BigDecimal productPrice = product.getPrice();
+        product.setPrice(finalPrice);
+
+        orderReceiveRecord.setNumber(1);
+        orderReceiveRecord.setProfit(profit);
+        orderReceiveRecord.setTotalAmount(finalPrice);
         return product;
+    }
+
+    private int calculateValidQuantity(
+            BigDecimal productPrice,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            int minNum,
+            int maxNum
+    ) {
+        Random rand = new Random();
+        int quantity;
+
+        do {
+            quantity = randomMinMax(minNum, maxNum);
+            BigDecimal totalPrice = productPrice.multiply(BigDecimal.valueOf(quantity));
+
+            // 验证总价是否在区间内
+            if (totalPrice.compareTo(minPrice) >= 0 &&
+                    totalPrice.compareTo(maxPrice) <= 0) {
+                return quantity;
+            }
+        } while (true);
+    }
+
+
+    /**
+     * 计算用户等级对应的最低单价
+     */
+    private BigDecimal calculateMinPrice(UserGrade userGrade) {
+        return userGrade.getMinProfit().divide(
+                userGrade.getMaxBonus().divide(new BigDecimal("100")).multiply(BigDecimal.valueOf(userGrade.getBuyProdNum())),
+                2, RoundingMode.HALF_UP
+        );
+    }
+
+    /**
+     * 计算用户等级对应的最高单价
+     */
+    private BigDecimal calculateMaxPrice(UserGrade userGrade) {
+        return userGrade.getMaxProfit().divide(
+                userGrade.getMinBonus().divide(new BigDecimal("100")).multiply(BigDecimal.valueOf(userGrade.getBuyProdNum())),
+                2, RoundingMode.HALF_UP
+        );
     }
 
     //    public static void setOrderProdNormal2(BigDecimal price, BigDecimal money){
@@ -363,24 +427,19 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
 //        setOrderProdNormal2(new BigDecimal(123),new BigDecimal(500));
 //    }
     // 生成包含 min 和 max 的随机数
+// 生成包含min和max的随机数
     int randomMinMax(int min, int max) {
         Random rand = new Random();
-        if (min < 1) {
-            min = 1;
-        }
-        if (max < 2) {
-            max = 2;
-        }
-        if (min > max) {
-            return 1;
-        }
+        if (min < 1) min = 1;
+        if (max < 2) max = 2;
+        if (min > max) return 1;
         return rand.nextInt(max - min + 1) + min;
     }
 
     /**
      * 从数据库中随机查询一个产品，默认只查询价格小于或等于用户余额的
      */
-    public ProductManage setOrderProdLimit(OrderReceiveRecord orderReceiveRecord, MUserOrderSet orderSet) {
+    public ProductManage setOrderProdLimit(OrderReceiveRecord orderReceiveRecord, MUserOrderSet orderSet,UserGrade userGrade) {
         BigDecimal minNum = orderSet.getMinNum();
         BigDecimal maxNum = orderSet.getMaxNum();
         BigDecimal maxHalf = maxNum.divide(new BigDecimal(2));
@@ -396,30 +455,15 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
         ProductManage product = productManageMapper.selectProductManageById(idList.get(prodIndex));
         BigDecimal price = product.getPrice();
 
-        //查询用户信息
-        MUser mUser = mUserMapper.selectMUserByUid(getUserId());
-        //根据等级查询账户等级信息
-        UserGrade userGrade = userGradeMapper.getById(mUser.getLevel());
+        // 计算合适的产品数量，使总额在min到max之间
+        int prodNum = 1; //默认数量1，适合产品单价 > half的情况
 
-        int quantity;
-        if (userGrade.getId() == 1) {
-            // id=1：1-3之间的随机数（包含1和3）
-            quantity = RANDOM.nextInt(3) + 1; // 3-1+1=3，所以.nextInt(3)生成0-2，+1后为1-3
-        } else if (userGrade.getId() == 2) {
-            // id=2：5-10之间的随机数（包含5和10）
-            quantity = RANDOM.nextInt(6) + 5; // 10-5+1=6，所以.nextInt(6)生成0-5，+5后为5-10
-        } else if (userGrade.getId() == 3) {
-            // id=3：10-20之间的随机数（包含10和20）
-            quantity = RANDOM.nextInt(11) + 10; // 20-10+1=11，所以.nextInt(11)生成0-10，+10后为10-20
-        } else if (userGrade.getId() == 4) {
-            // id=4：20-40之间的随机数（包含20和40）
-            quantity = RANDOM.nextInt(21) + 20; // 40-20+1=21，所以.nextInt(21)生成0-20，+20后为20-40
-        } else {
-            // 处理未定义的等级，可设置默认值
-            quantity = 1;
+        if (price.compareTo(maxHalf) <= 0) {
+            long min = Math.round(Math.ceil(minNum.divide(price, 2, RoundingMode.HALF_UP).doubleValue()));
+            long max = Math.round(Math.floor(maxNum.divide(price, 2, RoundingMode.HALF_UP).doubleValue()));
+            prodNum = (int) (Math.round(Math.floor(Math.random() * (max - min))) + min);
         }
-
-        orderReceiveRecord.setNumber(quantity);
+        orderReceiveRecord.setNumber(prodNum);
         return product;
     }
 
@@ -443,30 +487,16 @@ public class OrderReceiveRecordServiceImpl implements IOrderReceiveRecordService
      *
      * @return
      */
-    public BigDecimal calcProfit(UserGrade userGrade) {
-        // 计算最大利润值 = 最大值 ÷ 购买数量
-        BigDecimal max = userGrade.getMaxBonus();
-        BigDecimal divisor = BigDecimal.valueOf(userGrade.getBuyProdNum());
-        BigDecimal maxProfit = max.divide(divisor, 2, RoundingMode.HALF_UP);
+    public BigDecimal calcProfit(UserGrade userGrade, BigDecimal totalAmount) {
 
-        // 计算最小利润值 = 最小值 ÷ 购买数量
-        BigDecimal min = userGrade.getMinBonus();
-        BigDecimal minProfit = min.divide(divisor, 2, RoundingMode.HALF_UP);
-
-        // 生成 maxProfit 和 minProfit 之间的随机数
-        // 1. 计算差值（最大值 - 最小值）
-        BigDecimal range = maxProfit.subtract(minProfit);
-
-        // 2. 生成 [0, 1) 之间的随机数，转换为 BigDecimal
-        BigDecimal randomFactor = BigDecimal.valueOf(Math.random());
-
-        // 3. 计算：最小值 + 差值 × 随机数（确保结果在 [minProfit, maxProfit) 范围内）
-        BigDecimal randomProfit = minProfit.add(range.multiply(randomFactor));
-
-        // 4. 保留2位小数（四舍五入），最终结果在 [minProfit, maxProfit] 范围内
-        randomProfit = randomProfit.setScale(2, RoundingMode.HALF_UP);
-
-        return (randomProfit).setScale(2, RoundingMode.HALF_UP);
+        //最大值与最小值之差
+        BigDecimal range = DecimalUtil.subtract(userGrade.getMaxBonus(), userGrade.getMinBonus());
+        //最大值与最小值之差 * 随机数
+        BigDecimal num = DecimalUtil.multiply(range, DecimalUtil.toBigDecimal(Math.random()));
+        //最大值与最小值之差 * 随机数 + 最小值 = 最小值与最大值之间的随机数（利率）。原值用%表示，所以最后除以100后是实际利率值。
+        BigDecimal ratio = num.add(userGrade.getMinBonus()).divide(DecimalUtil.toBigDecimal(100));
+        //利率 * 订单总金额 = 利润  最终保留2位小数
+        return DecimalUtil.multiply(ratio, totalAmount).setScale(2, RoundingMode.HALF_UP);
     }
 
 

@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectUserGradeVo">
-        select id, sort_num, grade_name, join_cost, min_balance, buy_prod_num, min_bonus, max_bonus, create_time, update_time from m_user_grade
+        select id, sort_num, grade_name, join_cost, min_balance, buy_prod_num, min_bonus, max_bonus,min_profit,max_profit ,min_profit2,max_profit2 , create_time, update_time from m_user_grade
     </sql>
 
     <select id="selectUserGradeList" parameterType="UserGrade" resultMap="UserGradeResult">
@@ -84,6 +84,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="buyProdNum != null">buy_prod_num = #{buyProdNum},</if>
             <if test="minBonus != null">min_bonus = #{minBonus},</if>
             <if test="maxBonus != null">max_bonus = #{maxBonus},</if>
+            <if test="minProfit != null">min_profit = #{minProfit},</if>
+            <if test="maxProfit != null">max_profit = #{maxProfit},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
