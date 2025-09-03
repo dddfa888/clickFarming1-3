@@ -4,17 +4,17 @@
     <div class="user-info">
       <div class="user-info-avatar">
         <img
-            class="avatar"
-            :src="userInfo.headImg || defaultAvatar"
-            alt="头像"
-            @click="triggerUpload"
+          class="avatar"
+          :src="userInfo.headImg || defaultAvatar"
+          alt="头像"
+          @click="triggerUpload"
         />
         <input
-            ref="fileInput"
-            type="file"
-            accept="image/*"
-            style="display:none"
-            @change="handleFileChange"
+          ref="fileInput"
+          type="file"
+          accept="image/*"
+          style="display:none"
+          @change="handleFileChange"
         />
         <!--</el-upload> -->
         <div class="user-details">
@@ -32,7 +32,7 @@
     <div class="balance-price">
       <div class="balance-display">
         <div
-            style="
+          style="
             display: flex;
             align-items: center;
             justify-content: space-around;
@@ -45,8 +45,8 @@
       </div>
       <div class="action-buttons">
         <div
-            @click="onDeposit"
-            style="
+          @click="onDeposit"
+          style="
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -57,8 +57,8 @@
           <p>{{ t("提款") }}</p>
         </div>
         <div
-            @click="onWithdraw"
-            style="
+          @click="onWithdraw"
+          style="
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -78,10 +78,10 @@
     <!-- 功能按钮 -->
     <div class="info-buttons">
       <div
-          class="btn"
-          v-for="item in infoBtns"
-          :key="item.label"
-          @click="handleButtonClick(item.icon)"
+        class="btn"
+        v-for="item in infoBtns"
+        :key="item.label"
+        @click="handleButtonClick(item.icon)"
       >
         <img style="width: 35px; height: 35px" class="icon-img" :src="item.icon" />
         <div style="text-align: center; margin-top: 5px">{{ item.label }}</div>
@@ -135,10 +135,10 @@
           <span class="reward-date">{{ reward.date }}</span>
           <span class="reward-message">
             {{
-              t("rewardMessage", {
-                username: reward.username,
-                amount: formatAmount(reward.amount),
-              })
+            t("rewardMessage", {
+            username: reward.username,
+            amount: formatAmount(reward.amount),
+            })
             }}
           </span>
         </div>
@@ -147,10 +147,10 @@
     <PromotionModal ref="promoRef" />
 
     <BaseModal
-        v-model="showModal"
-        :title="t('确认升级')"
-        @confirm="handleConfirm"
-        @cancel="handleCancel"
+      v-model="showModal"
+      :title="t('确认升级')"
+      @confirm="handleConfirm"
+      @cancel="handleCancel"
     >
       <template #body>
         <p>{{ t("您想升级到这个级别吗?") }}</p>
@@ -171,11 +171,11 @@ import notice from "../../assets/img/notice.png";
 import {
   getUserInfo,
   getMemberRecord,
-  getUserNotifyNum,
   updateGrade,
   updateAvatar,
   updateUserSimpleFront,
-  getCustomerService
+  getCustomerService,
+  getUserMessage
 } from "../../api/index.js";
 import { useI18n } from "vue-i18n";
 import { notify } from "../../utils/notify.js";
@@ -201,6 +201,11 @@ const configValue = ref("");
 onMounted(async () => {
   getCustomerService().then(res => {
     configValue.value = res.data.configValue;
+  });
+
+  getUserMessage().then(res => {
+    console.log(res, "ghyuhgh");
+    notifyNum.value = res;
   });
 });
 
@@ -282,9 +287,6 @@ getMemberRecord().then(res => {
     level.value = res.data.level;
   }
 });
-getUserNotifyNum().then(res => {
-  notifyNum.value = res.data;
-});
 
 const handleConfirm = () => {
   let gradeId = uid.value;
@@ -337,8 +339,8 @@ const generateAmount = () => {
   const decimal = Math.floor(Math.random() * 100); // 0-99
 
   return `${whole.toLocaleString("de-DE")}.${decimal
-      .toString()
-      .padStart(2, "0")}`;
+    .toString()
+    .padStart(2, "0")}`;
 };
 
 // 格式化金额显示
@@ -348,24 +350,24 @@ const formatAmount = amount => {
 
 // 初始奖励数据
 const rewards = ref(
-    Array(6)
-        .fill()
-        .map(() => ({
-          date: new Date().toISOString().split("T")[0],
-          username: generateUsername(),
-          amount: generateAmount()
-        }))
+  Array(6)
+    .fill()
+    .map(() => ({
+      date: new Date().toISOString().split("T")[0],
+      username: generateUsername(),
+      amount: generateAmount()
+    }))
 );
 
 // 更新6条数据
 const updateRewards = () => {
   rewards.value = Array(6)
-      .fill()
-      .map(() => ({
-        date: new Date().toISOString().split("T")[0],
-        username: generateUsername(),
-        amount: generateAmount()
-      }));
+    .fill()
+    .map(() => ({
+      date: new Date().toISOString().split("T")[0],
+      username: generateUsername(),
+      amount: generateAmount()
+    }));
 };
 
 // 定时更新数据
@@ -412,7 +414,7 @@ function withTimeout(promise, timeout = 5000) {
   return Promise.race([
     promise,
     new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("请求超时")), timeout)
+      setTimeout(() => reject(new Error("请求超时")), timeout)
     )
   ]);
 }
@@ -425,7 +427,7 @@ onMounted(async () => {
     const [userRes, memberRes, notifyRes] = await Promise.all([
       withTimeout(getUserInfo(), 5000),
       withTimeout(getMemberRecord(), 5000),
-      withTimeout(getUserNotifyNum(), 5000)
+
     ]);
 
     // 设置用户信息
@@ -436,7 +438,6 @@ onMounted(async () => {
       Recordlist.value = memberRes.data.userGrade;
       level.value = memberRes.data.level;
     }
-    notifyNum.value = notifyRes.data;
   } catch (error) {
     console.error("加载数据失败：", error);
   }
