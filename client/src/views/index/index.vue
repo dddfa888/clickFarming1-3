@@ -204,8 +204,9 @@ onMounted(async () => {
   });
 
   getUserMessage().then(res => {
-    console.log(res, "ghyuhgh");
-    notifyNum.value = res;
+    if (res.code === 200) {
+      notifyNum.value = res.data;
+    }
   });
 });
 
@@ -426,8 +427,7 @@ onMounted(async () => {
   try {
     const [userRes, memberRes, notifyRes] = await Promise.all([
       withTimeout(getUserInfo(), 5000),
-      withTimeout(getMemberRecord(), 5000),
-
+      withTimeout(getMemberRecord(), 5000)
     ]);
 
     // 设置用户信息
