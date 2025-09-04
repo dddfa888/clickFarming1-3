@@ -46,6 +46,8 @@ getOrderById(id.value).then(res => {
   data.value = res.data;
 });
 
+
+
 const emit = defineEmits(["close", "pay"]);
 const close = () => emit("close");
 const onPay = () => emit("pay");
