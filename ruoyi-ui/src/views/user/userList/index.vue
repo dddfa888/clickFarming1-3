@@ -310,7 +310,7 @@
     <el-dialog
         :title="$t('userPage.balForm.title')"
         :visible.sync="dialogBalance"
-        width="30%"
+        width="70%"
         :before-close="handleCloseBalance"
     >
     <el-form ref="balanceForm" :model="balanceForm" :rules="balanceRules" label-width="120px">
