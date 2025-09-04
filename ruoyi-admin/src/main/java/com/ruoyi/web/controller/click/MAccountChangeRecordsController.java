@@ -161,7 +161,7 @@ public class MAccountChangeRecordsController extends BaseController
      * 删除账变记录
      */
     @Log(title = "账变记录", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{uuids}")
+    @DeleteMapping("/{uuids}")
     public AjaxResult remove(@PathVariable String[] uuids)
     {
         return toAjax(mAccountChangeRecordsService.deleteMAccountChangeRecordsByUuids(uuids));
