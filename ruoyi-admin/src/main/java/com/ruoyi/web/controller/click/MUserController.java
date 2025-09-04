@@ -423,5 +423,4 @@ public class MUserController extends BaseController
         Long userId = tokenService.getLoginUser(request).getmUser().getUid();
         return toAjax(mUserService.updateGrade(gradeId, userId));
     }
-
 }
