@@ -34,15 +34,15 @@
         <div class="calculation">
           <div class="calc-row">
             <span>{{ t("分配总额") }}:</span>
-            <span class="amount">{{ formatCurrency(item.totalAmount) }} $</span>
+            <span class="amount">{{ formatCurrency(item.totalAmount) }}</span>
           </div>
           <div class="calc-row">
             <span>{{ t("利润") }}:</span>
-            <span class="amount">{{ formatCurrency(item.profit) }} $</span>
+            <span class="amount">{{ formatCurrency(item.profit) }}</span>
           </div>
           <div class="calc-row">
             <span>{{ t("退款金额") }}:</span>
-            <span class="amount highlight">{{ formatCurrency(item.refundAmount) }} $</span>
+            <span class="amount highlight">{{ formatCurrency(item.refundAmount) }}</span>
           </div>
         </div>
 
