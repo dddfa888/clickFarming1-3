@@ -349,9 +349,22 @@ public class MMoneyInvestWithdrawController extends BaseController
         //新增取款记录保存信息
         //提款
         String title = "Rút tiền của khách hàng";
-        BigDecimal amount = (mUser.getAccountBalance() != null)
-                ? mUser.getAccountBalance().setScale(2, RoundingMode.DOWN)
-                : BigDecimal.ZERO.setScale(2);
+        BigDecimal amount;
+        if (withdrawVo != null && withdrawVo.getAmount() != null && !withdrawVo.getAmount().trim().isEmpty()) {
+            try {
+                // 1. 将字符串转换为BigDecimal
+                BigDecimal originAmount = new BigDecimal(withdrawVo.getAmount().trim());
+                // 2. 保留两位小数（截断模式）
+                amount = originAmount.setScale(2, RoundingMode.DOWN);
+            } catch (NumberFormatException e) {
+                // 处理字符串格式错误（如非数字、格式非法）
+                // 可根据业务需求设置默认值或抛出异常
+                amount = BigDecimal.ZERO.setScale(2);
+            }
+        } else {
+            // 处理null或空字符串
+            amount = BigDecimal.ZERO.setScale(2);
+        }
         //内容
         String content = "Bạn đã đặt lệnh rút" + amount + "$ Yêu cầu của bạn đang được xét duyệt";
         //新增取款记录保存信息
