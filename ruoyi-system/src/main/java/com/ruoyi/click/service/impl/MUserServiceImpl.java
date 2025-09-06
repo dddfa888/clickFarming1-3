@@ -154,6 +154,10 @@ public class MUserServiceImpl extends ServiceImpl<MUserMapper, MUser>  implement
             mUser.setFundPassword(EncoderUtil.encoder(mUser.getFundPassword()));
 
         }
+        if(!user.getLevel().equals(mUser.getLevel())){
+            String key = "user-"+mUser.getUid();
+            redisTemplate.delete(key);
+        }
         if(mUser.getInviterCode()!=null){
             if(!user.getInviterCode().equals(mUser.getInviterCode())){
                 MUser one = this.getOne(new LambdaQueryWrapper<MUser>()
