@@ -3,7 +3,7 @@
     <div class="header">
       <h2>
         {{ t("发行历史") }}
-        <span class="total-amount">{{ totalAmount }} $</span>
+        <span class="total-amount">{{ formatCurrency(totalAmount) }}</span>
       </h2>
       <div class="provider">
         {{ t("数据提供者 Ingka Centres") }}
@@ -26,7 +26,7 @@
             <div>{{ item.productName }}</div>
           </div>
           <div class="product-price">
-            {{ formatCurrency(item.unitPrice) }} $
+            {{ formatCurrency(item.unitPrice) }}
             <span class="quantity">x {{ item.number }}</span>
           </div>
         </div>
@@ -34,15 +34,15 @@
         <div class="calculation">
           <div class="calc-row">
             <span>{{ t("分配总额") }}:</span>
-            <span class="amount">{{ formatCurrency(item.totalAmount) }} $</span>
+            <span class="amount">{{ formatCurrency(item.totalAmount) }}</span>
           </div>
           <div class="calc-row">
             <span>{{ t("利润") }}:</span>
-            <span class="amount">{{ formatCurrency(item.profit) }} $</span>
+            <span class="amount">{{ formatCurrency(item.profit) }}</span>
           </div>
           <div class="calc-row">
             <span>{{ t("退款金额") }}:</span>
-            <span class="amount highlight">{{ formatCurrency(item.refundAmount) }} $</span>
+            <span class="amount highlight">{{ formatCurrency(item.refundAmount) }}</span>
           </div>
         </div>
 
