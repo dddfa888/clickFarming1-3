@@ -1026,7 +1026,7 @@ export default {
       this.balanceForm.phoneNumber=row.phoneNumber
       this.balanceForm.originalBalance=row.accountBalance
       this.balanceForm.balance=''
-      this.balanceForm.reason=this.$t('userPage.balForm.noReason')
+      this.balanceForm.reason=''
       //this.balanceForm.bankAccountNumber=row.bankAccountNumber
       this.selectedReason = this.$t('userPage.balForm.noReason')
       this.dialogBalance = true
